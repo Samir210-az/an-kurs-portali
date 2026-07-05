@@ -278,6 +278,66 @@
   @media (prefers-reduced-motion: reduce){
     *{animation:none !important; transition:none !important;}
   }
+
+  /* courses showcase */
+  .courses-section{
+    position:relative; z-index:2; max-width:900px; margin:0 auto;
+    padding:2vh 6vw 12vh; text-align:center;
+  }
+  .section-head h2{
+    font-family:'Fraunces', serif; font-weight:500;
+    font-size:clamp(1.6rem, 3.4vw, 2.3rem); color:var(--cream); margin-top:0.4rem;
+  }
+  .course-chips{
+    display:flex; flex-wrap:wrap; justify-content:center; gap:0.9rem; margin-top:2.2rem;
+  }
+  .chip-loading, .chip-empty{ color:var(--cream-dim); font-size:0.9rem; font-style:italic; }
+  .course-chip{
+    padding:0.8rem 1.4rem; border-radius:999px; border:1px solid rgba(217,168,90,0.28);
+    background:rgba(217,168,90,0.07); color:var(--gold-light); font-size:0.92rem; font-weight:500;
+    display:inline-flex; align-items:center; gap:0.5rem;
+  }
+  .course-chip::before{ content:'✦'; font-size:0.75rem; opacity:0.7; }
+
+  /* login section */
+  .login-section{
+    position:relative; z-index:2; padding:4vh 6vw 16vh; display:flex; justify-content:center;
+  }
+  .login-card{
+    width:min(420px, 100%); background:rgba(18,48,44,0.55); border:1px solid rgba(217,168,90,0.18);
+    border-radius:22px; padding:2.6rem 2.2rem; backdrop-filter:blur(8px); text-align:center;
+  }
+  .login-card input{
+    width:100%; padding:0.85rem 1rem; border-radius:12px; border:1px solid rgba(217,168,90,0.25);
+    background:rgba(255,255,255,0.05); color:var(--cream); font-size:0.95rem; margin-bottom:1rem;
+    font-family:'Inter',sans-serif;
+  }
+  .login-card input:focus{ outline:none; border-color:var(--gold); }
+  .btn-login{
+    width:100%; padding:0.85rem; border-radius:999px; border:none; cursor:pointer;
+    background:linear-gradient(120deg,var(--gold),var(--gold-light)); color:#2a1d09; font-weight:600;
+    font-size:0.95rem; transition:transform .3s ease; margin-top:0.3rem;
+  }
+  .btn-login:hover{ transform:translateY(-2px); }
+  .btn-login:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
+  .err{ color:#e08b78; font-size:0.85rem; min-height:1.1rem; margin:-0.4rem 0 0.6rem; }
+  .notice{
+    margin-top:1.2rem; padding:0.7rem 0.9rem; border-radius:10px; font-size:0.8rem;
+    background:rgba(123,160,152,0.12); border:1px solid rgba(123,160,152,0.3); color:var(--sage);
+    display:none; text-align:left;
+  }
+  .my-course-list{ display:none; flex-direction:column; gap:0.7rem; margin-top:1rem; }
+  .my-course-list a.course-btn{
+    display:block; padding:0.9rem 1rem; border-radius:12px; text-decoration:none;
+    background:rgba(217,168,90,0.1); border:1px solid rgba(217,168,90,0.3); color:var(--gold-light);
+    font-weight:600; font-size:0.92rem; transition:all .25s ease;
+  }
+  .my-course-list a.course-btn:hover{ background:rgba(217,168,90,0.2); transform:translateY(-2px); }
+  .spinner{
+    display:none; width:18px; height:18px; border:2px solid rgba(42,29,9,0.3);
+    border-top-color:#2a1d09; border-radius:50%; animation:spin .7s linear infinite; margin:0 auto;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
 </style>
 </head>
 <body>
@@ -297,7 +357,7 @@
   <h1>Böyümə və inkişaf<br>yolunda peşəkar dəstək</h1>
   <p class="tagline">Uşaq və yeniyetmə psixologiyası, erkən müdaxilə, erqoterapiya, loqopediya və sensor inteqrasiya sahələrində peşəkar kurs və proqramlarımıza xoş gəlmisiniz.</p>
 
-  <a href="login.html" class="cta">
+  <a href="#giris" class="cta">
     Kurslara giriş
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
   </a>
@@ -308,7 +368,7 @@
   </div>
 </section>
 
-<section class="pillars" id="pillars">
+<section class="pillars" id="courses-preview">
   <div class="pillar">
     <div class="pillar-mark">✦</div>
     <h3>Klinik dəqiqlik</h3>
@@ -323,6 +383,38 @@
     <div class="pillar-mark">✦</div>
     <h3>Vahid mərkəz</h3>
     <p>Bütün kurslarımız və proqramlarımız tək bir peşəkar platformada — sadə, etibarlı və davamlı bir təcrübə ilə birləşir.</p>
+  </div>
+</section>
+
+<section class="courses-section" id="courses-list">
+  <div class="section-head">
+    <div class="eyebrow" style="text-align:center">Proqramlarımız</div>
+    <h2>Mövcud kurslar</h2>
+  </div>
+  <div class="course-chips" id="courseChips">
+    <div class="chip-loading">Yüklənir...</div>
+  </div>
+</section>
+
+<section class="login-section" id="giris">
+  <div class="login-card">
+    <div class="section-head" style="margin-bottom:1.8rem">
+      <div class="eyebrow" style="text-align:center">Sistemə giriş</div>
+      <h2 style="font-size:clamp(1.5rem,3vw,2rem)">Öz kursunuza daxil olun</h2>
+    </div>
+
+    <div id="formArea">
+      <input type="text" id="username" placeholder="İstifadəçi adı" autocomplete="username">
+      <input type="password" id="password" placeholder="Parol" autocomplete="current-password">
+      <div class="err" id="errMsg"></div>
+      <button class="btn-login" id="loginBtn" onclick="doLogin()">
+        <span id="btnText">Daxil ol</span>
+        <div class="spinner" id="spinner"></div>
+      </button>
+      <div class="notice" id="deviceNotice"></div>
+    </div>
+
+    <div class="my-course-list" id="myCourseList"></div>
   </div>
 </section>
 
@@ -374,6 +466,125 @@
     });
   }, {threshold:0.2});
   pillars.forEach(p=>io.observe(p));
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+import { getDatabase, ref, get, update, push } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCBhyGNzZRGgQShP_C9kwAzTm_g_0zJlzg",
+  authDomain: "an-psixoloji-33442.firebaseapp.com",
+  databaseURL: "https://an-psixoloji-33442-default-rtdb.firebaseio.com",
+  projectId: "an-psixoloji-33442",
+  storageBucket: "an-psixoloji-33442.firebasestorage.app",
+  messagingSenderId: "528809299356",
+  appId: "1:528809299356:web:59cae89a64e446dc520c59"
+};
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// show course names (informational only, no links) on the landing page
+get(ref(db, 'portal/courses')).then(snap => {
+  const courses = snap.val() || {};
+  const el = document.getElementById('courseChips');
+  const names = Object.values(courses).map(c => c.name);
+  el.innerHTML = names.length
+    ? names.map(n => `<span class="course-chip">${escapeHtml(n)}</span>`).join('')
+    : '<div class="chip-empty">Kurslar tezliklə əlavə olunacaq</div>';
+});
+
+function simpleFingerprint(){
+  const raw = [navigator.userAgent, navigator.language, screen.width+'x'+screen.height, Intl.DateTimeFormat().resolvedOptions().timeZone].join('|');
+  let hash = 0;
+  for(let i=0;i<raw.length;i++){ hash = (hash<<5)-hash + raw.charCodeAt(i); hash |= 0; }
+  return 'fp_' + Math.abs(hash).toString(16);
+}
+
+async function getIP(){
+  try{
+    const res = await fetch('https://api.ipify.org?format=json');
+    const data = await res.json();
+    return data.ip;
+  }catch(e){ return 'naməlum'; }
+}
+
+window.doLogin = async function(){
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value.trim();
+  const errEl = document.getElementById('errMsg');
+  const btn = document.getElementById('loginBtn');
+  errEl.textContent = '';
+  if(!username || !password){ errEl.textContent = 'İstifadəçi adı və parolu daxil edin'; return; }
+
+  document.getElementById('btnText').style.display='none';
+  document.getElementById('spinner').style.display='block';
+  btn.disabled = true;
+
+  try{
+    const custSnap = await get(ref(db, 'portal/customers'));
+    const customers = custSnap.val() || {};
+    const entry = Object.entries(customers).find(([id,c]) => c.username === username);
+
+    if(!entry || entry[1].password !== password){
+      errEl.textContent = 'İstifadəçi adı və ya parol yanlışdır';
+      resetBtn();
+      return;
+    }
+
+    const [custId, cust] = entry;
+    const device = simpleFingerprint();
+    const ip = await getIP();
+
+    if(cust.lastDevice && cust.lastDevice !== device){
+      await push(ref(db, 'portal/securityAlerts'), { username: cust.username, type:'device_changed', oldValue: cust.lastDevice, newValue: device, ts: Date.now() });
+      showNotice('Diqqət: bu hesaba yeni bir cihazdan giriş edildi. Bu barədə admin məlumatlandırıldı.');
+    } else if(cust.lastIP && cust.lastIP !== ip){
+      await push(ref(db, 'portal/securityAlerts'), { username: cust.username, type:'ip_changed', oldValue: cust.lastIP, newValue: ip, ts: Date.now() });
+    }
+
+    await update(ref(db, 'portal/customers/'+custId), { lastDevice: device, lastIP: ip, lastLogin: Date.now() });
+
+    const coursesSnap = await get(ref(db, 'portal/courses'));
+    const allCourses = coursesSnap.val() || {};
+    const allowed = (cust.allowedCourses||[]).map(cid => allCourses[cid]).filter(Boolean);
+
+    if(!allowed.length){
+      errEl.textContent = 'Hesabınıza hələ heç bir kurs təyin olunmayıb. Admin ilə əlaqə saxlayın.';
+      resetBtn();
+      return;
+    }
+
+    document.getElementById('formArea').style.display = 'none';
+    const list = document.getElementById('myCourseList');
+    list.style.display = 'flex';
+    if(allowed.length === 1){
+      list.innerHTML = `<div style="color:var(--cream-dim);font-size:0.88rem;margin-bottom:0.6rem">Kursunuza yönləndirilirsiniz...</div>`;
+      setTimeout(()=>{ location.href = allowed[0].url; }, 900);
+    } else {
+      list.innerHTML = allowed.map(c => `<a class="course-btn" href="${c.url}">${escapeHtml(c.name)} →</a>`).join('');
+    }
+  }catch(e){
+    console.error(e);
+    errEl.textContent = 'Xəta baş verdi, yenidən cəhd edin';
+    resetBtn();
+  }
+
+  function resetBtn(){
+    document.getElementById('btnText').style.display='inline';
+    document.getElementById('spinner').style.display='none';
+    btn.disabled = false;
+  }
+}
+
+function showNotice(msg){
+  const el = document.getElementById('deviceNotice');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+function escapeHtml(s){ return String(s??'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+document.getElementById('password').addEventListener('keydown', e=>{ if(e.key==='Enter') window.doLogin(); });
 </script>
 
 </body>
