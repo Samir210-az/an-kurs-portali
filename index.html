@@ -8,311 +8,127 @@
 <link rel="icon" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg-deep:#0c211f;
-    --bg-deep-2:#153431;
-    --bg-deep-3:#1d423d;
-    --gold:#d9a85a;
-    --gold-light:#f0cd8e;
-    --brown:#8a6a3a;
-    --cream:#f3eee1;
-    --cream-dim:#c9c2ae;
-    --sage:#7ba098;
+    --bg-deep:#0c211f; --bg-deep-2:#153431; --bg-deep-3:#1d423d;
+    --gold:#d9a85a; --gold-light:#f0cd8e; --brown:#8a6a3a;
+    --cream:#f3eee1; --cream-dim:#c9c2ae; --sage:#7ba098;
+    --danger:#d9705a; --card:#12302c;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   html{scroll-behavior:smooth;}
-  body{
-    background:var(--bg-deep);
-    color:var(--cream);
-    font-family:'Inter',sans-serif;
-    overflow-x:hidden;
-    min-height:100vh;
-  }
+  body{ background:var(--bg-deep); color:var(--cream); font-family:'Inter',sans-serif; overflow-x:hidden; min-height:100vh; }
 
-  /* ambient background layers */
-  .bg-layer{
-    position:fixed;
-    inset:0;
-    z-index:0;
-    pointer-events:none;
-  }
+  .bg-layer{ position:fixed; inset:0; z-index:0; pointer-events:none; }
   .bg-gradient{
     background:
       radial-gradient(circle at 30% 20%, rgba(217,168,90,0.14), transparent 45%),
       radial-gradient(circle at 75% 70%, rgba(123,160,152,0.12), transparent 50%),
       linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-deep-2) 55%, var(--bg-deep-3) 100%);
   }
-  .grain{
-    opacity:0.05;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
+  .grain{ opacity:0.05; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
 
-  .particles{
-    position:fixed;
-    inset:0;
-    z-index:1;
-    pointer-events:none;
-  }
+  .particles{ position:fixed; inset:0; z-index:1; pointer-events:none; }
   .particle{
-    position:absolute;
-    bottom:-10px;
-    border-radius:50%;
-    background:var(--gold-light);
-    box-shadow:0 0 8px 2px rgba(240,205,142,0.55);
-    opacity:0;
-    animation:rise linear infinite;
+    position:absolute; bottom:-10px; border-radius:50%; background:var(--gold-light);
+    box-shadow:0 0 8px 2px rgba(240,205,142,0.55); opacity:0; animation:rise linear infinite;
   }
   @keyframes rise{
     0%{opacity:0; transform:translateY(0) translateX(0);}
-    10%{opacity:0.85;}
-    90%{opacity:0.4;}
+    10%{opacity:0.85;} 90%{opacity:0.4;}
     100%{opacity:0; transform:translateY(-115vh) translateX(var(--drift,20px));}
   }
 
-  /* hero */
   .hero{
-    position:relative;
-    z-index:2;
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    padding:6vh 6vw 10vh;
+    position:relative; z-index:2; min-height:100vh; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; text-align:center; padding:6vh 6vw 10vh;
   }
-
-  .logo-wrap{
-    position:relative;
-    width:min(190px, 34vw);
-    height:min(190px, 34vw);
-    margin-bottom:2.6rem;
-  }
+  .logo-wrap{ position:relative; width:min(190px, 34vw); height:min(190px, 34vw); margin-bottom:2.6rem; cursor:pointer; user-select:none; }
   .glow-ring{
-    position:absolute;
-    inset:-30%;
-    border-radius:50%;
+    position:absolute; inset:-30%; border-radius:50%;
     background:radial-gradient(circle, rgba(217,168,90,0.35) 0%, rgba(217,168,90,0) 68%);
-    animation:breathe 5s ease-in-out infinite;
-    will-change:transform, opacity;
+    animation:breathe 5s ease-in-out infinite; will-change:transform, opacity;
   }
-  @keyframes breathe{
-    0%,100%{transform:scale(0.92); opacity:0.65;}
-    50%{transform:scale(1.12); opacity:1;}
-  }
+  @keyframes breathe{ 0%,100%{transform:scale(0.92); opacity:0.65;} 50%{transform:scale(1.12); opacity:1;} }
   .logo-img{
-    position:relative;
-    width:100%;
-    height:100%;
-    object-fit:contain;
-    filter:drop-shadow(0 6px 24px rgba(217,168,90,0.35));
-    animation:float 6s ease-in-out infinite;
+    position:relative; width:100%; height:100%; object-fit:contain;
+    filter:drop-shadow(0 6px 24px rgba(217,168,90,0.35)); animation:float 6s ease-in-out infinite;
   }
-  @keyframes float{
-    0%,100%{transform:translateY(0px);}
-    50%{transform:translateY(-10px);}
+  @keyframes float{ 0%,100%{transform:translateY(0px);} 50%{transform:translateY(-10px);} }
+  .alert-dot{
+    position:absolute; top:2%; right:2%; width:16px; height:16px; border-radius:50%;
+    background:var(--danger); box-shadow:0 0 10px 2px rgba(217,112,90,0.7);
+    display:none; animation:pulseDot 1.6s ease-in-out infinite;
   }
+  @keyframes pulseDot{ 0%,100%{ transform:scale(1); opacity:1;} 50%{ transform:scale(1.3); opacity:0.7;} }
 
   .eyebrow{
-    font-family:'Inter',sans-serif;
-    letter-spacing:0.32em;
-    text-transform:uppercase;
-    font-size:0.72rem;
-    color:var(--sage);
-    margin-bottom:1.4rem;
-    font-weight:500;
-    opacity:0;
-    animation:fadeUp 1s ease forwards 0.15s;
+    font-family:'Inter',sans-serif; letter-spacing:0.32em; text-transform:uppercase; font-size:0.72rem;
+    color:var(--sage); margin-bottom:1.4rem; font-weight:500; opacity:0; animation:fadeUp 1s ease forwards 0.15s;
   }
   h1{
-    font-family:'Fraunces', serif;
-    font-optical-sizing:auto;
-    font-weight:500;
-    font-size:clamp(2.2rem, 6vw, 4.6rem);
-    line-height:1.08;
-    max-width:15ch;
+    font-family:'Fraunces', serif; font-optical-sizing:auto; font-weight:500;
+    font-size:clamp(2.2rem, 6vw, 4.6rem); line-height:1.08; max-width:15ch;
     background:linear-gradient(100deg, var(--cream) 30%, var(--gold-light) 60%, var(--cream) 85%);
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
-    background-size:200% auto;
-    animation:fadeUp 1s ease forwards 0.35s, shimmer 7s linear infinite 1.5s;
-    opacity:0;
+    -webkit-background-clip:text; background-clip:text; color:transparent; background-size:200% auto;
+    animation:fadeUp 1s ease forwards 0.35s, shimmer 7s linear infinite 1.5s; opacity:0;
   }
-  @keyframes fadeUp{
-    from{opacity:0; transform:translateY(22px);}
-    to{opacity:1; transform:translateY(0);}
-  }
-  @keyframes shimmer{
-    0%{background-position:0% center;}
-    100%{background-position:200% center;}
-  }
+  @keyframes fadeUp{ from{opacity:0; transform:translateY(22px);} to{opacity:1; transform:translateY(0);} }
+  @keyframes shimmer{ 0%{background-position:0% center;} 100%{background-position:200% center;} }
 
   .tagline{
-    margin-top:1.6rem;
-    max-width:46ch;
-    font-size:clamp(0.98rem, 1.6vw, 1.15rem);
-    line-height:1.7;
-    color:var(--cream-dim);
-    font-weight:300;
-    opacity:0;
-    animation:fadeUp 1s ease forwards 0.55s;
+    margin-top:1.6rem; max-width:46ch; font-size:clamp(0.98rem, 1.6vw, 1.15rem); line-height:1.7;
+    color:var(--cream-dim); font-weight:300; opacity:0; animation:fadeUp 1s ease forwards 0.55s;
   }
-
   .cta{
-    margin-top:3rem;
-    display:inline-flex;
-    align-items:center;
-    gap:0.7rem;
-    padding:1rem 2.1rem;
-    border-radius:999px;
-    background:linear-gradient(120deg, var(--gold) 0%, var(--gold-light) 100%);
-    color:#2a1d09;
-    font-weight:600;
-    font-size:0.98rem;
-    text-decoration:none;
-    box-shadow:0 8px 30px rgba(217,168,90,0.3);
-    transition:transform 0.35s ease, box-shadow 0.35s ease;
-    opacity:0;
-    animation:fadeUp 1s ease forwards 0.75s;
+    margin-top:3rem; display:inline-flex; align-items:center; gap:0.7rem; padding:1rem 2.1rem;
+    border-radius:999px; background:linear-gradient(120deg, var(--gold) 0%, var(--gold-light) 100%);
+    color:#2a1d09; font-weight:600; font-size:0.98rem; text-decoration:none;
+    box-shadow:0 8px 30px rgba(217,168,90,0.3); transition:transform 0.35s ease, box-shadow 0.35s ease;
+    opacity:0; animation:fadeUp 1s ease forwards 0.75s;
   }
-  .cta:hover{
-    transform:translateY(-3px);
-    box-shadow:0 12px 38px rgba(217,168,90,0.45);
-  }
-  .cta svg{transition:transform 0.3s ease;}
-  .cta:hover svg{transform:translateX(4px);}
+  .cta:hover{ transform:translateY(-3px); box-shadow:0 12px 38px rgba(217,168,90,0.45); }
+  .cta svg{transition:transform 0.3s ease;} .cta:hover svg{transform:translateX(4px);}
 
   .scroll-cue{
-    position:absolute;
-    bottom:2.6rem;
-    left:50%;
-    transform:translateX(-50%);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:0.5rem;
-    opacity:0.55;
-    animation:fadeUp 1s ease forwards 1s;
+    position:absolute; bottom:2.6rem; left:50%; transform:translateX(-50%); display:flex;
+    flex-direction:column; align-items:center; gap:0.5rem; opacity:0.55; animation:fadeUp 1s ease forwards 1s;
   }
-  .scroll-cue span{
-    font-size:0.68rem;
-    letter-spacing:0.24em;
-    text-transform:uppercase;
-    color:var(--cream-dim);
-  }
-  .scroll-line{
-    width:1px;
-    height:34px;
-    background:linear-gradient(180deg, var(--gold-light), transparent);
-    animation:pulse-line 2s ease-in-out infinite;
-  }
-  @keyframes pulse-line{
-    0%,100%{opacity:0.3;}
-    50%{opacity:1;}
-  }
+  .scroll-cue span{ font-size:0.68rem; letter-spacing:0.24em; text-transform:uppercase; color:var(--cream-dim); }
+  .scroll-line{ width:1px; height:34px; background:linear-gradient(180deg, var(--gold-light), transparent); animation:pulse-line 2s ease-in-out infinite; }
+  @keyframes pulse-line{ 0%,100%{opacity:0.3;} 50%{opacity:1;} }
 
-  /* parallax pillars section */
-  .pillars{
-    position:relative;
-    z-index:2;
-    max-width:1080px;
-    margin:0 auto;
-    padding:14vh 6vw 18vh;
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(230px, 1fr));
-    gap:2.4rem;
+  /* course cards (replaces generic pillars) */
+  .courses-section{ position:relative; z-index:2; max-width:1080px; margin:0 auto; padding:12vh 6vw 10vh; text-align:center; }
+  .section-head h2{ font-family:'Fraunces', serif; font-weight:500; font-size:clamp(1.6rem, 3.4vw, 2.3rem); color:var(--cream); margin-top:0.4rem; }
+  .course-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:2rem; margin-top:2.6rem; text-align:left; }
+  .course-card{
+    padding:2rem 1.8rem; border-radius:18px; background:rgba(243,238,225,0.035);
+    border:1px solid rgba(217,168,90,0.16); backdrop-filter:blur(6px);
+    transform:translateY(40px); opacity:0; transition:transform 0.9s cubic-bezier(.2,.8,.2,1), opacity 0.9s ease;
   }
-  .pillar{
-    padding:2.2rem 1.8rem;
-    border-radius:18px;
-    background:rgba(243,238,225,0.035);
-    border:1px solid rgba(217,168,90,0.14);
-    backdrop-filter:blur(6px);
-    transform:translateY(40px);
-    opacity:0;
-    transition:transform 0.9s cubic-bezier(.2,.8,.2,1), opacity 0.9s ease;
+  .course-card.in-view{ transform:translateY(0); opacity:1; }
+  .course-card h3{ font-family:'Fraunces', serif; font-weight:500; font-size:1.3rem; margin-bottom:0.7rem; color:var(--gold-light); }
+  .course-card p{ font-size:0.9rem; line-height:1.6; color:var(--cream-dim); font-weight:300; margin-bottom:1.1rem; }
+  .course-stats{ display:flex; flex-wrap:wrap; gap:0.5rem; }
+  .stat-chip{
+    font-size:0.76rem; padding:0.3rem 0.7rem; border-radius:999px; background:rgba(123,160,152,0.14);
+    border:1px solid rgba(123,160,152,0.3); color:var(--sage);
   }
-  .pillar.in-view{
-    transform:translateY(0);
-    opacity:1;
-  }
-  .pillar-mark{
-    font-family:'Fraunces', serif;
-    font-size:1.1rem;
-    color:var(--gold-light);
-    margin-bottom:0.9rem;
-  }
-  .pillar h3{
-    font-family:'Fraunces', serif;
-    font-weight:500;
-    font-size:1.25rem;
-    margin-bottom:0.7rem;
-    color:var(--cream);
-  }
-  .pillar p{
-    font-size:0.93rem;
-    line-height:1.65;
-    color:var(--cream-dim);
-    font-weight:300;
-  }
+  .chip-empty{ color:var(--cream-dim); font-size:0.9rem; font-style:italic; grid-column:1/-1; }
 
-  footer{
-    position:relative;
-    z-index:2;
-    text-align:center;
-    padding:3rem 1.5rem 3.4rem;
-    border-top:1px solid rgba(217,168,90,0.12);
-    font-size:0.85rem;
-    color:var(--cream-dim);
-  }
-  footer a{
-    color:var(--gold-light);
-    text-decoration:none;
-    font-weight:500;
-  }
-  footer a:hover{text-decoration:underline;}
-
-  @media (prefers-reduced-motion: reduce){
-    *{animation:none !important; transition:none !important;}
-  }
-
-  /* courses showcase */
-  .courses-section{
-    position:relative; z-index:2; max-width:900px; margin:0 auto;
-    padding:2vh 6vw 12vh; text-align:center;
-  }
-  .section-head h2{
-    font-family:'Fraunces', serif; font-weight:500;
-    font-size:clamp(1.6rem, 3.4vw, 2.3rem); color:var(--cream); margin-top:0.4rem;
-  }
-  .course-chips{
-    display:flex; flex-wrap:wrap; justify-content:center; gap:0.9rem; margin-top:2.2rem;
-  }
-  .chip-loading, .chip-empty{ color:var(--cream-dim); font-size:0.9rem; font-style:italic; }
-  .course-chip{
-    padding:0.8rem 1.4rem; border-radius:999px; border:1px solid rgba(217,168,90,0.28);
-    background:rgba(217,168,90,0.07); color:var(--gold-light); font-size:0.92rem; font-weight:500;
-    display:inline-flex; align-items:center; gap:0.5rem;
-  }
-  .course-chip::before{ content:'✦'; font-size:0.75rem; opacity:0.7; }
-
-  /* login section */
-  .login-section{
-    position:relative; z-index:2; padding:4vh 6vw 16vh; display:flex; justify-content:center;
-  }
+  /* login / admin section */
+  .login-section{ position:relative; z-index:2; padding:4vh 6vw 16vh; display:flex; justify-content:center; }
   .login-card{
     width:min(420px, 100%); background:rgba(18,48,44,0.55); border:1px solid rgba(217,168,90,0.18);
     border-radius:22px; padding:2.6rem 2.2rem; backdrop-filter:blur(8px); text-align:center;
   }
-  .login-card input{
+  .login-card input, .admin-card input, .admin-card textarea{
     width:100%; padding:0.85rem 1rem; border-radius:12px; border:1px solid rgba(217,168,90,0.25);
-    background:rgba(255,255,255,0.05); color:var(--cream); font-size:0.95rem; margin-bottom:1rem;
-    font-family:'Inter',sans-serif;
+    background:rgba(255,255,255,0.05); color:var(--cream); font-size:0.95rem; margin-bottom:1rem; font-family:'Inter',sans-serif;
   }
-  .login-card input:focus{ outline:none; border-color:var(--gold); }
+  .login-card input:focus, .admin-card input:focus, .admin-card textarea:focus{ outline:none; border-color:var(--gold); }
   .btn-login{
     width:100%; padding:0.85rem; border-radius:999px; border:none; cursor:pointer;
     background:linear-gradient(120deg,var(--gold),var(--gold-light)); color:#2a1d09; font-weight:600;
@@ -323,8 +139,7 @@
   .err{ color:#e08b78; font-size:0.85rem; min-height:1.1rem; margin:-0.4rem 0 0.6rem; }
   .notice{
     margin-top:1.2rem; padding:0.7rem 0.9rem; border-radius:10px; font-size:0.8rem;
-    background:rgba(123,160,152,0.12); border:1px solid rgba(123,160,152,0.3); color:var(--sage);
-    display:none; text-align:left;
+    background:rgba(123,160,152,0.12); border:1px solid rgba(123,160,152,0.3); color:var(--sage); display:none; text-align:left;
   }
   .my-course-list{ display:none; flex-direction:column; gap:0.7rem; margin-top:1rem; }
   .my-course-list a.course-btn{
@@ -338,6 +153,47 @@
     border-top-color:#2a1d09; border-radius:50%; animation:spin .7s linear infinite; margin:0 auto;
   }
   @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  /* admin */
+  #adminGate{
+    position:fixed; inset:0; z-index:100; display:none; align-items:center; justify-content:center;
+    background:rgba(6,16,15,0.88); backdrop-filter:blur(4px);
+  }
+  .gate-card{ background:var(--card); border:1px solid rgba(217,168,90,0.25); border-radius:20px; padding:2.4rem 2rem; width:min(340px,88vw); text-align:center; }
+  .gate-card h3{ font-family:'Fraunces',serif; font-size:1.2rem; margin-bottom:1.2rem; color:var(--gold-light); }
+  .admin-wrap{ width:100%; max-width:760px; text-align:left; }
+  .admin-card{ background:var(--card); border:1px solid rgba(217,168,90,0.15); border-radius:16px; padding:1.8rem; margin-bottom:1.5rem; }
+  .admin-card h4{ font-family:'Fraunces',serif; font-weight:500; font-size:1.1rem; margin-bottom:1rem; color:var(--cream); }
+  .row2{ display:flex; gap:0.9rem; flex-wrap:wrap; }
+  .row2 > div{ flex:1; min-width:170px; }
+  .btn-sm{
+    padding:0.5rem 1rem; border-radius:999px; border:none; cursor:pointer; font-size:0.82rem; font-weight:600;
+    background:linear-gradient(120deg,var(--gold),var(--gold-light)); color:#2a1d09;
+  }
+  .btn-outline-sm{
+    padding:0.45rem 0.9rem; border-radius:999px; border:1px solid rgba(217,168,90,0.35); background:transparent;
+    color:var(--gold-light); font-size:0.8rem; cursor:pointer;
+  }
+  .btn-danger-sm{
+    padding:0.4rem 0.85rem; border-radius:999px; border:none; cursor:pointer; font-size:0.78rem;
+    background:linear-gradient(120deg,var(--danger),#e08d78); color:#2a0e09;
+  }
+  table{ width:100%; border-collapse:collapse; margin-top:0.8rem; }
+  th,td{ text-align:left; padding:0.55rem 0.4rem; font-size:0.8rem; border-bottom:1px solid rgba(217,168,90,0.1); }
+  th{ color:var(--cream-dim); font-weight:500; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.05em; }
+  .badge{ display:inline-block; padding:0.18rem 0.55rem; border-radius:999px; font-size:0.7rem; margin:0.08rem; background:rgba(123,160,152,0.2); color:var(--sage); border:1px solid rgba(123,160,152,0.35); }
+  .badge-high{ background:rgba(217,112,90,0.22); color:#ffb199; border:1px solid rgba(217,112,90,0.5); }
+  .badge-mid{ background:rgba(217,168,90,0.18); color:var(--gold-light); border:1px solid rgba(217,168,90,0.4); }
+  .checks{ display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem; }
+  .chip-check{ display:flex; align-items:center; gap:0.4rem; padding:0.4rem 0.7rem; border-radius:9px; border:1px solid rgba(217,168,90,0.25); background:rgba(255,255,255,0.03); font-size:0.82rem; }
+  .empty-row{ color:var(--cream-dim); font-size:0.82rem; font-style:italic; }
+  .flex-between{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.8rem; }
+
+  footer{ position:relative; z-index:2; text-align:center; padding:3rem 1.5rem 3.4rem; border-top:1px solid rgba(217,168,90,0.12); font-size:0.85rem; color:var(--cream-dim); }
+  footer a{ color:var(--gold-light); text-decoration:none; font-weight:500; }
+  footer a:hover{ text-decoration:underline; }
+
+  @media (prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important;} }
 </style>
 </head>
 <body>
@@ -352,6 +208,7 @@
   <div class="logo-wrap" id="logoWrap">
     <div class="glow-ring"></div>
     <img class="logo-img" src="logo.png" alt="AN Psixoloji Dəstək və Reabilitasiya Mərkəzi loqosu">
+    <div class="alert-dot" id="alertDot"></div>
   </div>
 
   <h1>Böyümə və inkişaf<br>yolunda peşəkar dəstək</h1>
@@ -362,28 +219,7 @@
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
   </a>
 
-  <div class="scroll-cue">
-    <span>Aşağı sürüşdürün</span>
-    <div class="scroll-line"></div>
-  </div>
-</section>
-
-<section class="pillars" id="courses-preview">
-  <div class="pillar">
-    <div class="pillar-mark">✦</div>
-    <h3>Klinik dəqiqlik</h3>
-    <p>Hər kurs və proqram elmi əsaslara söykənən, sahə mütəxəssisləri tərəfindən hazırlanmış klinik standartlarla qurulur.</p>
-  </div>
-  <div class="pillar">
-    <div class="pillar-mark">✦</div>
-    <h3>Fərdi inkişaf yolu</h3>
-    <p>Hər istifadəçi üçün onlara uyğun kurs və proqramlara nəzarətli, təhlükəsiz giriş təmin olunur.</p>
-  </div>
-  <div class="pillar">
-    <div class="pillar-mark">✦</div>
-    <h3>Vahid mərkəz</h3>
-    <p>Bütün kurslarımız və proqramlarımız tək bir peşəkar platformada — sadə, etibarlı və davamlı bir təcrübə ilə birləşir.</p>
-  </div>
+  <div class="scroll-cue"><span>Aşağı sürüşdürün</span><div class="scroll-line"></div></div>
 </section>
 
 <section class="courses-section" id="courses-list">
@@ -391,57 +227,95 @@
     <div class="eyebrow" style="text-align:center">Proqramlarımız</div>
     <h2>Mövcud kurslar</h2>
   </div>
-  <div class="course-chips" id="courseChips">
-    <div class="chip-loading">Yüklənir...</div>
+  <div class="course-grid" id="courseGrid">
+    <div class="chip-empty">Yüklənir...</div>
   </div>
 </section>
 
 <section class="login-section" id="giris">
-  <div class="login-card">
+  <div class="login-card" id="customerLoginCard">
     <div class="section-head" style="margin-bottom:1.8rem">
       <div class="eyebrow" style="text-align:center">Sistemə giriş</div>
       <h2 style="font-size:clamp(1.5rem,3vw,2rem)">Öz kursunuza daxil olun</h2>
     </div>
-
     <div id="formArea">
       <input type="text" id="username" placeholder="İstifadəçi adı" autocomplete="username">
       <input type="password" id="password" placeholder="Parol" autocomplete="current-password">
       <div class="err" id="errMsg"></div>
       <button class="btn-login" id="loginBtn" onclick="doLogin()">
-        <span id="btnText">Daxil ol</span>
-        <div class="spinner" id="spinner"></div>
+        <span id="btnText">Daxil ol</span><div class="spinner" id="spinner"></div>
       </button>
       <div class="notice" id="deviceNotice"></div>
     </div>
-
     <div class="my-course-list" id="myCourseList"></div>
+  </div>
+
+  <div class="admin-wrap" id="adminWrap" style="display:none">
+    <div class="flex-between" style="margin-bottom:1rem">
+      <h2 style="font-family:'Fraunces',serif;font-size:1.5rem;color:var(--gold-light)">Admin Panel</h2>
+      <button class="btn-outline-sm" onclick="adminLogout()">Çıxış</button>
+    </div>
+
+    <div class="admin-card" id="alertsCard" style="display:none">
+      <h4>🔔 Təhlükəsizlik Xəbərdarlıqları</h4>
+      <div id="alertsList"></div>
+    </div>
+
+    <div class="admin-card">
+      <h4>📚 Kurs əlavə et</h4>
+      <div class="row2">
+        <div><input type="text" id="courseName" placeholder="Kurs adı"></div>
+        <div><input type="url" id="courseUrl" placeholder="Kurs linki (URL)"></div>
+      </div>
+      <input type="text" id="courseDesc" placeholder="Qısa təsvir (məs: 15 klinik modul, seans skriptləri)">
+      <input type="text" id="courseStats" placeholder="Statistika (vergüllə: 100 proqram, 50 seans)">
+      <button class="btn-sm" onclick="adminAddCourse()">+ Əlavə et</button>
+      <table><thead><tr><th>Ad</th><th>Təsvir</th><th></th></tr></thead><tbody id="adminCoursesBody"></tbody></table>
+    </div>
+
+    <div class="admin-card">
+      <h4>👤 Yeni müştəri</h4>
+      <div class="row2">
+        <div><input type="text" id="custUser" placeholder="İstifadəçi adı"></div>
+        <div><input type="text" id="custPass" placeholder="Parol"></div>
+      </div>
+      <div class="checks" id="courseChecksAdmin"></div>
+      <button class="btn-sm" onclick="adminCreateCustomer()">Müştəri yarat</button>
+    </div>
+
+    <div class="admin-card">
+      <h4>📋 Müştərilər</h4>
+      <table><thead><tr><th>İstifadəçi</th><th>Kurslar</th><th>Son giriş</th><th></th></tr></thead><tbody id="adminCustomersBody"></tbody></table>
+    </div>
   </div>
 </section>
 
 <footer>
   By <a href="https://instagram.com/s_akhundoff" target="_blank" rel="noopener">s_akhundoff</a> — AN Psixoloji Dəstək və Reabilitasiya Mərkəzi
-  <div style="margin-top:0.6rem;opacity:0.5"><a href="admin.html" style="color:var(--cream-dim)">Admin girişi</a></div>
 </footer>
 
+<div id="adminGate">
+  <div class="gate-card">
+    <h3>🔒 Admin Girişi</h3>
+    <input type="password" id="adminPass" placeholder="Admin parolu" style="width:100%;padding:0.8rem;border-radius:10px;border:1px solid rgba(217,168,90,0.3);background:rgba(255,255,255,0.05);color:var(--cream);margin-bottom:0.8rem">
+    <div class="err" id="gateErr"></div>
+    <button class="btn-login" onclick="tryAdminLogin()">Daxil ol</button>
+    <div style="margin-top:1rem"><button class="btn-outline-sm" onclick="closeGate()">Bağla</button></div>
+  </div>
+</div>
+
 <script>
-  // floating particles
   const container = document.getElementById('particles');
-  const count = 26;
-  for(let i=0;i<count;i++){
+  for(let i=0;i<26;i++){
     const p = document.createElement('div');
     p.className = 'particle';
     const size = 2 + Math.random()*4;
-    p.style.width = size+'px';
-    p.style.height = size+'px';
-    p.style.left = Math.random()*100+'vw';
+    p.style.width = size+'px'; p.style.height = size+'px'; p.style.left = Math.random()*100+'vw';
     p.style.setProperty('--drift', (Math.random()*80-40)+'px');
     const duration = 8 + Math.random()*10;
-    p.style.animationDuration = duration+'s';
-    p.style.animationDelay = (Math.random()*duration)+'s';
+    p.style.animationDuration = duration+'s'; p.style.animationDelay = (Math.random()*duration)+'s';
     container.appendChild(p);
   }
-
-  // mouse parallax on logo + glow
   const hero = document.getElementById('hero');
   const logoWrap = document.getElementById('logoWrap');
   hero.addEventListener('mousemove', (e)=>{
@@ -449,28 +323,26 @@
     const y = (e.clientY / window.innerHeight - 0.5) * 18;
     logoWrap.style.transform = `translate(${x}px, ${y}px)`;
   });
-
-  // scroll parallax for background gradient + pillar reveal
   const bgGradient = document.querySelector('.bg-gradient');
-  window.addEventListener('scroll', ()=>{
-    const y = window.scrollY;
-    bgGradient.style.transform = `translateY(${y*0.15}px)`;
-  });
+  window.addEventListener('scroll', ()=>{ bgGradient.style.transform = `translateY(${window.scrollY*0.15}px)`; });
 
-  const pillars = document.querySelectorAll('.pillar');
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(entry=>{
-      if(entry.isIntersecting){
-        entry.target.classList.add('in-view');
-      }
-    });
-  }, {threshold:0.2});
-  pillars.forEach(p=>io.observe(p));
+  // secret admin trigger: 5 clicks on logo within 3s
+  let clickTimes = [];
+  logoWrap.addEventListener('click', ()=>{
+    const now = Date.now();
+    clickTimes.push(now);
+    clickTimes = clickTimes.filter(t => now - t < 3000);
+    if(clickTimes.length >= 5){
+      clickTimes = [];
+      document.getElementById('adminGate').style.display='flex';
+    }
+  });
+  window.closeGate = function(){ document.getElementById('adminGate').style.display='none'; };
 </script>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-import { getDatabase, ref, get, update, push } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+import { getDatabase, ref, get, update, push, remove, onValue } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCBhyGNzZRGgQShP_C9kwAzTm_g_0zJlzg",
@@ -483,30 +355,47 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+const ADMIN_PASSWORD = "AN2026EA";
+const ACTIVE_WINDOW_MS = 2 * 60 * 60 * 1000; // 2 saat - eyni vaxtda giriş sayılan pəncərə
 
-// show course names (informational only, no links) on the landing page
-get(ref(db, 'portal/courses')).then(snap => {
-  const courses = snap.val() || {};
-  const el = document.getElementById('courseChips');
-  const names = Object.values(courses).map(c => c.name);
-  el.innerHTML = names.length
-    ? names.map(n => `<span class="course-chip">${escapeHtml(n)}</span>`).join('')
-    : '<div class="chip-empty">Kurslar tezliklə əlavə olunacaq</div>';
+window.DB = { courses:{}, customers:{}, alerts:{} };
+
+function escapeHtml(s){ return String(s??'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+// public course showcase (name + description + stats only, no URLs exposed)
+onValue(ref(db,'portal/courses'), snap=>{
+  window.DB.courses = snap.val() || {};
+  renderPublicCourses();
+  renderAdminCourses();
 });
+onValue(ref(db,'portal/customers'), snap=>{ window.DB.customers = snap.val() || {}; renderAdminCustomers(); });
+onValue(ref(db,'portal/securityAlerts'), snap=>{ window.DB.alerts = snap.val() || {}; renderAlerts(); });
 
+function renderPublicCourses(){
+  const grid = document.getElementById('courseGrid');
+  const entries = Object.values(window.DB.courses);
+  grid.innerHTML = entries.length ? entries.map(c => `
+    <div class="course-card">
+      <h3>${escapeHtml(c.name)}</h3>
+      <p>${escapeHtml(c.description||'')}</p>
+      <div class="course-stats">${(c.stats||[]).map(s=>`<span class="stat-chip">${escapeHtml(s)}</span>`).join('')}</div>
+    </div>`).join('') : '<div class="chip-empty">Kurslar tezliklə əlavə olunacaq</div>';
+
+  const cards = document.querySelectorAll('.course-card');
+  const io = new IntersectionObserver((es)=>{ es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in-view'); }); }, {threshold:0.15});
+  cards.forEach(c=>io.observe(c));
+}
+
+/* ---------- customer login ---------- */
 function simpleFingerprint(){
   const raw = [navigator.userAgent, navigator.language, screen.width+'x'+screen.height, Intl.DateTimeFormat().resolvedOptions().timeZone].join('|');
   let hash = 0;
   for(let i=0;i<raw.length;i++){ hash = (hash<<5)-hash + raw.charCodeAt(i); hash |= 0; }
   return 'fp_' + Math.abs(hash).toString(16);
 }
-
 async function getIP(){
-  try{
-    const res = await fetch('https://api.ipify.org?format=json');
-    const data = await res.json();
-    return data.ip;
-  }catch(e){ return 'naməlum'; }
+  try{ const res = await fetch('https://api.ipify.org?format=json'); return (await res.json()).ip; }
+  catch(e){ return 'naməlum'; }
 }
 
 window.doLogin = async function(){
@@ -516,44 +405,39 @@ window.doLogin = async function(){
   const btn = document.getElementById('loginBtn');
   errEl.textContent = '';
   if(!username || !password){ errEl.textContent = 'İstifadəçi adı və parolu daxil edin'; return; }
-
   document.getElementById('btnText').style.display='none';
   document.getElementById('spinner').style.display='block';
   btn.disabled = true;
 
   try{
-    const custSnap = await get(ref(db, 'portal/customers'));
-    const customers = custSnap.val() || {};
-    const entry = Object.entries(customers).find(([id,c]) => c.username === username);
-
+    const entry = Object.entries(window.DB.customers).find(([id,c]) => c.username === username);
     if(!entry || entry[1].password !== password){
-      errEl.textContent = 'İstifadəçi adı və ya parol yanlışdır';
-      resetBtn();
-      return;
+      errEl.textContent = 'İstifadəçi adı və ya parol yanlışdır'; resetBtn(); return;
     }
-
     const [custId, cust] = entry;
     const device = simpleFingerprint();
     const ip = await getIP();
+    const now = Date.now();
+    const withinActiveWindow = cust.lastLogin && (now - cust.lastLogin) < ACTIVE_WINDOW_MS;
+    const deviceChanged = cust.lastDevice && cust.lastDevice !== device;
+    const ipChanged = cust.lastIP && cust.lastIP !== ip;
 
-    if(cust.lastDevice && cust.lastDevice !== device){
-      await push(ref(db, 'portal/securityAlerts'), { username: cust.username, type:'device_changed', oldValue: cust.lastDevice, newValue: device, ts: Date.now() });
-      showNotice('Diqqət: bu hesaba yeni bir cihazdan giriş edildi. Bu barədə admin məlumatlandırıldı.');
-    } else if(cust.lastIP && cust.lastIP !== ip){
-      await push(ref(db, 'portal/securityAlerts'), { username: cust.username, type:'ip_changed', oldValue: cust.lastIP, newValue: ip, ts: Date.now() });
+    if(withinActiveWindow && (deviceChanged || ipChanged)){
+      await push(ref(db,'portal/securityAlerts'), {
+        username: cust.username, type:'ehtimal_paylasim', severity:'high',
+        oldValue: `${cust.lastDevice||'-'} / ${cust.lastIP||'-'}`, newValue: `${device} / ${ip}`, ts: now
+      });
+      showNotice('Diqqət: hesabınıza fərqli cihaz/yerdən demək olar eyni vaxtda giriş edildi. Admin məlumatlandırıldı.');
+    } else if(deviceChanged){
+      await push(ref(db,'portal/securityAlerts'), { username: cust.username, type:'device_changed', severity:'mid', oldValue: cust.lastDevice, newValue: device, ts: now });
+    } else if(ipChanged){
+      await push(ref(db,'portal/securityAlerts'), { username: cust.username, type:'ip_changed', severity:'low', oldValue: cust.lastIP, newValue: ip, ts: now });
     }
 
-    await update(ref(db, 'portal/customers/'+custId), { lastDevice: device, lastIP: ip, lastLogin: Date.now() });
+    await update(ref(db,'portal/customers/'+custId), { lastDevice: device, lastIP: ip, lastLogin: now });
 
-    const coursesSnap = await get(ref(db, 'portal/courses'));
-    const allCourses = coursesSnap.val() || {};
-    const allowed = (cust.allowedCourses||[]).map(cid => allCourses[cid]).filter(Boolean);
-
-    if(!allowed.length){
-      errEl.textContent = 'Hesabınıza hələ heç bir kurs təyin olunmayıb. Admin ilə əlaqə saxlayın.';
-      resetBtn();
-      return;
-    }
+    const allowed = (cust.allowedCourses||[]).map(cid => window.DB.courses[cid]).filter(Boolean);
+    if(!allowed.length){ errEl.textContent = 'Hesabınıza hələ kurs təyin olunmayıb. Admin ilə əlaqə saxlayın.'; resetBtn(); return; }
 
     document.getElementById('formArea').style.display = 'none';
     const list = document.getElementById('myCourseList');
@@ -564,11 +448,7 @@ window.doLogin = async function(){
     } else {
       list.innerHTML = allowed.map(c => `<a class="course-btn" href="${c.url}">${escapeHtml(c.name)} →</a>`).join('');
     }
-  }catch(e){
-    console.error(e);
-    errEl.textContent = 'Xəta baş verdi, yenidən cəhd edin';
-    resetBtn();
-  }
+  }catch(e){ console.error(e); errEl.textContent = 'Xəta baş verdi, yenidən cəhd edin'; resetBtn(); }
 
   function resetBtn(){
     document.getElementById('btnText').style.display='inline';
@@ -576,15 +456,103 @@ window.doLogin = async function(){
     btn.disabled = false;
   }
 }
-
-function showNotice(msg){
-  const el = document.getElementById('deviceNotice');
-  el.textContent = msg;
-  el.style.display = 'block';
-}
-function escapeHtml(s){ return String(s??'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-
+function showNotice(msg){ const el = document.getElementById('deviceNotice'); el.textContent = msg; el.style.display = 'block'; }
 document.getElementById('password').addEventListener('keydown', e=>{ if(e.key==='Enter') window.doLogin(); });
+
+/* ---------- admin ---------- */
+window.tryAdminLogin = function(){
+  const val = document.getElementById('adminPass').value;
+  if(val === ADMIN_PASSWORD){
+    sessionStorage.setItem('an_admin_ok','1');
+    document.getElementById('adminGate').style.display='none';
+    enterAdminMode();
+  } else {
+    document.getElementById('gateErr').textContent = 'Parol yanlışdır';
+  }
+}
+function enterAdminMode(){
+  document.getElementById('customerLoginCard').style.display='none';
+  document.getElementById('adminWrap').style.display='block';
+  renderAdminCourses(); renderAdminCustomers(); renderAlerts();
+}
+window.adminLogout = function(){
+  sessionStorage.removeItem('an_admin_ok');
+  document.getElementById('adminWrap').style.display='none';
+  document.getElementById('customerLoginCard').style.display='block';
+}
+if(sessionStorage.getItem('an_admin_ok')==='1'){ enterAdminMode(); }
+
+window.adminAddCourse = function(){
+  const name = document.getElementById('courseName').value.trim();
+  const url = document.getElementById('courseUrl').value.trim();
+  const description = document.getElementById('courseDesc').value.trim();
+  const stats = document.getElementById('courseStats').value.split(',').map(s=>s.trim()).filter(Boolean);
+  if(!name || !url){ alert('Ad və link vacibdir'); return; }
+  push(ref(db,'portal/courses'), { name, url, description, stats, createdAt: Date.now() });
+  document.getElementById('courseName').value=''; document.getElementById('courseUrl').value='';
+  document.getElementById('courseDesc').value=''; document.getElementById('courseStats').value='';
+}
+window.adminRemoveCourse = function(id){ remove(ref(db,'portal/courses/'+id)); }
+window.adminRemoveCustomer = function(id){ remove(ref(db,'portal/customers/'+id)); }
+window.adminDismissAlert = function(id){ remove(ref(db,'portal/securityAlerts/'+id)); }
+
+window.adminCreateCustomer = function(){
+  const username = document.getElementById('custUser').value.trim();
+  const password = document.getElementById('custPass').value.trim();
+  const checked = [...document.querySelectorAll('.course-chk-admin:checked')].map(c=>c.value);
+  if(!username || !password){ alert('İstifadəçi adı və parol vacibdir'); return; }
+  if(!checked.length){ alert('Ən azı bir kurs seçin'); return; }
+  const exists = Object.values(window.DB.customers).some(c=>c.username===username);
+  if(exists){ alert('Bu istifadəçi adı artıq mövcuddur'); return; }
+  push(ref(db,'portal/customers'), { username, password, allowedCourses: checked, createdAt: Date.now() });
+  document.getElementById('custUser').value=''; document.getElementById('custPass').value='';
+}
+
+function renderAdminCourses(){
+  const body = document.getElementById('adminCoursesBody');
+  const entries = Object.entries(window.DB.courses);
+  if(body) body.innerHTML = entries.length ? entries.map(([id,c])=>`
+    <tr><td>${escapeHtml(c.name)}</td><td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(c.description||'')}</td>
+    <td><button class="btn-danger-sm" onclick="window.adminRemoveCourse('${id}')">Sil</button></td></tr>`).join('')
+    : '<tr><td colspan="3" class="empty-row">Hələ kurs yoxdur</td></tr>';
+
+  const checks = document.getElementById('courseChecksAdmin');
+  if(checks) checks.innerHTML = entries.length ? entries.map(([id,c])=>`
+    <label class="chip-check"><input type="checkbox" value="${id}" class="course-chk-admin"> ${escapeHtml(c.name)}</label>`).join('')
+    : '<div class="empty-row">Əvvəlcə kurs əlavə edin</div>';
+}
+
+function renderAdminCustomers(){
+  const body = document.getElementById('adminCustomersBody');
+  if(!body) return;
+  const entries = Object.entries(window.DB.customers);
+  body.innerHTML = entries.length ? entries.map(([id,c])=>{
+    const names = (c.allowedCourses||[]).map(cid=>window.DB.courses[cid]?.name||'—').map(n=>`<span class="badge">${escapeHtml(n)}</span>`).join(' ');
+    const lastSeen = c.lastLogin ? new Date(c.lastLogin).toLocaleString('az-AZ') : '—';
+    return `<tr><td>${escapeHtml(c.username)}</td><td>${names||'<span class="empty-row">yoxdur</span>'}</td><td style="font-size:0.75rem">${lastSeen}</td>
+    <td><button class="btn-danger-sm" onclick="window.adminRemoveCustomer('${id}')">Sil</button></td></tr>`;
+  }).join('') : '<tr><td colspan="4" class="empty-row">Hələ müştəri yoxdur</td></tr>';
+}
+
+function renderAlerts(){
+  const card = document.getElementById('alertsCard');
+  const list = document.getElementById('alertsList');
+  const dot = document.getElementById('alertDot');
+  const entries = Object.entries(window.DB.alerts);
+  if(dot) dot.style.display = entries.length ? 'block' : 'none';
+  if(!card) return;
+  if(!entries.length){ card.style.display='none'; return; }
+  card.style.display='block';
+  const labelMap = { ehtimal_paylasim:'Ehtimal olunan paylaşım', device_changed:'Yeni cihaz', ip_changed:'Yeni IP' };
+  const badgeMap = { high:'badge-high', mid:'badge-mid', low:'badge' };
+  list.innerHTML = entries.reverse().map(([id,a])=>`
+    <div style="padding:0.7rem 0;border-bottom:1px solid rgba(217,168,90,0.1)">
+      <span class="badge ${badgeMap[a.severity]||'badge'}">${labelMap[a.type]||a.type}</span>
+      <strong>${escapeHtml(a.username)}</strong> — ${new Date(a.ts).toLocaleString('az-AZ')}
+      <div style="font-size:0.76rem;color:var(--cream-dim);margin-top:0.3rem">Köhnə: ${escapeHtml(a.oldValue||'—')} → Yeni: ${escapeHtml(a.newValue||'—')}</div>
+      <button class="btn-outline-sm" style="margin-top:0.5rem" onclick="window.adminDismissAlert('${id}')">Bağla</button>
+    </div>`).join('');
+}
 </script>
 
 </body>
