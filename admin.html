@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel — AN Kurs Portalı</title>
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#0c211f; --bg-deep-2:#153431; --bg-deep-3:#1d423d;
+    --gold:#d9a85a; --gold-light:#f0cd8e; --brown:#8a6a3a;
+    --cream:#f3eee1; --cream-dim:#c9c2ae; --sage:#7ba098;
+    --danger:#d9705a; --card:#12302c;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-deep-2) 100%);
+    color:var(--cream); font-family:'Inter',sans-serif; min-height:100vh;
+  }
+  .wrap{max-width:1000px;margin:0 auto;padding:3rem 1.5rem 5rem;}
+  h1{font-family:'Fraunces',serif;font-weight:500;font-size:1.9rem;margin-bottom:0.3rem;color:var(--gold-light);}
+  .sub{color:var(--cream-dim);font-size:0.9rem;margin-bottom:2rem;}
+  .card{background:var(--card);border:1px solid rgba(217,168,90,0.15);border-radius:16px;padding:1.8rem;margin-bottom:1.6rem;}
+  .card h2{font-family:'Fraunces',serif;font-weight:500;font-size:1.2rem;margin-bottom:1rem;color:var(--cream);}
+  label{display:block;font-size:0.82rem;color:var(--cream-dim);margin-bottom:0.35rem;}
+  input[type=text],input[type=password],input[type=url]{
+    width:100%;padding:0.7rem 0.9rem;border-radius:10px;border:1px solid rgba(217,168,90,0.25);
+    background:rgba(255,255,255,0.04);color:var(--cream);font-size:0.95rem;margin-bottom:1rem;
+  }
+  input:focus{outline:none;border-color:var(--gold);}
+  .row{display:flex;gap:1rem;flex-wrap:wrap;}
+  .row > div{flex:1;min-width:180px;}
+  .btn{
+    display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 1.5rem;border-radius:999px;
+    background:linear-gradient(120deg,var(--gold),var(--gold-light));color:#2a1d09;font-weight:600;
+    border:none;cursor:pointer;font-size:0.92rem;transition:transform .25s ease;
+  }
+  .btn:hover{transform:translateY(-2px);}
+  .btn-outline{background:transparent;border:1px solid rgba(217,168,90,0.4);color:var(--gold-light);}
+  .btn-danger{background:linear-gradient(120deg,var(--danger),#e08d78);color:#2a0e09;}
+  .btn-sm{padding:0.4rem 0.9rem;font-size:0.82rem;}
+  .checks{display:flex;flex-wrap:wrap;gap:0.6rem;margin-bottom:1.2rem;}
+  .chip{
+    display:flex;align-items:center;gap:0.5rem;padding:0.5rem 0.9rem;border-radius:10px;
+    border:1px solid rgba(217,168,90,0.25);background:rgba(255,255,255,0.03);cursor:pointer;font-size:0.88rem;
+  }
+  .chip input{margin:0;}
+  table{width:100%;border-collapse:collapse;margin-top:0.5rem;}
+  th,td{text-align:left;padding:0.65rem 0.5rem;font-size:0.85rem;border-bottom:1px solid rgba(217,168,90,0.1);}
+  th{color:var(--cream-dim);font-weight:500;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.05em;}
+  .badge{display:inline-block;padding:0.2rem 0.6rem;border-radius:999px;font-size:0.72rem;margin:0.1rem;background:rgba(123,160,152,0.2);color:var(--sage);border:1px solid rgba(123,160,152,0.35);}
+  .badge-alert{background:rgba(217,112,90,0.18);color:var(--danger);border:1px solid rgba(217,112,90,0.4);}
+  .empty{color:var(--cream-dim);font-size:0.85rem;font-style:italic;padding:0.8rem 0;}
+  .toast{
+    position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--gold-light);color:#2a1d09;padding:0.8rem 1.4rem;border-radius:10px;font-size:0.9rem;
+    font-weight:600;opacity:0;transition:all .35s ease;pointer-events:none;z-index:50;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  /* lock screen */
+  #lock{
+    position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 50% 30%, rgba(217,168,90,0.1), var(--bg-deep) 70%);
+  }
+  .lock-card{background:var(--card);border:1px solid rgba(217,168,90,0.2);border-radius:20px;padding:2.6rem 2.2rem;width:min(360px,88vw);text-align:center;}
+  .lock-card img{width:64px;margin-bottom:1rem;}
+  .lock-card h2{font-family:'Fraunces',serif;font-size:1.3rem;margin-bottom:1.4rem;color:var(--gold-light);}
+  .lock-err{color:var(--danger);font-size:0.82rem;min-height:1.2rem;margin-top:-0.5rem;margin-bottom:0.6rem;}
+  a.small-link{color:var(--sage);font-size:0.82rem;text-decoration:none;}
+  footer{text-align:center;padding:2.5rem 1rem;font-size:0.82rem;color:var(--cream-dim);}
+  footer a{color:var(--gold-light);text-decoration:none;font-weight:500;}
+  .flex-between{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+</style>
+</head>
+<body>
+
+<div id="lock">
+  <div class="lock-card">
+    <img src="logo.png" alt="logo">
+    <h2>Admin Panelə Giriş</h2>
+    <input type="password" id="adminPass" placeholder="Admin parolu">
+    <div class="lock-err" id="lockErr"></div>
+    <button class="btn" style="width:100%;justify-content:center" onclick="tryAdminLogin()">Daxil ol</button>
+    <div style="margin-top:1.2rem"><a class="small-link" href="index.html">← Ana səhifəyə qayıt</a></div>
+  </div>
+</div>
+
+<div id="app" style="display:none">
+  <div class="wrap">
+    <div class="flex-between">
+      <div>
+        <h1>Admin Panel</h1>
+        <div class="sub">AN Kurs Portalı — müştəri və kurs icazələrinin idarə edilməsi</div>
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="logout()">Çıxış</button>
+    </div>
+
+    <!-- Security alerts -->
+    <div class="card" id="alertsCard" style="display:none">
+      <h2>🔔 Təhlükəsizlik Xəbərdarlıqları</h2>
+      <div id="alertsList"></div>
+    </div>
+
+    <!-- Courses management -->
+    <div class="card">
+      <h2>📚 Kurslar</h2>
+      <div class="row">
+        <div><label>Kurs adı</label><input type="text" id="courseName" placeholder="Məs: CBT Kursu"></div>
+        <div><label>Kurs linki (URL)</label><input type="url" id="courseUrl" placeholder="https://samir210-az.github.io/..."></div>
+      </div>
+      <button class="btn btn-sm" onclick="addCourse()">+ Kurs əlavə et</button>
+      <table id="coursesTable" style="margin-top:1.2rem">
+        <thead><tr><th>Ad</th><th>Link</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- Create customer -->
+    <div class="card">
+      <h2>👤 Yeni Müştəri Yarat</h2>
+      <div class="row">
+        <div><label>İstifadəçi adı</label><input type="text" id="custUser" placeholder="Məs: aygun.m"></div>
+        <div><label>Parol</label><input type="text" id="custPass" placeholder="Müştəri parolu"></div>
+      </div>
+      <label>İcazə veriləcək kurs(lar)</label>
+      <div class="checks" id="courseChecks"></div>
+      <button class="btn" onclick="createCustomer()">Müştəri yarat</button>
+    </div>
+
+    <!-- Customers list -->
+    <div class="card">
+      <h2>📋 Müştərilər</h2>
+      <table id="custTable">
+        <thead><tr><th>İstifadəçi</th><th>Kurslar</th><th>Son giriş</th><th>Cihaz/IP</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+  <footer>By <a href="https://instagram.com/s_akhundoff" target="_blank" rel="noopener">s_akhundoff</a> — AN Psixoloji Dəstək və Reabilitasiya Mərkəzi</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+import { getDatabase, ref, onValue, push, set, update, remove } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCBhyGNzZRGgQShP_C9kwAzTm_g_0zJlzg",
+  authDomain: "an-psixoloji-33442.firebaseapp.com",
+  databaseURL: "https://an-psixoloji-33442-default-rtdb.firebaseio.com",
+  projectId: "an-psixoloji-33442",
+  storageBucket: "an-psixoloji-33442.firebasestorage.app",
+  messagingSenderId: "528809299356",
+  appId: "1:528809299356:web:59cae89a64e446dc520c59"
+};
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const coursesRef = ref(db, 'portal/courses');
+const customersRef = ref(db, 'portal/customers');
+const alertsRef = ref(db, 'portal/securityAlerts');
+
+window.DB = { courses:{}, customers:{}, alerts:{} };
+
+onValue(coursesRef, snap => { window.DB.courses = snap.val() || {}; renderCourses(); });
+onValue(customersRef, snap => { window.DB.customers = snap.val() || {}; renderCustomers(); });
+onValue(alertsRef, snap => { window.DB.alerts = snap.val() || {}; renderAlerts(); });
+
+window.__addCourse = (val) => push(coursesRef, val);
+window.__removeCourse = (id) => remove(ref(db, 'portal/courses/'+id));
+window.__addCustomer = (val) => push(customersRef, val);
+window.__removeCustomer = (id) => remove(ref(db, 'portal/customers/'+id));
+window.__dismissAlert = (id) => remove(ref(db, 'portal/securityAlerts/'+id));
+
+function renderCourses(){
+  const tbody = document.querySelector('#coursesTable tbody');
+  const entries = Object.entries(window.DB.courses);
+  tbody.innerHTML = entries.length ? entries.map(([id,c])=>`
+    <tr><td>${escapeHtml(c.name)}</td><td style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(c.url)}</td>
+    <td><button class="btn btn-danger btn-sm" onclick="window.__removeCourse('${id}')">Sil</button></td></tr>`).join('')
+    : '<tr><td colspan="3" class="empty">Hələ kurs əlavə edilməyib</td></tr>';
+
+  const checks = document.getElementById('courseChecks');
+  checks.innerHTML = entries.length ? entries.map(([id,c])=>`
+    <label class="chip"><input type="checkbox" value="${id}" class="course-chk"> ${escapeHtml(c.name)}</label>`).join('')
+    : '<div class="empty">Əvvəlcə yuxarıdan kurs əlavə edin</div>';
+}
+
+function renderCustomers(){
+  const tbody = document.querySelector('#custTable tbody');
+  const entries = Object.entries(window.DB.customers);
+  tbody.innerHTML = entries.length ? entries.map(([id,c])=>{
+    const courseNames = (c.allowedCourses||[]).map(cid => window.DB.courses[cid]?.name || '—').map(n=>`<span class="badge">${escapeHtml(n)}</span>`).join(' ');
+    const lastSeen = c.lastLogin ? new Date(c.lastLogin).toLocaleString('az-AZ') : '—';
+    const device = c.lastDevice ? c.lastDevice.slice(0,10)+'…' : '—';
+    const ip = c.lastIP || '—';
+    return `<tr>
+      <td>${escapeHtml(c.username)}</td>
+      <td>${courseNames || '<span class="empty">yoxdur</span>'}</td>
+      <td>${lastSeen}</td>
+      <td style="font-size:0.75rem;color:var(--cream-dim)">${device} · ${ip}</td>
+      <td><button class="btn btn-danger btn-sm" onclick="window.__removeCustomer('${id}')">Sil</button></td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="5" class="empty">Hələ müştəri yoxdur</td></tr>';
+}
+
+function renderAlerts(){
+  const card = document.getElementById('alertsCard');
+  const list = document.getElementById('alertsList');
+  const entries = Object.entries(window.DB.alerts);
+  if(!entries.length){ card.style.display='none'; return; }
+  card.style.display='block';
+  list.innerHTML = entries.reverse().map(([id,a])=>`
+    <div style="padding:0.7rem 0;border-bottom:1px solid rgba(217,168,90,0.1)">
+      <span class="badge badge-alert">${a.type==='device_changed'?'Yeni cihaz':'Yeni IP'}</span>
+      <strong>${escapeHtml(a.username)}</strong> — ${new Date(a.ts).toLocaleString('az-AZ')}
+      <div style="font-size:0.78rem;color:var(--cream-dim);margin-top:0.3rem">Köhnə: ${escapeHtml(a.oldValue||'—')} → Yeni: ${escapeHtml(a.newValue||'—')}</div>
+      <button class="btn btn-outline btn-sm" style="margin-top:0.5rem" onclick="window.__dismissAlert('${id}')">Bağla</button>
+    </div>`).join('');
+}
+
+function escapeHtml(s){ return String(s??'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+window.addCourse = function(){
+  const name = document.getElementById('courseName').value.trim();
+  const url = document.getElementById('courseUrl').value.trim();
+  if(!name || !url){ toast('Ad və link vacibdir'); return; }
+  window.__addCourse({name, url, active:true, createdAt: Date.now()});
+  document.getElementById('courseName').value='';
+  document.getElementById('courseUrl').value='';
+  toast('Kurs əlavə olundu ✓');
+}
+
+window.createCustomer = function(){
+  const username = document.getElementById('custUser').value.trim();
+  const password = document.getElementById('custPass').value.trim();
+  const checked = [...document.querySelectorAll('.course-chk:checked')].map(c=>c.value);
+  if(!username || !password){ toast('İstifadəçi adı və parol vacibdir'); return; }
+  if(!checked.length){ toast('Ən azı bir kurs seçin'); return; }
+  const exists = Object.values(window.DB.customers).some(c=>c.username===username);
+  if(exists){ toast('Bu istifadəçi adı artıq mövcuddur'); return; }
+  window.__addCustomer({username, password, allowedCourses: checked, createdAt: Date.now()});
+  document.getElementById('custUser').value='';
+  document.getElementById('custPass').value='';
+  document.querySelectorAll('.course-chk').forEach(c=>c.checked=false);
+  toast('Müştəri yaradıldı ✓');
+}
+
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2600);
+}
+
+const ADMIN_PASSWORD = "AN2026EA";
+window.tryAdminLogin = function(){
+  const val = document.getElementById('adminPass').value;
+  if(val === ADMIN_PASSWORD){
+    sessionStorage.setItem('an_admin_ok','1');
+    document.getElementById('lock').style.display='none';
+    document.getElementById('app').style.display='block';
+  } else {
+    document.getElementById('lockErr').textContent = 'Parol yanlışdır';
+  }
+}
+window.logout = function(){
+  sessionStorage.removeItem('an_admin_ok');
+  location.reload();
+}
+if(sessionStorage.getItem('an_admin_ok')==='1'){
+  document.getElementById('lock').style.display='none';
+  document.getElementById('app').style.display='block';
+}
+document.getElementById('adminPass').addEventListener('keydown', e=>{ if(e.key==='Enter') window.tryAdminLogin(); });
+</script>
+</body>
+</html>
