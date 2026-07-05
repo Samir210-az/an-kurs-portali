@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AN Psixoloji Dəstək və Reabilitasiya Mərkəzi — Kurs Portalı</title>
+<meta name="description" content="AN Psixoloji Dəstək və Reabilitasiya Mərkəzi — Peşəkar kurs portalına giriş.">
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#0c211f;
+    --bg-deep-2:#153431;
+    --bg-deep-3:#1d423d;
+    --gold:#d9a85a;
+    --gold-light:#f0cd8e;
+    --brown:#8a6a3a;
+    --cream:#f3eee1;
+    --cream-dim:#c9c2ae;
+    --sage:#7ba098;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg-deep);
+    color:var(--cream);
+    font-family:'Inter',sans-serif;
+    overflow-x:hidden;
+    min-height:100vh;
+  }
+
+  /* ambient background layers */
+  .bg-layer{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+  }
+  .bg-gradient{
+    background:
+      radial-gradient(circle at 30% 20%, rgba(217,168,90,0.14), transparent 45%),
+      radial-gradient(circle at 75% 70%, rgba(123,160,152,0.12), transparent 50%),
+      linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-deep-2) 55%, var(--bg-deep-3) 100%);
+  }
+  .grain{
+    opacity:0.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .particles{
+    position:fixed;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+  }
+  .particle{
+    position:absolute;
+    bottom:-10px;
+    border-radius:50%;
+    background:var(--gold-light);
+    box-shadow:0 0 8px 2px rgba(240,205,142,0.55);
+    opacity:0;
+    animation:rise linear infinite;
+  }
+  @keyframes rise{
+    0%{opacity:0; transform:translateY(0) translateX(0);}
+    10%{opacity:0.85;}
+    90%{opacity:0.4;}
+    100%{opacity:0; transform:translateY(-115vh) translateX(var(--drift,20px));}
+  }
+
+  /* hero */
+  .hero{
+    position:relative;
+    z-index:2;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:6vh 6vw 10vh;
+  }
+
+  .logo-wrap{
+    position:relative;
+    width:min(190px, 34vw);
+    height:min(190px, 34vw);
+    margin-bottom:2.6rem;
+  }
+  .glow-ring{
+    position:absolute;
+    inset:-30%;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(217,168,90,0.35) 0%, rgba(217,168,90,0) 68%);
+    animation:breathe 5s ease-in-out infinite;
+    will-change:transform, opacity;
+  }
+  @keyframes breathe{
+    0%,100%{transform:scale(0.92); opacity:0.65;}
+    50%{transform:scale(1.12); opacity:1;}
+  }
+  .logo-img{
+    position:relative;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    filter:drop-shadow(0 6px 24px rgba(217,168,90,0.35));
+    animation:float 6s ease-in-out infinite;
+  }
+  @keyframes float{
+    0%,100%{transform:translateY(0px);}
+    50%{transform:translateY(-10px);}
+  }
+
+  .eyebrow{
+    font-family:'Inter',sans-serif;
+    letter-spacing:0.32em;
+    text-transform:uppercase;
+    font-size:0.72rem;
+    color:var(--sage);
+    margin-bottom:1.4rem;
+    font-weight:500;
+    opacity:0;
+    animation:fadeUp 1s ease forwards 0.15s;
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-optical-sizing:auto;
+    font-weight:500;
+    font-size:clamp(2.2rem, 6vw, 4.6rem);
+    line-height:1.08;
+    max-width:15ch;
+    background:linear-gradient(100deg, var(--cream) 30%, var(--gold-light) 60%, var(--cream) 85%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    background-size:200% auto;
+    animation:fadeUp 1s ease forwards 0.35s, shimmer 7s linear infinite 1.5s;
+    opacity:0;
+  }
+  @keyframes fadeUp{
+    from{opacity:0; transform:translateY(22px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  @keyframes shimmer{
+    0%{background-position:0% center;}
+    100%{background-position:200% center;}
+  }
+
+  .tagline{
+    margin-top:1.6rem;
+    max-width:46ch;
+    font-size:clamp(0.98rem, 1.6vw, 1.15rem);
+    line-height:1.7;
+    color:var(--cream-dim);
+    font-weight:300;
+    opacity:0;
+    animation:fadeUp 1s ease forwards 0.55s;
+  }
+
+  .cta{
+    margin-top:3rem;
+    display:inline-flex;
+    align-items:center;
+    gap:0.7rem;
+    padding:1rem 2.1rem;
+    border-radius:999px;
+    background:linear-gradient(120deg, var(--gold) 0%, var(--gold-light) 100%);
+    color:#2a1d09;
+    font-weight:600;
+    font-size:0.98rem;
+    text-decoration:none;
+    box-shadow:0 8px 30px rgba(217,168,90,0.3);
+    transition:transform 0.35s ease, box-shadow 0.35s ease;
+    opacity:0;
+    animation:fadeUp 1s ease forwards 0.75s;
+  }
+  .cta:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 38px rgba(217,168,90,0.45);
+  }
+  .cta svg{transition:transform 0.3s ease;}
+  .cta:hover svg{transform:translateX(4px);}
+
+  .scroll-cue{
+    position:absolute;
+    bottom:2.6rem;
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:0.5rem;
+    opacity:0.55;
+    animation:fadeUp 1s ease forwards 1s;
+  }
+  .scroll-cue span{
+    font-size:0.68rem;
+    letter-spacing:0.24em;
+    text-transform:uppercase;
+    color:var(--cream-dim);
+  }
+  .scroll-line{
+    width:1px;
+    height:34px;
+    background:linear-gradient(180deg, var(--gold-light), transparent);
+    animation:pulse-line 2s ease-in-out infinite;
+  }
+  @keyframes pulse-line{
+    0%,100%{opacity:0.3;}
+    50%{opacity:1;}
+  }
+
+  /* parallax pillars section */
+  .pillars{
+    position:relative;
+    z-index:2;
+    max-width:1080px;
+    margin:0 auto;
+    padding:14vh 6vw 18vh;
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(230px, 1fr));
+    gap:2.4rem;
+  }
+  .pillar{
+    padding:2.2rem 1.8rem;
+    border-radius:18px;
+    background:rgba(243,238,225,0.035);
+    border:1px solid rgba(217,168,90,0.14);
+    backdrop-filter:blur(6px);
+    transform:translateY(40px);
+    opacity:0;
+    transition:transform 0.9s cubic-bezier(.2,.8,.2,1), opacity 0.9s ease;
+  }
+  .pillar.in-view{
+    transform:translateY(0);
+    opacity:1;
+  }
+  .pillar-mark{
+    font-family:'Fraunces', serif;
+    font-size:1.1rem;
+    color:var(--gold-light);
+    margin-bottom:0.9rem;
+  }
+  .pillar h3{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:1.25rem;
+    margin-bottom:0.7rem;
+    color:var(--cream);
+  }
+  .pillar p{
+    font-size:0.93rem;
+    line-height:1.65;
+    color:var(--cream-dim);
+    font-weight:300;
+  }
+
+  footer{
+    position:relative;
+    z-index:2;
+    text-align:center;
+    padding:3rem 1.5rem 3.4rem;
+    border-top:1px solid rgba(217,168,90,0.12);
+    font-size:0.85rem;
+    color:var(--cream-dim);
+  }
+  footer a{
+    color:var(--gold-light);
+    text-decoration:none;
+    font-weight:500;
+  }
+  footer a:hover{text-decoration:underline;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-layer bg-gradient"></div>
+<div class="bg-layer grain"></div>
+<div class="particles" id="particles"></div>
+
+<section class="hero" id="hero">
+  <div class="eyebrow">AN Psixoloji Dəstək və Reabilitasiya Mərkəzi</div>
+
+  <div class="logo-wrap" id="logoWrap">
+    <div class="glow-ring"></div>
+    <img class="logo-img" src="logo.png" alt="AN Psixoloji Dəstək və Reabilitasiya Mərkəzi loqosu">
+  </div>
+
+  <h1>Böyümə və inkişaf<br>yolunda peşəkar dəstək</h1>
+  <p class="tagline">Uşaq və yeniyetmə psixologiyası, erkən müdaxilə, erqoterapiya, loqopediya və sensor inteqrasiya sahələrində peşəkar kurs və proqramlarımıza xoş gəlmisiniz.</p>
+
+  <a href="#pillars" class="cta">
+    Davam edin
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+  </a>
+
+  <div class="scroll-cue">
+    <span>Aşağı sürüşdürün</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<section class="pillars" id="pillars">
+  <div class="pillar">
+    <div class="pillar-mark">✦</div>
+    <h3>Klinik dəqiqlik</h3>
+    <p>Hər kurs və proqram elmi əsaslara söykənən, sahə mütəxəssisləri tərəfindən hazırlanmış klinik standartlarla qurulur.</p>
+  </div>
+  <div class="pillar">
+    <div class="pillar-mark">✦</div>
+    <h3>Fərdi inkişaf yolu</h3>
+    <p>Hər istifadəçi üçün onlara uyğun kurs və proqramlara nəzarətli, təhlükəsiz giriş təmin olunur.</p>
+  </div>
+  <div class="pillar">
+    <div class="pillar-mark">✦</div>
+    <h3>Vahid mərkəz</h3>
+    <p>Bütün kurslarımız və proqramlarımız tək bir peşəkar platformada — sadə, etibarlı və davamlı bir təcrübə ilə birləşir.</p>
+  </div>
+</section>
+
+<footer>
+  By <a href="https://instagram.com/s_akhundoff" target="_blank" rel="noopener">s_akhundoff</a> — AN Psixoloji Dəstək və Reabilitasiya Mərkəzi
+</footer>
+
+<script>
+  // floating particles
+  const container = document.getElementById('particles');
+  const count = 26;
+  for(let i=0;i<count;i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = 2 + Math.random()*4;
+    p.style.width = size+'px';
+    p.style.height = size+'px';
+    p.style.left = Math.random()*100+'vw';
+    p.style.setProperty('--drift', (Math.random()*80-40)+'px');
+    const duration = 8 + Math.random()*10;
+    p.style.animationDuration = duration+'s';
+    p.style.animationDelay = (Math.random()*duration)+'s';
+    container.appendChild(p);
+  }
+
+  // mouse parallax on logo + glow
+  const hero = document.getElementById('hero');
+  const logoWrap = document.getElementById('logoWrap');
+  hero.addEventListener('mousemove', (e)=>{
+    const x = (e.clientX / window.innerWidth - 0.5) * 18;
+    const y = (e.clientY / window.innerHeight - 0.5) * 18;
+    logoWrap.style.transform = `translate(${x}px, ${y}px)`;
+  });
+
+  // scroll parallax for background gradient + pillar reveal
+  const bgGradient = document.querySelector('.bg-gradient');
+  window.addEventListener('scroll', ()=>{
+    const y = window.scrollY;
+    bgGradient.style.transform = `translateY(${y*0.15}px)`;
+  });
+
+  const pillars = document.querySelectorAll('.pillar');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+      }
+    });
+  }, {threshold:0.2});
+  pillars.forEach(p=>io.observe(p));
+</script>
+
+</body>
+</html>
