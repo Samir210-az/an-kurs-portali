@@ -187,6 +187,17 @@
   .checks{ display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem; }
   .chip-check{ display:flex; align-items:center; gap:0.4rem; padding:0.4rem 0.7rem; border-radius:9px; border:1px solid rgba(217,168,90,0.25); background:rgba(255,255,255,0.03); font-size:0.82rem; }
   .empty-row{ color:var(--cream-dim); font-size:0.82rem; font-style:italic; }
+  .name-alert{
+    color:#ff9b82; font-weight:700; animation:nameGlow 1.6s ease-in-out infinite;
+  }
+  .alert-count{
+    display:inline-block; background:var(--danger); color:#2a0e09; font-size:0.68rem; font-weight:700;
+    padding:0.05rem 0.4rem; border-radius:999px; margin-left:0.2rem;
+  }
+  @keyframes nameGlow{
+    0%,100%{ text-shadow:0 0 2px rgba(217,112,90,0.3); }
+    50%{ text-shadow:0 0 10px rgba(217,112,90,0.9); }
+  }
   .flex-between{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.8rem; }
 
   footer{ position:relative; z-index:2; text-align:center; padding:3rem 1.5rem 3.4rem; border-top:1px solid rgba(217,168,90,0.12); font-size:0.85rem; color:var(--cream-dim); }
@@ -367,9 +378,13 @@ onValue(ref(db,'portal/courses'), snap=>{
   window.DB.courses = snap.val() || {};
   renderPublicCourses();
   renderAdminCourses();
+}, err=>{
+  console.error('Kurslar yüklənmədi:', err);
+  const grid = document.getElementById('courseGrid');
+  if(grid) grid.innerHTML = '<div class="chip-empty">Kurslar yüklənə bilmədi (baza icazə xətası). Bir azdan yenidən yoxlayın.</div>';
 });
-onValue(ref(db,'portal/customers'), snap=>{ window.DB.customers = snap.val() || {}; renderAdminCustomers(); });
-onValue(ref(db,'portal/securityAlerts'), snap=>{ window.DB.alerts = snap.val() || {}; renderAlerts(); });
+onValue(ref(db,'portal/customers'), snap=>{ window.DB.customers = snap.val() || {}; renderAdminCustomers(); }, err=>console.error('Müştərilər yüklənmədi:', err));
+onValue(ref(db,'portal/securityAlerts'), snap=>{ window.DB.alerts = snap.val() || {}; renderAlerts(); renderAdminCustomers(); }, err=>console.error('Xəbərdarlıqlar yüklənmədi:', err));
 
 function renderPublicCourses(){
   const grid = document.getElementById('courseGrid');
@@ -526,10 +541,17 @@ function renderAdminCustomers(){
   const body = document.getElementById('adminCustomersBody');
   if(!body) return;
   const entries = Object.entries(window.DB.customers);
+  const alertCounts = {};
+  Object.values(window.DB.alerts||{}).forEach(a=>{ alertCounts[a.username] = (alertCounts[a.username]||0) + 1; });
+
   body.innerHTML = entries.length ? entries.map(([id,c])=>{
     const names = (c.allowedCourses||[]).map(cid=>window.DB.courses[cid]?.name||'—').map(n=>`<span class="badge">${escapeHtml(n)}</span>`).join(' ');
     const lastSeen = c.lastLogin ? new Date(c.lastLogin).toLocaleString('az-AZ') : '—';
-    return `<tr><td>${escapeHtml(c.username)}</td><td>${names||'<span class="empty-row">yoxdur</span>'}</td><td style="font-size:0.75rem">${lastSeen}</td>
+    const alertCount = alertCounts[c.username] || 0;
+    const nameHtml = alertCount
+      ? `<span class="name-alert">🔴 ${escapeHtml(c.username)} <span class="alert-count">${alertCount}</span></span>`
+      : escapeHtml(c.username);
+    return `<tr><td>${nameHtml}</td><td>${names||'<span class="empty-row">yoxdur</span>'}</td><td style="font-size:0.75rem">${lastSeen}</td>
     <td><button class="btn-danger-sm" onclick="window.adminRemoveCustomer('${id}')">Sil</button></td></tr>`;
   }).join('') : '<tr><td colspan="4" class="empty-row">Hələ müştəri yoxdur</td></tr>';
 }
