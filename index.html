@@ -274,6 +274,10 @@
 
     <div class="admin-card">
       <h4>📚 Kurs əlavə et</h4>
+      <label style="display:block;font-size:0.8rem;color:var(--cream-dim);margin-bottom:0.4rem">Hazır kursdan seç (linki avtomatik dolur) və ya aşağıda özün yaz</label>
+      <select id="coursePreset" onchange="fillPreset()" style="width:100%;padding:0.75rem 0.9rem;border-radius:10px;border:1px solid rgba(217,168,90,0.25);background:rgba(255,255,255,0.05);color:var(--cream);font-size:0.92rem;margin-bottom:1rem">
+        <option value="">— Hazır kurs seç —</option>
+      </select>
       <div class="row2">
         <div><input type="text" id="courseName" placeholder="Kurs adı"></div>
         <div><input type="url" id="courseUrl" placeholder="Kurs linki (URL)"></div>
@@ -370,6 +374,29 @@ const ADMIN_PASSWORD = "AN2026EA";
 const ACTIVE_WINDOW_MS = 2 * 60 * 60 * 1000; // 2 saat - eyni vaxtda giriş sayılan pəncərə
 
 window.DB = { courses:{}, customers:{}, alerts:{} };
+
+const COURSE_PRESETS = [
+  { name:"CBT Kursu (Koqnitiv Davranış Terapiyası)", url:"https://samir210-az.github.io/koqnitiv_kurs/", description:"20 klinik modul, üç fazalı seans skriptləri, interaktiv məşqlər", stats:"20 modul, 20+ seans" },
+  { name:"Uşaq və Yeniyetmə Psixologiyası Kursu", url:"https://samir210-az.github.io/usaq-psixologiyasi-kursu/", description:"Klinik mövzular, 5 mütəxəssis perspektivi, yaş qrupu təhlili", stats:"15 modul" },
+  { name:"Uşaq və Yeniyetmə Terapiya Proqramları Kursu", url:"https://samir210-az.github.io/kurs_13/", description:"Fərdi terapiya proqramları və seans planları", stats:"" }
+];
+(function populatePresets(){
+  const sel = document.getElementById('coursePreset');
+  COURSE_PRESETS.forEach((c,i)=>{
+    const opt = document.createElement('option');
+    opt.value = i; opt.textContent = c.name;
+    sel.appendChild(opt);
+  });
+})();
+window.fillPreset = function(){
+  const idx = document.getElementById('coursePreset').value;
+  if(idx === '') return;
+  const c = COURSE_PRESETS[idx];
+  document.getElementById('courseName').value = c.name;
+  document.getElementById('courseUrl').value = c.url;
+  document.getElementById('courseDesc').value = c.description;
+  document.getElementById('courseStats').value = c.stats;
+}
 
 function escapeHtml(s){ return String(s??'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 
@@ -527,8 +554,11 @@ function renderAdminCourses(){
   const body = document.getElementById('adminCoursesBody');
   const entries = Object.entries(window.DB.courses);
   if(body) body.innerHTML = entries.length ? entries.map(([id,c])=>`
-    <tr><td>${escapeHtml(c.name)}</td><td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(c.description||'')}</td>
-    <td><button class="btn-danger-sm" onclick="window.adminRemoveCourse('${id}')">Sil</button></td></tr>`).join('')
+    <tr><td>${escapeHtml(c.name)}</td><td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(c.description||'')}</td>
+    <td style="white-space:nowrap">
+      <a href="${escapeHtml(c.url)}" target="_blank" rel="noopener" class="btn-outline-sm" style="text-decoration:none;display:inline-block;margin-right:0.4rem">Aç ↗</a>
+      <button class="btn-danger-sm" onclick="window.adminRemoveCourse('${id}')">Sil</button>
+    </td></tr>`).join('')
     : '<tr><td colspan="3" class="empty-row">Hələ kurs yoxdur</td></tr>';
 
   const checks = document.getElementById('courseChecksAdmin');
