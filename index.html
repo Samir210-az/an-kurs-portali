@@ -476,7 +476,10 @@ window.doLogin = async function(){
       await push(ref(db,'portal/securityAlerts'), { username: cust.username, type:'ip_changed', severity:'low', oldValue: cust.lastIP, newValue: ip, ts: now });
     }
 
-    await update(ref(db,'portal/customers/'+custId), { lastDevice: device, lastIP: ip, lastLogin: now });
+    const sessionToken = (crypto.randomUUID ? crypto.randomUUID() : 'tok_'+Math.random().toString(36).slice(2)+now.toString(36));
+    localStorage.setItem('an_session', JSON.stringify({ username: cust.username, token: sessionToken, ts: now }));
+
+    await update(ref(db,'portal/customers/'+custId), { lastDevice: device, lastIP: ip, lastLogin: now, activeToken: sessionToken });
 
     const allowed = (cust.allowedCourses||[]).map(cid => window.DB.courses[cid]).filter(Boolean);
     if(!allowed.length){ errEl.textContent = 'Hesabınıza hələ kurs təyin olunmayıb. Admin ilə əlaqə saxlayın.'; resetBtn(); return; }
