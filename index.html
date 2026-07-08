@@ -6,6 +6,13 @@
 <title>AN Psixoloji Dəstək və Reabilitasiya Mərkəzi — Kurs Portalı</title>
 <meta name="description" content="AN Psixoloji Dəstək və Reabilitasiya Mərkəzi — Peşəkar kurs portalına giriş.">
 <link rel="icon" href="logo.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#d9a85a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KP">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -628,6 +635,16 @@ function renderAlerts(){
       <div style="font-size:0.76rem;color:var(--cream-dim);margin-top:0.3rem">Köhnə: ${escapeHtml(a.oldValue||'—')} → Yeni: ${escapeHtml(a.newValue||'—')}</div>
       <button class="btn-outline-sm" style="margin-top:0.5rem" onclick="window.adminDismissAlert('${id}')">Bağla</button>
     </div>`).join('');
+}
+</script>
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('service-worker.js').catch(function(err){
+      console.warn('Service worker qeydiyyatı alınmadı:', err);
+    });
+  });
 }
 </script>
 
