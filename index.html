@@ -549,9 +549,12 @@ window.doLogin = async function(){
     const list = document.getElementById('myCourseList');
     list.style.display = 'flex';
     if(allowed.length === 1){
-      list.innerHTML = `<div style="color:var(--cream-dim);font-size:0.88rem;margin-bottom:0.6rem">Kursunuza yönləndirilirsiniz...</div>`;
+      const targetUrl = allowed[0] && allowed[0].url;
+      list.innerHTML = `<div style="color:var(--cream-dim);font-size:0.88rem;margin-bottom:0.6rem">Kursunuza yönləndirilirsiniz...</div><div style="color:#f59e0b;font-size:0.7rem;word-break:break-all;margin-bottom:0.6rem">Hədəf: ${escapeHtml(String(targetUrl))}</div><a class="course-btn" href="${escapeHtml(String(targetUrl))}">Manual keçid (buraya basın) →</a>`;
       document.getElementById('customerLogoutWrap').style.display='block';
-      setTimeout(()=>{ location.href = allowed[0].url; }, 900);
+      if(targetUrl){
+        setTimeout(()=>{ window.location.assign(targetUrl); }, 900);
+      }
     } else {
       list.innerHTML = allowed.map(c => `<a class="course-btn" href="${c.url}">${escapeHtml(c.name)} →</a>`).join('');
       document.getElementById('customerLogoutWrap').style.display='block';
