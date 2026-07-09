@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Keş Təmizləmə</title>
+<style>
+body{font-family:sans-serif;background:#0b1224;color:#fff;padding:24px;line-height:1.6}
+.log{background:#111;padding:16px;border-radius:8px;margin-top:16px;font-family:monospace;font-size:13px;white-space:pre-wrap}
+.ok{color:#4ade80}
+.err{color:#f87171}
+h1{font-size:1.3rem}
+</style>
+</head>
+<body>
+<h1>🧹 Keş və Service Worker Təmizləmə</h1>
+<p>Bu səhifə açılan kimi avtomatik bütün köhnə keşi və service worker-ləri siləcək.</p>
+<div class="log" id="log">Başlanır...</div>
+<script>
+const log = document.getElementById('log');
+function add(msg, cls){ const d = document.createElement('div'); if(cls) d.className = cls; d.textContent = msg; log.appendChild(d); }
+
+async function nukeEverything(){
+  add('Service worker qeydiyyatları axtarılır...');
+  try{
+    const regs = await navigator.serviceWorker.getRegistrations();
+    add('Tapılan SW sayı: ' + regs.length);
+    for(const reg of regs){
+      add('Silinir: ' + reg.scope);
+      await reg.unregister();
+    }
+    add('Bütün service worker-lər silindi ✔', 'ok');
+  }catch(e){
+    add('SW silmə xətası: ' + e.message, 'err');
+  }
+
+  add('Keş yaddaşları axtarılır...');
+  try{
+    const keys = await caches.keys();
+    add('Tapılan keş sayı: ' + keys.length + ' (' + keys.join(', ') + ')');
+    for(const key of keys){
+      await caches.delete(key);
+      add('Silindi: ' + key);
+    }
+    add('Bütün keşlər silindi ✔', 'ok');
+  }catch(e){
+    add('Keş silmə xətası: ' + e.message, 'err');
+  }
+
+  try{
+    localStorage.clear();
+    sessionStorage.clear();
+    add('localStorage/sessionStorage təmizləndi ✔', 'ok');
+  }catch(e){
+    add('Storage təmizləmə xətası: ' + e.message, 'err');
+  }
+
+  add('');
+  add('TAMAMLANDI! İndi aşağıdakı düymələrdən birinə basın:', 'ok');
+
+  const btnPortal = document.createElement('a');
+  btnPortal.href = 'https://samir210-az.github.io/an-kurs-portali/';
+  btnPortal.textContent = '→ Portala get';
+  btnPortal.style.cssText = 'display:inline-block;margin-top:16px;margin-right:12px;padding:12px 20px;background:#d9a85a;color:#000;border-radius:8px;text-decoration:none;font-weight:bold';
+  document.body.appendChild(btnPortal);
+}
+nukeEverything();
+</script>
+</body>
+</html>
