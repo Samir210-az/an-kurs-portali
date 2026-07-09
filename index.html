@@ -290,6 +290,9 @@
       <div class="notice" id="deviceNotice"></div>
     </div>
     <div class="my-course-list" id="myCourseList"></div>
+    <div id="customerLogoutWrap" style="display:none;text-align:center;margin-top:1rem">
+      <button class="btn-outline-sm" onclick="customerLogout()">Çıxış</button>
+    </div>
   </div>
 
   <div class="admin-wrap" id="adminWrap" style="display:none">
@@ -547,9 +550,11 @@ window.doLogin = async function(){
     list.style.display = 'flex';
     if(allowed.length === 1){
       list.innerHTML = `<div style="color:var(--cream-dim);font-size:0.88rem;margin-bottom:0.6rem">Kursunuza yönləndirilirsiniz...</div>`;
+      document.getElementById('customerLogoutWrap').style.display='block';
       setTimeout(()=>{ location.href = allowed[0].url; }, 900);
     } else {
       list.innerHTML = allowed.map(c => `<a class="course-btn" href="${c.url}">${escapeHtml(c.name)} →</a>`).join('');
+      document.getElementById('customerLogoutWrap').style.display='block';
     }
   }catch(e){
     console.error(e);
@@ -674,6 +679,14 @@ window.adminLogout = function(){
   signOut(auth);
   document.getElementById('adminWrap').style.display='none';
   document.getElementById('customerLoginCard').style.display='block';
+}
+window.customerLogout = function(){
+  signOut(auth);
+  document.getElementById('formArea').style.display='block';
+  document.getElementById('myCourseList').style.display='none';
+  document.getElementById('customerLogoutWrap').style.display='none';
+  document.getElementById('username').value='';
+  document.getElementById('password').value='';
 }
 window.closeGate = function(){ document.getElementById('adminGate').style.display='none'; };
 
