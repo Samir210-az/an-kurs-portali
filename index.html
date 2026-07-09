@@ -587,19 +587,35 @@ window.tryAdminLogin = function(){
   const hasAnyAdmin = Object.keys(window.DB.admins || {}).length > 0;
 
   (async ()=>{
+    let uid = null;
     try{
-      if(!hasAnyAdmin){
-        // İlk admin hesabının yaradılması
-        const cred = await createUserWithEmailAndPassword(auth, email, password);
-        await set(ref(db,'portal/admins/'+cred.user.uid), true);
+      const cred = await signInWithEmailAndPassword(auth, email, password);
+      uid = cred.user.uid;
+    }catch(signInErr){
+      const canTryCreate = !hasAnyAdmin && ['auth/user-not-found','auth/invalid-credential','auth/wrong-password'].includes(signInErr.code);
+      if(canTryCreate){
+        try{
+          const cred2 = await createUserWithEmailAndPassword(auth, email, password);
+          uid = cred2.user.uid;
+        }catch(createErr){
+          console.error(createErr);
+          if(createErr.code === 'auth/email-already-in-use'){
+            gateErr.textContent = 'Bu e-poçt artıq mövcuddur, amma parol uyğun gəlmədi. Həmin hesabın DOĞRU parolunu yazın, ya da fərqli e-poçt seçin.';
+          } else {
+            gateErr.textContent = 'Xəta: ' + (createErr.code || createErr.message);
+          }
+          return;
+        }
       } else {
-        await signInWithEmailAndPassword(auth, email, password);
+        console.error(signInErr);
+        gateErr.textContent = 'Xəta: ' + (signInErr.code || signInErr.message);
+        return;
       }
-      document.getElementById('adminGate').style.display='none';
-    }catch(e){
-      console.error(e);
-      gateErr.textContent = 'Xəta: ' + (e.code || e.message || 'naməlum xəta');
     }
+    if(!hasAnyAdmin && uid){
+      await set(ref(db,'portal/admins/'+uid), true);
+    }
+    document.getElementById('adminGate').style.display='none';
   })();
 }
 
