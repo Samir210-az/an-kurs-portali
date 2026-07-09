@@ -598,7 +598,7 @@ window.tryAdminLogin = function(){
       document.getElementById('adminGate').style.display='none';
     }catch(e){
       console.error(e);
-      gateErr.textContent = 'Giriş uğursuz oldu: yanlış e-poçt/parol və ya artıq mövcud hesab';
+      gateErr.textContent = 'Xəta: ' + (e.code || e.message || 'naməlum xəta');
     }
   })();
 }
