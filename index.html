@@ -303,6 +303,14 @@
       <div id="alertsList"></div>
     </div>
 
+    <div class="admin-card" id="migrationCard" style="display:none;border:1px solid rgba(239,68,68,0.4)">
+      <h4>🔧 Təhlükəsizlik Miqrasiyası</h4>
+      <p style="font-size:0.82rem;color:var(--cream-dim);margin-bottom:0.8rem">Köhnə müştəri hesabları (açıq parollarla) tapıldı. Onları təhlükəsiz Firebase Auth hesablarına köçürün. Bu əməliyyatdan sonra köhnə parollar bazadan silinəcək.</p>
+      <button class="btn-sm" id="migrateBtn" onclick="runMigration()">Müştəriləri köçür</button>
+      <div id="migrationLog" style="margin-top:0.8rem;font-size:0.8rem;color:var(--cream-dim)"></div>
+    </div>
+
+
     <div class="admin-card">
       <h4>📚 Kurs əlavə et</h4>
       <label style="display:block;font-size:0.8rem;color:var(--cream-dim);margin-bottom:0.4rem">Hazır kursdan seç (linki avtomatik dolur) və ya aşağıda özün yaz</label>
@@ -343,9 +351,11 @@
 <div id="adminGate">
   <div class="gate-card">
     <h3>🔒 Admin Girişi</h3>
+    <div id="adminSetupNotice" style="display:none;font-size:0.82rem;color:var(--cream-dim);margin-bottom:0.8rem">Hələ admin hesabı yoxdur. Aşağıda öz admin e-poçt və parolunuzu təyin edərək ilk hesabı yaradın.</div>
+    <input type="email" id="adminEmail" placeholder="Admin e-poçt" style="width:100%;padding:0.8rem;border-radius:10px;border:1px solid rgba(217,168,90,0.3);background:rgba(255,255,255,0.05);color:var(--cream);margin-bottom:0.6rem">
     <input type="password" id="adminPass" placeholder="Admin parolu" style="width:100%;padding:0.8rem;border-radius:10px;border:1px solid rgba(217,168,90,0.3);background:rgba(255,255,255,0.05);color:var(--cream);margin-bottom:0.8rem">
     <div class="err" id="gateErr"></div>
-    <button class="btn-login" onclick="tryAdminLogin()">Daxil ol</button>
+    <button class="btn-login" id="adminGateBtn" onclick="tryAdminLogin()">Daxil ol</button>
     <div style="margin-top:1rem"><button class="btn-outline-sm" onclick="closeGate()">Bağla</button></div>
   </div>
 </div>
@@ -388,7 +398,8 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-import { getDatabase, ref, get, update, push, remove, onValue } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+import { getDatabase, ref, get, set, update, push, remove, onValue } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCBhyGNzZRGgQShP_C9kwAzTm_g_0zJlzg",
@@ -401,10 +412,18 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-const ADMIN_PASSWORD = "AN2026EA";
+const auth = getAuth(app);
+
+// Müştəri/admin hesabları yaratmaq üçün ikinci Firebase App nüsxəsi.
+// Bu, yeni hesab yaradılanda admin öz sessiyasından çıxarılmasın deyə edilir
+// (createUserWithEmailAndPassword avtomatik yeni hesabla daxil edir).
+const secondaryApp = initializeApp(firebaseConfig, "Secondary");
+const secondaryAuth = getAuth(secondaryApp);
+
+const EMAIL_DOMAIN = "@an-portal.local";
 const ACTIVE_WINDOW_MS = 2 * 60 * 60 * 1000; // 2 saat - eyni vaxtda giriş sayılan pəncərə
 
-window.DB = { courses:{}, customers:{}, alerts:{} };
+window.DB = { courses:{}, customers:{}, alerts:{}, admins:{} };
 
 const COURSE_PRESETS = [
   { name:"CBT Kursu (Koqnitiv Davranış Terapiyası)", url:"https://samir210-az.github.io/koqnitiv_kurs/", description:"Klinik prinsiplərə əsaslanan strukturlu KDT proqramı — qiymətləndirmədən bağlanışa qədər üç fazalı real seans ssenariləri ilə.", stats:"20 mövzu, 125+ seans, 3 yaş qrupu" },
@@ -430,6 +449,7 @@ window.fillPreset = function(){
 }
 
 function escapeHtml(s){ return String(s??'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function usernameToEmail(u){ return u.trim().toLowerCase().replace(/[^a-z0-9_.-]/g,'') + EMAIL_DOMAIN; }
 
 // public course showcase (name + description + stats only, no URLs exposed)
 onValue(ref(db,'portal/courses'), snap=>{
@@ -441,8 +461,20 @@ onValue(ref(db,'portal/courses'), snap=>{
   const grid = document.getElementById('courseGrid');
   if(grid) grid.innerHTML = '<div class="chip-empty">Kurslar yüklənə bilmədi (baza icazə xətası). Bir azdan yenidən yoxlayın.</div>';
 });
-onValue(ref(db,'portal/customers'), snap=>{ window.DB.customers = snap.val() || {}; renderAdminCustomers(); }, err=>console.error('Müştərilər yüklənmədi:', err));
+onValue(ref(db,'portal/customers'), snap=>{
+  window.DB.customers = snap.val() || {};
+  renderAdminCustomers();
+  checkMigrationNeeded();
+}, err=>console.error('Müştərilər yüklənmədi (bu, adi istifadəçi üçün normaldır):', err));
 onValue(ref(db,'portal/securityAlerts'), snap=>{ window.DB.alerts = snap.val() || {}; renderAlerts(); renderAdminCustomers(); }, err=>console.error('Xəbərdarlıqlar yüklənmədi:', err));
+onValue(ref(db,'portal/admins'), snap=>{ window.DB.admins = snap.val() || {}; }, err=>console.error('Admin siyahısı yüklənmədi:', err));
+
+function checkMigrationNeeded(){
+  const card = document.getElementById('migrationCard');
+  if(!card) return;
+  const needsMigration = Object.values(window.DB.customers).some(c => c && typeof c.password === 'string');
+  card.style.display = needsMigration ? 'block' : 'none';
+}
 
 function renderPublicCourses(){
   const grid = document.getElementById('courseGrid');
@@ -459,7 +491,7 @@ function renderPublicCourses(){
   cards.forEach(c=>io.observe(c));
 }
 
-/* ---------- customer login ---------- */
+/* ---------- customer login (Firebase Auth) ---------- */
 function simpleFingerprint(){
   const raw = [navigator.userAgent, navigator.language, screen.width+'x'+screen.height, Intl.DateTimeFormat().resolvedOptions().timeZone].join('|');
   let hash = 0;
@@ -483,11 +515,15 @@ window.doLogin = async function(){
   btn.disabled = true;
 
   try{
-    const entry = Object.entries(window.DB.customers).find(([id,c]) => c.username === username);
-    if(!entry || entry[1].password !== password){
-      errEl.textContent = 'İstifadəçi adı və ya parol yanlışdır'; resetBtn(); return;
+    const cred = await signInWithEmailAndPassword(auth, usernameToEmail(username), password);
+    const uid = cred.user.uid;
+    const custSnap = await get(ref(db,'portal/customers/'+uid));
+    const cust = custSnap.val();
+    if(!cust){
+      errEl.textContent = 'Hesab hələ tam quraşdırılmayıb, admin ilə əlaqə saxlayın';
+      await signOut(auth); resetBtn(); return;
     }
-    const [custId, cust] = entry;
+
     const device = simpleFingerprint();
     const ip = await getIP();
     const now = Date.now();
@@ -507,10 +543,7 @@ window.doLogin = async function(){
       await push(ref(db,'portal/securityAlerts'), { username: cust.username, type:'ip_changed', severity:'low', oldValue: cust.lastIP, newValue: ip, ts: now });
     }
 
-    const sessionToken = (crypto.randomUUID ? crypto.randomUUID() : 'tok_'+Math.random().toString(36).slice(2)+now.toString(36));
-    localStorage.setItem('an_session', JSON.stringify({ username: cust.username, token: sessionToken, ts: now }));
-
-    await update(ref(db,'portal/customers/'+custId), { lastDevice: device, lastIP: ip, lastLogin: now, activeToken: sessionToken });
+    await update(ref(db,'portal/customers/'+uid), { lastDevice: device, lastIP: ip, lastLogin: now });
 
     const allowed = (cust.allowedCourses||[]).map(cid => window.DB.courses[cid]).filter(Boolean);
     if(!allowed.length){ errEl.textContent = 'Hesabınıza hələ kurs təyin olunmayıb. Admin ilə əlaqə saxlayın.'; resetBtn(); return; }
@@ -524,7 +557,15 @@ window.doLogin = async function(){
     } else {
       list.innerHTML = allowed.map(c => `<a class="course-btn" href="${c.url}">${escapeHtml(c.name)} →</a>`).join('');
     }
-  }catch(e){ console.error(e); errEl.textContent = 'Xəta baş verdi, yenidən cəhd edin'; resetBtn(); }
+  }catch(e){
+    console.error(e);
+    if(['auth/invalid-credential','auth/wrong-password','auth/user-not-found','auth/invalid-email'].includes(e.code)){
+      errEl.textContent = 'İstifadəçi adı və ya parol yanlışdır';
+    } else {
+      errEl.textContent = 'Xəta baş verdi, yenidən cəhd edin';
+    }
+  }
+  resetBtn();
 
   function resetBtn(){
     document.getElementById('btnText').style.display='inline';
@@ -535,28 +576,57 @@ window.doLogin = async function(){
 function showNotice(msg){ const el = document.getElementById('deviceNotice'); el.textContent = msg; el.style.display = 'block'; }
 document.getElementById('password').addEventListener('keydown', e=>{ if(e.key==='Enter') window.doLogin(); });
 
-/* ---------- admin ---------- */
+/* ---------- admin (Firebase Auth) ---------- */
 window.tryAdminLogin = function(){
-  const val = document.getElementById('adminPass').value;
-  if(val === ADMIN_PASSWORD){
-    sessionStorage.setItem('an_admin_ok','1');
-    document.getElementById('adminGate').style.display='none';
-    enterAdminMode();
-  } else {
-    document.getElementById('gateErr').textContent = 'Parol yanlışdır';
-  }
+  const email = document.getElementById('adminEmail').value.trim();
+  const password = document.getElementById('adminPass').value;
+  const gateErr = document.getElementById('gateErr');
+  gateErr.textContent = '';
+  if(!email || !password){ gateErr.textContent = 'E-poçt və parolu daxil edin'; return; }
+
+  const hasAnyAdmin = Object.keys(window.DB.admins || {}).length > 0;
+
+  (async ()=>{
+    try{
+      if(!hasAnyAdmin){
+        // İlk admin hesabının yaradılması
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+        await set(ref(db,'portal/admins/'+cred.user.uid), true);
+      } else {
+        await signInWithEmailAndPassword(auth, email, password);
+      }
+      document.getElementById('adminGate').style.display='none';
+    }catch(e){
+      console.error(e);
+      gateErr.textContent = 'Giriş uğursuz oldu: yanlış e-poçt/parol və ya artıq mövcud hesab';
+    }
+  })();
 }
+
+onAuthStateChanged(auth, (user)=>{
+  const notice = document.getElementById('adminSetupNotice');
+  const hasAnyAdmin = Object.keys(window.DB.admins || {}).length > 0;
+  if(notice) notice.style.display = hasAnyAdmin ? 'none' : 'block';
+
+  if(user && window.DB.admins && window.DB.admins[user.uid]){
+    enterAdminMode();
+  } else if(!user){
+    document.getElementById('adminWrap').style.display='none';
+    document.getElementById('customerLoginCard').style.display='block';
+  }
+});
+
 function enterAdminMode(){
   document.getElementById('customerLoginCard').style.display='none';
   document.getElementById('adminWrap').style.display='block';
   renderAdminCourses(); renderAdminCustomers(); renderAlerts();
 }
 window.adminLogout = function(){
-  sessionStorage.removeItem('an_admin_ok');
+  signOut(auth);
   document.getElementById('adminWrap').style.display='none';
   document.getElementById('customerLoginCard').style.display='block';
 }
-if(sessionStorage.getItem('an_admin_ok')==='1'){ enterAdminMode(); }
+window.closeGate = function(){ document.getElementById('adminGate').style.display='none'; };
 
 let editingCourseId = null;
 
@@ -592,16 +662,50 @@ window.adminRemoveCourse = function(id){ remove(ref(db,'portal/courses/'+id)); }
 window.adminRemoveCustomer = function(id){ remove(ref(db,'portal/customers/'+id)); }
 window.adminDismissAlert = function(id){ remove(ref(db,'portal/securityAlerts/'+id)); }
 
-window.adminCreateCustomer = function(){
+window.adminCreateCustomer = async function(){
   const username = document.getElementById('custUser').value.trim();
   const password = document.getElementById('custPass').value.trim();
   const checked = [...document.querySelectorAll('.course-chk-admin:checked')].map(c=>c.value);
   if(!username || !password){ alert('İstifadəçi adı və parol vacibdir'); return; }
+  if(password.length < 6){ alert('Parol ən azı 6 simvol olmalıdır (Firebase tələbi)'); return; }
   if(!checked.length){ alert('Ən azı bir kurs seçin'); return; }
   const exists = Object.values(window.DB.customers).some(c=>c.username===username);
   if(exists){ alert('Bu istifadəçi adı artıq mövcuddur'); return; }
-  push(ref(db,'portal/customers'), { username, password, allowedCourses: checked, createdAt: Date.now() });
-  document.getElementById('custUser').value=''; document.getElementById('custPass').value='';
+  try{
+    const cred = await createUserWithEmailAndPassword(secondaryAuth, usernameToEmail(username), password);
+    await set(ref(db,'portal/customers/'+cred.user.uid), { username, allowedCourses: checked, createdAt: Date.now() });
+    await signOut(secondaryAuth);
+    document.getElementById('custUser').value=''; document.getElementById('custPass').value='';
+  }catch(e){
+    console.error(e);
+    alert('Müştəri yaradıla bilmədi: ' + (e.code || e.message));
+  }
+}
+
+window.runMigration = async function(){
+  const log = document.getElementById('migrationLog');
+  const btn = document.getElementById('migrateBtn');
+  btn.disabled = true;
+  const entries = Object.entries(window.DB.customers).filter(([id,c]) => c && typeof c.password === 'string');
+  log.innerHTML = `${entries.length} köhnə hesab tapıldı, köçürülür...`;
+  let ok = 0, fail = 0;
+  for(const [oldId, cust] of entries){
+    try{
+      const cred = await createUserWithEmailAndPassword(secondaryAuth, usernameToEmail(cust.username), cust.password);
+      const { password, activeToken, ...rest } = cust;
+      await set(ref(db,'portal/customers/'+cred.user.uid), rest);
+      await remove(ref(db,'portal/customers/'+oldId));
+      await signOut(secondaryAuth);
+      ok++;
+    }catch(e){
+      console.error('Miqrasiya xətası:', cust.username, e);
+      fail++;
+    }
+    log.innerHTML = `İrəliləyiş: ${ok+fail}/${entries.length} (uğurlu: ${ok}, xəta: ${fail})`;
+  }
+  log.innerHTML += `<br><strong>Bitdi.</strong> Uğurlu: ${ok}, Xəta: ${fail}. İndi Firebase Console-da Rules-u sərtləşdirə bilərsiniz.`;
+  btn.disabled = false;
+  checkMigrationNeeded();
 }
 
 function renderAdminCourses(){
@@ -660,6 +764,7 @@ function renderAlerts(){
       <button class="btn-outline-sm" style="margin-top:0.5rem" onclick="window.adminDismissAlert('${id}')">Bağla</button>
     </div>`).join('');
 }
+
 </script>
 
 <script>
