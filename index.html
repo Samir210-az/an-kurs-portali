@@ -25,7 +25,8 @@
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   html{scroll-behavior:smooth;}
-  body{ background:var(--bg-deep); color:var(--cream); font-family:'Inter',sans-serif; overflow-x:hidden; min-height:100vh; }
+  html{ overflow-x:hidden; width:100%; }
+  body{ background:var(--bg-deep); color:var(--cream); font-family:'Inter',sans-serif; overflow-x:hidden; min-height:100vh; width:100%; }
 
   .bg-layer{ position:fixed; inset:0; z-index:0; pointer-events:none; }
   .bg-gradient{
@@ -185,9 +186,32 @@
     padding:0.4rem 0.85rem; border-radius:999px; border:none; cursor:pointer; font-size:0.78rem;
     background:linear-gradient(120deg,var(--danger),#e08d78); color:#2a0e09;
   }
-  table{ width:100%; border-collapse:collapse; margin-top:0.8rem; }
-  th,td{ text-align:left; padding:0.55rem 0.4rem; font-size:0.8rem; border-bottom:1px solid rgba(217,168,90,0.1); }
+  table{ width:100%; max-width:100%; border-collapse:collapse; margin-top:0.8rem; table-layout:fixed; }
+  th,td{ text-align:left; padding:0.55rem 0.4rem; font-size:0.8rem; border-bottom:1px solid rgba(217,168,90,0.1); word-break:break-word; }
   th{ color:var(--cream-dim); font-weight:500; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.05em; }
+
+  /* Mobil: cədvəli kart-siyahıya çeviririk ki, üfüqi kənara çıxma olmasın */
+  @media (max-width: 680px){
+    .admin-card table{ table-layout:auto; }
+    .admin-card table thead{ display:none; }
+    .admin-card table, .admin-card table tbody, .admin-card table tr, .admin-card table td{ display:block; width:100%; }
+    .admin-card table tr{
+      background:rgba(255,255,255,0.03); border:1px solid rgba(217,168,90,0.15);
+      border-radius:12px; padding:0.7rem 0.85rem; margin-bottom:0.7rem;
+    }
+    .admin-card table td{
+      border:none; padding:0.3rem 0; white-space:normal !important;
+      overflow:visible !important; text-overflow:clip !important; max-width:none !important;
+    }
+    .admin-card table td[data-label]::before{
+      content:attr(data-label); display:block; font-size:0.66rem; text-transform:uppercase;
+      letter-spacing:0.04em; color:var(--gold); margin-bottom:0.2rem;
+    }
+    .admin-card table td[data-label=""]::before{ content:none; margin-bottom:0; }
+    .admin-card table td.empty-row-cell{ text-align:center; }
+    .admin-card{ padding:1.2rem; }
+    .admin-wrap{ max-width:100%; }
+  }
   .badge{ display:inline-block; padding:0.18rem 0.55rem; border-radius:999px; font-size:0.7rem; margin:0.08rem; background:rgba(123,160,152,0.2); color:var(--sage); border:1px solid rgba(123,160,152,0.35); }
   .badge-high{ background:rgba(217,112,90,0.22); color:#ffb199; border:1px solid rgba(217,112,90,0.5); }
   .badge-mid{ background:rgba(217,168,90,0.18); color:var(--gold-light); border:1px solid rgba(217,168,90,0.4); }
@@ -584,13 +608,13 @@ function renderAdminCourses(){
   const body = document.getElementById('adminCoursesBody');
   const entries = Object.entries(window.DB.courses);
   if(body) body.innerHTML = entries.length ? entries.map(([id,c])=>`
-    <tr><td>${escapeHtml(c.name)}</td><td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(c.description||'')}</td>
-    <td style="white-space:nowrap">
-      <a href="${escapeHtml(c.url)}" target="_blank" rel="noopener" class="btn-outline-sm" style="text-decoration:none;display:inline-block;margin-right:0.4rem">Aç ↗</a>
-      <button class="btn-outline-sm" style="margin-right:0.4rem" onclick="window.adminEditCourse('${id}')">Redaktə</button>
+    <tr><td data-label="Ad">${escapeHtml(c.name)}</td><td data-label="Təsvir" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(c.description||'')}</td>
+    <td data-label="" style="white-space:nowrap">
+      <a href="${escapeHtml(c.url)}" target="_blank" rel="noopener" class="btn-outline-sm" style="text-decoration:none;display:inline-block;margin-right:0.4rem;margin-bottom:0.3rem">Aç ↗</a>
+      <button class="btn-outline-sm" style="margin-right:0.4rem;margin-bottom:0.3rem" onclick="window.adminEditCourse('${id}')">Redaktə</button>
       <button class="btn-danger-sm" onclick="window.adminRemoveCourse('${id}')">Sil</button>
     </td></tr>`).join('')
-    : '<tr><td colspan="3" class="empty-row">Hələ kurs yoxdur</td></tr>';
+    : '<tr><td colspan="3" class="empty-row empty-row-cell">Hələ kurs yoxdur</td></tr>';
 
   const checks = document.getElementById('courseChecksAdmin');
   if(checks) checks.innerHTML = entries.length ? entries.map(([id,c])=>`
@@ -612,9 +636,9 @@ function renderAdminCustomers(){
     const nameHtml = alertCount
       ? `<span class="name-alert">🔴 ${escapeHtml(c.username)} <span class="alert-count">${alertCount}</span></span>`
       : escapeHtml(c.username);
-    return `<tr><td>${nameHtml}</td><td>${names||'<span class="empty-row">yoxdur</span>'}</td><td style="font-size:0.75rem">${lastSeen}</td>
-    <td><button class="btn-danger-sm" onclick="window.adminRemoveCustomer('${id}')">Sil</button></td></tr>`;
-  }).join('') : '<tr><td colspan="4" class="empty-row">Hələ müştəri yoxdur</td></tr>';
+    return `<tr><td data-label="İstifadəçi">${nameHtml}</td><td data-label="Kurslar">${names||'<span class="empty-row">yoxdur</span>'}</td><td data-label="Son giriş" style="font-size:0.75rem">${lastSeen}</td>
+    <td data-label=""><button class="btn-danger-sm" onclick="window.adminRemoveCustomer('${id}')">Sil</button></td></tr>`;
+  }).join('') : '<tr><td colspan="4" class="empty-row empty-row-cell">Hələ müştəri yoxdur</td></tr>';
 }
 
 function renderAlerts(){
