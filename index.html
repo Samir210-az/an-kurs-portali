@@ -461,13 +461,7 @@ onValue(ref(db,'portal/courses'), snap=>{
   const grid = document.getElementById('courseGrid');
   if(grid) grid.innerHTML = '<div class="chip-empty">Kurslar yüklənə bilmədi (baza icazə xətası). Bir azdan yenidən yoxlayın.</div>';
 });
-onValue(ref(db,'portal/customers'), snap=>{
-  window.DB.customers = snap.val() || {};
-  renderAdminCustomers();
-  checkMigrationNeeded();
-}, err=>console.error('Müştərilər yüklənmədi (bu, adi istifadəçi üçün normaldır):', err));
-onValue(ref(db,'portal/securityAlerts'), snap=>{ window.DB.alerts = snap.val() || {}; renderAlerts(); renderAdminCustomers(); }, err=>console.error('Xəbərdarlıqlar yüklənmədi:', err));
-onValue(ref(db,'portal/admins'), snap=>{ window.DB.admins = snap.val() || {}; checkAdminStatus(); }, err=>console.error('Admin siyahısı yüklənmədi:', err));
+// (admins/customers/alerts dinləyiciləri giriş vəziyyətindən asılı olaraq aşağıda qoşulur)
 
 function checkMigrationNeeded(){
   const card = document.getElementById('migrationCard');
@@ -620,9 +614,39 @@ window.tryAdminLogin = function(){
 }
 
 let currentUser = null;
-let adminsLoaded = false;
+let unsubAdmins = null, unsubCustomers = null, unsubAlerts = null;
+
 onAuthStateChanged(auth, (user)=>{
   currentUser = user;
+
+  if(unsubAdmins) unsubAdmins();
+  if(unsubCustomers) unsubCustomers();
+  if(unsubAlerts) unsubAlerts();
+  unsubAdmins = unsubCustomers = unsubAlerts = null;
+
+  if(user){
+    // Giriş edilib - indi bu qapalı node-ları oxumaq mümkündür
+    unsubAdmins = onValue(ref(db,'portal/admins'), snap=>{
+      window.DB.admins = snap.val() || {};
+      checkAdminStatus();
+    }, err=>{ console.error('Admin siyahısı yüklənmədi:', err); checkAdminStatus(); });
+
+    unsubCustomers = onValue(ref(db,'portal/customers'), snap=>{
+      window.DB.customers = snap.val() || {};
+      renderAdminCustomers();
+      checkMigrationNeeded();
+    }, err=>console.error('Müştərilər yüklənmədi (bu, admin olmayanlar üçün normaldır):', err));
+
+    unsubAlerts = onValue(ref(db,'portal/securityAlerts'), snap=>{
+      window.DB.alerts = snap.val() || {};
+      renderAlerts(); renderAdminCustomers();
+    }, err=>console.error('Xəbərdarlıqlar yüklənmədi:', err));
+  } else {
+    window.DB.admins = {};
+    window.DB.customers = {};
+    window.DB.alerts = {};
+  }
+
   checkAdminStatus();
 });
 
