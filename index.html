@@ -467,7 +467,7 @@ onValue(ref(db,'portal/customers'), snap=>{
   checkMigrationNeeded();
 }, err=>console.error('Müştərilər yüklənmədi (bu, adi istifadəçi üçün normaldır):', err));
 onValue(ref(db,'portal/securityAlerts'), snap=>{ window.DB.alerts = snap.val() || {}; renderAlerts(); renderAdminCustomers(); }, err=>console.error('Xəbərdarlıqlar yüklənmədi:', err));
-onValue(ref(db,'portal/admins'), snap=>{ window.DB.admins = snap.val() || {}; }, err=>console.error('Admin siyahısı yüklənmədi:', err));
+onValue(ref(db,'portal/admins'), snap=>{ window.DB.admins = snap.val() || {}; checkAdminStatus(); }, err=>console.error('Admin siyahısı yüklənmədi:', err));
 
 function checkMigrationNeeded(){
   const card = document.getElementById('migrationCard');
@@ -619,18 +619,27 @@ window.tryAdminLogin = function(){
   })();
 }
 
+let currentUser = null;
+let adminsLoaded = false;
 onAuthStateChanged(auth, (user)=>{
+  currentUser = user;
+  checkAdminStatus();
+});
+
+function checkAdminStatus(){
   const notice = document.getElementById('adminSetupNotice');
   const hasAnyAdmin = Object.keys(window.DB.admins || {}).length > 0;
   if(notice) notice.style.display = hasAnyAdmin ? 'none' : 'block';
 
-  if(user && window.DB.admins && window.DB.admins[user.uid]){
-    enterAdminMode();
-  } else if(!user){
+  if(!currentUser){
     document.getElementById('adminWrap').style.display='none';
     document.getElementById('customerLoginCard').style.display='block';
+    return;
   }
-});
+  if(window.DB.admins && window.DB.admins[currentUser.uid]){
+    enterAdminMode();
+  }
+}
 
 function enterAdminMode(){
   document.getElementById('customerLoginCard').style.display='none';
