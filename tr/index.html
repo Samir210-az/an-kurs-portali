@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AN Psikolojik Destek ve Rehabilitasyon Merkezi — Kurs Portalı</title>
+<meta name="description" content="AN Psixoloji Dəstək və Reabilitasiya Mərkəzi — Peşəkar kurs portalına giriş.">
+<link rel="icon" href="../logo.png">
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#d9a85a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KP">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#0c211f; --bg-deep-2:#153431; --bg-deep-3:#1d423d;
+    --gold:#d9a85a; --gold-light:#f0cd8e; --brown:#8a6a3a;
+    --cream:#f3eee1; --cream-dim:#c9c2ae; --sage:#7ba098;
+    --danger:#d9705a; --card:#12302c;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  html{ overflow-x:hidden; width:100%; }
+  body{ background:var(--bg-deep); color:var(--cream); font-family:'Inter',sans-serif; overflow-x:hidden; min-height:100vh; width:100%; }
+
+  .bg-layer{ position:fixed; inset:0; z-index:0; pointer-events:none; }
+  .bg-gradient{
+    background:
+      radial-gradient(circle at 30% 20%, rgba(217,168,90,0.14), transparent 45%),
+      radial-gradient(circle at 75% 70%, rgba(123,160,152,0.12), transparent 50%),
+      linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-deep-2) 55%, var(--bg-deep-3) 100%);
+  }
+  .grain{ opacity:0.05; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  .particles{ position:fixed; inset:0; z-index:1; pointer-events:none; }
+  .particle{
+    position:absolute; bottom:-10px; border-radius:50%; background:var(--gold-light);
+    box-shadow:0 0 8px 2px rgba(240,205,142,0.55); opacity:0; animation:rise linear infinite;
+  }
+  @keyframes rise{
+    0%{opacity:0; transform:translateY(0) translateX(0);}
+    10%{opacity:0.85;} 90%{opacity:0.4;}
+    100%{opacity:0; transform:translateY(-115vh) translateX(var(--drift,20px));}
+  }
+
+  .hero{
+    position:relative; z-index:2; min-height:92vh; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; text-align:center; padding:6vh 6vw 3vh;
+  }
+  .logo-wrap{ position:relative; width:min(190px, 34vw); height:min(190px, 34vw); margin-bottom:2rem; cursor:pointer; user-select:none; }
+  .glow-ring{
+    position:absolute; inset:-30%; border-radius:50%;
+    background:radial-gradient(circle, rgba(217,168,90,0.35) 0%, rgba(217,168,90,0) 68%);
+    animation:breathe 5s ease-in-out infinite; will-change:transform, opacity;
+  }
+  @keyframes breathe{ 0%,100%{transform:scale(0.92); opacity:0.65;} 50%{transform:scale(1.12); opacity:1;} }
+  .logo-img{
+    position:relative; width:100%; height:100%; object-fit:contain;
+    filter:drop-shadow(0 6px 24px rgba(217,168,90,0.35)); animation:float 6s ease-in-out infinite;
+  }
+  @keyframes float{ 0%,100%{transform:translateY(0px);} 50%{transform:translateY(-10px);} }
+  .alert-dot{
+    position:absolute; top:2%; right:2%; width:16px; height:16px; border-radius:50%;
+    background:var(--danger); box-shadow:0 0 10px 2px rgba(217,112,90,0.7);
+    display:none; animation:pulseDot 1.6s ease-in-out infinite;
+  }
+  @keyframes pulseDot{ 0%,100%{ transform:scale(1); opacity:1;} 50%{ transform:scale(1.3); opacity:0.7;} }
+
+  .eyebrow{
+    font-family:'Inter',sans-serif; letter-spacing:0.32em; text-transform:uppercase; font-size:0.72rem;
+    color:var(--sage); margin-bottom:1.4rem; font-weight:500; opacity:0; animation:fadeUp 1s ease forwards 0.15s;
+  }
+  h1{
+    font-family:'Fraunces', serif; font-optical-sizing:auto; font-weight:500;
+    font-size:clamp(2.2rem, 6vw, 4.6rem); line-height:1.08; max-width:15ch;
+    background:linear-gradient(100deg, var(--cream) 30%, var(--gold-light) 60%, var(--cream) 85%);
+    -webkit-background-clip:text; background-clip:text; color:transparent; background-size:200% auto;
+    animation:fadeUp 1s ease forwards 0.35s, shimmer 7s linear infinite 1.5s; opacity:0;
+  }
+  @keyframes fadeUp{ from{opacity:0; transform:translateY(22px);} to{opacity:1; transform:translateY(0);} }
+  @keyframes shimmer{ 0%{background-position:0% center;} 100%{background-position:200% center;} }
+
+  .tagline{
+    margin-top:1.6rem; max-width:46ch; font-size:clamp(0.98rem, 1.6vw, 1.15rem); line-height:1.7;
+    color:var(--cream-dim); font-weight:300; opacity:0; animation:fadeUp 1s ease forwards 0.55s;
+  }
+  .cta{
+    margin-top:2.2rem; display:inline-flex; align-items:center; gap:0.7rem; padding:1rem 2.1rem;
+    border-radius:999px; background:linear-gradient(120deg, var(--gold) 0%, var(--gold-light) 100%);
+    color:#2a1d09; font-weight:600; font-size:0.98rem; text-decoration:none;
+    box-shadow:0 8px 30px rgba(217,168,90,0.3); transition:transform 0.35s ease, box-shadow 0.35s ease;
+    opacity:0; animation:fadeUp 1s ease forwards 0.75s;
+  }
+  .cta:hover{ transform:translateY(-3px); box-shadow:0 12px 38px rgba(217,168,90,0.45); }
+  .cta svg{transition:transform 0.3s ease;} .cta:hover svg{transform:translateX(4px);}
+
+  .scroll-cue{
+    position:relative; margin-top:2.8rem; display:flex;
+    flex-direction:column; align-items:center; gap:0.5rem; opacity:0.55; animation:fadeUp 1s ease forwards 1s;
+  }
+  .scroll-cue span{ font-size:0.68rem; letter-spacing:0.24em; text-transform:uppercase; color:var(--cream-dim); }
+  .scroll-line{ width:1px; height:34px; background:linear-gradient(180deg, var(--gold-light), transparent); animation:pulse-line 2s ease-in-out infinite; }
+  @keyframes pulse-line{ 0%,100%{opacity:0.3;} 50%{opacity:1;} }
+
+  /* course cards (replaces generic pillars) */
+  .courses-section{ position:relative; z-index:2; max-width:1080px; margin:0 auto; padding:5vh 6vw 5vh; text-align:center; }
+  .section-head h2{ font-family:'Fraunces', serif; font-weight:500; font-size:clamp(1.6rem, 3.4vw, 2.3rem); color:var(--cream); margin-top:0.4rem; }
+  .course-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:2rem; margin-top:2.6rem; text-align:left; }
+  .course-card{
+    padding:2rem 1.8rem; border-radius:18px; background:rgba(243,238,225,0.035);
+    border:1px solid rgba(217,168,90,0.16); backdrop-filter:blur(6px);
+    transform:translateY(40px); opacity:0; transition:transform 0.9s cubic-bezier(.2,.8,.2,1), opacity 0.9s ease;
+  }
+  .course-card.in-view{ transform:translateY(0); opacity:1; }
+  .course-card h3{ font-family:'Fraunces', serif; font-weight:500; font-size:1.3rem; margin-bottom:0.7rem; color:var(--gold-light); }
+  .course-card p{ font-size:0.9rem; line-height:1.6; color:var(--cream-dim); font-weight:300; margin-bottom:1.1rem; }
+  .course-stats{ display:flex; flex-wrap:wrap; gap:0.5rem; }
+  .stat-chip{
+    font-size:0.76rem; padding:0.3rem 0.7rem; border-radius:999px; background:rgba(123,160,152,0.14);
+    border:1px solid rgba(123,160,152,0.3); color:var(--sage);
+  }
+  .chip-empty{ color:var(--cream-dim); font-size:0.9rem; font-style:italic; grid-column:1/-1; }
+
+  /* login / admin section */
+  .login-section{ position:relative; z-index:2; padding:3vh 6vw 8vh; display:flex; justify-content:center; }
+  .login-card{
+    width:min(420px, 100%); background:rgba(18,48,44,0.55); border:1px solid rgba(217,168,90,0.18);
+    border-radius:22px; padding:2.6rem 2.2rem; backdrop-filter:blur(8px); text-align:center;
+  }
+  .login-card input, .admin-card input, .admin-card textarea{
+    width:100%; padding:0.85rem 1rem; border-radius:12px; border:1px solid rgba(217,168,90,0.25);
+    background:rgba(255,255,255,0.05); color:var(--cream); font-size:0.95rem; margin-bottom:1rem; font-family:'Inter',sans-serif;
+  }
+  .login-card input:focus, .admin-card input:focus, .admin-card textarea:focus{ outline:none; border-color:var(--gold); }
+  .btn-login{
+    width:100%; padding:0.85rem; border-radius:999px; border:none; cursor:pointer;
+    background:linear-gradient(120deg,var(--gold),var(--gold-light)); color:#2a1d09; font-weight:600;
+    font-size:0.95rem; transition:transform .3s ease; margin-top:0.3rem;
+  }
+  .btn-login:hover{ transform:translateY(-2px); }
+  .btn-login:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
+  .err{ color:#e08b78; font-size:0.85rem; min-height:1.1rem; margin:-0.4rem 0 0.6rem; }
+  .notice{
+    margin-top:1.2rem; padding:0.7rem 0.9rem; border-radius:10px; font-size:0.8rem;
+    background:rgba(123,160,152,0.12); border:1px solid rgba(123,160,152,0.3); color:var(--sage); display:none; text-align:left;
+  }
+  .my-course-list{ display:none; flex-direction:column; gap:0.7rem; margin-top:1rem; }
+  .my-course-list a.course-btn{
+    display:block; padding:0.9rem 1rem; border-radius:12px; text-decoration:none;
+    background:rgba(217,168,90,0.1); border:1px solid rgba(217,168,90,0.3); color:var(--gold-light);
+    font-weight:600; font-size:0.92rem; transition:all .25s ease;
+  }
+  .my-course-list a.course-btn:hover{ background:rgba(217,168,90,0.2); transform:translateY(-2px); }
+  .spinner{
+    display:none; width:18px; height:18px; border:2px solid rgba(42,29,9,0.3);
+    border-top-color:#2a1d09; border-radius:50%; animation:spin .7s linear infinite; margin:0 auto;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  /* admin */
+  #adminGate{
+    position:fixed; inset:0; z-index:100; display:none; align-items:center; justify-content:center;
+    background:rgba(6,16,15,0.88); backdrop-filter:blur(4px);
+  }
+
+  /* terms gate */
+  #termsGate{
+    position:fixed; inset:0; z-index:150; display:none; align-items:center; justify-content:center;
+    background:rgba(6,16,15,0.92); backdrop-filter:blur(5px); padding:18px;
+  }
+  .terms-card{
+    background:var(--card); border:1px solid rgba(217,168,90,0.28); border-radius:20px;
+    width:min(620px,94vw); max-height:86vh; display:flex; flex-direction:column; overflow:hidden;
+  }
+  .terms-card .terms-head{ padding:22px 24px 14px; border-bottom:1px solid rgba(217,168,90,0.15); }
+  .terms-card .terms-head h3{ font-family:'Fraunces',serif; font-weight:500; color:var(--gold-light); font-size:1.15rem; }
+  .terms-card .terms-head p{ color:var(--cream-dim); font-size:.82rem; margin-top:6px; }
+  .terms-card iframe{ flex:1; border:0; width:100%; min-height:300px; background:transparent; }
+  .terms-card .terms-foot{ padding:16px 24px 22px; border-top:1px solid rgba(217,168,90,0.15); }
+  .terms-check{ display:flex; align-items:flex-start; gap:10px; font-size:.85rem; color:var(--cream-dim); cursor:pointer; }
+  .terms-check input{ margin-top:3px; width:16px; height:16px; accent-color:var(--gold); flex-shrink:0; }
+  .terms-check a{ color:var(--gold-light); }
+  #termsAcceptBtn{ margin-top:14px; width:100%; }
+  #termsAcceptBtn:disabled{ opacity:.45; cursor:not-allowed; }
+  .gate-card{ background:var(--card); border:1px solid rgba(217,168,90,0.25); border-radius:20px; padding:2.4rem 2rem; width:min(340px,88vw); text-align:center; }
+  .gate-card h3{ font-family:'Fraunces',serif; font-size:1.2rem; margin-bottom:1.2rem; color:var(--gold-light); }
+  .admin-wrap{ width:100%; max-width:760px; text-align:left; }
+  .admin-card{ background:var(--card); border:1px solid rgba(217,168,90,0.15); border-radius:16px; padding:1.8rem; margin-bottom:1.5rem; }
+  .admin-card h4{ font-family:'Fraunces',serif; font-weight:500; font-size:1.1rem; margin-bottom:1rem; color:var(--cream); }
+  .row2{ display:flex; gap:0.9rem; flex-wrap:wrap; }
+  .row2 > div{ flex:1; min-width:170px; }
+  .btn-sm{
+    padding:0.5rem 1rem; border-radius:999px; border:none; cursor:pointer; font-size:0.82rem; font-weight:600;
+    background:linear-gradient(120deg,var(--gold),var(--gold-light)); color:#2a1d09;
+  }
+  .btn-outline-sm{
+    padding:0.45rem 0.9rem; border-radius:999px; border:1px solid rgba(217,168,90,0.35); background:transparent;
+    color:var(--gold-light); font-size:0.8rem; cursor:pointer;
+  }
+  .btn-danger-sm{
+    padding:0.4rem 0.85rem; border-radius:999px; border:none; cursor:pointer; font-size:0.78rem;
+    background:linear-gradient(120deg,var(--danger),#e08d78); color:#2a0e09;
+  }
+  table{ width:100%; max-width:100%; border-collapse:collapse; margin-top:0.8rem; table-layout:fixed; }
+  th,td{ text-align:left; padding:0.55rem 0.4rem; font-size:0.8rem; border-bottom:1px solid rgba(217,168,90,0.1); word-break:break-word; }
+  th{ color:var(--cream-dim); font-weight:500; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.05em; }
+
+  /* Mobil: cədvəli kart-siyahıya çeviririk ki, üfüqi kənara çıxma olmasın */
+  @media (max-width: 680px){
+    .admin-card table{ table-layout:auto; }
+    .admin-card table thead{ display:none; }
+    .admin-card table, .admin-card table tbody, .admin-card table tr, .admin-card table td{ display:block; width:100%; }
+    .admin-card table tr{
+      background:rgba(255,255,255,0.03); border:1px solid rgba(217,168,90,0.15);
+      border-radius:12px; padding:0.7rem 0.85rem; margin-bottom:0.7rem;
+    }
+    .admin-card table td{
+      border:none; padding:0.3rem 0; white-space:normal !important;
+      overflow:visible !important; text-overflow:clip !important; max-width:none !important;
+    }
+    .admin-card table td[data-label]::before{
+      content:attr(data-label); display:block; font-size:0.66rem; text-transform:uppercase;
+      letter-spacing:0.04em; color:var(--gold); margin-bottom:0.2rem;
+    }
+    .admin-card table td[data-label=""]::before{ content:none; margin-bottom:0; }
+    .admin-card table td.empty-row-cell{ text-align:center; }
+    .admin-card{ padding:1.2rem; }
+    .admin-wrap{ max-width:100%; }
+  }
+  .badge{ display:inline-block; padding:0.18rem 0.55rem; border-radius:999px; font-size:0.7rem; margin:0.08rem; background:rgba(123,160,152,0.2); color:var(--sage); border:1px solid rgba(123,160,152,0.35); }
+  .badge-high{ background:rgba(217,112,90,0.22); color:#ffb199; border:1px solid rgba(217,112,90,0.5); }
+  .badge-mid{ background:rgba(217,168,90,0.18); color:var(--gold-light); border:1px solid rgba(217,168,90,0.4); }
+  .checks{ display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem; }
+  .chip-check{ display:flex; align-items:center; gap:0.4rem; padding:0.4rem 0.7rem; border-radius:9px; border:1px solid rgba(217,168,90,0.25); background:rgba(255,255,255,0.03); font-size:0.82rem; }
+  .empty-row{ color:var(--cream-dim); font-size:0.82rem; font-style:italic; }
+  .name-alert{
+    color:#ff9b82; font-weight:700; animation:nameGlow 1.6s ease-in-out infinite;
+  }
+  .alert-count{
+    display:inline-block; background:var(--danger); color:#2a0e09; font-size:0.68rem; font-weight:700;
+    padding:0.05rem 0.4rem; border-radius:999px; margin-left:0.2rem;
+  }
+  @keyframes nameGlow{
+    0%,100%{ text-shadow:0 0 2px rgba(217,112,90,0.3); }
+    50%{ text-shadow:0 0 10px rgba(217,112,90,0.9); }
+  }
+  .flex-between{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.8rem; }
+
+  footer{ position:relative; z-index:2; text-align:center; padding:3rem 1.5rem 3.4rem; border-top:1px solid rgba(217,168,90,0.12); font-size:0.85rem; color:var(--cream-dim); }
+  footer a{ color:var(--gold-light); text-decoration:none; font-weight:500; }
+  footer a:hover{ text-decoration:underline; }
+
+  @media (prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important;} }
+
+  .lang-switch{ position:fixed; top:16px; right:16px; z-index:60; display:flex; gap:6px; background:rgba(18,48,44,0.7); border:1px solid rgba(217,168,90,0.25); border-radius:999px; padding:5px; backdrop-filter:blur(10px); }
+  .lang-switch a{ padding:5px 11px; border-radius:999px; font-size:.72rem; font-weight:700; letter-spacing:.03em; text-decoration:none; color:var(--cream-dim); }
+  .lang-switch a.active{ background:var(--gold); color:#2a1d09; }
+</style>
+</head>
+<body>
+
+<div class="lang-switch">
+  <a href="../index.html">AZ</a>
+  <a href="../en/index.html">EN</a>
+  <a href="../ru/index.html">RU</a>
+  <a href="#" class="active">TR</a>
+</div>
+
+<div class="bg-layer bg-gradient"></div>
+<div class="bg-layer grain"></div>
+<div class="particles" id="particles"></div>
+
+<section class="hero" id="hero">
+  <div class="eyebrow">AN Psikolojik Destek ve Rehabilitasyon Merkezi</div>
+
+  <div class="logo-wrap" id="logoWrap">
+    <div class="glow-ring"></div>
+    <img class="logo-img" src="../logo.png" alt="AN Psikolojik Destek ve Rehabilitasyon Merkezi logosu">
+    <div class="alert-dot" id="alertDot"></div>
+  </div>
+
+  <h1>Büyüme ve gelişim<br>yolunda profesyonel destek</h1>
+  <p class="tagline">Çocuk ve ergen psikolojisi, erken müdahale, ergoterapi, dil ve konuşma terapisi ile duyu bütünleme alanlarındaki profesyonel kurs ve programlarımıza hoş geldiniz.</p>
+
+  <a href="#giris" class="cta">
+    Kurslara giriş
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+  </a>
+
+  <div class="scroll-cue"><span>Aşağı kaydırın</span><div class="scroll-line"></div></div>
+</section>
+
+<section class="courses-section" id="courses-list">
+  <div class="section-head">
+    <div class="eyebrow" style="text-align:center">Programlarımız</div>
+    <h2>Mevcut kurslar</h2>
+  </div>
+  <div class="course-grid" id="courseGrid">
+    <div class="chip-empty">Yükleniyor...</div>
+  </div>
+</section>
+
+<section class="login-section" id="giris">
+  <div class="login-card" id="customerLoginCard">
+    <div class="section-head" style="margin-bottom:1.8rem">
+      <div class="eyebrow" style="text-align:center">Sisteme giriş</div>
+      <h2 style="font-size:clamp(1.5rem,3vw,2rem)">Kursunuza giriş yapın</h2>
+    </div>
+    <div id="formArea">
+      <input type="text" id="username" placeholder="Kullanıcı adı" autocomplete="username">
+      <input type="password" id="password" placeholder="Şifre" autocomplete="current-password">
+      <div class="err" id="errMsg"></div>
+      <button class="btn-login" id="loginBtn" onclick="doLogin()">
+        <span id="btnText">Giriş yap</span><div class="spinner" id="spinner"></div>
+      </button>
+      <div class="notice" id="deviceNotice"></div>
+    </div>
+    <div class="my-course-list" id="myCourseList"></div>
+    <div id="customerLogoutWrap" style="display:none;text-align:center;margin-top:1rem">
+      <button class="btn-outline-sm" onclick="customerLogout()">Çıkış yap</button>
+    </div>
+  </div>
+
+  <div class="admin-wrap" id="adminWrap" style="display:none">
+    <div class="flex-between" style="margin-bottom:1rem">
+      <h2 style="font-family:'Fraunces',serif;font-size:1.5rem;color:var(--gold-light)">Admin Panel</h2>
+      <button class="btn-outline-sm" onclick="adminLogout()">Çıxış</button>
+    </div>
+
+    <div class="admin-card" id="alertsCard" style="display:none">
+      <h4>🔔 Təhlükəsizlik Xəbərdarlıqları</h4>
+      <div id="alertsList"></div>
+    </div>
+
+    <div class="admin-card" id="migrationCard" style="display:none;border:1px solid rgba(239,68,68,0.4)">
+      <h4>🔧 Təhlükəsizlik Miqrasiyası</h4>
+      <p style="font-size:0.82rem;color:var(--cream-dim);margin-bottom:0.8rem">Köhnə müştəri hesabları (açıq parollarla) tapıldı. Onları təhlükəsiz Firebase Auth hesablarına köçürün. Bu əməliyyatdan sonra köhnə parollar bazadan silinəcək.</p>
+      <button class="btn-sm" id="migrateBtn" onclick="runMigration()">Müştəriləri köçür</button>
+      <div id="migrationLog" style="margin-top:0.8rem;font-size:0.8rem;color:var(--cream-dim)"></div>
+    </div>
+
+
+    <div class="admin-card">
+      <h4>📚 Kurs əlavə et</h4>
+      <label style="display:block;font-size:0.8rem;color:var(--cream-dim);margin-bottom:0.4rem">Hazır kursdan seç (linki avtomatik dolur) və ya aşağıda özün yaz</label>
+      <select id="coursePreset" onchange="fillPreset()" style="width:100%;padding:0.75rem 0.9rem;border-radius:10px;border:1px solid rgba(217,168,90,0.25);background:rgba(255,255,255,0.05);color:var(--cream);font-size:0.92rem;margin-bottom:1rem">
+        <option value="">— Hazır kurs seç —</option>
+      </select>
+      <div class="row2">
+        <div><input type="text" id="courseName" placeholder="Kurs adı"></div>
+        <div><input type="url" id="courseUrl" placeholder="Kurs linki (URL)"></div>
+      </div>
+      <input type="text" id="courseDesc" placeholder="Qısa təsvir (məs: 15 klinik modul, seans skriptləri)">
+      <input type="text" id="courseStats" placeholder="Statistika (vergüllə: 100 proqram, 50 seans)">
+      <button class="btn-sm" id="courseFormBtn" onclick="adminAddCourse()">+ Əlavə et</button>
+      <table><thead><tr><th>Ad</th><th>Təsvir</th><th></th></tr></thead><tbody id="adminCoursesBody"></tbody></table>
+    </div>
+
+    <div class="admin-card">
+      <h4>👤 Yeni müştəri</h4>
+      <div class="row2">
+        <div><input type="text" id="custUser" placeholder="Kullanıcı adı"></div>
+        <div><input type="text" id="custPass" placeholder="Şifre"></div>
+      </div>
+      <div class="checks" id="courseChecksAdmin"></div>
+      <button class="btn-sm" onclick="adminCreateCustomer()">Müştəri yarat</button>
+    </div>
+
+    <div class="admin-card">
+      <h4>📋 Müştərilər</h4>
+      <table><thead><tr><th>İstifadəçi</th><th>Kurslar</th><th>Son giriş</th><th></th></tr></thead><tbody id="adminCustomersBody"></tbody></table>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Hazırlayan: <a href="https://instagram.com/s_akhundoff" target="_blank" rel="noopener">s_akhundoff</a> — AN Psikolojik Destek ve Rehabilitasyon Merkezi
+  <div style="margin-top:10px;font-size:.82rem;"><a href="../privacy.html">Gizlilik Politikası</a> · <a href="../terms.html">Kullanım Şartları</a></div>
+</footer>
+
+<div id="adminGate">
+  <div class="gate-card">
+    <h3>🔒 Admin Girişi</h3>
+    <div id="adminSetupNotice" style="display:none;font-size:0.82rem;color:var(--cream-dim);margin-bottom:0.8rem">Hələ admin hesabı yoxdur. Aşağıda öz admin e-poçt və parolunuzu təyin edərək ilk hesabı yaradın.</div>
+    <input type="email" id="adminEmail" placeholder="Admin e-poçt" style="width:100%;padding:0.8rem;border-radius:10px;border:1px solid rgba(217,168,90,0.3);background:rgba(255,255,255,0.05);color:var(--cream);margin-bottom:0.6rem">
+    <input type="password" id="adminPass" placeholder="Admin parolu" style="width:100%;padding:0.8rem;border-radius:10px;border:1px solid rgba(217,168,90,0.3);background:rgba(255,255,255,0.05);color:var(--cream);margin-bottom:0.8rem">
+    <div class="err" id="gateErr"></div>
+    <button class="btn-login" id="adminGateBtn" onclick="tryAdminLogin()">Daxil ol</button>
+    <div style="margin-top:1rem"><button class="btn-outline-sm" onclick="closeGate()">Bağla</button></div>
+  </div>
+</div>
+
+<div id="termsGate">
+  <div class="terms-card">
+    <div class="terms-head">
+      <h3>Kullanım Şartları ve Gizlilik Politikası</h3>
+      <p>Kursunuza giriş yapmadan önce lütfen aşağıdaki şartları inceleyin. Bu, yalnızca ilk girişinizde bir kez istenir.</p>
+    </div>
+    <iframe src="../terms.html" title="İstifadə Şərtləri"></iframe>
+    <div class="terms-foot">
+      <label class="terms-check">
+        <input type="checkbox" id="termsCheckbox">
+        <span><a href="../terms.html" target="_blank" rel="noopener">Kullanım Şartları</a>'nı ve <a href="../privacy.html" target="_blank" rel="noopener">Gizlilik Politikası</a>'nı okudum ve kabul ediyorum.</span>
+      </label>
+      <div class="err" id="termsErr" style="margin-top:8px;"></div>
+      <button class="btn-login" id="termsAcceptBtn" disabled onclick="window.acceptTerms()">
+        <span id="termsAcceptText">Kabul ediyorum, devam et</span><div class="spinner" id="termsSpinner"></div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const container = document.getElementById('particles');
+  for(let i=0;i<26;i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = 2 + Math.random()*4;
+    p.style.width = size+'px'; p.style.height = size+'px'; p.style.left = Math.random()*100+'vw';
+    p.style.setProperty('--drift', (Math.random()*80-40)+'px');
+    const duration = 8 + Math.random()*10;
+    p.style.animationDuration = duration+'s'; p.style.animationDelay = (Math.random()*duration)+'s';
+    container.appendChild(p);
+  }
+  const hero = document.getElementById('hero');
+  const logoWrap = document.getElementById('logoWrap');
+  hero.addEventListener('mousemove', (e)=>{
+    const x = (e.clientX / window.innerWidth - 0.5) * 18;
+    const y = (e.clientY / window.innerHeight - 0.5) * 18;
+    logoWrap.style.transform = `translate(${x}px, ${y}px)`;
+  });
+  const bgGradient = document.querySelector('.bg-gradient');
+  window.addEventListener('scroll', ()=>{ bgGradient.style.transform = `translateY(${window.scrollY*0.15}px)`; });
+
+  // secret admin trigger: 5 clicks on logo within 3s
+  let clickTimes = [];
+  logoWrap.addEventListener('click', ()=>{
+    const now = Date.now();
+    clickTimes.push(now);
+    clickTimes = clickTimes.filter(t => now - t < 3000);
+    if(clickTimes.length >= 5){
+      clickTimes = [];
+      document.getElementById('adminGate').style.display='flex';
+    }
+  });
+  window.closeGate = function(){ document.getElementById('adminGate').style.display='none'; };
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+import { getDatabase, ref, get, set, update, push, remove, onValue } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCBhyGNzZRGgQShP_C9kwAzTm_g_0zJlzg",
+  authDomain: "an-psixoloji-33442.firebaseapp.com",
+  databaseURL: "https://an-psixoloji-33442-default-rtdb.firebaseio.com",
+  projectId: "an-psixoloji-33442",
+  storageBucket: "an-psixoloji-33442.firebasestorage.app",
+  messagingSenderId: "528809299356",
+  appId: "1:528809299356:web:59cae89a64e446dc520c59"
+};
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const auth = getAuth(app);
+
+// Müştəri/admin hesabları yaratmaq üçün ikinci Firebase App nüsxəsi.
+// Bu, yeni hesab yaradılanda admin öz sessiyasından çıxarılmasın deyə edilir
+// (createUserWithEmailAndPassword avtomatik yeni hesabla daxil edir).
+const secondaryApp = initializeApp(firebaseConfig, "Secondary");
+const secondaryAuth = getAuth(secondaryApp);
+
+const EMAIL_DOMAIN = "@an-portal.local";
+const ACTIVE_WINDOW_MS = 2 * 60 * 60 * 1000; // 2 saat - eyni vaxtda giriş sayılan pəncərə
+
+window.DB = { courses:{}, customers:{}, alerts:{}, admins:{} };
+
+const COURSE_PRESETS = [
+  { name:"CBT Kursu (Koqnitiv Davranış Terapiyası)", url:"https://samir210-az.github.io/koqnitiv_kurs/", description:"Klinik prinsiplərə əsaslanan strukturlu KDT proqramı — qiymətləndirmədən bağlanışa qədər üç fazalı real seans ssenariləri ilə.", stats:"20 mövzu, 125+ seans, 3 yaş qrupu" },
+  { name:"Uşaq və Yeniyetmə Psixologiyası Kursu", url:"https://samir210-az.github.io/usaq-psixologiyasi-kursu/", description:"Psixoloq, erqoterapevt, loqoped, psixopedaqoq və sensor inteqrasiya mütəxəssisinin birgə klinik perspektivi ilə hazırlanmış proqram.", stats:"15 modul, 5 mütəxəssis perspektivi, yaş qrupu təhlili" },
+  { name:"Uşaq və Yeniyetmə Terapiya Proqramları Kursu", url:"https://samir210-az.github.io/kurs_13/", description:"Psixoloq, erqoterapevt, loqoped, psixopedaqoq və sensor inteqrasiya mütəxəssisinin birgə hazırladığı fərdi terapiya proqramları — seans planlaşdırılması və valideyn dəstəyi daxil olmaqla.", stats:"13 proqram, 150+ seans, 5 mütəxəssis baxışı" }
+];
+(function populatePresets(){
+  const sel = document.getElementById('coursePreset');
+  COURSE_PRESETS.forEach((c,i)=>{
+    const opt = document.createElement('option');
+    opt.value = i; opt.textContent = c.name;
+    sel.appendChild(opt);
+  });
+})();
+window.fillPreset = function(){
+  const idx = document.getElementById('coursePreset').value;
+  if(idx === '') return;
+  const c = COURSE_PRESETS[idx];
+  document.getElementById('courseName').value = c.name;
+  document.getElementById('courseUrl').value = c.url;
+  document.getElementById('courseDesc').value = c.description;
+  document.getElementById('courseStats').value = c.stats;
+}
+
+function escapeHtml(s){ return String(s??'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function usernameToEmail(u){ return u.trim().toLowerCase().replace(/[^a-z0-9_.-]/g,'') + EMAIL_DOMAIN; }
+
+// public course showcase (name + description + stats only, no URLs exposed)
+onValue(ref(db,'portal/courses'), snap=>{
+  window.DB.courses = snap.val() || {};
+  renderPublicCourses();
+  renderAdminCourses();
+}, err=>{
+  console.error('Kurslar yüklənmədi:', err);
+  const grid = document.getElementById('courseGrid');
+  if(grid) grid.innerHTML = '<div class="chip-empty">Kurslar yüklənə bilmədi (baza icazə xətası). Bir azdan yenidən yoxlayın.</div>';
+});
+// (admins/customers/alerts dinləyiciləri giriş vəziyyətindən asılı olaraq aşağıda qoşulur)
+
+function checkMigrationNeeded(){
+  const card = document.getElementById('migrationCard');
+  if(!card) return;
+  const needsMigration = Object.values(window.DB.customers).some(c => c && typeof c.password === 'string');
+  card.style.display = needsMigration ? 'block' : 'none';
+}
+
+function renderPublicCourses(){
+  const grid = document.getElementById('courseGrid');
+  const entries = Object.values(window.DB.courses);
+  grid.innerHTML = entries.length ? entries.map(c => `
+    <div class="course-card">
+      <h3>${escapeHtml(c.name)}</h3>
+      <p>${escapeHtml(c.description||'')}</p>
+      <div class="course-stats">${(c.stats||[]).map(s=>`<span class="stat-chip">${escapeHtml(s)}</span>`).join('')}</div>
+    </div>`).join('') : '<div class="chip-empty">Kurslar tezliklə əlavə olunacaq</div>';
+
+  const cards = document.querySelectorAll('.course-card');
+  const io = new IntersectionObserver((es)=>{ es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in-view'); }); }, {threshold:0.15});
+  cards.forEach(c=>io.observe(c));
+}
+
+/* ---------- customer login (Firebase Auth) ---------- */
+function simpleFingerprint(){
+  const raw = [navigator.userAgent, navigator.language, screen.width+'x'+screen.height, Intl.DateTimeFormat().resolvedOptions().timeZone].join('|');
+  let hash = 0;
+  for(let i=0;i<raw.length;i++){ hash = (hash<<5)-hash + raw.charCodeAt(i); hash |= 0; }
+  return 'fp_' + Math.abs(hash).toString(16);
+}
+async function getIP(){
+  try{ const res = await fetch('https://api.ipify.org?format=json'); return (await res.json()).ip; }
+  catch(e){ return 'naməlum'; }
+}
+
+window.doLogin = async function(){
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value.trim();
+  const errEl = document.getElementById('errMsg');
+  const btn = document.getElementById('loginBtn');
+  errEl.textContent = '';
+  if(!username || !password){ errEl.textContent = 'Kullanıcı adı ve şifrenizi girin'; return; }
+  document.getElementById('btnText').style.display='none';
+  document.getElementById('spinner').style.display='block';
+  btn.disabled = true;
+
+  try{
+    const cred = await signInWithEmailAndPassword(auth, usernameToEmail(username), password);
+    const uid = cred.user.uid;
+    const custSnap = await get(ref(db,'portal/customers/'+uid));
+    const cust = custSnap.val();
+    if(!cust){
+      errEl.textContent = 'Hesabınız henüz tam olarak kurulmadı, yönetici ile iletişime geçin';
+      await signOut(auth); resetBtn(); return;
+    }
+
+    const device = simpleFingerprint();
+    const ip = await getIP();
+    const now = Date.now();
+    const withinActiveWindow = cust.lastLogin && (now - cust.lastLogin) < ACTIVE_WINDOW_MS;
+    const deviceChanged = cust.lastDevice && cust.lastDevice !== device;
+    const ipChanged = cust.lastIP && cust.lastIP !== ip;
+
+    if(withinActiveWindow && (deviceChanged || ipChanged)){
+      await push(ref(db,'portal/securityAlerts'), {
+        username: cust.username, type:'ehtimal_paylasim', severity:'high',
+        oldValue: `${cust.lastDevice||'-'} / ${cust.lastIP||'-'}`, newValue: `${device} / ${ip}`, ts: now
+      });
+      showNotice('Dikkat: hesabınıza neredeyse aynı anda farklı bir cihazdan/konumdan giriş yapıldı. Yönetici bilgilendirildi.');
+    } else if(deviceChanged){
+      await push(ref(db,'portal/securityAlerts'), { username: cust.username, type:'device_changed', severity:'mid', oldValue: cust.lastDevice, newValue: device, ts: now });
+    } else if(ipChanged){
+      await push(ref(db,'portal/securityAlerts'), { username: cust.username, type:'ip_changed', severity:'low', oldValue: cust.lastIP, newValue: ip, ts: now });
+    }
+
+    await update(ref(db,'portal/customers/'+uid), { lastDevice: device, lastIP: ip, lastLogin: now });
+
+    if(!cust.termsAccepted){
+      pendingLogin = { uid, cust };
+      resetBtn();
+      document.getElementById('termsGate').style.display = 'flex';
+      return;
+    }
+
+    await proceedToCourses(cust, uid);
+  }catch(e){
+    console.error(e);
+    if(['auth/invalid-credential','auth/wrong-password','auth/user-not-found','auth/invalid-email'].includes(e.code)){
+      errEl.textContent = 'Kullanıcı adı veya şifre yanlış';
+    } else {
+      errEl.textContent = 'Bir hata oluştu, tekrar deneyin';
+    }
+  }
+  resetBtn();
+
+  function resetBtn(){
+    document.getElementById('btnText').style.display='inline';
+    document.getElementById('spinner').style.display='none';
+    btn.disabled = false;
+  }
+}
+
+let pendingLogin = null;
+
+async function proceedToCourses(cust, uid){
+  const errEl = document.getElementById('errMsg');
+  const allowed = (cust.allowedCourses||[]).map(cid => window.DB.courses[cid]).filter(Boolean);
+  if(!allowed.length){ errEl.textContent = 'Hesabınıza henüz bir kurs atanmadı. Yönetici ile iletişime geçin.'; return; }
+
+  document.getElementById('formArea').style.display = 'none';
+  const list = document.getElementById('myCourseList');
+  list.style.display = 'flex';
+  if(allowed.length === 1){
+    const targetUrl = allowed[0] && allowed[0].url;
+    list.innerHTML = `<div style="color:var(--cream-dim);font-size:0.88rem;margin-bottom:0.6rem">Kursunuza yönlendiriliyorsunuz...</div><div style="color:#f59e0b;font-size:0.7rem;word-break:break-all;margin-bottom:0.6rem">Hədəf: ${escapeHtml(String(targetUrl))}</div><a class="course-btn" href="${escapeHtml(String(targetUrl))}">Manuel geçiş (buraya tıklayın) →</a>`;
+    document.getElementById('customerLogoutWrap').style.display='block';
+    if(targetUrl){
+      setTimeout(()=>{ window.location.assign(targetUrl); }, 900);
+    }
+  } else {
+    list.innerHTML = allowed.map(c => `<a class="course-btn" href="${c.url}">${escapeHtml(c.name)} →</a>`).join('');
+    document.getElementById('customerLogoutWrap').style.display='block';
+  }
+}
+
+window.acceptTerms = async function(){
+  if(!pendingLogin){ return; }
+  const checkbox = document.getElementById('termsCheckbox');
+  const termsErr = document.getElementById('termsErr');
+  termsErr.textContent = '';
+  if(!checkbox.checked){ termsErr.textContent = 'Devam etmek için kutuyu işaretleyin'; return; }
+
+  const acceptBtn = document.getElementById('termsAcceptBtn');
+  document.getElementById('termsAcceptText').style.display = 'none';
+  document.getElementById('termsSpinner').style.display = 'block';
+  acceptBtn.disabled = true;
+
+  try{
+    const { uid, cust } = pendingLogin;
+    const now = Date.now();
+    await update(ref(db,'portal/customers/'+uid), { termsAccepted: true, termsAcceptedAt: now });
+    cust.termsAccepted = true;
+    cust.termsAcceptedAt = now;
+    document.getElementById('termsGate').style.display = 'none';
+    pendingLogin = null;
+    await proceedToCourses(cust, uid);
+  }catch(e){
+    console.error(e);
+    termsErr.textContent = 'Bir hata oluştu, tekrar deneyin';
+  }
+  document.getElementById('termsAcceptText').style.display = 'inline';
+  document.getElementById('termsSpinner').style.display = 'none';
+  acceptBtn.disabled = !checkbox.checked;
+}
+function showNotice(msg){ const el = document.getElementById('deviceNotice'); el.textContent = msg; el.style.display = 'block'; }
+
+document.getElementById('termsCheckbox').addEventListener('change', function(){
+  document.getElementById('termsAcceptBtn').disabled = !this.checked;
+});
+document.getElementById('password').addEventListener('keydown', e=>{ if(e.key==='Enter') window.doLogin(); });
+
+/* ---------- admin (Firebase Auth) ---------- */
+window.tryAdminLogin = function(){
+  const email = document.getElementById('adminEmail').value.trim();
+  const password = document.getElementById('adminPass').value;
+  const gateErr = document.getElementById('gateErr');
+  gateErr.textContent = '';
+  if(!email || !password){ gateErr.textContent = 'E-poçt və parolu daxil edin'; return; }
+
+  const hasAnyAdmin = Object.keys(window.DB.admins || {}).length > 0;
+
+  (async ()=>{
+    let uid = null;
+    try{
+      const cred = await signInWithEmailAndPassword(auth, email, password);
+      uid = cred.user.uid;
+    }catch(signInErr){
+      const canTryCreate = !hasAnyAdmin && ['auth/user-not-found','auth/invalid-credential','auth/wrong-password'].includes(signInErr.code);
+      if(canTryCreate){
+        try{
+          const cred2 = await createUserWithEmailAndPassword(auth, email, password);
+          uid = cred2.user.uid;
+        }catch(createErr){
+          console.error(createErr);
+          if(createErr.code === 'auth/email-already-in-use'){
+            gateErr.textContent = 'Bu e-poçt artıq mövcuddur, amma parol uyğun gəlmədi. Həmin hesabın DOĞRU parolunu yazın, ya da fərqli e-poçt seçin.';
+          } else {
+            gateErr.textContent = 'Xəta: ' + (createErr.code || createErr.message);
+          }
+          return;
+        }
+      } else {
+        console.error(signInErr);
+        gateErr.textContent = 'Xəta: ' + (signInErr.code || signInErr.message);
+        return;
+      }
+    }
+    if(!hasAnyAdmin && uid){
+      await set(ref(db,'portal/admins/'+uid), true);
+    }
+    document.getElementById('adminGate').style.display='none';
+  })();
+}
+
+let currentUser = null;
+let unsubAdmins = null, unsubCustomers = null, unsubAlerts = null;
+
+onAuthStateChanged(auth, (user)=>{
+  currentUser = user;
+
+  if(unsubAdmins) unsubAdmins();
+  if(unsubCustomers) unsubCustomers();
+  if(unsubAlerts) unsubAlerts();
+  unsubAdmins = unsubCustomers = unsubAlerts = null;
+
+  if(user){
+    // Giriş edilib - indi bu qapalı node-ları oxumaq mümkündür
+    unsubAdmins = onValue(ref(db,'portal/admins'), snap=>{
+      window.DB.admins = snap.val() || {};
+      checkAdminStatus();
+    }, err=>{ console.error('Admin siyahısı yüklənmədi:', err); checkAdminStatus(); });
+
+    unsubCustomers = onValue(ref(db,'portal/customers'), snap=>{
+      window.DB.customers = snap.val() || {};
+      renderAdminCustomers();
+      checkMigrationNeeded();
+    }, err=>console.error('Müştərilər yüklənmədi (bu, admin olmayanlar üçün normaldır):', err));
+
+    unsubAlerts = onValue(ref(db,'portal/securityAlerts'), snap=>{
+      window.DB.alerts = snap.val() || {};
+      renderAlerts(); renderAdminCustomers();
+    }, err=>console.error('Xəbərdarlıqlar yüklənmədi:', err));
+  } else {
+    window.DB.admins = {};
+    window.DB.customers = {};
+    window.DB.alerts = {};
+  }
+
+  checkAdminStatus();
+});
+
+function checkAdminStatus(){
+  const notice = document.getElementById('adminSetupNotice');
+  const hasAnyAdmin = Object.keys(window.DB.admins || {}).length > 0;
+  if(notice) notice.style.display = hasAnyAdmin ? 'none' : 'block';
+
+  if(!currentUser){
+    document.getElementById('adminWrap').style.display='none';
+    document.getElementById('customerLoginCard').style.display='block';
+    return;
+  }
+  if(window.DB.admins && window.DB.admins[currentUser.uid]){
+    enterAdminMode();
+  }
+}
+
+function enterAdminMode(){
+  document.getElementById('customerLoginCard').style.display='none';
+  document.getElementById('adminWrap').style.display='block';
+  renderAdminCourses(); renderAdminCustomers(); renderAlerts();
+}
+window.adminLogout = function(){
+  signOut(auth);
+  document.getElementById('adminWrap').style.display='none';
+  document.getElementById('customerLoginCard').style.display='block';
+}
+window.customerLogout = function(){
+  signOut(auth);
+  document.getElementById('formArea').style.display='block';
+  document.getElementById('myCourseList').style.display='none';
+  document.getElementById('customerLogoutWrap').style.display='none';
+  document.getElementById('username').value='';
+  document.getElementById('password').value='';
+}
+window.closeGate = function(){ document.getElementById('adminGate').style.display='none'; };
+
+let editingCourseId = null;
+
+window.adminAddCourse = function(){
+  const name = document.getElementById('courseName').value.trim();
+  const url = document.getElementById('courseUrl').value.trim();
+  const description = document.getElementById('courseDesc').value.trim();
+  const stats = document.getElementById('courseStats').value.split(',').map(s=>s.trim()).filter(Boolean);
+  if(!name || !url){ alert('Ad və link vacibdir'); return; }
+  if(editingCourseId){
+    update(ref(db,'portal/courses/'+editingCourseId), { name, url, description, stats });
+    editingCourseId = null;
+    document.getElementById('courseFormBtn').textContent = '+ Əlavə et';
+  } else {
+    push(ref(db,'portal/courses'), { name, url, description, stats, createdAt: Date.now() });
+  }
+  document.getElementById('courseName').value=''; document.getElementById('courseUrl').value='';
+  document.getElementById('courseDesc').value=''; document.getElementById('courseStats').value='';
+  document.getElementById('coursePreset').value='';
+}
+window.adminEditCourse = function(id){
+  const c = window.DB.courses[id];
+  if(!c) return;
+  editingCourseId = id;
+  document.getElementById('courseName').value = c.name || '';
+  document.getElementById('courseUrl').value = c.url || '';
+  document.getElementById('courseDesc').value = c.description || '';
+  document.getElementById('courseStats').value = (c.stats||[]).join(', ');
+  document.getElementById('courseFormBtn').textContent = '💾 Yenilə';
+  document.getElementById('courseName').scrollIntoView({behavior:'smooth', block:'center'});
+}
+window.adminRemoveCourse = function(id){ remove(ref(db,'portal/courses/'+id)); }
+window.adminRemoveCustomer = function(id){ remove(ref(db,'portal/customers/'+id)); }
+window.adminDismissAlert = function(id){ remove(ref(db,'portal/securityAlerts/'+id)); }
+
+window.adminCreateCustomer = async function(){
+  const username = document.getElementById('custUser').value.trim();
+  const password = document.getElementById('custPass').value.trim();
+  const checked = [...document.querySelectorAll('.course-chk-admin:checked')].map(c=>c.value);
+  if(!username || !password){ alert('İstifadəçi adı və parol vacibdir'); return; }
+  if(password.length < 6){ alert('Parol ən azı 6 simvol olmalıdır (Firebase tələbi)'); return; }
+  if(!checked.length){ alert('Ən azı bir kurs seçin'); return; }
+  const exists = Object.values(window.DB.customers).some(c=>c.username===username);
+  if(exists){ alert('Bu istifadəçi adı artıq mövcuddur'); return; }
+  try{
+    const cred = await createUserWithEmailAndPassword(secondaryAuth, usernameToEmail(username), password);
+    await set(ref(db,'portal/customers/'+cred.user.uid), { username, allowedCourses: checked, createdAt: Date.now() });
+    await signOut(secondaryAuth);
+    document.getElementById('custUser').value=''; document.getElementById('custPass').value='';
+  }catch(e){
+    console.error(e);
+    alert('Müştəri yaradıla bilmədi: ' + (e.code || e.message));
+  }
+}
+
+window.runMigration = async function(){
+  const log = document.getElementById('migrationLog');
+  const btn = document.getElementById('migrateBtn');
+  btn.disabled = true;
+  const entries = Object.entries(window.DB.customers).filter(([id,c]) => c && typeof c.password === 'string');
+  log.innerHTML = `${entries.length} köhnə hesab tapıldı, köçürülür...`;
+  let ok = 0, fail = 0;
+  for(const [oldId, cust] of entries){
+    try{
+      const cred = await createUserWithEmailAndPassword(secondaryAuth, usernameToEmail(cust.username), cust.password);
+      const { password, activeToken, ...rest } = cust;
+      await set(ref(db,'portal/customers/'+cred.user.uid), rest);
+      await remove(ref(db,'portal/customers/'+oldId));
+      await signOut(secondaryAuth);
+      ok++;
+    }catch(e){
+      console.error('Miqrasiya xətası:', cust.username, e);
+      fail++;
+    }
+    log.innerHTML = `İrəliləyiş: ${ok+fail}/${entries.length} (uğurlu: ${ok}, xəta: ${fail})`;
+  }
+  log.innerHTML += `<br><strong>Bitdi.</strong> Uğurlu: ${ok}, Xəta: ${fail}. İndi Firebase Console-da Rules-u sərtləşdirə bilərsiniz.`;
+  btn.disabled = false;
+  checkMigrationNeeded();
+}
+
+function renderAdminCourses(){
+  const body = document.getElementById('adminCoursesBody');
+  const entries = Object.entries(window.DB.courses);
+  if(body) body.innerHTML = entries.length ? entries.map(([id,c])=>`
+    <tr><td data-label="Ad">${escapeHtml(c.name)}</td><td data-label="Təsvir" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(c.description||'')}</td>
+    <td data-label="" style="white-space:nowrap">
+      <a href="${escapeHtml(c.url)}" target="_blank" rel="noopener" class="btn-outline-sm" style="text-decoration:none;display:inline-block;margin-right:0.4rem;margin-bottom:0.3rem">Aç ↗</a>
+      <button class="btn-outline-sm" style="margin-right:0.4rem;margin-bottom:0.3rem" onclick="window.adminEditCourse('${id}')">Redaktə</button>
+      <button class="btn-danger-sm" onclick="window.adminRemoveCourse('${id}')">Sil</button>
+    </td></tr>`).join('')
+    : '<tr><td colspan="3" class="empty-row empty-row-cell">Hələ kurs yoxdur</td></tr>';
+
+  const checks = document.getElementById('courseChecksAdmin');
+  if(checks) checks.innerHTML = entries.length ? entries.map(([id,c])=>`
+    <label class="chip-check"><input type="checkbox" value="${id}" class="course-chk-admin"> ${escapeHtml(c.name)}</label>`).join('')
+    : '<div class="empty-row">Əvvəlcə kurs əlavə edin</div>';
+}
+
+function renderAdminCustomers(){
+  const body = document.getElementById('adminCustomersBody');
+  if(!body) return;
+  const entries = Object.entries(window.DB.customers);
+  const alertCounts = {};
+  Object.values(window.DB.alerts||{}).forEach(a=>{ alertCounts[a.username] = (alertCounts[a.username]||0) + 1; });
+
+  body.innerHTML = entries.length ? entries.map(([id,c])=>{
+    const names = (c.allowedCourses||[]).map(cid=>window.DB.courses[cid]?.name||'—').map(n=>`<span class="badge">${escapeHtml(n)}</span>`).join(' ');
+    const lastSeen = c.lastLogin ? new Date(c.lastLogin).toLocaleString('az-AZ') : '—';
+    const alertCount = alertCounts[c.username] || 0;
+    const nameHtml = alertCount
+      ? `<span class="name-alert">🔴 ${escapeHtml(c.username)} <span class="alert-count">${alertCount}</span></span>`
+      : escapeHtml(c.username);
+    return `<tr><td data-label="İstifadəçi">${nameHtml}</td><td data-label="Kurslar">${names||'<span class="empty-row">yoxdur</span>'}</td><td data-label="Son giriş" style="font-size:0.75rem">${lastSeen}</td>
+    <td data-label=""><button class="btn-danger-sm" onclick="window.adminRemoveCustomer('${id}')">Sil</button></td></tr>`;
+  }).join('') : '<tr><td colspan="4" class="empty-row empty-row-cell">Hələ müştəri yoxdur</td></tr>';
+}
+
+function renderAlerts(){
+  const card = document.getElementById('alertsCard');
+  const list = document.getElementById('alertsList');
+  const dot = document.getElementById('alertDot');
+  const entries = Object.entries(window.DB.alerts);
+  if(dot) dot.style.display = entries.length ? 'block' : 'none';
+  if(!card) return;
+  if(!entries.length){ card.style.display='none'; return; }
+  card.style.display='block';
+  const labelMap = { ehtimal_paylasim:'Ehtimal olunan paylaşım', device_changed:'Yeni cihaz', ip_changed:'Yeni IP' };
+  const badgeMap = { high:'badge-high', mid:'badge-mid', low:'badge' };
+  list.innerHTML = entries.reverse().map(([id,a])=>`
+    <div style="padding:0.7rem 0;border-bottom:1px solid rgba(217,168,90,0.1)">
+      <span class="badge ${badgeMap[a.severity]||'badge'}">${labelMap[a.type]||a.type}</span>
+      <strong>${escapeHtml(a.username)}</strong> — ${new Date(a.ts).toLocaleString('az-AZ')}
+      <div style="font-size:0.76rem;color:var(--cream-dim);margin-top:0.3rem">Köhnə: ${escapeHtml(a.oldValue||'—')} → Yeni: ${escapeHtml(a.newValue||'—')}</div>
+      <button class="btn-outline-sm" style="margin-top:0.5rem" onclick="window.adminDismissAlert('${id}')">Bağla</button>
+    </div>`).join('');
+}
+
+</script>
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('service-worker.js').catch(function(err){
+      console.warn('Service worker qeydiyyatı alınmadı:', err);
+    });
+  });
+}
+</script>
+
+</body>
+</html>
