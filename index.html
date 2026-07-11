@@ -256,9 +256,18 @@
   footer a:hover{ text-decoration:underline; }
 
   @media (prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important;} }
+
+  .lang-switch{ position:fixed; top:16px; right:16px; z-index:60; display:flex; gap:6px; background:rgba(18,48,44,0.7); border:1px solid rgba(217,168,90,0.25); border-radius:999px; padding:5px; backdrop-filter:blur(10px); }
+  .lang-switch a{ padding:5px 11px; border-radius:999px; font-size:.72rem; font-weight:700; letter-spacing:.03em; text-decoration:none; color:var(--cream-dim); }
+  .lang-switch a.active{ background:var(--gold); color:#2a1d09; }
 </style>
 </head>
 <body>
+
+<div class="lang-switch">
+  <a href="#" class="active">AZ</a>
+  <a href="en/index.html">EN</a>
+</div>
 
 <div class="bg-layer bg-gradient"></div>
 <div class="bg-layer grain"></div>
