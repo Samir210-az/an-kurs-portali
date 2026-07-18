@@ -826,7 +826,15 @@ window.adminEditCourse = function(id){
   document.getElementById('courseName').scrollIntoView({behavior:'smooth', block:'center'});
 }
 window.adminRemoveCourse = function(id){ remove(ref(db,'portal/courses/'+id)); }
-window.adminRemoveCustomer = function(id){ remove(ref(db,'portal/customers/'+id)); }
+window.adminRemoveCustomer = function(id){
+  const c = window.DB.customers[id];
+  const uname = c ? c.username : '';
+  remove(ref(db,'portal/customers/'+id));
+  if(uname){
+    alert('Müştəri "' + uname + '" siyahıdan silindi.\n\nDİQQƏT: Bu, yalnız məlumat bazasından silir. Həmin istifadəçi adını YENİDƏN yaratmaq istəsəniz, əvvəlcə Firebase Console → Authentication bölməsindən "' + usernameToEmail(uname) + '" hesabını da silməlisiniz — əks halda "email-already-in-use" xətası alacaqsınız.\n\nİndi Firebase Console açılacaq, oradan həmin istifadəçini tapıb silin.');
+    window.open('https://console.firebase.google.com/project/an-psixoloji-33442/authentication/users', '_blank');
+  }
+}
 window.adminDismissAlert = function(id){ remove(ref(db,'portal/securityAlerts/'+id)); }
 
 window.adminCreateCustomer = async function(){
@@ -845,7 +853,12 @@ window.adminCreateCustomer = async function(){
     document.getElementById('custUser').value=''; document.getElementById('custPass').value='';
   }catch(e){
     console.error(e);
-    alert('Müştəri yaradıla bilmədi: ' + (e.code || e.message));
+    if((e.code||'') === 'auth/email-already-in-use'){
+      const goConsole = confirm('Bu istifadəçi adı ("' + username + '") ilə hesab artıq Firebase Authentication-da mövcuddur (çox güman ki, əvvəllər silinmiş müştərinin hesabıdır — silinərkən yalnız məlumat bazasından silinib, Authentication-dan yox).\n\nHəll: Firebase Console → Authentication bölməsindən "' + usernameToEmail(username) + '" hesabını tapıb silin, sonra yenidən cəhd edin.\n\nİndi Firebase Console-u açım?');
+      if(goConsole) window.open('https://console.firebase.google.com/project/an-psixoloji-33442/authentication/users', '_blank');
+    } else {
+      alert('Müştəri yaradıla bilmədi: ' + (e.code || e.message));
+    }
   }
 }
 
