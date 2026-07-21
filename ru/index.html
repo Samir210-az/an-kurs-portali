@@ -126,6 +126,10 @@
     border:1px solid rgba(123,160,152,0.3); color:var(--sage);
   }
   .chip-empty{ color:var(--cream-dim); font-size:0.9rem; font-style:italic; grid-column:1/-1; }
+  .audience-tag{ display:inline-block; padding:0.28rem 0.75rem; border-radius:999px; font-size:0.72rem; letter-spacing:.02em; background:rgba(210,165,93,0.14); color:var(--gold-light); border:1px solid rgba(210,165,93,0.35); margin-bottom:0.8rem; }
+  .course-price{ font-family:'Fraunces', serif; font-size:1.15rem; color:var(--gold-light); margin:1rem 0 0.9rem; }
+  .btn-whatsapp{ display:inline-flex; align-items:center; gap:0.45rem; padding:0.7rem 1.15rem; border-radius:10px; background:linear-gradient(135deg,#25D366,#1DA851); color:#fff; text-decoration:none; font-size:0.86rem; font-weight:500; transition:transform .2s ease, box-shadow .2s ease; }
+  .btn-whatsapp:hover{ transform:translateY(-2px); box-shadow:0 8px 20px rgba(37,211,102,0.3); }
 
   /* login / admin section */
   .login-section{ position:relative; z-index:2; padding:3vh 6vw 8vh; display:flex; justify-content:center; }
@@ -358,6 +362,10 @@
       </div>
       <input type="text" id="courseDesc" placeholder="Qısa təsvir (məs: 15 klinik modul, seans skriptləri)">
       <input type="text" id="courseStats" placeholder="Statistika (vergüllə: 100 proqram, 50 seans)">
+      <div class="row2">
+        <div><input type="text" id="coursePrice" placeholder="Qiymət (məs: 250 AZN)"></div>
+        <div><input type="text" id="courseAudience" placeholder="Kimə aiddir (məs: Psixoloqlar üçün)"></div>
+      </div>
       <button class="btn-sm" id="courseFormBtn" onclick="adminAddCourse()">+ Əlavə et</button>
       <table><thead><tr><th>Ad</th><th>Təsvir</th><th></th></tr></thead><tbody id="adminCoursesBody"></tbody></table>
     </div>
@@ -486,17 +494,20 @@ const COURSE_I18N = {
   "koqnitiv_kurs": {
     name: "Курс КПТ (Когнитивно-поведенческая терапия)",
     description: "Программа из 20 модулей, охватывающая как теоретическую базу, так и реальную клиническую практику когнитивно-поведенческой терапии — 18 модулей построены на реальных сессиях, 2 представляют собой теоретические и технические справочники. Каждая сессия начинается с оценки, проходит через основной терапевтический этап и завершается конкретным домашним заданием; диалоги — не шаблонные сценарии, а отражают сопротивление, колебания и индивидуальный темп каждого клиента. Программа соответствует критериям DSM-5-TR и международным протоколам КПТ, в каждом модуле есть оценка риска, форма клинической оценки и список литературы. Всего 186 сессий для 3 возрастных групп.",
-    stats: ["20 модулей", "186 сессий", "3 возрастные группы"]
+    stats: ["20 модулей", "186 сессий", "3 возрастные группы"],
+    audience: "Для психологов"
   },
   "usaq-psixologiyasi-kursu": {
     name: "Курс детской и подростковой психологии",
     description: "Программа из 15 модулей для специалистов, работающих с детьми и подростками, объединяющая взгляды психолога, эрготерапевта, логопеда, психопедагога и специалиста по сенсорной интеграции. Каждый модуль посвящён конкретной теме — от поведенческих нарушений до избирательного мутизма и переживания развода родителей — и подкреплён клиническим случаем, реальным диалогом терапевта с ребёнком, примером домашнего задания и возрастными инструментами оценки. Курс включает 176 индивидуальных сессий, каждая построена на своём сценарии, с протоколами кризисных ситуаций и картами наблюдения в каждом модуле.",
-    stats: ["15 модулей", "176 сессий", "5 профессиональных перспектив"]
+    stats: ["15 модулей", "176 сессий", "5 профессиональных перспектив"],
+    audience: "Для специалистов по работе с детьми"
   },
   "kurs_13": {
     name: "Курс программ терапии для детей и подростков",
     description: "Курс из 13 программ, построенный на индивидуальном терапевтическом планировании и отражающий совместный опыт психолога, эрготерапевта, логопеда, психопедагога и специалиста по сенсорной интеграции. Каждая программа имеет чёткую структуру по сессиям — открытие, основная работа и завершение — с реальными примерами вопросов и ответов, форматами работы с родителями и домашними заданиями на каждом этапе. Все 160 сессий построены на уникальных сценариях без повторяющихся диалогов. Курс теперь полностью доступен на 4 языках: азербайджанском, английском, русском и турецком.",
-    stats: ["13 программ", "160 сессий", "4 языка"]
+    stats: ["13 программ", "160 сессий", "4 языка"],
+    audience: "Для терапевтических команд"
   }
 };
 function translateCourse(c){
@@ -504,7 +515,7 @@ function translateCourse(c){
   const key = Object.keys(COURSE_I18N).find(k => (c.url||"").includes(k));
   if(!key) return c;
   const t = COURSE_I18N[key];
-  return Object.assign({}, c, { name: t.name, description: t.description, stats: t.stats });
+  return Object.assign({}, c, { name: t.name, description: t.description, stats: t.stats, audience: t.audience || c.audience });
 }
 
 
@@ -531,6 +542,12 @@ window.fillPreset = function(){
   document.getElementById('courseStats').value = c.stats;
 }
 
+const WHATSAPP_NUMBER = '994552107111';
+const WA_MESSAGE_TEMPLATE = 'Здравствуйте! Хочу узнать подробнее о курсе «{course}».';
+function waLink(courseName){
+  const msg = encodeURIComponent(WA_MESSAGE_TEMPLATE.replace('{course}', courseName));
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+}
 function escapeHtml(s){ return String(s??'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 function usernameToEmail(u){ return u.trim().toLowerCase().replace(/[^a-z0-9_.-]/g,'') + EMAIL_DOMAIN; }
 
@@ -558,9 +575,12 @@ function renderPublicCourses(){
   const entries = Object.values(window.DB.courses).map(translateCourse);
   grid.innerHTML = entries.length ? entries.map(c => `
     <div class="course-card">
+      ${c.audience ? `<span class="audience-tag">${escapeHtml(c.audience)}</span>` : ''}
       <h3>${escapeHtml(c.name)}</h3>
       <p>${escapeHtml(c.description||'')}</p>
       <div class="course-stats">${(c.stats||[]).map(s=>`<span class="stat-chip">${escapeHtml(s)}</span>`).join('')}</div>
+      ${c.price ? `<div class="course-price">${escapeHtml(c.price)}</div>` : ''}
+      <a class="btn-whatsapp" href="${waLink(c.name)}" target="_blank" rel="noopener">📱 Написать в WhatsApp</a>
     </div>`).join('') : '<div class="chip-empty">Kurslar tezliklə əlavə olunacaq</div>';
 
   const cards = document.querySelectorAll('.course-card');
@@ -828,16 +848,19 @@ window.adminAddCourse = function(){
   const url = document.getElementById('courseUrl').value.trim();
   const description = document.getElementById('courseDesc').value.trim();
   const stats = document.getElementById('courseStats').value.split(',').map(s=>s.trim()).filter(Boolean);
+  const price = document.getElementById('coursePrice').value.trim();
+  const audience = document.getElementById('courseAudience').value.trim();
   if(!name || !url){ alert('Ad və link vacibdir'); return; }
   if(editingCourseId){
-    update(ref(db,'portal/courses/'+editingCourseId), { name, url, description, stats });
+    update(ref(db,'portal/courses/'+editingCourseId), { name, url, description, stats, price, audience });
     editingCourseId = null;
     document.getElementById('courseFormBtn').textContent = '+ Əlavə et';
   } else {
-    push(ref(db,'portal/courses'), { name, url, description, stats, createdAt: Date.now() });
+    push(ref(db,'portal/courses'), { name, url, description, stats, price, audience, createdAt: Date.now() });
   }
   document.getElementById('courseName').value=''; document.getElementById('courseUrl').value='';
   document.getElementById('courseDesc').value=''; document.getElementById('courseStats').value='';
+  document.getElementById('coursePrice').value=''; document.getElementById('courseAudience').value='';
   document.getElementById('coursePreset').value='';
 }
 window.adminEditCourse = function(id){
@@ -848,6 +871,8 @@ window.adminEditCourse = function(id){
   document.getElementById('courseUrl').value = c.url || '';
   document.getElementById('courseDesc').value = c.description || '';
   document.getElementById('courseStats').value = (c.stats||[]).join(', ');
+  document.getElementById('coursePrice').value = c.price || '';
+  document.getElementById('courseAudience').value = c.audience || '';
   document.getElementById('courseFormBtn').textContent = '💾 Yenilə';
   document.getElementById('courseName').scrollIntoView({behavior:'smooth', block:'center'});
 }
