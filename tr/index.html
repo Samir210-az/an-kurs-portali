@@ -126,6 +126,10 @@
     border:1px solid rgba(123,160,152,0.3); color:var(--sage);
   }
   .chip-empty{ color:var(--cream-dim); font-size:0.9rem; font-style:italic; grid-column:1/-1; }
+  .audience-tag{ display:inline-block; padding:0.28rem 0.75rem; border-radius:999px; font-size:0.72rem; letter-spacing:.02em; background:rgba(210,165,93,0.14); color:var(--gold-light); border:1px solid rgba(210,165,93,0.35); margin-bottom:0.8rem; }
+  .course-price{ font-family:'Fraunces', serif; font-size:1.15rem; color:var(--gold-light); margin:1rem 0 0.9rem; }
+  .btn-whatsapp{ display:inline-flex; align-items:center; gap:0.45rem; padding:0.7rem 1.15rem; border-radius:10px; background:linear-gradient(135deg,#25D366,#1DA851); color:#fff; text-decoration:none; font-size:0.86rem; font-weight:500; transition:transform .2s ease, box-shadow .2s ease; }
+  .btn-whatsapp:hover{ transform:translateY(-2px); box-shadow:0 8px 20px rgba(37,211,102,0.3); }
 
   /* login / admin section */
   .login-section{ position:relative; z-index:2; padding:3vh 6vw 8vh; display:flex; justify-content:center; }
@@ -358,6 +362,10 @@
       </div>
       <input type="text" id="courseDesc" placeholder="Qısa təsvir (məs: 15 klinik modul, seans skriptləri)">
       <input type="text" id="courseStats" placeholder="Statistika (vergüllə: 100 proqram, 50 seans)">
+      <div class="row2">
+        <div><input type="text" id="coursePrice" placeholder="Qiymət (məs: 250 AZN)"></div>
+        <div><input type="text" id="courseAudience" placeholder="Kimə aiddir (məs: Psixoloqlar üçün)"></div>
+      </div>
       <button class="btn-sm" id="courseFormBtn" onclick="adminAddCourse()">+ Əlavə et</button>
       <table><thead><tr><th>Ad</th><th>Təsvir</th><th></th></tr></thead><tbody id="adminCoursesBody"></tbody></table>
     </div>
@@ -486,17 +494,20 @@ const COURSE_I18N = {
   "koqnitiv_kurs": {
     name: "BDT Kursu (Bilişsel Davranışçı Terapi)",
     description: "Bilişsel Davranışçı Terapi'nin hem teorik temelini hem de gerçek klinik uygulamasını kapsayan 20 modüllük bir program — 18 modül gerçek seanslar üzerine kurulu, 2 modül ise teorik ve teknik referans niteliğinde. Her seans değerlendirmeyle başlar, temel terapötik çalışma aşamasından geçer ve somut bir ev ödeviyle kapanır; diyaloglar kalıp senaryolar değil, her danışanın kendi direnci, tereddüdü ve temposunu yansıtır. DSM-5-TR ölçütlerine ve uluslararası BDT protokollerine uyumlu programda her modülde risk değerlendirmesi, klinik değerlendirme formu ve kaynakça yer alır. Toplam 186 seans, 3 farklı yaş grubuna özgü yaklaşımlarla sunulur.",
-    stats: ["20 modül", "186 seans", "3 yaş grubu"]
+    stats: ["20 modül", "186 seans", "3 yaş grubu"],
+    audience: "Psikologlar için"
   },
   "usaq-psixologiyasi-kursu": {
     name: "Çocuk ve Ergen Psikolojisi Kursu",
     description: "Çocuk ve ergenlerle çalışan uzmanlar için hazırlanmış 15 modüllük bir program — psikolog, ergoterapist, dil ve konuşma terapisti, psikopedagog ve duyu bütünleme uzmanının ortak bakış açısını bir araya getirir. Her modül belirli bir konuya odaklanır — davranış bozukluklarından seçici mutizme, ebeveyn boşanmasıyla baş etmeye kadar — klinik vaka örneği, gerçek terapist-çocuk diyaloğu, ev ödevi örneği ve yaşa uygun değerlendirme araçlarıyla desteklenir. Kursta 176 bireysel seans bulunur, her biri kendine özgü bir senaryo üzerine kuruludur; kriz protokolleri ve gözlem çizelgeleri her modüle entegre edilmiştir.",
-    stats: ["15 modül", "176 seans", "5 uzmanlık perspektifi"]
+    stats: ["15 modül", "176 seans", "5 uzmanlık perspektifi"],
+    audience: "Çocuk uzmanları için"
   },
   "kurs_13": {
     name: "Çocuk ve Ergen Terapi Programları Kursu",
     description: "Bireysel terapi planlaması üzerine kurulu 13 programlık bir kurs — psikolog, ergoterapist, dil ve konuşma terapisti, psikopedagog ve duyu bütünleme uzmanının ortak deneyimini yansıtır. Her program seans seans ilerleyen net bir yapıya sahiptir: açılış, ana çalışma ve kapanış aşamaları belirgin şekilde ayrılmıştır, her aşamada gerçek soru-cevap örnekleri, ebeveyn katılım formatları ve ev ödevleri yer alır. 160 seansın her biri kendine özgü bir senaryo üzerine kuruludur, tekrarlanan diyalog yoktur. Kurs artık 4 dilde tam olarak erişilebilir: Azerbaycan Türkçesi, İngilizce, Rusça ve Türkçe.",
-    stats: ["13 program", "160 seans", "4 dil"]
+    stats: ["13 program", "160 seans", "4 dil"],
+    audience: "Terapi ekipleri için"
   }
 };
 function translateCourse(c){
@@ -504,7 +515,7 @@ function translateCourse(c){
   const key = Object.keys(COURSE_I18N).find(k => (c.url||"").includes(k));
   if(!key) return c;
   const t = COURSE_I18N[key];
-  return Object.assign({}, c, { name: t.name, description: t.description, stats: t.stats });
+  return Object.assign({}, c, { name: t.name, description: t.description, stats: t.stats, audience: t.audience || c.audience });
 }
 
 
@@ -531,6 +542,12 @@ window.fillPreset = function(){
   document.getElementById('courseStats').value = c.stats;
 }
 
+const WHATSAPP_NUMBER = '994552107111';
+const WA_MESSAGE_TEMPLATE = 'Merhaba! "{course}" kursu hakkında bilgi almak istiyorum.';
+function waLink(courseName){
+  const msg = encodeURIComponent(WA_MESSAGE_TEMPLATE.replace('{course}', courseName));
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+}
 function escapeHtml(s){ return String(s??'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 function usernameToEmail(u){ return u.trim().toLowerCase().replace(/[^a-z0-9_.-]/g,'') + EMAIL_DOMAIN; }
 
@@ -558,9 +575,12 @@ function renderPublicCourses(){
   const entries = Object.values(window.DB.courses).map(translateCourse);
   grid.innerHTML = entries.length ? entries.map(c => `
     <div class="course-card">
+      ${c.audience ? `<span class="audience-tag">${escapeHtml(c.audience)}</span>` : ''}
       <h3>${escapeHtml(c.name)}</h3>
       <p>${escapeHtml(c.description||'')}</p>
       <div class="course-stats">${(c.stats||[]).map(s=>`<span class="stat-chip">${escapeHtml(s)}</span>`).join('')}</div>
+      ${c.price ? `<div class="course-price">${escapeHtml(c.price)}</div>` : ''}
+      <a class="btn-whatsapp" href="${waLink(c.name)}" target="_blank" rel="noopener">📱 WhatsApp ile sor</a>
     </div>`).join('') : '<div class="chip-empty">Kurslar tezliklə əlavə olunacaq</div>';
 
   const cards = document.querySelectorAll('.course-card');
@@ -828,16 +848,19 @@ window.adminAddCourse = function(){
   const url = document.getElementById('courseUrl').value.trim();
   const description = document.getElementById('courseDesc').value.trim();
   const stats = document.getElementById('courseStats').value.split(',').map(s=>s.trim()).filter(Boolean);
+  const price = document.getElementById('coursePrice').value.trim();
+  const audience = document.getElementById('courseAudience').value.trim();
   if(!name || !url){ alert('Ad və link vacibdir'); return; }
   if(editingCourseId){
-    update(ref(db,'portal/courses/'+editingCourseId), { name, url, description, stats });
+    update(ref(db,'portal/courses/'+editingCourseId), { name, url, description, stats, price, audience });
     editingCourseId = null;
     document.getElementById('courseFormBtn').textContent = '+ Əlavə et';
   } else {
-    push(ref(db,'portal/courses'), { name, url, description, stats, createdAt: Date.now() });
+    push(ref(db,'portal/courses'), { name, url, description, stats, price, audience, createdAt: Date.now() });
   }
   document.getElementById('courseName').value=''; document.getElementById('courseUrl').value='';
   document.getElementById('courseDesc').value=''; document.getElementById('courseStats').value='';
+  document.getElementById('coursePrice').value=''; document.getElementById('courseAudience').value='';
   document.getElementById('coursePreset').value='';
 }
 window.adminEditCourse = function(id){
@@ -848,6 +871,8 @@ window.adminEditCourse = function(id){
   document.getElementById('courseUrl').value = c.url || '';
   document.getElementById('courseDesc').value = c.description || '';
   document.getElementById('courseStats').value = (c.stats||[]).join(', ');
+  document.getElementById('coursePrice').value = c.price || '';
+  document.getElementById('courseAudience').value = c.audience || '';
   document.getElementById('courseFormBtn').textContent = '💾 Yenilə';
   document.getElementById('courseName').scrollIntoView({behavior:'smooth', block:'center'});
 }
