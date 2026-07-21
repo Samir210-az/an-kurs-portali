@@ -126,6 +126,28 @@
     border:1px solid rgba(123,160,152,0.3); color:var(--sage);
   }
   .chip-empty{ color:var(--cream-dim); font-size:0.9rem; font-style:italic; grid-column:1/-1; }
+
+  /* author / instructor section */
+  .author-section{ position:relative; z-index:2; max-width:900px; margin:0 auto; padding:1vh 6vw 2vh; }
+  .author-card{
+    display:flex; gap:2.2rem; align-items:center; flex-wrap:wrap;
+    background:rgba(243,238,225,0.035); border:1px solid rgba(217,168,90,0.16);
+    border-radius:22px; padding:2.3rem 2.1rem; backdrop-filter:blur(6px);
+  }
+  .author-photo{
+    width:150px; height:150px; border-radius:50%; object-fit:cover; flex-shrink:0;
+    border:3px solid rgba(210,165,93,0.55); box-shadow:0 10px 30px rgba(0,0,0,0.3);
+  }
+  .author-info{ flex:1; min-width:250px; }
+  .author-name{ font-family:'Fraunces', serif; font-weight:500; font-size:1.55rem; color:var(--gold-light); margin-bottom:0.35rem; }
+  .author-role{ font-size:0.84rem; color:var(--cream-dim); line-height:1.6; margin-bottom:1.1rem; }
+  .author-bio{ font-size:0.92rem; line-height:1.8; color:var(--cream-dim); font-weight:300; margin-bottom:1.2rem; text-align:justify; }
+  .author-cert-badge{
+    display:inline-flex; align-items:center; gap:0.45rem; padding:0.6rem 1.05rem; border-radius:999px;
+    font-size:0.82rem; font-weight:500; color:#fff; background:linear-gradient(135deg,#6A0000,#D2A55D);
+    box-shadow:0 8px 20px rgba(106,0,0,0.28);
+  }
+  @media (max-width:560px){ .author-card{ flex-direction:column; text-align:center; padding:2rem 1.5rem; } .author-info{ min-width:0; } }
   .audience-tag{ display:inline-block; padding:0.28rem 0.75rem; border-radius:999px; font-size:0.72rem; letter-spacing:.02em; background:rgba(210,165,93,0.14); color:var(--gold-light); border:1px solid rgba(210,165,93,0.35); margin-bottom:0.8rem; }
   .course-price{ font-family:'Fraunces', serif; font-size:1.15rem; color:var(--gold-light); margin:1rem 0 0.9rem; }
   .btn-whatsapp{ display:inline-flex; align-items:center; gap:0.45rem; padding:0.7rem 1.15rem; border-radius:10px; background:linear-gradient(135deg,#25D366,#1DA851); color:#fff; text-decoration:none; font-size:0.86rem; font-weight:500; transition:transform .2s ease, box-shadow .2s ease; }
@@ -298,6 +320,18 @@
   </a>
 
   <div class="scroll-cue"><span>Aşağı kaydırın</span><div class="scroll-line"></div></div>
+</section>
+
+<section class="author-section" id="author">
+  <div class="author-card">
+    <img class="author-photo" src="../nahide-axundova.jpg" alt="Nahide Ahundova" loading="lazy">
+    <div class="author-info">
+      <div class="author-name">Nahide Ahundova</div>
+      <div class="author-role">AN Psikolojik Destek ve Rehabilitasyon Merkezi'nin kurucusu ve direktörü · Klinik Psikolog · 18 yıllık deneyim</div>
+      <p class="author-bio">Bu kurslar, AN Psikolojik Destek ve Rehabilitasyon Merkezi'nin kurucusu ve direktörü Nahide Ahundova'nın 18 yıllık klinik deneyimine dayanarak hazırlanmış olup uluslararası standartlara uygundur. Her modül gerçek seanslar ve somut vakalar üzerine kurulu — birinin sustuğu, birinin itiraz ettiği, birinin adım adım ilerlediği anlar. Teori değil, kabinde yaşanan gerçek süreç.</p>
+      <span class="author-cert-badge">🎓 Kursu tamamlayanlara resmi sertifika verilir</span>
+    </div>
+  </div>
 </section>
 
 <section class="courses-section" id="courses-list">
