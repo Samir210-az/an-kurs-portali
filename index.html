@@ -645,7 +645,9 @@ window.doLogin = async function(){
       await push(ref(db,'portal/securityAlerts'), { username: cust.username, type:'ip_changed', severity:'low', oldValue: cust.lastIP, newValue: ip, ts: now });
     }
 
-    await update(ref(db,'portal/customers/'+uid), { lastDevice: device, lastIP: ip, lastLogin: now });
+    const mySessionId = (crypto.randomUUID ? crypto.randomUUID() : 'sess_'+now+'_'+Math.random().toString(36).slice(2));
+    localStorage.setItem('an_kurs_session_'+uid, mySessionId);
+    await update(ref(db,'portal/customers/'+uid), { lastDevice: device, lastIP: ip, lastLogin: now, activeSessionId: mySessionId });
 
     if(!cust.termsAccepted){
       pendingLogin = { uid, cust };
