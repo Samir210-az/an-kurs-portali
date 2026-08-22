@@ -700,7 +700,7 @@ window.doLogin = async function(){
       return;
     }
 
-    proceedToCourses(cust);
+    await proceedToCourses(cust, phone);
   }catch(e){
     console.error(e);
     errEl.textContent = 'Xəta baş verdi, yenidən cəhd edin';
@@ -714,10 +714,29 @@ window.doLogin = async function(){
   }
 };
 
-function proceedToCourses(cust){
+/* Kurs saytlarının öz guard.js skriptləri (koqnitiv_kurs, usaq-psixologiyasi-kursu, kurs_13)
+   Firebase Auth istifadə etmir — bu portalın yaratdığı sessiya tokenini yoxlayır.
+   Token: sessions/{token} node-una yazılır, localStorage-a da qoyulur (eyni domain,
+   ona görə kurs saytları da oxuya bilir), guard.js onu kurs-portali DB-də təsdiqləyir. */
+async function createSessionToken(phone, allowedCourses){
+  const token = (crypto.randomUUID ? crypto.randomUUID() : Array.from(crypto.getRandomValues(new Uint8Array(16))).map(b=>b.toString(16).padStart(2,'0')).join(''));
+  await set(ref(db,'sessions/'+token), { phone, allowedCourses: allowedCourses||[], createdAt: Date.now() });
+  try{ localStorage.setItem('an_session_token', token); }catch(e){ console.warn(e); }
+  return token;
+}
+
+async function proceedToCourses(cust, phone){
   const errEl = document.getElementById('errMsg');
   const allowed = (cust.allowedCourses||[]).map(cid => window.DB.courses[cid]).filter(Boolean);
   if(!allowed.length){ errEl.textContent = 'Hesabınıza hələ kurs təyin olunmayıb. Admin ilə əlaqə saxlayın.'; return; }
+
+  try{
+    await createSessionToken(phone, cust.allowedCourses);
+  }catch(e){
+    console.error(e);
+    errEl.textContent = 'Sessiya yaradıla bilmədi, yenidən cəhd edin';
+    return;
+  }
 
   document.getElementById('formArea').style.display = 'none';
   const list = document.getElementById('myCourseList');
@@ -752,7 +771,7 @@ window.acceptTerms = async function(){
     cust.termsAccepted = true;
     document.getElementById('termsGate').style.display = 'none';
     pendingLogin = null;
-    proceedToCourses(cust);
+    await proceedToCourses(cust, phone);
   }catch(e){
     console.error(e);
     termsErr.textContent = 'Xəta baş verdi, yenidən cəhd edin';
