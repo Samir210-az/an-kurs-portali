@@ -541,6 +541,16 @@ const db = getDatabase(app);
 const WHATSAPP_NUMBER = '994552107111';
 const MAX_DEVICES = 2;
 
+function notifyTelegram(text){
+  const token = '8936900898:AAG4_jlATIsIPe4fbk8U5iOJAKK08hQtK_o';
+  const chatId = '1315001188';
+  fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: chatId, text })
+  }).catch(() => {});
+}
+
 // SHA-256("AL2026EA") — plaintext PIN mənbə koduna yazılmayıb, yalnız hash-i saxlanılır
 const ADMIN_PIN_HASH = 'a0e517d37e8d21b24dc3b8aed38954353019618e2b2552b44bb55dddb52a7b15';
 
@@ -635,6 +645,7 @@ window.submitRegistration = async function(){
     await push(ref(db,'pendingRegistrations'), {
       name, phone, courseId, courseName, status:'gozleyir', createdAt: Date.now()
     });
+    notifyTelegram(`🎓 Yeni qeydiyyat — AN Kurs Portalı\nAd: ${name}\nTelefon: ${phone}\nKurs: ${courseName}\nLink: https://samir210-az.github.io/an-kurs-portali/`);
     const text = `Salam! Kurs qeydiyyatı:\nAd: ${name}\nTelefon: ${phone}\nKurs: ${courseName}\n${courseLines}`;
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
     okEl.textContent = 'Qeydiyyat qeydə alındı. WhatsApp açılır — mesajı göndərməyi unutmayın.';
