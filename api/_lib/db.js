@@ -1,6 +1,7 @@
-// Realtime Database-ə REST ilə çıxış. FIREBASE_SERVICE_ACCOUNT təyin olunubsa
-// sorğular service account tokeni ilə gedir (rules bağlı olanda da işləyir);
-// təyin olunmayıbsa tokensiz gedir və yalnız rules açıq olduqda işləyir.
+// Realtime Database-ə REST ilə çıxış. Üç rejim (rules bağlı olanda ilk ikisi işləyir):
+// 1) FIREBASE_SERVICE_ACCOUNT — service account JSON-u, sorğular OAuth tokeni ilə gedir;
+// 2) FIREBASE_DB_SECRET — köhnə "database secret" sətri, ?auth= ilə gedir;
+// 3) heç biri yoxdursa tokensiz gedir və yalnız rules açıq olduqda işləyir.
 
 const crypto = require('crypto');
 
@@ -17,10 +18,15 @@ function b64url(input) {
 
 async function accessToken() {
   const raw = process.env.FIREBASE_SERVICE_ACCOUNT;
-  if (!raw) return null;
+  if (!raw || process.env.FIREBASE_DB_SECRET) return null;
   if (cachedToken && cachedToken.expires > Date.now() + 60000) return cachedToken.value;
 
-  const account = JSON.parse(raw);
+  let account;
+  try {
+    account = JSON.parse(raw);
+  } catch (e) {
+    throw new Error('FIREBASE_SERVICE_ACCOUNT düzgün JSON deyil: {"type":"service_account",...} faylının bütün mətni olmalıdır');
+  }
   const now = Math.floor(Date.now() / 1000);
   const unsigned =
     b64url(JSON.stringify({ alg: 'RS256', typ: 'JWT' })) + '.' +
@@ -52,7 +58,9 @@ async function request(method, path, body) {
   const headers = {};
   if (token) headers.Authorization = 'Bearer ' + token;
   if (body !== undefined) headers['Content-Type'] = 'application/json';
-  const res = await fetch(`${DB_URL}/${path}.json`, {
+  const secret = process.env.FIREBASE_DB_SECRET;
+  const query = secret ? '?auth=' + encodeURIComponent(secret) : '';
+  const res = await fetch(`${DB_URL}/${path}.json${query}`, {
     method,
     headers,
     body: body === undefined ? undefined : JSON.stringify(body),

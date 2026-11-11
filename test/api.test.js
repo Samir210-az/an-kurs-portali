@@ -23,7 +23,9 @@ function locate(parts) {
   return [node, parts[parts.length - 1]];
 }
 
+let lastDbUrl = '';
 const dbServer = http.createServer((req, res) => {
+  lastDbUrl = req.url;
   let raw = '';
   req.on('data', (c) => (raw += c));
   req.on('end', () => {
@@ -217,4 +219,15 @@ test('EN/RU/TR səhifələri Firebase-siz və AZ səhifə ilə sinxrondur', () =
   execFileSync(process.execPath, [path.join(__dirname, '..', 'scripts', 'build-lang-pages.mjs')], { stdio: 'ignore' });
   const after = ['en', 'ru', 'tr'].map(l => fs.readFileSync(path.join(pub, l, 'index.html'), 'utf8'));
   assert.deepStrictEqual(after, before, 'public/index.html dəyişib: node scripts/build-lang-pages.mjs işlədin');
+});
+
+test('FIREBASE_DB_SECRET sorğulara auth parametri əlavə edir', async () => {
+  const db = require('../api/_lib/db');
+  process.env.FIREBASE_DB_SECRET = 'gizli deyer/+';
+  try {
+    await db.get('courses');
+    assert.match(lastDbUrl, /\.json\?auth=gizli%20deyer%2F%2B$/);
+  } finally {
+    delete process.env.FIREBASE_DB_SECRET;
+  }
 });
