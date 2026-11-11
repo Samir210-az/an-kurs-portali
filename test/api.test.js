@@ -126,10 +126,11 @@ test('giriş: şərtlər, sessiya, yalnız icazəli kurs', async () => {
 
   r = await call('content', { cookie, query: { slug: 'kurs_13', p: 'index.html' }, url: '/kurs/kurs_13/index.html' });
   assert.equal(r.status, 200);
-  assert.match(r.body.toString(), /© 994501112233<\/div><\/body>/);
+  assert.match(r.body.toString(), /© 994501112233<\/div>.*>Çıxış<\/button>.*<\/script><\/body>/);
 
   r = await call('content', { cookie, query: { slug: 'kurs_13', p: ['en', '01-aqressiv-usaqlarla-is.html'] }, url: '/kurs/kurs_13/en/01-aqressiv-usaqlarla-is.html' });
   assert.equal(r.status, 200);
+  assert.match(r.body.toString(), />Log out<\/button>/);
 
   r = await call('content', { cookie, query: { slug: 'kurs_13', p: 'styles.css' }, url: '/kurs/kurs_13/styles.css' });
   assert.equal(r.headers['content-type'], 'text/css; charset=utf-8');
