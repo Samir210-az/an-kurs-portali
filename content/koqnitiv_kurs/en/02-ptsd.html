@@ -1,0 +1,3414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#d9a85a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Module 2 · Post-Traumatic Stress and CBT</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1:#0c211f; --bg-2:#1d423d;
+    --surface: rgba(217,168,90,0.055);
+    --surface-h: rgba(217,168,90,0.10);
+    --border: rgba(217,168,90,0.14);
+    --teal:#7ba098; --teal-soft: rgba(123,160,152,0.18);
+    --violet:#8a6a3a; --violet-soft: rgba(138,106,58,0.20);
+    --amber:#d9a85a; --amber-soft: rgba(217,168,90,0.18);
+    --rose:#d9705a; --rose-soft: rgba(217,112,90,0.16);
+    --sky:#f0cd8e; --sky-soft:rgba(240,205,142,0.18);
+    --text-1:#f3eee1; --text-2:#c9c2ae; --text-3:#8a9a93;
+    --font-d:'Fraunces', serif;
+    --font-b:'Inter', system-ui, sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{-webkit-user-select:none;-moz-user-select:none;user-select:none;}
+  body{
+    font-family:var(--font-b);
+    background:
+      radial-gradient(1100px 750px at 12% -10%, rgba(139,92,246,0.18), transparent 60%),
+      radial-gradient(1000px 700px at 110% 15%, rgba(45,212,191,0.14), transparent 55%),
+      linear-gradient(180deg, var(--bg-1), var(--bg-2));
+    color:var(--text-1);
+    min-height:100vh;
+    line-height:1.65;
+  }
+  .blob{position:fixed;border-radius:50%;filter:blur(80px);opacity:.45;pointer-events:none;z-index:0;}
+  .blob-1{width:400px;height:400px;background:var(--violet-soft);top:-100px;left:-120px;}
+  .blob-2{width:360px;height:360px;background:var(--teal-soft);top:40%;right:-140px;}
+  .blob-3{width:320px;height:320px;background:var(--rose-soft);bottom:-80px;left:30%;}
+
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px;
+    background:rgba(11,18,36,0.75);
+    backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--border);
+  }
+  .topbar-brand{display:flex; align-items:center; gap:10px; text-decoration:none; flex-shrink:0;}
+  .topbar-brand img{width:34px; height:34px; border-radius:9px; object-fit:cover; border:1px solid rgba(255,255,255,0.15);}
+  .topbar-brand .tb-name{font-family:var(--font-d); font-weight:700; font-size:.78rem; color:var(--text-1); line-height:1.2; max-width:150px;}
+  .topbar-right{display:flex; align-items:center; gap:14px; flex-shrink:0;}
+  @media(max-width:640px){ .topbar-brand .tb-name{display:none;} .topbar a.back span{display:none;} }
+  .topbar a.back{
+    display:inline-flex; align-items:center; gap:8px;
+    color:var(--text-2); text-decoration:none; font-size:.9rem; font-weight:600;
+    transition:color .2s;
+  }
+  .topbar a.back:hover{color:var(--teal);}
+  .progress-pill{
+    font-size:.78rem; color:var(--text-3);
+    border:1px solid var(--border); padding:6px 14px; border-radius:999px;
+    background:var(--surface);
+  }
+
+  main{position:relative; z-index:2; max-width:880px; margin:0 auto; padding:0 24px 100px;}
+
+  .hero{padding:64px 0 40px; text-align:center;}
+  .hero-illus{display:flex; justify-content:center; margin-bottom:28px;}
+  .hero-illus svg{max-width:100%; height:auto;}
+  .tag{
+    display:inline-block; font-size:.76rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--rose); background:var(--rose-soft); border:1px solid rgba(251,113,133,.35);
+    padding:6px 16px; border-radius:999px; margin-bottom:22px;
+    animation:fadeDown .7s ease both;
+  }
+  h1{
+    font-family:var(--font-d); font-weight:800; font-size:clamp(1.9rem,4.6vw,3rem); line-height:1.2;
+    background:linear-gradient(90deg,#fff,#cdd8ff 45%, var(--rose));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:fadeUp .8s ease both .1s;
+  }
+  .hero p{color:var(--text-2); max-width:620px; margin:20px auto 0; animation:fadeUp .8s ease both .2s;}
+
+  section{margin-top:64px; animation:fadeUp .8s ease both; opacity:0;}
+  section.show{opacity:1;}
+  .sec-head{display:flex; align-items:center; gap:14px; margin-bottom:24px;}
+  .sec-num{
+    font-family:var(--font-d); font-size:1.4rem; font-weight:800; color:var(--bg-1);
+    background:linear-gradient(135deg,var(--rose),var(--violet));
+    width:44px;height:44px; border-radius:13px; display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  h2{font-family:var(--font-d); font-size:clamp(1.35rem,3vw,1.7rem); font-weight:700;}
+  .lead{color:var(--text-2); margin-bottom:22px;}
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:18px;
+    padding:24px 26px; margin-bottom:18px; backdrop-filter:blur(10px);
+  }
+  .card h3{font-size:1.05rem; margin-bottom:10px; color:var(--text-1); display:flex; align-items:center; gap:10px;}
+  .card p{color:var(--text-2); font-size:.95rem;}
+  .card p + p{margin-top:10px;}
+
+  .simple-box{
+    border-left:3px solid var(--sky);
+    background:var(--sky-soft);
+    border-radius:0 14px 14px 0;
+    padding:18px 22px;
+    margin:18px 0;
+    font-size:.94rem;
+  }
+  .simple-box b{color:var(--sky);}
+  .sci-box{
+    border-left:3px solid var(--violet);
+    background:var(--violet-soft);
+    border-radius:0 14px 14px 0;
+    padding:18px 22px;
+    margin:18px 0;
+    font-size:.94rem;
+  }
+  .sci-box b{color:var(--violet);}
+
+  .example{
+    border-left:3px solid var(--amber);
+    background:var(--amber-soft);
+    border-radius:0 14px 14px 0;
+    padding:16px 20px;
+    margin:16px 0;
+    font-size:.92rem;
+  }
+  .example b{color:var(--amber);}
+
+  .dialog{
+    background:rgba(255,255,255,.03);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:20px 22px;
+    margin:18px 0;
+    font-size:.92rem;
+  }
+  .dialog .line{display:flex; gap:12px; margin-bottom:14px;}
+  .dialog .line:last-child{margin-bottom:0;}
+  .dialog .who{flex-shrink:0; width:78px; font-weight:700; font-size:.8rem; padding-top:2px;}
+  .dialog .who.t{color:var(--teal);}
+  .dialog .who.k{color:var(--rose);}
+  .dialog .txt{color:var(--text-2);}
+
+  /* Symptom groups grid */
+  .symptom-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:16px; margin:26px 0;}
+  .symptom-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:20px 22px;
+    transition:transform .3s, border-color .3s;
+  }
+  .symptom-card:hover{transform:translateY(-4px); border-color:rgba(251,113,133,.4);}
+  .symptom-card .ico{font-size:1.6rem; margin-bottom:10px; display:block;}
+  .symptom-card h4{font-size:.98rem; margin-bottom:8px;}
+  .symptom-card p{font-size:.85rem; color:var(--text-2);}
+  .symptom-card .ex-line{font-size:.8rem; color:var(--text-3); font-style:italic; margin-top:8px;}
+
+  /* Age comparison */
+  .age-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; margin:26px 0;}
+  .age-card{border-radius:18px; padding:20px; border:1px solid var(--border);}
+  .age-card.child{background:var(--teal-soft);}
+  .age-card.teen{background:var(--violet-soft);}
+  .age-card.adult{background:var(--amber-soft);}
+  .age-card h4{font-size:1rem; margin-bottom:10px;}
+  .age-card ul{padding-left:18px; font-size:.85rem; color:var(--text-2);}
+  .age-card li{margin-bottom:6px;}
+
+  /* PRACTICE model */
+  .practice-list{margin:26px 0;}
+  .practice-item{
+    display:flex; gap:16px; padding:16px 0; border-bottom:1px solid var(--border); align-items:flex-start;
+  }
+  .practice-item:last-child{border-bottom:none;}
+  .practice-letter{
+    flex-shrink:0; width:40px;height:40px; border-radius:11px;
+    background:linear-gradient(135deg,var(--rose),var(--violet));
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-d); font-weight:800; color:#0c211f; font-size:1.1rem;
+  }
+  .practice-item h4{font-size:.96rem; margin-bottom:4px;}
+  .practice-item p{font-size:.86rem; color:var(--text-2);}
+
+  /* Session plan timeline */
+  .session-plan{margin:26px 0;}
+  .sess-row{
+    display:grid; grid-template-columns:56px 1fr auto; gap:14px; align-items:center;
+    padding:15px 12px; border-bottom:1px solid var(--border);
+    cursor:pointer; border-radius:14px; transition:background .25s, transform .25s;
+  }
+  .sess-row:hover{background:var(--surface); transform:translateX(4px);}
+  .sess-row:last-child{border-bottom:none;}
+  .sess-num{
+    font-family:var(--font-d); font-weight:800; color:var(--rose); font-size:1rem;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--rose-soft); border-radius:12px; height:40px;
+  }
+  .sess-txt h4{font-size:.94rem; margin-bottom:3px;}
+  .sess-txt p{font-size:.83rem; color:var(--text-2);}
+  .sess-open{font-size:.76rem; color:var(--rose); font-weight:700; white-space:nowrap; display:flex; align-items:center; gap:5px;}
+
+  /* Session modal */
+  .modal-overlay{position:fixed; inset:0; z-index:200; background:rgba(6,9,20,0.72); backdrop-filter:blur(6px); display:flex; align-items:flex-end; justify-content:center; opacity:0; visibility:hidden; transition:opacity .3s;}
+  .modal-overlay.active{opacity:1; visibility:visible;}
+  @media(min-width:720px){ .modal-overlay{align-items:center;} }
+  .modal-box{width:100%; max-width:680px; max-height:88vh; overflow-y:auto; background:linear-gradient(180deg, #1d423d, #0c211f); border:1px solid var(--border); border-radius:26px 26px 0 0; padding:32px 26px 40px; position:relative; transform:translateY(40px); transition:transform .35s cubic-bezier(.2,.8,.2,1); -webkit-user-select:text; user-select:text;}
+  @media(min-width:720px){ .modal-box{border-radius:26px; transform:translateY(0) scale(.94);} }
+  .modal-overlay.active .modal-box{transform:translateY(0) scale(1);}
+  .modal-close{position:sticky; top:0; float:right; margin-left:12px; width:36px;height:36px; border-radius:50%; border:1px solid var(--border); background:rgba(255,255,255,.06); color:var(--text-1); font-size:1.1rem; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:5;}
+  .modal-close:hover{background:rgba(255,255,255,.14);}
+  .m-tag{display:inline-block; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--rose); background:var(--rose-soft); border:1px solid rgba(251,113,133,.35); padding:5px 13px; border-radius:999px; margin-bottom:14px;}
+  .m-title{font-family:var(--font-d); font-size:1.45rem; font-weight:800; margin-bottom:18px; line-height:1.3; clear:both;}
+  .m-block{margin-bottom:22px;}
+  .m-block h5{font-size:.82rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-3); margin-bottom:10px; display:flex; align-items:center; gap:8px;}
+  .m-goal{background:var(--sky-soft); border-left:3px solid var(--sky); border-radius:0 12px 12px 0; padding:14px 18px; font-size:.9rem; color:var(--text-1);}
+  .m-materials{display:flex; flex-wrap:wrap; gap:8px;}
+  .m-materials span{background:var(--surface); border:1px solid var(--border); padding:6px 13px; border-radius:999px; font-size:.8rem; color:var(--text-2);}
+  .m-phase{background:rgba(255,255,255,.03); border:1px solid var(--border); border-radius:16px; padding:16px 18px; margin-bottom:12px;}
+  .m-phase .ph-name{font-weight:700; font-size:.88rem; color:var(--rose); margin-bottom:8px; display:flex; align-items:center; gap:8px;}
+  .m-phase p{font-size:.87rem; color:var(--text-2); margin-bottom:8px;}
+  .m-phase p:last-child{margin-bottom:0;}
+  .m-dialog{background:rgba(0,0,0,.18); border-radius:12px; padding:12px 14px; margin-top:8px;}
+  .m-dialog .dl{display:flex; gap:10px; margin-bottom:9px; font-size:.86rem;}
+  .m-dialog .dl:last-child{margin-bottom:0;}
+  .m-dialog .dw{flex-shrink:0; width:64px; font-weight:700; font-size:.75rem; padding-top:1px;}
+  .m-dialog .dw.t{color:var(--teal);}
+  .m-dialog .dw.k{color:var(--rose);}
+  .m-dialog .dt{color:var(--text-2);}
+  .m-homework{background:var(--amber-soft); border-left:3px solid var(--amber); border-radius:0 12px 12px 0; padding:14px 18px; font-size:.87rem; color:var(--text-1);}
+  .m-nextprev{display:flex; justify-content:space-between; gap:12px; margin-top:26px; padding-top:20px; border-top:1px solid var(--border);}
+  .m-navbtn{flex:1; text-align:center; padding:10px 14px; border-radius:12px; background:var(--surface); border:1px solid var(--border); color:var(--text-2); font-size:.82rem; font-weight:600; cursor:pointer; transition:background .2s;}
+  .m-navbtn:hover{background:var(--surface-h); color:var(--text-1);}
+  .m-navbtn.disabled{opacity:.4; pointer-events:none;}
+  body.modal-open{overflow:hidden;}
+
+  /* Fear thermometer */
+  .thermo-wrap{display:flex; justify-content:center; margin:30px 0;}
+  .thermo{display:flex; align-items:flex-end; gap:8px;}
+  .thermo-bar{width:34px; border-radius:8px 8px 0 0; display:flex; align-items:flex-end; justify-content:center; color:#0c211f; font-weight:800; font-size:.72rem; padding-bottom:4px;}
+
+  /* Breathing animation */
+  .breathe-wrap{display:flex; flex-direction:column; align-items:center; gap:16px; margin:30px 0;}
+  .breathe-circle{
+    width:140px;height:140px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, rgba(56,189,248,.55), rgba(139,92,246,.35));
+    border:1px solid rgba(56,189,248,.4);
+    display:flex;align-items:center;justify-content:center;
+    font-size:.85rem; font-weight:700; color:var(--text-1);
+    animation:breathe 8s ease-in-out infinite;
+  }
+  @keyframes breathe{
+    0%{transform:scale(0.75);}
+    35%{transform:scale(1.15);}
+    50%{transform:scale(1.15);}
+    85%{transform:scale(0.75);}
+    100%{transform:scale(0.75);}
+  }
+  .breathe-label{font-size:.82rem; color:var(--text-3);}
+
+  /* Grounding <span class="prog-link" onclick="openProgram('5-4-3-2-1')">5-4-3-2-1</span> */
+  .ground-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin:26px 0;}
+  .ground-card{
+    text-align:center; padding:18px 10px; border-radius:16px;
+    background:var(--surface); border:1px solid var(--border);
+  }
+  .ground-card .big{font-family:var(--font-d); font-size:1.8rem; font-weight:800; color:var(--sky); display:block;}
+  .ground-card p{font-size:.78rem; color:var(--text-2); margin-top:6px;}
+
+  .worksheet{overflow-x:auto; margin:24px 0; border-radius:16px; border:1px solid var(--border);}
+  table{width:100%; border-collapse:collapse; font-size:.84rem; min-width:600px;}
+  thead th{
+    background:rgba(255,255,255,.05); color:var(--rose); text-align:left;
+    padding:12px 14px; font-size:.78rem; letter-spacing:.03em; text-transform:uppercase;
+    border-bottom:1px solid var(--border);
+  }
+  tbody td{padding:13px 14px; color:var(--text-2); border-bottom:1px solid rgba(255,255,255,.06); vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+
+  .parent-tips{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; margin:26px 0;}
+  .tip-card{background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:18px 20px;}
+  .tip-card h4{font-size:.9rem; margin-bottom:6px; color:var(--teal);}
+  .tip-card p{font-size:.83rem; color:var(--text-2);}
+
+  .quote{
+    border-left:3px solid var(--violet);
+    padding:18px 22px; margin:26px 0; font-family:var(--font-d); font-style:italic;
+    font-size:1.05rem; color:var(--text-1); background:var(--violet-soft); border-radius:0 14px 14px 0;
+  }
+  .quote span{display:block; margin-top:10px; font-family:var(--font-b); font-style:normal; font-size:.8rem; color:var(--text-3);}
+
+  .summary-box{
+    background:linear-gradient(135deg, var(--rose-soft), var(--violet-soft));
+    border:1px solid rgba(251,113,133,.3);
+    border-radius:20px; padding:28px 26px; margin-top:60px;
+  }
+  .summary-box h3{font-family:var(--font-d); font-size:1.25rem; margin-bottom:14px;}
+  .summary-box ul{padding-left:20px; color:var(--text-2); font-size:.92rem;}
+  .summary-box li{margin-bottom:8px;}
+
+  .nav-bottom{display:flex; justify-content:space-between; align-items:center; gap:16px; margin-top:40px; flex-wrap:wrap;}
+  .nav-btn{display:inline-flex; align-items:center; gap:8px; padding:13px 22px; border-radius:14px; text-decoration:none; font-weight:600; font-size:.9rem; transition:transform .25s, box-shadow .25s;}
+  .nav-btn.home{background:var(--surface); border:1px solid var(--border); color:var(--text-1);}
+  .nav-btn.next{background:linear-gradient(135deg,var(--rose),var(--violet)); color:#0c211f;}
+  .nav-btn:hover{transform:translateY(-3px);}
+  .nav-btn.disabled{opacity:.5; pointer-events:none;}
+
+  footer{position:relative; z-index:2; text-align:center; padding:44px 24px 60px; border-top:1px solid var(--border); color:var(--text-3); font-size:.88rem; margin-top:40px;}
+  footer a{color:var(--teal); text-decoration:none; font-weight:600;}
+
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-14px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+
+  @media(max-width:640px){
+    .dialog .who{width:60px; font-size:.72rem;}
+  }
+</style>
+</head>
+<body>
+
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<div class="topbar">
+  <a class="topbar-brand" href="index.html">
+    <img src="../logo.png" alt="AN Psychological Support and Rehabilitation Center logo">
+    <span class="tb-name">AN Psychological Support and Rehabilitation Center</span>
+  </a>
+  <div class="topbar-right">
+    <a class="back" href="index.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+      <span>Menu</span>
+    </a>
+    <span class="progress-pill">Module 2 / 20</span>
+  </div>
+</div>
+
+<main>
+
+    <div class="hero">
+    <div class="hero-illus">
+      <svg width="360" height="170" viewBox="0 0 360 170" fill="none">
+        <defs>
+          <radialGradient id="lightg" cx="50%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#f0cd8e" stop-opacity="0.55"/>
+            <stop offset="100%" stop-color="#f0cd8e" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="shieldg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#d9a85a"/>
+            <stop offset="100%" stop-color="#d9705a"/>
+          </linearGradient>
+        </defs>
+        <circle cx="180" cy="75" r="85" fill="url(#lightg)"/>
+        <path d="M180 20 L150 22 Q135 22 132 40 L128 80 Q128 118 180 148 Q232 118 232 80 L228 40 Q225 22 210 22 Z" fill="none" stroke="url(#shieldg)" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M180 20 L150 22 Q135 22 132 40 L128 80 Q128 118 180 148 Q232 118 232 80 L228 40 Q225 22 210 22 Z" fill="#1d423d" opacity=".55"/>
+        <path d="M158 78 l16 16 32-36" stroke="#f3eee1" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>
+        <g stroke="#f0cd8e" stroke-width="1.6" opacity=".55" stroke-linecap="round">
+          <path d="M180 8 L180 -4"/>
+          <path d="M120 30 L108 20"/>
+          <path d="M240 30 L252 20"/>
+          <path d="M105 75 L90 75"/>
+          <path d="M255 75 L270 75"/>
+        </g>
+      </svg>
+    </div>
+    <span class="tag">Module 02 · Working with Trauma</span>
+    <h1>Post-Traumatic Stress and CBT</h1>
+    <p>I walk into this module a little differently every time, if I'm honest. When trauma enters the room, you can't rush — not in what you say, not in the pace you set. Below is a 12-session road map shaped by years of practice: real dialogues, workbook materials, and a pace that adapts from young children all the way to adults. Read it, but don't rush — this module itself is really a lesson in not rushing.</p>
+  </div>
+
+  <!-- 1. Scientific definition and plain explanation -->
+  <section>
+    <div class="sec-head"><div class="sec-num">1</div><h2>Scientific definition: Post-Traumatic Stress Disorder</h2></div>
+    <div class="sci-box">
+      <b>Clinical definition:</b> According to the DSM-5-TR, PTSD is characterized by four symptom clusters: re-experiencing, avoidance, negative alterations in cognition and mood, and marked alterations in arousal and reactivity. These emerge after directly experiencing, witnessing, or learning that a close person experienced actual or threatened death or serious injury, and persist for at least one month. TF-CBT is currently the protocol with the strongest evidence base for children and adolescents.
+    </div>
+    <div class="simple-box">
+      <b>In plain terms:</b> Picture the smoke alarm in your house. Now imagine that same alarm going off when you're just toasting bread, or even when it sees a bit of steam. The body has this system to protect you — but after trauma it shifts into "hyper-alert" mode, and keeps reacting to a danger that's long past as though it's happening right now. This is exactly how I explain it to a client.
+    </div>
+    <p class="lead">I always see relief on someone's face the first time they hear this. Because it isn't a failure of willpower. It's a survival mechanism that did its job, that the body simply hasn't learned to switch off yet — it's still fighting an old battle.</p>
+  </section>
+
+  <!-- 2. Symptom clusters -->
+  <section>
+    <div class="sec-head"><div class="sec-num">2</div><h2>Clinical classification of symptoms (DSM-5)</h2></div>
+    <p class="lead">When making a diagnosis I look at four symptom clusters, all of which must last more than a month and meaningfully disrupt daily life. What follows isn't just a list — each item carries a real clinical picture behind it.</p>
+    <div class="symptom-grid">
+      <div class="symptom-card">
+        <span class="ico">🔄</span>
+        <h4>1. Re-experiencing (intrusion)</h4>
+        <p>The event unwillingly "returns" — in the form of flashbacks, nightmares, sudden distressing memories.</p>
+        <div class="ex-line">Röya, age 8, "saw" the moment of her accident again every time a car horn sounded afterward. As if time had rewound.</div>
+      </div>
+      <div class="symptom-card">
+        <span class="ico">🚪</span>
+        <h4>2. Avoidance</h4>
+        <p>Any place, person, or topic that serves as a reminder is avoided by every possible means.</p>
+        <div class="ex-line">A teenager who survived a car accident no longer wanted to take that road — not even as a passenger.</div>
+      </div>
+      <div class="symptom-card">
+        <span class="ico">☁️</span>
+        <h4>3. Negative shifts in thought and mood</h4>
+        <p>Negative beliefs form about oneself, others, and the world. Emotional numbness and withdrawal from joy belong here too.</p>
+        <div class="ex-line">"The world is dangerous." "You can't trust anyone." I hear these sentences constantly.</div>
+      </div>
+      <div class="symptom-card">
+        <span class="ico">⚡</span>
+        <h4>4. Marked hyperarousal</h4>
+        <p>Constant anticipation of danger, being easily startled, sleep trouble, irritability, difficulty concentrating.</p>
+        <div class="ex-line">Flinching at the smallest sound. The body never seems to fully settle.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Age groups -->
+  <section>
+    <div class="sec-head"><div class="sec-num">3</div><h2>How presentation differs by age</h2></div>
+    <p class="lead">The same trauma shows up in completely different forms in a child, a teenager, an adult. This is the first thing I check when choosing a program — how does age dress up the symptom?</p>
+    <div class="age-grid">
+      <div class="age-card child">
+        <h4>👶 Children (ages 3–10)</h4>
+        <ul>
+          <li>Re-enacting the trauma repeatedly through play</li>
+          <li>Regression (returning to younger behaviors, thumb-sucking)</li>
+          <li>Separation anxiety, sleep problems</li>
+          <li>Somatic complaints (stomachaches, headaches)</li>
+        </ul>
+      </div>
+      <div class="age-card teen">
+        <h4>🧑 Adolescents (ages 11–17)</h4>
+        <ul>
+          <li>Risk-taking behavior, aggression</li>
+          <li>Social withdrawal, avoiding school</li>
+          <li>Risk of self-harm</li>
+          <li>Intensified shame and guilt</li>
+        </ul>
+      </div>
+      <div class="age-card adult">
+        <h4>🧑‍🦱 Adults</h4>
+        <ul>
+          <li>Emotional numbing, withdrawal from relationships</li>
+          <li>Decline in work and daily functioning</li>
+          <li>Sleep disturbances, ongoing tension</li>
+          <li>Self-criticism, reduced self-confidence</li>
+        </ul>
+      </div>
+    </div>
+    <p class="lead" style="margin-top:18px;">In young children, the body's reaction arrives before words do. That's why I always bring a sensory-integration lens into this work — weighted blankets, movement-based tools like dance or tapping, are enormously useful. From an occupational-therapy point of view: the body has to settle first before the words can come.</p>
+  </section>
+
+  <!-- 4. TF-CBT model -->
+  <section>
+    <div class="sec-head"><div class="sec-num">4</div><h2>The TF-CBT model — the PRACTICE components</h2></div>
+    <p class="lead">Trauma-Focused CBT is the most extensively researched, evidence-based trauma treatment model in the world. The acronym "PRACTICE" helps hold the core steps in mind — I still sometimes plan a session by running through this word myself.</p>
+    <div class="practice-list">
+      <div class="practice-item"><div class="practice-letter">P</div><div><h4>Psychoeducation and parenting skills</h4><p>I explain trauma and its effects in plain language, and give the parent concrete support skills.</p></div></div>
+      <div class="practice-item"><div class="practice-letter">R</div><div><h4>Relaxation skills</h4><p>Breathing techniques, <span class="prog-link" onclick="openProgram('ezele-bosaltma')">progressive muscle relaxation</span> — concrete tools that calm the body.</p></div></div>
+      <div class="practice-item"><div class="practice-letter">A</div><div><h4>Affect regulation</h4><p>Recognizing a feeling, naming it, learning to manage it.</p></div></div>
+      <div class="practice-item"><div class="practice-letter">C</div><div><h4>Cognitive coping</h4><p>Showing the thought-feeling-behavior link, gently questioning unhelpful thoughts.</p></div></div>
+      <div class="practice-item"><div class="practice-letter">T</div><div><h4>Trauma narrative</h4><p>Putting the event into words, step by step, in a safe environment. This is the most sensitive stage of all.</p></div></div>
+      <div class="practice-item"><div class="practice-letter">I</div><div><h4>In-vivo exposure</h4><p>We build gradual contact with real, safe, but avoided situations.</p></div></div>
+      <div class="practice-item"><div class="practice-letter">C</div><div><h4>Conjoint parent-child sessions</h4><p>Sharing the child's story with the parent, strengthening the family bond.</p></div></div>
+      <div class="practice-item"><div class="practice-letter">E</div><div><h4>Enhancing safety</h4><p>We build a concrete, written safety plan for the future.</p></div></div>
+    </div>
+  </section>
+
+  <!-- 5. Session plan -->
+  <section>
+    <div class="sec-head"><div class="sec-num">5</div><h2>Session-by-session program (a 12-session model)</h2></div>
+    <p class="lead">The structure below is the mid-range model I've used for years. It can stretch or compress depending on individual need — twelve sessions exactly isn't a rule, it's a starting point.</p>
+    <div class="session-plan">
+      <div class="sess-row" onclick="openSession(1)"><div class="sess-num">1</div><div class="sess-txt"><h4>Introduction and assessment</h4><p>Building the trust relationship, assessing symptoms, defining goals.</p></div><div class="sess-open">Open session ▸</div></div>
+      <div class="sess-row" onclick="openSession(2)"><div class="sess-num">2</div><div class="sess-txt"><h4>Psychoeducation</h4><p>A plain explanation of trauma and the brain — answering "why do I feel this way."</p></div><div class="sess-open">Open session ▸</div></div>
+      <div class="sess-row" onclick="openSession(3)"><div class="sess-num">3</div><div class="sess-txt"><h4>Breathing and relaxation skills</h4><p><span class="prog-link" onclick="openProgram('qutu-nefesi')">Box breathing</span> and muscle relaxation techniques are taught and practiced.</p></div><div class="sess-open">Open session ▸</div></div>
+      <div class="sess-row" onclick="openSession(4)"><div class="sess-num">4</div><div class="sess-txt"><h4>Recognizing emotions</h4><p>Building a feelings vocabulary, measuring emotional intensity with the "<span class="prog-link" onclick="openProgram('qorxu-termometri')">Fear Thermometer</span>."</p></div><div class="sess-open">Open session ▸</div></div>
+      <div class="sess-row" onclick="openSession(5)"><div class="sess-num">5</div><div class="sess-txt"><h4>Cognitive coping skills</h4><p>The thought-feeling-behavior triangle, recognizing unhelpful thoughts.</p></div><div class="sess-open">Open session ▸</div></div>
+      <div class="sess-row" onclick="openSession(6)"><div class="sess-num">6</div><div class="sess-txt"><h4>Trauma narrative — beginning</h4><p>Starting from the "safest" part of the event, expressed in a drawing or in words.</p></div><div class="sess-open">Open session ▸</div></div>
+      <div class="sess-row" onclick="openSession(7)"><div class="sess-num">7</div><div class="sess-txt"><h4>Trauma narrative — continuation</h4><p>Gradually approaching the hardest point of the story, managing emotions along the way.</p></div><div class="sess-open">Open session ▸</div></div>
+      <div class="sess-row" onclick="openSession(8)"><div class="sess-num">8</div><div class="sess-txt"><h4>Trauma narrative — completion</h4><p>Bringing the story together as a whole, building new meaning and perspective.</p></div><div class="sess-open">Open session ▸</div></div>
+      <div class="sess-row" onclick="openSession(9)"><div class="sess-num">9</div><div class="sess-txt"><h4>Cognitive processing</h4><p>Working through distorted trauma-related beliefs (e.g. self-blame).</p></div><div class="sess-open">Open session ▸</div></div>
+      <div class="sess-row" onclick="openSession(10)"><div class="sess-num">10</div><div class="sess-txt"><h4>In-vivo exposure</h4><p>A gradual plan for confronting avoided but genuinely safe situations.</p></div><div class="sess-open">Open session ▸</div></div>
+      <div class="sess-row" onclick="openSession(11)"><div class="sess-num">11</div><div class="sess-txt"><h4>Conjoint parent-child session</h4><p>Sharing the story, strengthening family support.</p></div><div class="sess-open">Open session ▸</div></div>
+      <div class="sess-row" onclick="openSession(12)"><div class="sess-num">12</div><div class="sess-txt"><h4>Safety plan and closing</h4><p>Consolidating skills for the future, marking the progress made.</p></div><div class="sess-open">Open session ▸</div></div>
+    </div>
+    <div class="example"><b>💡 Tip:</b> Click on any session to see the full script — opening, main body, real dialogue, homework.</div>
+  </section>
+
+  <!-- 6. Sample dialogue -->
+  <section>
+    <div class="sec-head"><div class="sec-num">6</div><h2>Sample dialogue (with an 8-year-old)</h2></div>
+    <div class="dialog">
+      <div class="line"><span class="who t">Therapist:</span><span class="txt">Röya, there's a little "danger bell" in our brain. It's there to protect us. But sometimes, after something scary happens, that bell gets extra sensitive and rings even when it doesn't need to. What's your bell like?</span></div>
+      <div class="line"><span class="who k">Child:</span><span class="txt">My bell rings all the time! Even when I'm sleeping.</span></div>
+      <div class="line"><span class="who t">Therapist:</span><span class="txt">I hear you, that must be really exhausting. Shall we learn together how to calm that bell down a little?</span></div>
+      <div class="line"><span class="who k">Child:</span><span class="txt">Yes, I want the bell to be a bit quieter.</span></div>
+    </div>
+    <div class="example"><b>Note:</b> With children, metaphor, play, and drawing are the main tools. I never use the word "PTSD" with a child. I speak in images they can actually grasp.</div>
+  </section>
+
+  <!-- 7. Breathing skill -->
+  <section>
+    <div class="sec-head"><div class="sec-num">7</div><h2>Workbook material: Box Breathing</h2></div>
+    <p class="lead">This is one of the tools that never leaves my bag. Breathe in as the circle grows, breathe out as it shrinks. That simple — but the effect is anything but simple.</p>
+    <div class="breathe-wrap">
+      <div class="breathe-circle">Breathe in / out</div>
+      <div class="breathe-label">Inhale 4 seconds → hold 4 seconds → exhale 4 seconds → hold 4 seconds</div>
+    </div>
+  </section>
+
+  <!-- 8. Fear thermometer -->
+  <section>
+    <div class="sec-head"><div class="sec-num">8</div><h2>Workbook material: the Fear Thermometer</h2></div>
+    <p class="lead">A visual tool that teaches a client — especially a child — to put a feeling into a number. It looks simple. But a great deal of a session ends up built on this one small number.</p>
+    <div class="thermo-wrap">
+      <div class="thermo">
+        <div class="thermo-bar" style="height:30px;background:#4ade80;">1-2</div>
+        <div class="thermo-bar" style="height:55px;background:#a3e635;">3-4</div>
+        <div class="thermo-bar" style="height:80px;background:#facc15;">5-6</div>
+        <div class="thermo-bar" style="height:105px;background:#fb923c;">7-8</div>
+        <div class="thermo-bar" style="height:130px;background:#f87171;">9-10</div>
+      </div>
+    </div>
+    <div class="example"><b>How it's used:</b> "On a scale of 1 to 10, how scared are you right now?" It sounds like a simple question. But it shows both me and the client exactly where the emotion currently stands.</div>
+  </section>
+
+  <!-- 9. Grounding -->
+  <section>
+    <div class="sec-head"><div class="sec-num">9</div><h2>Workbook material: the 5-4-3-2-1 Grounding Technique</h2></div>
+    <p class="lead">This is the fastest technique I use for returning to "now" during a flashback or a wave of intense anxiety. It's built on the five senses. You don't even need to memorize it — the body remembers on its own.</p>
+    <div class="ground-grid">
+      <div class="ground-card"><span class="big">5</span><p>Things you see</p></div>
+      <div class="ground-card"><span class="big">4</span><p>Things you touch</p></div>
+      <div class="ground-card"><span class="big">3</span><p>Sounds you hear</p></div>
+      <div class="ground-card"><span class="big">2</span><p>Something you can smell</p></div>
+      <div class="ground-card"><span class="big">1</span><p>Something you can taste</p></div>
+    </div>
+  </section>
+
+  <!-- 10. Parent guidance -->
+  <section>
+    <div class="sec-head"><div class="sec-num">10</div><h2>Guidance for parents</h2></div>
+    <div class="parent-tips">
+      <div class="tip-card"><h4>🗣️ Don't force them to talk</h4><p>The child will talk when they're ready. Give it time, don't shower them with questions.</p></div>
+      <div class="tip-card"><h4>🛏️ Protect routine</h4><p>Regular sleep, meals, daily activity — this does more work than words. This is exactly how a sense of safety reaches a child.</p></div>
+      <div class="tip-card"><h4>💬 Validate the feeling</h4><p>Instead of saying "don't be scared," say "I understand you're scared, I'm right here with you."</p></div>
+      <div class="tip-card"><h4>🚫 Avoid re-traumatizing</h4><p>Avoid asking about the event's details over and over again.</p></div>
+      <div class="tip-card"><h4>🏫 Stay in touch with school</h4><p>Let the teacher know what's going on so the child is supported at school too. This is the simplest form of psycho-educational support.</p></div>
+    </div>
+    <div class="example"><b>Homework (for the parent):</b> Every evening this week, spend five minutes with your child on a "how was your day" chat — no barrage of questions, just listen. Jot down one sentence: what was different today?</div>
+  </section>
+
+  <!-- 11. Clinical case -->
+  <section>
+    <div class="sec-head"><div class="sec-num">11</div><h2>Working with Röya: what's behind the story</h2></div>
+    <p class="lead">Sometimes you look into a child's eyes and think you've already understood everything. That was my first thought with Röya too — then I realized I was wrong.</p>
+    <div class="card">
+      <h3>📋 Presentation</h3>
+      <p>Röya was 9, brought to me by her mother three weeks after a car accident. She herself hadn't been seriously injured in the crash, but her mother had briefly lost consciousness, the car door was crushed, and the two of them had waited a long time on the roadside for help. Physically both had recovered. But Röya could no longer sleep at night, froze at every car horn, and had withdrawn from her classmates at school.</p>
+    </div>
+    <div class="card">
+      <h3>🔍 What we found</h3>
+      <p>I didn't apply any formal test in the first three sessions — I simply built trust through play and drawing. In the fourth session, Röya herself, unprompted, began talking about the car. That was the key moment for me: when a child is ready, they open the door themselves — you shouldn't be knocking on it.</p>
+    </div>
+    <div class="dialog">
+      <div class="line"><span class="who t">Therapist:</span><span class="txt">Röya, do you want to talk to me today about that day, or is it still too soon?</span></div>
+      <div class="line"><span class="who k">Client:</span><span class="txt">I don't know... but every time I hear a car horn, my heart beats really hard.</span></div>
+      <div class="line"><span class="who t">Therapist:</span><span class="txt">That's a very understandable reaction. Your brain is trying to tell you "pay attention." What do you usually do when that feeling comes?</span></div>
+      <div class="line"><span class="who k">Client:</span><span class="txt">I cover my ears, sometimes I move away from the window.</span></div>
+      <div class="line"><span class="who t">Therapist:</span><span class="txt">I understand. I want to tell you something — remembering that day isn't dangerous by itself. The memory can't actually hurt you, it just makes you feel uneasy. But every time you run from it, your brain learns "so this really must be dangerous."</span></div>
+      <div class="line"><span class="who k">Client:</span><span class="txt">So running away from it makes me more scared?</span></div>
+      <div class="line"><span class="who t">Therapist:</span><span class="txt">Exactly right. Here, in small steps, we're going to learn to get closer to this memory — without rushing, but without running either.</span></div>
+    </div>
+    <div class="example"><b>Core principle:</b> Remembering trauma isn't dangerous in itself. The main factor that keeps the problem going is systematic avoidance of trauma memories. I explain this to every family from the first session, because otherwise a parent can end up reinforcing avoidance in the name of protecting the child.</div>
+    <div class="card"><h3>🎯 How I apply this in session</h3><p>I never told Röya "don't be scared." Instead, we unpacked the logic of the fear together — why it exists, what purpose it serves, when it's no longer needed. Once a child understands that, the road ahead looks a little less frightening.</p></div>
+  </section>
+
+  <!-- 12. Case formulation -->
+  <section>
+    <div class="sec-head"><div class="sec-num">12</div><h2>Case Formulation Worksheet</h2></div>
+    <p class="lead">Since I'm working with a child, I usually fill this form out together with the parent — while noting separately the parts that come from the child's own words. On paper it looks simple. In practice, it's the skeleton of the entire treatment plan.</p>
+    <div class="worksheet">
+      <table>
+        <thead><tr><th>Component</th><th>Röya's example</th></tr></thead>
+        <tbody>
+          <tr><td><b>Presenting problem</b></td><td>Sleep disturbance, hyperarousal, social withdrawal</td></tr>
+          <tr><td><b>Precipitating factors (triggers)</b></td><td>Car accident (3 weeks earlier)</td></tr>
+          <tr><td><b>Predisposing factors (roots)</b></td><td>Sensitive temperament, prior history of separation anxiety</td></tr>
+          <tr><td><b>Perpetuating factors (why it doesn't stop)</b></td><td>Systematic avoidance (car horns, windows, the road), family reinforcing the avoidance too</td></tr>
+          <tr><td><b>Protective factors (strengths)</b></td><td>Supportive mother, good verbal expression, prior secure attachment</td></tr>
+          <tr><td><b>Core belief</b></td><td>"The world is suddenly dangerous, I can't protect myself"</td></tr>
+          <tr><td><b>Treatment goal</b></td><td>Gradual exposure, restoring a sense of safety, stabilizing sleep</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card"><h3>🎯 How I apply this in session</h3><p>The "perpetuating factors" row in this table is the most important one for me — because treatment mostly begins right there. For Röya it was avoidance; for someone else it could be an entirely different pattern.</p></div>
+  </section>
+
+  <!-- 13. Session protocol -->
+  <section>
+    <div class="sec-head"><div class="sec-num">13</div><h2>Sample session protocol</h2></div>
+    <p class="lead">Below is the actual protocol structure from Röya's 7th session (continuing the trauma narrative). I fill out this format after every session, both for my own records and in case it needs to be passed to another clinician.</p>
+    <div class="worksheet">
+      <table>
+        <thead><tr><th>Phase</th><th>Time</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>Mood and fear-thermometer check</td><td>5 min</td><td>Thermometer: 5/10 (previous session was 7/10)</td></tr>
+          <tr><td>Homework review</td><td>8 min</td><td>The daily "how was your day" ritual with mom completed on 4 of 5 days</td></tr>
+          <tr><td>Agenda setting</td><td>2 min</td><td>Today: continuing the trauma narrative, approaching the harder point</td></tr>
+          <tr><td>Main work</td><td>25 min</td><td>Continuing the narrative, constant monitoring via the fear thermometer, pausing as needed</td></tr>
+          <tr><td>Soothing and closing</td><td>7 min</td><td>Return to a calm state secured with box breathing</td></tr>
+          <tr><td>Closing feedback</td><td>3 min</td><td>Client: "I was less scared this time, so I must be getting better"</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 14. Assessment tools -->
+  <section>
+    <div class="sec-head"><div class="sec-num">14</div><h2>CBT assessment tools and scales</h2></div>
+    <p class="lead">For children and adolescents with suspected PTSD, I use standardized tools before the first session. These don't produce a diagnosis, but they put a number on the starting point and let us track progress across treatment.</p>
+    <div class="grid-3">
+      <div class="lens-card"><span class="ico">📊</span><h4>CPSS-5 (Child PTSD Symptom Scale)</h4><p>The primary tool for measuring PTSD symptom severity and functional impact in ages 8–18.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>UCLA PTSD Reaction Index</h4><p>An international standard for assessing traumatic exposure and symptoms across a broad age range.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>CRIES-8</h4><p>A brief scale measuring re-experiencing and avoidance symptoms, quick to apply in clinical practice.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>IES-R (Impact of Event Scale)</h4><p>Assesses the impact of an event across three dimensions (re-experiencing, avoidance, arousal) in adolescents and adults.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>PCL-5</h4><p>A self-report checklist of PTSD symptoms aligned with DSM-5 criteria, widely used with adults.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>TSCC (Trauma Symptom Checklist for Children)</h4><p>An expanded tool covering broader post-trauma symptomatology, including anxiety, depression, and dissociation.</p></div>
+    </div>
+    <div class="example"><b>Note:</b> With Röya I used the CPSS-5 and CRIES-8 together, repeating them every 4 sessions. A drop in the numbers often lands with a parent more convincingly than words do — "look, it was 7, now it's 5" creates real hope.</div>
+  </section>
+
+  <!-- 15. Homework example -->
+  <section>
+    <div class="sec-head"><div class="sec-num">🏠</div><h2>Homework example</h2></div>
+    <p class="lead">This was the concrete assignment I gave Röya — it can serve as a template for you too.</p>
+    <div class="card">
+      <p>Every day, at any point, instead of freezing when you hear a car horn, take three deep breaths and say to yourself out loud (or silently): "This is happening now, not in the past. Remembering the memory doesn't hurt me." Log it in your notebook with a number (fear level 0–10). The goal isn't to erase the fear instantly — it's simply to learn to stay with it without running. I tell every client this: the monster grows the more you run, and shrinks the more you stay.</p>
+    </div>
+  </section>
+
+
+<section>
+  <div class="sec-head"><div class="sec-num">15</div><h2>Crisis signs during the post-trauma period</h2></div>
+  <div class="crisis-box">
+    <h4>⚠️ When urgent intervention is required</h4>
+    <p>Within the TF-CBT framework — especially once moving into the trauma narrative component — the following signs should immediately change the direction of the session:</p>
+    <ul>
+      <li>Deepening dissociative episodes — a child losing contact with reality for an extended period (more than a few minutes);</li>
+      <li>Observed self-harming behavior during a flashback (hitting themselves, scratching);</li>
+      <li>Statements like "I don't want to live anymore," especially when approaching the hardest part of the trauma narrative;</li>
+      <li>A current environment carrying risk of re-traumatization (ongoing violence, an unsafe home).</li>
+    </ul>
+    <ol class="crisis-steps">
+      <li>Pause the trauma narrative component; stabilize first with grounding (5-4-3-2-1) and breathing techniques.</li>
+      <li>If dissociation is prolonged or recurring, arrange psychiatric consultation together with the parent.</li>
+      <li>If a current safety risk (ongoing violence) is uncovered, the duty to report to the relevant child protection authority is triggered.</li>
+      <li>For statements of self-harm, conduct a structured inquiry based on the Columbia Risk Scale and document the outcome.</li>
+      <li>Before resuming, make sure the client has stabilized — rushing back into the narrative component can backfire.</li>
+    </ol>
+    <p><b>Note:</b> The "stabilization" phase in TF-CBT's PRACTICE model is a mandatory gate — rushing a client who isn't ready into the narrative component is a clinical error.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="sec-num">16</div><h2>Bibliography</h2></div>
+  <div class="biblio-box">
+    <h4>📚 Key sources referenced in this topic</h4>
+    <ul class="biblio-list">
+      <li><b>Cohen, J. A., Mannarino, A. P., & Deblinger, E.</b> (2017). <i>Treating Trauma and Traumatic Grief in Children and Adolescents</i> (2nd ed.). Guilford Press.</li>
+      <li><b>Foa, E. B., et al.</b> (2018). The Child PTSD Symptom Scale (CPSS-5). <i>Journal of Clinical Child & Adolescent Psychology, 47</i>(1), 38–46.</li>
+      <li><b>van der Kolk, B.</b> (2014). <i>The Body Keeps the Score.</i> Viking.</li>
+      <li><b>Posner, K., et al.</b> (2011). The Columbia-Suicide Severity Rating Scale. <i>American Journal of Psychiatry, 168</i>(12), 1266–1277.</li>
+      <li><b>American Psychiatric Association.</b> (2022). <i>DSM-5-TR.</i></li>
+      <li><b>Kaminer, D., & Eagle, G.</b> (2010). <i>Traumatic Stress in South Africa.</i> Wits University Press.</li>
+    </ul>
+  </div>
+</section>
+
+<div class="quote">
+    "Trauma is not an event — it's the ongoing reaction the body has to that event."
+    <span>— Bessel van der Kolk, author of "The Body Keeps the Score"</span>
+  </div>
+
+  <div class="summary-box">
+    <h3>📌 Module summary</h3>
+    <ul>
+      <li>PTSD is the brain's danger-alarm system becoming oversensitized after trauma. It is not a failure of willpower.</li>
+      <li>There are four core symptom clusters: re-experiencing, avoidance, negative thought/mood shifts, marked hyperarousal.</li>
+      <li>Presentation differs by age group — the program needs to be adapted accordingly.</li>
+      <li>TF-CBT (the PRACTICE model) is the most evidence-based trauma treatment approach in the world.</li>
+      <li>Breathing techniques, the Fear Thermometer, grounding skills — tools within reach at every session.</li>
+      <li>Work with a child falls short without parent support. I've seen this play out for years.</li>
+    </ul>
+  </div>
+
+
+  <div class="nav-bottom">
+    <a class="nav-btn home" href="index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+      Back to menu
+    </a>
+    <a class="nav-btn next" href="03-aqressiya.html">
+      Next module: Aggression and CBT
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+
+</main>
+
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeSession()">
+  <div class="modal-box">
+    <div class="modal-close" onclick="closeSession()">✕</div>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Cognitive Behavioral Therapy Course · Module 2/20</p>
+  <p style="margin-top:8px;">By <a href="https://aze-ai.az" target="_blank" rel="noopener">securtiy_group</a></p>
+  <p style="margin-top:10px;font-size:.82rem;"><a href="../privacy.html">Privacy Policy</a> · <a href="../terms.html">Terms of Use</a></p>
+</footer>
+
+<script>
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target);} });
+},{threshold:0.1});
+document.querySelectorAll('section').forEach(s=>io.observe(s));
+
+window.addEventListener('mousemove', e=>{
+  const mx = (e.clientX/window.innerWidth - 0.5);
+  const my = (e.clientY/window.innerHeight - 0.5);
+  document.querySelectorAll('.blob').forEach((b,i)=>{
+    const speed = (i+1)*16;
+    b.style.transform = `translate(${mx*speed}px, ${my*speed}px)`;
+  });
+});
+</script>
+<script>
+const SESSIONS = [
+  {
+    "num": 1,
+    "title": "Introduction and Assessment",
+    "goal": "Build an initial bridge of trust with the client (child, adolescent, or adult), calmly gauge symptom severity, and give the family a first signal of hope.",
+    "materials": [
+      "A simple assessment conversation",
+      "Colored paper and pencils",
+      "Fear thermometer template"
+    ],
+    "phases": [
+      {
+        "name": "🟢 First meeting",
+        "text": [
+          "I don't touch trauma detail in the first session. The goal is simple — the client should feel safe in this room."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Hi Röya, I'm the person you'll be talking with today. You can be as quiet as you like in this room, there's no pressure."
+          ],
+          [
+            "K",
+            "Hi... my mom told me you're a nice person."
+          ],
+          [
+            "T",
+            "Is that so? So what do you like doing, outside of school?"
+          ],
+          [
+            "K",
+            "I like drawing, and playing with my cat."
+          ],
+          [
+            "T",
+            "What's your cat's name?"
+          ],
+          [
+            "K",
+            "Grey. Because he's completely grey."
+          ],
+          [
+            "T",
+            "Great name. Today I just want to get to know you, we're not rushing anything."
+          ],
+          [
+            "K",
+            "Okay... but what will you ask me?"
+          ],
+          [
+            "T",
+            "If you want, you can ask me questions too, and I'll ask you some."
+          ],
+          [
+            "K",
+            "How many kids have you talked to like this?"
+          ],
+          [
+            "T",
+            "A lot. Every one of them is different, and so are you."
+          ],
+          [
+            "K",
+            "I don't know what to say right now."
+          ],
+          [
+            "T",
+            "You don't have to say anything. Just being here today is enough."
+          ],
+          [
+            "K",
+            "Okay, that makes me feel a bit more relaxed."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Calm assessment",
+        "text": [
+          "I talk with the parent separately to understand how often sleep, fear, and behavior changes are occurring. I don't do this in front of the child."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Do you remember when this difficulty first started?"
+          ],
+          [
+            "K",
+            "It started a week after the accident, and gradually got worse."
+          ],
+          [
+            "T",
+            "What have you noticed about her sleep?"
+          ],
+          [
+            "K",
+            "She wakes up several times a night, sometimes shouting."
+          ],
+          [
+            "T",
+            "What changes have you seen in her behavior during the day?"
+          ],
+          [
+            "K",
+            "She's withdrawn from her classmates, doesn't play the way she used to."
+          ],
+          [
+            "T",
+            "How does she react to car sounds?"
+          ],
+          [
+            "K",
+            "She freezes, sometimes covers her ears with her hands."
+          ],
+          [
+            "T",
+            "How is this affecting daily life?"
+          ],
+          [
+            "K",
+            "She's struggling to go to school, and her appetite has dropped too."
+          ],
+          [
+            "T",
+            "How do you talk about this as a family?"
+          ],
+          [
+            "K",
+            "Honestly, we avoid the subject, we're afraid of upsetting her."
+          ],
+          [
+            "T",
+            "I understand that, a lot of parents do the same."
+          ],
+          [
+            "K",
+            "So what should we do?"
+          ],
+          [
+            "T",
+            "We're going to look at this together today, step by step."
+          ],
+          [
+            "K",
+            "Okay, we really need help."
+          ],
+          [
+            "T",
+            "Has she gone through anything like this before?"
+          ],
+          [
+            "K",
+            "No, nothing like this has ever happened."
+          ],
+          [
+            "T",
+            "This information is going to help me a lot, thank you."
+          ],
+          [
+            "K",
+            "Thank you, just talking with you already feels like a relief."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 First step",
+        "text": [
+          "I close the session on a note of hope, explaining in simple terms roughly how long this process tends to take."
+        ],
+        "dialog": [
+          [
+            "T",
+            "How was today for you, Röya?"
+          ],
+          [
+            "K",
+            "Easier than I thought it would be."
+          ],
+          [
+            "T",
+            "I'm glad to hear that."
+          ],
+          [
+            "K",
+            "Will I come again next time?"
+          ],
+          [
+            "T",
+            "Yes, we'll meet every week for a while."
+          ],
+          [
+            "K",
+            "Okay, sounds good."
+          ],
+          [
+            "T",
+            "When you get home, is there anything you'd like to tell your mom about today?"
+          ],
+          [
+            "K",
+            "I'll tell her you weren't scary."
+          ],
+          [
+            "T",
+            "That's a lovely thing to hear."
+          ],
+          [
+            "K",
+            "Thank you."
+          ]
+        ]
+      }
+    ],
+    "homework": "For the parent: this week, keep a one-line daily note of your child's sleep and mood — a single sentence is enough.",
+    "about": "No formal test is applied at this first step — a structured assessment conversation is conducted instead. The goal is to gauge symptom severity and frequency through clinical judgment.",
+    "specialists": [
+      "Clinical psychologist",
+      "TF-CBT certified therapist",
+      "Child and adolescent psychologist"
+    ]
+  },
+  {
+    "num": 2,
+    "title": "Psychoeducation — Why Do I Feel This Way?",
+    "goal": "Explain trauma and how the brain works without frightening the client, giving them the feeling that 'I'm not broken.'",
+    "materials": [
+      "A simple picture for the alarm-system metaphor",
+      "Psychoeducation worksheet"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Bridge",
+        "text": [
+          "I open by connecting back to what came up last session, and check in on how the week went."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Röya, how has it been at home since we last met?"
+          ],
+          [
+            "K",
+            "Pretty normal, I played with the cat a couple of times."
+          ],
+          [
+            "T",
+            "Did any question come to mind after our last talk?"
+          ],
+          [
+            "K",
+            "I don't know... sometimes I wonder why I'm still scared."
+          ],
+          [
+            "T",
+            "That's a really good question, and it's exactly what we're going to look at today."
+          ],
+          [
+            "K",
+            "Okay, that sounds interesting."
+          ],
+          [
+            "T",
+            "How are you feeling right now, are you fairly calm?"
+          ],
+          [
+            "K",
+            "A little nervous, but it's okay."
+          ],
+          [
+            "T",
+            "Nerves are normal, they'll settle."
+          ],
+          [
+            "K",
+            "I hope so."
+          ],
+          [
+            "T",
+            "How was sleep this week?"
+          ],
+          [
+            "K",
+            "Two rough nights, the rest were pretty normal."
+          ],
+          [
+            "T",
+            "Thanks for telling me that, we'll keep it in mind."
+          ],
+          [
+            "K",
+            "Okay."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 The alarm-system metaphor",
+        "text": [
+          "I explain, using the smoke-alarm metaphor, why the brain reacts the way it does — and that this reaction is protective, not broken."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Does this explanation make sense to you?"
+          ],
+          [
+            "K",
+            "A little, but I still don't fully get why I feel this way."
+          ],
+          [
+            "T",
+            "This doesn't mean you're 'weak,' your brain is just reacting in a certain way."
+          ],
+          [
+            "K",
+            "Knowing that actually gives me a bit of relief."
+          ],
+          [
+            "T",
+            "Do you have any questions about this?"
+          ],
+          [
+            "K",
+            "When is it going to go away, do you know?"
+          ],
+          [
+            "T",
+            "It's hard to say exactly, but it usually fades faster with practice."
+          ],
+          [
+            "K",
+            "Okay, that's a hopeful answer."
+          ],
+          [
+            "T",
+            "Let's draw this bell on paper — what does it look like to you?"
+          ],
+          [
+            "K",
+            "Maybe like a red light, really bright."
+          ],
+          [
+            "T",
+            "When does this bell ring the most, for you?"
+          ],
+          [
+            "K",
+            "When I hear a car sound, or when I look out the window."
+          ],
+          [
+            "T",
+            "What happens in your body when the bell rings?"
+          ],
+          [
+            "K",
+            "My heart speeds up, my breathing changes."
+          ],
+          [
+            "T",
+            "Knowing that means recognizing the bell — that's a big step."
+          ],
+          [
+            "K",
+            "I understand myself a little better now."
+          ],
+          [
+            "T",
+            "The moment you notice the bell ringing, what can you do?"
+          ],
+          [
+            "K",
+            "I can breathe, or tell myself that this will pass."
+          ],
+          [
+            "T",
+            "Exactly right, that's the first tool you have."
+          ],
+          [
+            "K",
+            "Thank you, knowing this helps."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 In her own words",
+        "text": [
+          "I ask the client to summarize what we covered in their own words, to check understanding and reinforce it."
+        ],
+        "dialog": [
+          [
+            "T",
+            "How would you explain what you learned today, in your own words?"
+          ],
+          [
+            "K",
+            "There's a bell in my brain, sometimes it rings when it doesn't need to."
+          ],
+          [
+            "T",
+            "Exactly right. Remembering that will help you."
+          ],
+          [
+            "K",
+            "Can I tell my mom this too?"
+          ],
+          [
+            "T",
+            "Of course, that would actually be really good."
+          ],
+          [
+            "K",
+            "Okay, I'll tell her."
+          ],
+          [
+            "T",
+            "How are you feeling as you head out today?"
+          ],
+          [
+            "K",
+            "A bit lighter, honestly."
+          ],
+          [
+            "T",
+            "That's wonderful to hear."
+          ],
+          [
+            "K",
+            "Thank you, see you next time."
+          ]
+        ]
+      }
+    ],
+    "homework": "Draw your alarm bell at home and, if you want, show it to your mom and explain what it means.",
+    "about": "No formal instrument is applied here — this session is built entirely around metaphor and drawing, adapted to the child's developmental level.",
+    "specialists": [
+      "Clinical psychologist",
+      "TF-CBT certified therapist"
+    ]
+  },
+  {
+    "num": 3,
+    "title": "Breathing and Relaxation Skills",
+    "goal": "Teach a concrete tool the body can use to physically calm down when the alarm system fires.",
+    "materials": [
+      "Box breathing diagram",
+      "Progressive muscle relaxation script"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Today's goal",
+        "text": [
+          "I set today's frame and check in briefly on the body's state before starting."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Röya, today we're going to learn ways to calm your body down. Are you ready?"
+          ],
+          [
+            "K",
+            "I'm ready, but I don't know how it'll work."
+          ],
+          [
+            "T",
+            "We're just going to play with breathing, it's not hard."
+          ],
+          [
+            "K",
+            "Okay, I like breathing games."
+          ],
+          [
+            "T",
+            "When did you feel most tense this week?"
+          ],
+          [
+            "K",
+            "At night, before falling asleep, my heart was beating hard."
+          ],
+          [
+            "T",
+            "What else did you notice in your body at that moment?"
+          ],
+          [
+            "K",
+            "My hands got a little cold."
+          ],
+          [
+            "T",
+            "That's really useful to know, now I'll teach you a tool for it."
+          ],
+          [
+            "K",
+            "Okay, show me."
+          ],
+          [
+            "T",
+            "First sit comfortably, and drop your shoulders."
+          ],
+          [
+            "K",
+            "Like this?"
+          ],
+          [
+            "T",
+            "Exactly like that. Let's begin."
+          ],
+          [
+            "K",
+            "Okay, I'm ready."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Box breathing practice",
+        "text": [
+          "We practice box breathing together, tracing the sides of an imaginary square with the breath."
+        ],
+        "dialog": [
+          [
+            "T",
+            "How many times should this breathing technique be repeated?"
+          ],
+          [
+            "K",
+            "I don't know, a few times maybe."
+          ],
+          [
+            "T",
+            "Let's try it once more now."
+          ],
+          [
+            "K",
+            "(takes a deep breath) That helped a little, not completely though."
+          ],
+          [
+            "T",
+            "Let's do a round together — breathe in for 4."
+          ],
+          [
+            "K",
+            "(breathing in) Okay."
+          ],
+          [
+            "T",
+            "Now hold for 4."
+          ],
+          [
+            "K",
+            "This part is a bit hard for me."
+          ],
+          [
+            "T",
+            "That's normal, it gets easier with practice."
+          ],
+          [
+            "K",
+            "Okay, let's keep going."
+          ],
+          [
+            "T",
+            "Now breathe out for 4."
+          ],
+          [
+            "K",
+            "(exhales) That felt easier."
+          ],
+          [
+            "T",
+            "Hold again, empty, for 4."
+          ],
+          [
+            "K",
+            "I think I can do it now."
+          ],
+          [
+            "T",
+            "What feels different in your body now, compared to before?"
+          ],
+          [
+            "K",
+            "My shoulders dropped a little."
+          ],
+          [
+            "T",
+            "Can you do this at home too, this week?"
+          ],
+          [
+            "K",
+            "Yes, I'll try it especially before bed."
+          ],
+          [
+            "T",
+            "Great, this is going to be one of your strongest tools."
+          ],
+          [
+            "K",
+            "Thank you, for teaching me this."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Releasing the body",
+        "text": [
+          "We close by checking in on the body once more and agreeing on when she'll practice this at home."
+        ],
+        "dialog": [
+          [
+            "T",
+            "How does your body feel right now?"
+          ],
+          [
+            "K",
+            "Lighter, like my shoulders dropped a bit."
+          ],
+          [
+            "T",
+            "Just noticing that is a big step on its own."
+          ],
+          [
+            "K",
+            "Can I do this at home too?"
+          ],
+          [
+            "T",
+            "Yes, especially try it before bed."
+          ],
+          [
+            "K",
+            "Okay, I'll try it tonight."
+          ],
+          [
+            "T",
+            "You can do it as many times as you need, there's no limit."
+          ],
+          [
+            "K",
+            "I'll keep that in mind."
+          ],
+          [
+            "T",
+            "You did really well today."
+          ],
+          [
+            "K",
+            "Thank you."
+          ]
+        ]
+      }
+    ],
+    "homework": "Practice box breathing at home every night before bed, and note how many rounds you did in your notebook.",
+    "about": "This session focuses purely on skill-building — no assessment instrument is used, the emphasis is on physical mastery of the technique.",
+    "specialists": [
+      "Clinical psychologist",
+      "Occupational therapist (for the sensory-regulation angle)"
+    ]
+  },
+  {
+    "num": 4,
+    "title": "Recognizing Emotions",
+    "goal": "Build a vocabulary for feelings and teach the client to rate the intensity of an emotion using the fear thermometer.",
+    "materials": [
+      "Feelings-vocabulary cards",
+      "Fear thermometer chart"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Today's mood",
+        "text": [
+          "I check in on today's mood and briefly review last week's breathing homework."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Röya, what's your mood like today?"
+          ],
+          [
+            "K",
+            "Mixed, I don't really know what to call it."
+          ],
+          [
+            "T",
+            "Mixed feelings are completely normal, we can even feel a few at once."
+          ],
+          [
+            "K",
+            "Okay, let's figure it out."
+          ],
+          [
+            "T",
+            "Did you try the breathing exercise this week?"
+          ],
+          [
+            "K",
+            "Yes, twice, it helped a little."
+          ],
+          [
+            "T",
+            "I'm glad to hear that."
+          ],
+          [
+            "K",
+            "I forget sometimes though."
+          ],
+          [
+            "T",
+            "That's normal, it'll become a habit gradually."
+          ],
+          [
+            "K",
+            "I hope so."
+          ],
+          [
+            "T",
+            "Today we're going to talk about feelings, are you ready?"
+          ],
+          [
+            "K",
+            "I'm ready, this sounds interesting to me."
+          ],
+          [
+            "T",
+            "Great, let's begin then."
+          ],
+          [
+            "K",
+            "Okay."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Body language",
+        "text": [
+          "We explore where each emotion shows up physically, using a body outline the child colors in."
+        ],
+        "dialog": [
+          [
+            "T",
+            "How would you name this feeling?"
+          ],
+          [
+            "K",
+            "I don't know exactly, it's mixed, maybe sadness and fear together."
+          ],
+          [
+            "T",
+            "Where in your body do you feel this?"
+          ],
+          [
+            "K",
+            "In my chest, like a tightness."
+          ],
+          [
+            "T",
+            "Where do you feel fear in your body?"
+          ],
+          [
+            "K",
+            "In my stomach, sometimes my hands get cold too."
+          ],
+          [
+            "T",
+            "And where's happiness, for you?"
+          ],
+          [
+            "K",
+            "In my chest, like a light feeling."
+          ],
+          [
+            "T",
+            "Let's draw a body outline, and mark each feeling with a color."
+          ],
+          [
+            "K",
+            "Okay, I like drawing."
+          ],
+          [
+            "T",
+            "What color would you give fear?"
+          ],
+          [
+            "K",
+            "Grey, like a cloudy day."
+          ],
+          [
+            "T",
+            "What color for happiness?"
+          ],
+          [
+            "K",
+            "Yellow, like the sun."
+          ],
+          [
+            "T",
+            "This is a really useful method — recognizing a feeling before it grows too big."
+          ],
+          [
+            "K",
+            "I've never thought about it in colors before."
+          ],
+          [
+            "T",
+            "Can you show me where anger is too?"
+          ],
+          [
+            "K",
+            "Here, in my hands, like a tight feeling."
+          ],
+          [
+            "T",
+            "That's really valuable information about yourself."
+          ],
+          [
+            "K",
+            "I liked this exercise."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Thermometer practice",
+        "text": [
+          "We put a number on the current feeling using the thermometer, closing on a reflective note."
+        ],
+        "dialog": [
+          [
+            "T",
+            "If you had to give this feeling a number right now, what would it be?"
+          ],
+          [
+            "K",
+            "Maybe a 3, that's lower than before."
+          ],
+          [
+            "T",
+            "Did you notice what helped bring it down?"
+          ],
+          [
+            "K",
+            "I took a breath, that helped a bit."
+          ],
+          [
+            "T",
+            "That's a really good observation."
+          ],
+          [
+            "K",
+            "Thank you for teaching me this."
+          ],
+          [
+            "T",
+            "You can rate a feeling with a number every day this week."
+          ],
+          [
+            "K",
+            "I'll write it in my notebook."
+          ],
+          [
+            "T",
+            "Great idea, we'll look at it together next time."
+          ],
+          [
+            "K",
+            "Okay, see you then."
+          ]
+        ]
+      }
+    ],
+    "homework": "Each day, pick one feeling and rate its intensity from 0–10 in your notebook, along with what you were doing when you felt it.",
+    "about": "No formal instrument used — the fear thermometer itself functions as a repeatable, low-cost tracking tool across sessions.",
+    "specialists": [
+      "Clinical psychologist",
+      "Speech and language therapist (for younger children with limited vocabulary)"
+    ]
+  },
+  {
+    "num": 5,
+    "title": "Cognitive Coping Skills",
+    "goal": "Introduce the thought-feeling-behavior triangle and begin identifying unhelpful thoughts tied to trauma-related triggers.",
+    "materials": [
+      "Thought-feeling-behavior triangle worksheet",
+      "Colored pencils"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Opening",
+        "text": [
+          "We open by checking in and reviewing last week's thermometer log before introducing today's topic."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Röya, today we're going to look at the connection between thoughts and feelings."
+          ],
+          [
+            "K",
+            "That sounds complicated."
+          ],
+          [
+            "T",
+            "We'll start with a simple example, don't worry."
+          ],
+          [
+            "K",
+            "Okay, I'm listening."
+          ],
+          [
+            "T",
+            "Did you do the thermometer exercise last week?"
+          ],
+          [
+            "K",
+            "Yes, I wrote it down three days."
+          ],
+          [
+            "T",
+            "Wonderful, let's go over it in a bit."
+          ],
+          [
+            "K",
+            "Okay."
+          ],
+          [
+            "T",
+            "How are you feeling right now, at this moment?"
+          ],
+          [
+            "K",
+            "Calm, but a little tired."
+          ],
+          [
+            "T",
+            "Do you have any question before we start?"
+          ],
+          [
+            "K",
+            "No, not right now."
+          ],
+          [
+            "T",
+            "Alright then, let's begin, get comfortable."
+          ],
+          [
+            "K",
+            "I'm ready."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Filling in the triangle",
+        "text": [
+          "Using a recent school-avoidance morning as the example, we map out the thought, the feeling, and the behavior it produced."
+        ],
+        "dialog": [
+          [
+            "T",
+            "There was a morning this week you were scared to go to school, do you remember?"
+          ],
+          [
+            "K",
+            "Yes, Monday."
+          ],
+          [
+            "T",
+            "What was the very first thought that crossed your mind that morning?"
+          ],
+          [
+            "K",
+            "I thought something bad might happen again."
+          ],
+          [
+            "T",
+            "When that thought came, what did you feel in your body?"
+          ],
+          [
+            "K",
+            "My stomach hurt, my heart was pounding."
+          ],
+          [
+            "T",
+            "And then what did you do?"
+          ],
+          [
+            "K",
+            "I told mom I was sick, I didn't want to go."
+          ],
+          [
+            "T",
+            "So thought — fear — avoidance, one led to the other."
+          ],
+          [
+            "K",
+            "Yes, that's exactly what happened."
+          ],
+          [
+            "T",
+            "Let's test that thought a little — how likely is it, really, that something bad would happen?"
+          ],
+          [
+            "K",
+            "I don't know... maybe not that likely."
+          ],
+          [
+            "T",
+            "What happened the last time you actually went to school?"
+          ],
+          [
+            "K",
+            "Nothing, it was a normal day."
+          ],
+          [
+            "T",
+            "So the fear didn't come true that time either."
+          ],
+          [
+            "K",
+            "That's true, I forgot about that."
+          ],
+          [
+            "T",
+            "If we turned that into one sentence — a more balanced thought — what would it be?"
+          ],
+          [
+            "K",
+            "Maybe... 'today could just be a normal day, like before.'"
+          ],
+          [
+            "T",
+            "That's a really good sentence."
+          ],
+          [
+            "K",
+            "Thank you, I feel a bit calmer now."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 A balanced thought",
+        "text": [
+          "We recap the triangle and agree on one small way to practice this skill over the coming week."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Do you remember the triangle we talked about today?"
+          ],
+          [
+            "K",
+            "Thought, feeling, behavior — they're all connected."
+          ],
+          [
+            "T",
+            "Exactly right. Could you try this once this week?"
+          ],
+          [
+            "K",
+            "I'll try, I promise."
+          ],
+          [
+            "T",
+            "If it's hard, write it in your notebook and we'll look at it together."
+          ],
+          [
+            "K",
+            "Okay, I'll write it down."
+          ],
+          [
+            "T",
+            "How are you feeling right now?"
+          ],
+          [
+            "K",
+            "Lighter, I can catch my thought now."
+          ],
+          [
+            "T",
+            "That's a big step forward."
+          ],
+          [
+            "K",
+            "Thank you, see you next time."
+          ]
+        ]
+      }
+    ],
+    "homework": "This week, when you notice fear before school, write down the thought, the feeling, and what you did — bring the notebook next time.",
+    "about": "No formal instrument used — the triangle worksheet itself serves as the working tool for this and the following session.",
+    "specialists": [
+      "Clinical psychologist",
+      "TF-CBT certified therapist"
+    ]
+  },
+  {
+    "num": 6,
+    "title": "Trauma Narrative — Beginning",
+    "goal": "Begin the trauma narrative from its safest, most neutral point, establishing that the process can move at the client's own pace.",
+    "materials": [
+      "Blank narrative booklet",
+      "Fear thermometer"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Preparation",
+        "text": [
+          "I frame today's work as something a little different and remind her she's fully in control of the pace."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Röya, today we're going to start something a little different — do you feel ready?"
+          ],
+          [
+            "K",
+            "I'm not totally sure, I'm a bit nervous."
+          ],
+          [
+            "T",
+            "That's completely normal, we're not rushing anywhere."
+          ],
+          [
+            "K",
+            "Okay, that makes me feel a bit better."
+          ],
+          [
+            "T",
+            "You can say 'stop' at any moment you want, remember that."
+          ],
+          [
+            "K",
+            "Okay, I'll remember."
+          ],
+          [
+            "T",
+            "What's your fear-thermometer number right now, before we start?"
+          ],
+          [
+            "K",
+            "Something like a 5."
+          ],
+          [
+            "T",
+            "Let's note that, we'll compare it afterward."
+          ],
+          [
+            "K",
+            "Okay."
+          ],
+          [
+            "T",
+            "Let's start with a bit of breathing first, if you'd like."
+          ],
+          [
+            "K",
+            "Yes, that would help."
+          ],
+          [
+            "T",
+            "Let me know when you're ready."
+          ],
+          [
+            "K",
+            "I'm ready now."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 The beginning of the story",
+        "text": [
+          "We start from the safest, most ordinary part of the memory — the morning before anything happened — without moving toward the difficult part yet."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Let's start the story from the easiest point — how did that morning begin?"
+          ],
+          [
+            "K",
+            "It was a normal morning, we were getting ready for school."
+          ],
+          [
+            "T",
+            "What were you wearing, do you remember?"
+          ],
+          [
+            "K",
+            "My yellow t-shirt, it's my favorite."
+          ],
+          [
+            "T",
+            "What did you have for breakfast?"
+          ],
+          [
+            "K",
+            "Mom made me an omelet."
+          ],
+          [
+            "T",
+            "How did you feel getting into the car afterward?"
+          ],
+          [
+            "K",
+            "Nothing special, it felt like a normal day."
+          ],
+          [
+            "T",
+            "How did it feel telling me this part?"
+          ],
+          [
+            "K",
+            "Easy, I wasn't scared at all."
+          ],
+          [
+            "T",
+            "Good, that's exactly where we start — we're not moving to the next part yet."
+          ],
+          [
+            "K",
+            "Okay, that works for me."
+          ],
+          [
+            "T",
+            "What were you and your mom talking about on the way?"
+          ],
+          [
+            "K",
+            "About a project at school."
+          ],
+          [
+            "T",
+            "Let's check your thermometer while talking about this part — what is it?"
+          ],
+          [
+            "K",
+            "Around a 2, really low."
+          ],
+          [
+            "T",
+            "This is a wonderful place to begin, we're not rushing to what comes after."
+          ],
+          [
+            "K",
+            "Thank you, I didn't expect it to be this easy."
+          ],
+          [
+            "T",
+            "Next time we'll move a little further, whenever you're ready."
+          ],
+          [
+            "K",
+            "Okay, I think I'll be ready."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 A calm close",
+        "text": [
+          "We close the session by comparing the thermometer to the start and affirming the courage it took to begin."
+        ],
+        "dialog": [
+          [
+            "T",
+            "What's your fear thermometer at now?"
+          ],
+          [
+            "K",
+            "It's a 4, it went down a bit."
+          ],
+          [
+            "T",
+            "I'm proud of you for doing this."
+          ],
+          [
+            "K",
+            "Honestly, I surprised myself too."
+          ],
+          [
+            "T",
+            "Getting this far today already took courage."
+          ],
+          [
+            "K",
+            "Thank you."
+          ],
+          [
+            "T",
+            "Be gentle with yourself when you get home, it was a hard day."
+          ],
+          [
+            "K",
+            "Okay, I'll try."
+          ],
+          [
+            "T",
+            "We'll continue next time, without rushing."
+          ],
+          [
+            "K",
+            "I'm looking forward to it, a little."
+          ]
+        ]
+      }
+    ],
+    "homework": "If thoughts about today come up this week, jot down a note — we'll go over it together next time. No need to push further on your own.",
+    "about": "This is the first narrative session — only the safest, most neutral part of the memory is approached; the difficult core is deliberately left for later sessions.",
+    "specialists": [
+      "Clinical psychologist",
+      "TF-CBT certified therapist"
+    ]
+  },
+  {
+    "num": 7,
+    "title": "Trauma Narrative — Continuation",
+    "goal": "Gradually move closer to the harder part of the memory while keeping distress manageable through pacing and monitoring.",
+    "materials": [
+      "Narrative booklet (continued)",
+      "Fear thermometer"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Starting again",
+        "text": [
+          "We reconnect with last session's work and check current distress before continuing."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Röya, last time we talked about the beginning of the story, do you remember?"
+          ],
+          [
+            "K",
+            "Yes, I remember, it was a little hard."
+          ],
+          [
+            "T",
+            "Did you think about it at all this week?"
+          ],
+          [
+            "K",
+            "A couple of times, but I didn't let it get to me."
+          ],
+          [
+            "T",
+            "That's a really good balance to strike."
+          ],
+          [
+            "K",
+            "Thank you."
+          ],
+          [
+            "T",
+            "Let's check your thermometer today — where is it now?"
+          ],
+          [
+            "K",
+            "Somewhere around 4 or 5."
+          ],
+          [
+            "T",
+            "Okay, we'll keep an eye on that."
+          ],
+          [
+            "K",
+            "Okay."
+          ],
+          [
+            "T",
+            "Today we're going to continue the story, are you ready?"
+          ],
+          [
+            "K",
+            "I think I'm ready, a bit nervous."
+          ],
+          [
+            "T",
+            "Nerves are normal, we'll go step by step together."
+          ],
+          [
+            "K",
+            "Okay, let's start."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Approaching the hard part",
+        "text": [
+          "We move carefully into the harder section of the memory, pausing to regulate whenever the thermometer rises."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Do you want to continue from where we left off last time?"
+          ],
+          [
+            "K",
+            "Yes, I remember where we stopped."
+          ],
+          [
+            "T",
+            "Do you remember what happened right after the car door was crushed?"
+          ],
+          [
+            "K",
+            "My mom didn't talk for a while, I got really scared."
+          ],
+          [
+            "T",
+            "What did you feel in your body at that moment?"
+          ],
+          [
+            "K",
+            "My whole body felt frozen."
+          ],
+          [
+            "T",
+            "What's your thermometer at now, remembering this?"
+          ],
+          [
+            "K",
+            "It went up to a 7."
+          ],
+          [
+            "T",
+            "Okay, let's pause for a moment, let's breathe together."
+          ],
+          [
+            "K",
+            "Okay, that helps."
+          ],
+          [
+            "T",
+            "Are you feeling a bit better now?"
+          ],
+          [
+            "K",
+            "Yes, it dropped back to 5."
+          ],
+          [
+            "T",
+            "Do you want to keep going, or is this enough for today?"
+          ],
+          [
+            "K",
+            "I think I can go a little further."
+          ],
+          [
+            "T",
+            "Then someone came to help, do you remember that part?"
+          ],
+          [
+            "K",
+            "Yes, a man stopped, he called for help."
+          ],
+          [
+            "T",
+            "What did you feel when help arrived?"
+          ],
+          [
+            "K",
+            "A little relieved, but I was still scared."
+          ],
+          [
+            "T",
+            "That's a really important detail — help came, you weren't alone."
+          ],
+          [
+            "K",
+            "That's true, I'd sort of forgotten that part."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Closing",
+        "text": [
+          "We close by acknowledging the difficulty of the work and stabilizing before ending."
+        ],
+        "dialog": [
+          [
+            "T",
+            "You talked about a really important part today."
+          ],
+          [
+            "K",
+            "Yes, it was hard, but I got through it."
+          ],
+          [
+            "T",
+            "What's your thermometer at now?"
+          ],
+          [
+            "K",
+            "Around 4, I've calmed down."
+          ],
+          [
+            "T",
+            "That's excellent progress."
+          ],
+          [
+            "K",
+            "Thank you for helping me."
+          ],
+          [
+            "T",
+            "If you think about this at home, write it down, we'll go over it together."
+          ],
+          [
+            "K",
+            "Okay, I will."
+          ],
+          [
+            "T",
+            "Next time we'll finish the story."
+          ],
+          [
+            "K",
+            "Okay, I'll be ready."
+          ]
+        ]
+      }
+    ],
+    "homework": "If any thoughts or feelings about today's session come up, note them down — we'll review them together next time.",
+    "about": "This session approaches the hardest point of the memory gradually, with the thermometer used as a continuous distress check to pace the work.",
+    "specialists": [
+      "Clinical psychologist",
+      "TF-CBT certified therapist"
+    ]
+  },
+  {
+    "num": 8,
+    "title": "Trauma Narrative — Completion",
+    "goal": "Complete the narrative as a whole and begin building new meaning and perspective from it.",
+    "materials": [
+      "Completed narrative booklet",
+      "Fear thermometer"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Looking at the whole story",
+        "text": [
+          "We check in on the week and prepare to finish the narrative today."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Röya, today we're going to finish the story completely, are you ready?"
+          ],
+          [
+            "K",
+            "I think so, I'm a little nervous again."
+          ],
+          [
+            "T",
+            "You've already come this far, don't forget that."
+          ],
+          [
+            "K",
+            "That's true, it feels easier than before now."
+          ],
+          [
+            "T",
+            "How have you been feeling overall this week?"
+          ],
+          [
+            "K",
+            "Better, I slept a bit more peacefully at night too."
+          ],
+          [
+            "T",
+            "That's wonderful to hear."
+          ],
+          [
+            "K",
+            "Thank you."
+          ],
+          [
+            "T",
+            "Let's check your thermometer before we start."
+          ],
+          [
+            "K",
+            "Around a 4 right now."
+          ],
+          [
+            "T",
+            "Okay, that's lower than before, which is a good sign too."
+          ],
+          [
+            "K",
+            "Yes, I noticed that myself."
+          ],
+          [
+            "T",
+            "Let's begin when you're ready."
+          ],
+          [
+            "K",
+            "I'm ready."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 A new perspective",
+        "text": [
+          "We complete the remaining part of the story and work together to find new meaning in it."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Let's finish the rest of the story today, up until you reached the hospital."
+          ],
+          [
+            "K",
+            "Okay, I remember, the doctor checked us."
+          ],
+          [
+            "T",
+            "What did you think at that moment, at the hospital?"
+          ],
+          [
+            "K",
+            "I thought we were safe now."
+          ],
+          [
+            "T",
+            "That's a really important thought — the danger was over."
+          ],
+          [
+            "K",
+            "Yes, I understand that better now."
+          ],
+          [
+            "T",
+            "How did you feel arriving home?"
+          ],
+          [
+            "K",
+            "Tired, but glad we were both okay."
+          ],
+          [
+            "T",
+            "Now, looking at the whole story from start to finish, which part matters most to you?"
+          ],
+          [
+            "K",
+            "The part where help came, I think."
+          ],
+          [
+            "T",
+            "Why do you think that part matters most?"
+          ],
+          [
+            "K",
+            "Because we weren't alone, someone helped us."
+          ],
+          [
+            "T",
+            "That's a really beautiful meaning to take from this story."
+          ],
+          [
+            "K",
+            "Yes, I hadn't thought about it that way before."
+          ],
+          [
+            "T",
+            "What's your thermometer at now, telling the whole story?"
+          ],
+          [
+            "K",
+            "A 3, much lower than before."
+          ],
+          [
+            "T",
+            "That's a big change, did you notice it?"
+          ],
+          [
+            "K",
+            "Yes, it doesn't feel as heavy anymore."
+          ],
+          [
+            "T",
+            "You can carry this story with you now, without being afraid of it."
+          ],
+          [
+            "K",
+            "Thank you, I feel light."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 A full reading",
+        "text": [
+          "We mark the completion of the narrative as a real accomplishment and check the thermometer one last time."
+        ],
+        "dialog": [
+          [
+            "T",
+            "You finished the whole story today, that's a big step."
+          ],
+          [
+            "K",
+            "Yes, I can't believe I did it."
+          ],
+          [
+            "T",
+            "You did it — I was just there beside you."
+          ],
+          [
+            "K",
+            "Thank you for your help."
+          ],
+          [
+            "T",
+            "What's your thermometer at, now that it's finished?"
+          ],
+          [
+            "K",
+            "A 3, it's staying steady."
+          ],
+          [
+            "T",
+            "That's a wonderful result."
+          ],
+          [
+            "K",
+            "I agree."
+          ],
+          [
+            "T",
+            "Next session we'll move on to something else, not related to this story."
+          ],
+          [
+            "K",
+            "Okay, that sounds interesting too."
+          ]
+        ]
+      }
+    ],
+    "homework": "If you'd like, read your finished story to your mom this week and notice how it feels to share it.",
+    "about": "This session completes the trauma narrative and shifts focus toward meaning-making — the client's own account of what the experience now represents.",
+    "specialists": [
+      "Clinical psychologist",
+      "TF-CBT certified therapist"
+    ]
+  },
+  {
+    "num": 9,
+    "title": "Cognitive Processing",
+    "goal": "Identify and gently question distorted trauma-related beliefs, particularly self-blame.",
+    "materials": [
+      "Thought-challenging worksheet",
+      "Pen and notebook"
+    ],
+    "phases": [
+      {
+        "name": "🟢 A heavy thought",
+        "text": [
+          "We open by naming a common distortion after trauma — self-blame — and checking whether it applies here."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Röya, today we're going to look at some thoughts you have about yourself."
+          ],
+          [
+            "K",
+            "Which thoughts?"
+          ],
+          [
+            "T",
+            "For example, have there been moments where you blamed yourself over what happened?"
+          ],
+          [
+            "K",
+            "Sometimes I think that if I'd done something differently, maybe it wouldn't have happened."
+          ],
+          [
+            "T",
+            "I hear that thought a lot, you're not alone in it."
+          ],
+          [
+            "K",
+            "Really?"
+          ],
+          [
+            "T",
+            "Yes, a lot of children think this way, but it's usually not true."
+          ],
+          [
+            "K",
+            "I don't know, sometimes I believe it though."
+          ],
+          [
+            "T",
+            "Would you like us to test that thought together today?"
+          ],
+          [
+            "K",
+            "Yes, I'd like that."
+          ],
+          [
+            "T",
+            "How many times did this thought come up this week?"
+          ],
+          [
+            "K",
+            "A few times, especially at night."
+          ],
+          [
+            "T",
+            "Thanks for sharing that, it'll help us today."
+          ],
+          [
+            "K",
+            "Okay."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Questioning",
+        "text": [
+          "We use Socratic questioning to test the self-blame belief against the actual facts of the situation."
+        ],
+        "dialog": [
+          [
+            "T",
+            "You said you sometimes blame yourself. What exactly do you think?"
+          ],
+          [
+            "K",
+            "Maybe if I'd been more careful, the accident wouldn't have happened."
+          ],
+          [
+            "T",
+            "Were you the one driving the car that day?"
+          ],
+          [
+            "K",
+            "No, of course not, I was sitting in the back."
+          ],
+          [
+            "T",
+            "So the decision wasn't in your hands."
+          ],
+          [
+            "K",
+            "That's true, but I still think that sometimes anyway."
+          ],
+          [
+            "T",
+            "That feeling makes sense, but let's look at the facts — how old were you at the time?"
+          ],
+          [
+            "K",
+            "I was 8."
+          ],
+          [
+            "T",
+            "Can an 8-year-old prevent a car accident?"
+          ],
+          [
+            "K",
+            "No, I don't think so."
+          ],
+          [
+            "T",
+            "So who was making the decisions on the road — the speed, the direction?"
+          ],
+          [
+            "K",
+            "The adults, the drivers."
+          ],
+          [
+            "T",
+            "So this wasn't something within your control."
+          ],
+          [
+            "K",
+            "Yeah... it looks a little different now."
+          ],
+          [
+            "T",
+            "If your best friend told you the exact same thing about herself, what would you say to her?"
+          ],
+          [
+            "K",
+            "I'd tell her it's not her fault."
+          ],
+          [
+            "T",
+            "So why not say the same thing to yourself?"
+          ],
+          [
+            "K",
+            "I don't know, maybe I'm harder on myself."
+          ],
+          [
+            "T",
+            "That's a really valuable realization to have today."
+          ],
+          [
+            "K",
+            "Yeah, I feel a bit lighter now."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 A new thought",
+        "text": [
+          "We turn today's realization into a short phrase she can hold onto during the week."
+        ],
+        "dialog": [
+          [
+            "T",
+            "What did you learn to tell yourself today?"
+          ],
+          [
+            "K",
+            "This wasn't my fault, I was just a kid."
+          ],
+          [
+            "T",
+            "Could you repeat that sentence to yourself this week?"
+          ],
+          [
+            "K",
+            "I'll try, I'll write it on a piece of paper."
+          ],
+          [
+            "T",
+            "Great idea, put it somewhere you'll see it."
+          ],
+          [
+            "K",
+            "Okay, I'll put it up in my room."
+          ],
+          [
+            "T",
+            "How are you feeling as you leave today?"
+          ],
+          [
+            "K",
+            "Lighter, honestly I didn't expect that."
+          ],
+          [
+            "T",
+            "This was your own work, I just asked the questions."
+          ],
+          [
+            "K",
+            "Thank you, again."
+          ]
+        ]
+      }
+    ],
+    "homework": "Write your new sentence — 'this wasn't my fault' — somewhere you'll see it every day, and notice when the old thought shows up.",
+    "about": "No formal instrument used — cognitive processing here is carried out through Socratic dialogue targeting the specific self-blame belief identified.",
+    "specialists": [
+      "Clinical psychologist",
+      "TF-CBT certified therapist"
+    ]
+  },
+  {
+    "num": 10,
+    "title": "In-Vivo Exposure",
+    "goal": "Build a graded plan for facing avoided but genuinely safe situations, starting with the easiest step.",
+    "materials": [
+      "Avoidance list",
+      "Exposure ladder template"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Avoided things",
+        "text": [
+          "We identify, together, the situations still being avoided, in preparation for building a graded ladder."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Röya, today I'd like us to look together at what you've been avoiding."
+          ],
+          [
+            "K",
+            "Okay, like car horns for one."
+          ],
+          [
+            "T",
+            "What else can you think of?"
+          ],
+          [
+            "K",
+            "Sitting near the window sometimes too, I avoid that."
+          ],
+          [
+            "T",
+            "Let's note these down, then we'll put them in an order."
+          ],
+          [
+            "K",
+            "Okay."
+          ],
+          [
+            "T",
+            "Did you write down your sentence this week, the one you say to yourself?"
+          ],
+          [
+            "K",
+            "Yes, I read it to myself twice."
+          ],
+          [
+            "T",
+            "How did it feel reading it?"
+          ],
+          [
+            "K",
+            "I felt a bit stronger."
+          ],
+          [
+            "T",
+            "That's a really good sign."
+          ],
+          [
+            "K",
+            "Thank you."
+          ],
+          [
+            "T",
+            "Today we're going to start with small steps, no rushing."
+          ],
+          [
+            "K",
+            "Okay, I'm ready."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Building the ladder",
+        "text": [
+          "We arrange the avoided situations from easiest to hardest, assigning each a fear-thermometer number."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Let's put these situations in order, from easiest to hardest."
+          ],
+          [
+            "K",
+            "Okay, sitting by the window feels easiest to me."
+          ],
+          [
+            "T",
+            "What number would you give that on the thermometer?"
+          ],
+          [
+            "K",
+            "Maybe a 3."
+          ],
+          [
+            "T",
+            "And where does the car horn sit in this order?"
+          ],
+          [
+            "K",
+            "That one's harder, maybe a 7."
+          ],
+          [
+            "T",
+            "What's in between those two?"
+          ],
+          [
+            "K",
+            "Maybe a short ride in the car with mom."
+          ],
+          [
+            "T",
+            "Okay, let's put that around a 5."
+          ],
+          [
+            "K",
+            "This order makes sense to me."
+          ],
+          [
+            "T",
+            "We'll start from the easiest step and gradually move up."
+          ],
+          [
+            "K",
+            "I like that it's not rushed."
+          ],
+          [
+            "T",
+            "Is there anything on this list you're not ready for yet?"
+          ],
+          [
+            "K",
+            "The car horn, not yet."
+          ],
+          [
+            "T",
+            "That's completely fine, we won't touch it until you're ready."
+          ],
+          [
+            "K",
+            "Thank you for not forcing me."
+          ],
+          [
+            "T",
+            "This ladder is yours, we'll go at your pace."
+          ],
+          [
+            "K",
+            "I like that."
+          ],
+          [
+            "T",
+            "Which step do you want to try this week?"
+          ],
+          [
+            "K",
+            "The window step, I think I can manage that."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Getting concrete",
+        "text": [
+          "We agree on one specific, small step to practice this week and how she'll track it."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Let's pick the easiest step for this week — what should it be?"
+          ],
+          [
+            "K",
+            "Maybe sitting by the window for five minutes."
+          ],
+          [
+            "T",
+            "Great choice, how many times will you try it?"
+          ],
+          [
+            "K",
+            "I'll try once a day."
+          ],
+          [
+            "T",
+            "If it feels hard, you can stop, there's no obligation."
+          ],
+          [
+            "K",
+            "Okay, I know that now."
+          ],
+          [
+            "T",
+            "Write down the result in your notebook, we'll go over it together next time."
+          ],
+          [
+            "K",
+            "Okay, I'll write it down."
+          ],
+          [
+            "T",
+            "You took a brave step today, well done."
+          ],
+          [
+            "K",
+            "Thank you, I'm proud of myself too."
+          ]
+        ]
+      }
+    ],
+    "homework": "Practice sitting by the window for five minutes once a day this week, and note your fear-thermometer number before and after each try.",
+    "about": "This session builds the exposure hierarchy that will guide the remaining in-vivo work — no formal instrument is used beyond the client's own thermometer ratings.",
+    "specialists": [
+      "Clinical psychologist",
+      "TF-CBT certified therapist"
+    ]
+  },
+  {
+    "num": 11,
+    "title": "Conjoint Parent-Child Session",
+    "goal": "Share part of the child's story and progress with the parent present, strengthening the family bond and support.",
+    "materials": [
+      "The client's own notes and sentence card",
+      "Tissues (kept nearby, just in case)"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Agreement",
+        "text": [
+          "Before inviting the parent in, I check what the child is comfortable sharing and get explicit agreement."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Röya, your mom is going to join us today, how do you feel about that?"
+          ],
+          [
+            "K",
+            "Good, I want her to know too."
+          ],
+          [
+            "T",
+            "Let's talk together first, then have your mom join, does that work?"
+          ],
+          [
+            "K",
+            "That works for me."
+          ],
+          [
+            "T",
+            "Which part would you like to share with your mom?"
+          ],
+          [
+            "K",
+            "Maybe that sentence on the card — that it wasn't my fault."
+          ],
+          [
+            "T",
+            "That's a beautiful choice."
+          ],
+          [
+            "K",
+            "Thank you."
+          ],
+          [
+            "T",
+            "When you're ready, should I invite your mom into the room?"
+          ],
+          [
+            "K",
+            "Yes, I'm ready now."
+          ],
+          [
+            "T",
+            "(mother enters) Welcome — Röya wants to share something with you today."
+          ],
+          [
+            "K",
+            "Mom, I want to tell you something."
+          ],
+          [
+            "T",
+            "Whenever you're ready, Röya, go ahead."
+          ],
+          [
+            "K",
+            "Okay... I'm a little nervous, but I'll say it."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 The joint session",
+        "text": [
+          "Röya shares her sentence and part of her progress; the therapist supports the parent's response and reinforces the message."
+        ],
+        "dialog": [
+          [
+            "K",
+            "Mom, I used to think the accident was my fault."
+          ],
+          [
+            "T",
+            "(to the mother) This is something Röya and I worked through together in our sessions."
+          ],
+          [
+            "M",
+            "But now I know that's not true, I was just a child sitting in the back."
+          ],
+          [
+            "T",
+            "How does it feel to you, hearing this from her?"
+          ],
+          [
+            "M",
+            "My heart aches that she was carrying this, I'm so glad she said it."
+          ],
+          [
+            "T",
+            "Röya, is there anything else you'd like your mom to know?"
+          ],
+          [
+            "K",
+            "I'm also handling car sounds a bit better now."
+          ],
+          [
+            "T",
+            "That's real, measurable progress — congratulations to both of you."
+          ],
+          [
+            "M",
+            "I'm so proud of you, Röya."
+          ],
+          [
+            "T",
+            "Would you like to show your mom the breathing exercise you learned?"
+          ],
+          [
+            "K",
+            "Yes, I can show her."
+          ],
+          [
+            "T",
+            "Go ahead whenever you're ready."
+          ],
+          [
+            "K",
+            "Okay, watch, mom — breathe in for 4, hold for 4..."
+          ],
+          [
+            "T",
+            "You can practice this together at home too."
+          ],
+          [
+            "M",
+            "I'd like that, we'll do it together."
+          ],
+          [
+            "T",
+            "This was a really meaningful session for both of you today."
+          ],
+          [
+            "K",
+            "Honestly, I feel a bit lighter now."
+          ],
+          [
+            "T",
+            "That's wonderful to hear."
+          ],
+          [
+            "M",
+            "Thank you for guiding us through this."
+          ],
+          [
+            "T",
+            "The two of you did this work — I was just there alongside you."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 A family ritual",
+        "text": [
+          "We close by agreeing on a small shared ritual the family can keep up at home."
+        ],
+        "dialog": [
+          [
+            "T",
+            "This was a beautiful conversation between the two of you today."
+          ],
+          [
+            "K",
+            "Yes, I feel like mom understands me better now."
+          ],
+          [
+            "T",
+            "Would you like to set up a small ritual at home to keep this going?"
+          ],
+          [
+            "K",
+            "Maybe we could talk for five minutes every evening."
+          ],
+          [
+            "T",
+            "Great idea, try that this week."
+          ],
+          [
+            "K",
+            "Okay, we'll try it."
+          ],
+          [
+            "T",
+            "How are you feeling, Röya?"
+          ],
+          [
+            "K",
+            "Light, I feel stronger when mom's right here with me."
+          ],
+          [
+            "T",
+            "That's a really beautiful bond between the two of you."
+          ],
+          [
+            "K",
+            "Thank you for today."
+          ]
+        ]
+      }
+    ],
+    "homework": "Set aside five minutes each evening this week for the 'how was your day' ritual, as a family, without a barrage of questions.",
+    "about": "This session brings the parent directly into the work — no formal instrument used, the focus is relational: sharing progress and strengthening the family's support system.",
+    "specialists": [
+      "Clinical psychologist",
+      "TF-CBT certified therapist",
+      "Family therapist (for the conjoint component)"
+    ]
+  },
+  {
+    "num": 12,
+    "title": "Safety Plan and Closing",
+    "goal": "Consolidate the skills learned across the program, mark the progress made, and build a concrete safety plan for the future.",
+    "materials": [
+      "Safety plan template",
+      "Skills summary card"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Looking back",
+        "text": [
+          "I compare today's state with the very first assessment, letting the client name the change herself."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Röya, this is our last session in this program — how does that feel to you?"
+          ],
+          [
+            "K",
+            "A bit strange, but I feel ready."
+          ],
+          [
+            "T",
+            "Do you remember the day you first came here?"
+          ],
+          [
+            "K",
+            "Yes, I was really scared, I didn't even want to talk."
+          ],
+          [
+            "T",
+            "Comparing that to now, what difference do you see?"
+          ],
+          [
+            "K",
+            "I'm calmer now, I can actually talk."
+          ],
+          [
+            "T",
+            "That's a long way to have come."
+          ],
+          [
+            "K",
+            "Thank you for your help."
+          ],
+          [
+            "T",
+            "How has your thermometer been overall this past week?"
+          ],
+          [
+            "K",
+            "Mostly between 2 and 3 on most days."
+          ],
+          [
+            "T",
+            "That's a huge difference compared to the 7 or 8 from before."
+          ],
+          [
+            "K",
+            "Yes, I can see that too."
+          ],
+          [
+            "T",
+            "Today we're going to bring everything you've learned together in one place."
+          ],
+          [
+            "K",
+            "Okay, I'm ready."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 The toolbox",
+        "text": [
+          "The client decides for herself which skill she'll reach for in each kind of difficult moment."
+        ],
+        "dialog": [
+          [
+            "T",
+            "What changed for you over the course of this program?"
+          ],
+          [
+            "K",
+            "Some things got better, but not everything was solved."
+          ],
+          [
+            "T",
+            "What's still hard for you?"
+          ],
+          [
+            "K",
+            "A few things, but now I know how to approach them."
+          ],
+          [
+            "T",
+            "How will you keep these skills going?"
+          ],
+          [
+            "K",
+            "I'm not sure exactly, I'll try to remember them."
+          ],
+          [
+            "T",
+            "Out of everything you learned in this program, which skill helped the most?"
+          ],
+          [
+            "K",
+            "The breathing exercise, definitely."
+          ],
+          [
+            "T",
+            "If the fear of car horns comes back, what will you do?"
+          ],
+          [
+            "K",
+            "I'll breathe first, then maybe read the sentence on my card."
+          ],
+          [
+            "T",
+            "That's a really solid plan."
+          ],
+          [
+            "K",
+            "Thank you, I feel ready."
+          ],
+          [
+            "T",
+            "If a hard moment comes and these tools aren't enough, what will you do?"
+          ],
+          [
+            "K",
+            "I'll tell my mom, or come back to see you if I need to."
+          ],
+          [
+            "T",
+            "Exactly right — this door will always stay open."
+          ],
+          [
+            "K",
+            "Knowing that makes me feel safer."
+          ],
+          [
+            "T",
+            "Over these months, you've built a real toolbox for yourself."
+          ],
+          [
+            "K",
+            "I'm proud of that, honestly."
+          ],
+          [
+            "T",
+            "Carry this box with you, Röya."
+          ],
+          [
+            "K",
+            "I will, thank you for everything."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 A note to carry forward",
+        "text": [
+          "The session ends with warmth, affirming the work done and leaving the door open for the future."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Even though this program is ending, these tools stay yours forever."
+          ],
+          [
+            "K",
+            "I'll remember them, especially the breathing one."
+          ],
+          [
+            "T",
+            "Who can you turn to if things get hard?"
+          ],
+          [
+            "K",
+            "My mom, or you again if I need to."
+          ],
+          [
+            "T",
+            "That's exactly right, that door is always open."
+          ],
+          [
+            "K",
+            "Thank you, for everything."
+          ],
+          [
+            "T",
+            "Working with you has meant a great deal to me."
+          ],
+          [
+            "K",
+            "It has for me too, I feel different than before."
+          ],
+          [
+            "T",
+            "Carry that difference with you, Röya."
+          ],
+          [
+            "K",
+            "I will, thank you again."
+          ]
+        ]
+      }
+    ],
+    "homework": "Keep the safety plan somewhere visible (e.g. in your room) and refer to it whenever you need to.",
+    "about": "This closing session is not an assessment — it's a consolidation and the building of a forward-looking support plan.",
+    "specialists": [
+      "Clinical psychologist",
+      "TF-CBT therapist",
+      "Social worker (for coordination)"
+    ]
+  }
+];
+
+function renderSession(s){
+  let html = `<span class="m-tag">Session ${s.num} / 12</span><h3 class="m-title">${s.title}</h3>`;
+  html += `<div class="m-block"><h5>🎯 Session goal</h5><div class="m-goal">${s.goal}</div></div>`;
+  html += `<div class="m-block"><h5>🧰 Materials needed</h5><div class="m-materials">${s.materials.map(m=>`<span>${m}</span>`).join('')}</div></div>`;
+  html += `<div class="m-block"><h5>📋 Session flow</h5>`;
+  s.phases.forEach(ph=>{
+    html += `<div class="m-phase"><div class="ph-name">${ph.name}</div>`;
+    (ph.text||[]).forEach(t=>{ html += `<p>${t}</p>`; });
+    if(ph.dialog && ph.dialog.length){
+      html += `<div class="m-dialog">`;
+      ph.dialog.forEach(d=>{
+        const who = d[0]==='T' ? 'Therapist' : (d[0]==='K' ? 'Client' : (d[0]==='M' ? 'Mother' : d[0]));
+        const cls = d[0]==='T' ? 't' : 'k';
+        html += `<div class="dl"><span class="dw ${cls}">${who}:</span><span class="dt">${d[1]}</span></div>`;
+      });
+      html += `</div>`;
+    }
+    html += `</div>`;
+  });
+  html += `</div>`;
+  html += `<div class="m-block"><h5>📝 Homework</h5><div class="m-homework">${s.homework}</div></div>`;
+  html += `<div class="m-nextprev">
+    <div class="m-navbtn ${s.num<=1?'disabled':''}" onclick="openSession(${s.num-1})">◂ Previous session</div>
+    <div class="m-navbtn ${s.num>=12?'disabled':''}" onclick="openSession(${s.num+1})">Next session ▸</div>
+  </div>`;
+  return html;
+}
+
+function openSession(n){
+  const s = SESSIONS.find(x=>x.num===n);
+  if(!s) return;
+  document.getElementById('modalContent').innerHTML = renderSession(s);
+  document.getElementById('modalOverlay').classList.add('active');
+  document.body.classList.add('modal-open');
+  document.getElementById('modalOverlay').scrollTop = 0;
+  document.querySelector('.modal-box').scrollTop = 0;
+}
+function closeSession(){
+  document.getElementById('modalOverlay').classList.remove('active');
+  document.body.classList.remove('modal-open');
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeSession(); });
+</script>
+<script src="../protect.js" defer></script>
+<script src="../engine.js"></script>
+
+<div class="modal-overlay" id="programModalOverlay" onclick="if(event.target===this)closeProgram()">
+  <div class="modal-box">
+    <div class="modal-close" onclick="closeProgram()">✕</div>
+    <div id="programModalContent"></div>
+  </div>
+</div>
+
+
+
+</body>
+</html>

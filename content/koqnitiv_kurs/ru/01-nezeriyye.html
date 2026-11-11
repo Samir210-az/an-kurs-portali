@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#d9a85a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Модуль 1 · Теория когнитивно-поведенческой терапии</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1:#0c211f; --bg-2:#1d423d;
+    --surface: rgba(217,168,90,0.055);
+    --surface-h: rgba(217,168,90,0.10);
+    --border: rgba(217,168,90,0.14);
+    --teal:#7ba098; --teal-soft: rgba(123,160,152,0.18);
+    --violet:#8a6a3a; --violet-soft: rgba(138,106,58,0.20);
+    --amber:#d9a85a; --amber-soft: rgba(217,168,90,0.18);
+    --rose:#d9705a; --rose-soft: rgba(217,112,90,0.16);
+    --text-1:#f3eee1; --text-2:#c9c2ae; --text-3:#8a9a93;
+    --font-d:'Fraunces', serif;
+    --font-b:'Inter', system-ui, sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{-webkit-user-select:none;-moz-user-select:none;user-select:none;}
+  body{
+    font-family:var(--font-b);
+    background:
+      radial-gradient(1100px 750px at 12% -10%, rgba(139,92,246,0.18), transparent 60%),
+      radial-gradient(1000px 700px at 110% 15%, rgba(45,212,191,0.14), transparent 55%),
+      linear-gradient(180deg, var(--bg-1), var(--bg-2));
+    color:var(--text-1);
+    min-height:100vh;
+    line-height:1.65;
+  }
+  .blob{position:fixed;border-radius:50%;filter:blur(80px);opacity:.45;pointer-events:none;z-index:0;}
+  .blob-1{width:400px;height:400px;background:var(--violet-soft);top:-100px;left:-120px;}
+  .blob-2{width:360px;height:360px;background:var(--teal-soft);top:40%;right:-140px;}
+
+  /* Top bar */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px;
+    background:rgba(11,18,36,0.75);
+    backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--border);
+  }
+  .topbar-brand{display:flex; align-items:center; gap:10px; text-decoration:none; flex-shrink:0;}
+  .topbar-brand img{width:34px; height:34px; border-radius:9px; object-fit:cover; border:1px solid rgba(255,255,255,0.15);}
+  .topbar-brand .tb-name{font-family:var(--font-d); font-weight:700; font-size:.78rem; color:var(--text-1); line-height:1.2; max-width:150px;}
+  .topbar-right{display:flex; align-items:center; gap:14px; flex-shrink:0;}
+  @media(max-width:640px){ .topbar-brand .tb-name{display:none;} .topbar a.back span{display:none;} }
+  .topbar a.back{
+    display:inline-flex; align-items:center; gap:8px;
+    color:var(--text-2); text-decoration:none; font-size:.9rem; font-weight:600;
+    transition:color .2s;
+  }
+  .topbar a.back:hover{color:var(--teal);}
+  .progress-pill{
+    font-size:.78rem; color:var(--text-3);
+    border:1px solid var(--border); padding:6px 14px; border-radius:999px;
+    background:var(--surface);
+  }
+
+  main{position:relative; z-index:2; max-width:880px; margin:0 auto; padding:0 24px 100px;}
+
+  .hero{padding:64px 0 40px; text-align:center;}
+  .hero-illus{display:flex; justify-content:center; margin-bottom:28px;}
+  .hero-illus svg{max-width:100%; height:auto;}
+  .tag{
+    display:inline-block; font-size:.76rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--teal); background:var(--teal-soft); border:1px solid rgba(45,212,191,.35);
+    padding:6px 16px; border-radius:999px; margin-bottom:22px;
+    animation:fadeDown .7s ease both;
+  }
+  h1{
+    font-family:var(--font-d); font-weight:800; font-size:clamp(1.9rem,4.6vw,3rem); line-height:1.2;
+    background:linear-gradient(90deg,#fff,#cdd8ff 45%, var(--teal));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:fadeUp .8s ease both .1s;
+  }
+  .hero p{color:var(--text-2); max-width:600px; margin:20px auto 0; animation:fadeUp .8s ease both .2s;}
+
+  section{margin-top:64px; animation:fadeUp .8s ease both; opacity:0;}
+  section.show{opacity:1;}
+  .sec-head{display:flex; align-items:center; gap:14px; margin-bottom:24px;}
+  .sec-num{
+    font-family:var(--font-d); font-size:1.4rem; font-weight:800; color:var(--bg-1);
+    background:linear-gradient(135deg,var(--teal),var(--violet));
+    width:44px;height:44px; border-radius:13px; display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  h2{font-family:var(--font-d); font-size:clamp(1.35rem,3vw,1.7rem); font-weight:700;}
+  .lead{color:var(--text-2); margin-bottom:22px;}
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:18px;
+    padding:24px 26px; margin-bottom:18px; backdrop-filter:blur(10px);
+  }
+  .card h3{font-size:1.05rem; margin-bottom:10px; color:var(--text-1); display:flex; align-items:center; gap:10px;}
+  .card p{color:var(--text-2); font-size:.95rem;}
+  .card p + p{margin-top:10px;}
+
+  .example{
+    border-left:3px solid var(--amber);
+    background:var(--amber-soft);
+    border-radius:0 14px 14px 0;
+    padding:16px 20px;
+    margin:16px 0;
+    font-size:.92rem;
+  }
+  .example b{color:var(--amber);}
+
+  .dialog{
+    background:rgba(255,255,255,.03);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:20px 22px;
+    margin:18px 0;
+    font-size:.92rem;
+  }
+  .dialog .line{display:flex; gap:12px; margin-bottom:14px;}
+  .dialog .line:last-child{margin-bottom:0;}
+  .dialog .who{
+    flex-shrink:0; width:78px; font-weight:700; font-size:.8rem;
+    padding-top:2px;
+  }
+  .dialog .who.t{color:var(--teal);}
+  .dialog .who.k{color:var(--rose);}
+  .dialog .txt{color:var(--text-2);}
+
+  /* Timeline */
+  .timeline{position:relative; margin:30px 0 10px; padding-left:28px;}
+  .timeline::before{content:"";position:absolute; left:6px; top:6px; bottom:6px; width:2px; background:linear-gradient(var(--teal),var(--violet));}
+  .t-item{position:relative; margin-bottom:26px;}
+  .t-item::before{
+    content:""; position:absolute; left:-28px; top:4px; width:14px;height:14px; border-radius:50%;
+    background:var(--bg-2); border:2px solid var(--teal);
+  }
+  .t-item b{display:block; color:var(--teal); font-size:.82rem; letter-spacing:.04em; margin-bottom:4px;}
+  .t-item span{color:var(--text-2); font-size:.92rem;}
+
+  /* CBT Triangle SVG */
+  .triangle-wrap{display:flex; justify-content:center; margin:26px 0;}
+  .triangle-wrap svg{max-width:100%; height:auto;}
+  .tri-label{font-family:var(--font-b); font-weight:700; font-size:13px; fill:#0c211f;}
+  .tri-sub{font-size:10.5px; fill:rgba(11,18,36,.7);}
+
+  /* ABC flow */
+  .abc-flow{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:26px 0;}
+  .abc-box{
+    border-radius:16px; padding:18px 16px; text-align:center; position:relative;
+    border:1px solid var(--border);
+  }
+  .abc-box.a{background:var(--teal-soft);}
+  .abc-box.b{background:var(--violet-soft);}
+  .abc-box.c{background:var(--amber-soft);}
+  .abc-box .letter{font-family:var(--font-d); font-size:1.6rem; font-weight:800; display:block; margin-bottom:6px;}
+  .abc-box.a .letter{color:var(--teal);}
+  .abc-box.b .letter{color:var(--violet);}
+  .abc-box.c .letter{color:var(--amber);}
+  .abc-box h4{font-size:.86rem; margin-bottom:6px;}
+  .abc-box p{font-size:.8rem; color:var(--text-2);}
+  .abc-arrow{display:none;}
+  @media(min-width:640px){
+    .abc-flow{align-items:center;}
+  }
+
+  /* Distortion grid */
+  .dist-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; margin:26px 0;}
+  .dist-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:18px 20px;
+    transition:transform .3s, border-color .3s;
+  }
+  .dist-card:hover{transform:translateY(-4px); border-color:rgba(139,92,246,.4);}
+  .dist-card .name{font-weight:700; font-size:.92rem; color:var(--violet); margin-bottom:6px;}
+  .dist-card .ex{font-size:.84rem; color:var(--text-2); font-style:italic;}
+
+  /* Session structure steps */
+  .steps{counter-reset:step; margin:26px 0;}
+  .step{
+    display:flex; gap:16px; padding:16px 0; border-bottom:1px solid var(--border);
+  }
+  .step:last-child{border-bottom:none;}
+  .step::before{
+    counter-increment:step; content:counter(step);
+    flex-shrink:0; width:34px;height:34px; border-radius:10px;
+    background:var(--surface); border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-d); font-weight:700; color:var(--teal);
+  }
+  .step .stxt h4{font-size:.96rem; margin-bottom:4px;}
+  .step .stxt p{font-size:.86rem; color:var(--text-2);}
+
+  /* Worksheet table */
+  .worksheet{overflow-x:auto; margin:24px 0; border-radius:16px; border:1px solid var(--border);}
+  table{width:100%; border-collapse:collapse; font-size:.84rem; min-width:640px;}
+  thead th{
+    background:rgba(255,255,255,.05); color:var(--teal); text-align:left;
+    padding:12px 14px; font-size:.78rem; letter-spacing:.03em; text-transform:uppercase;
+    border-bottom:1px solid var(--border);
+  }
+  tbody td{padding:13px 14px; color:var(--text-2); border-bottom:1px solid rgba(255,255,255,.06); vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+
+  .quote{
+    border-left:3px solid var(--violet);
+    padding:18px 22px; margin:26px 0; font-family:var(--font-d); font-style:italic;
+    font-size:1.05rem; color:var(--text-1); background:var(--violet-soft); border-radius:0 14px 14px 0;
+  }
+  .quote span{display:block; margin-top:10px; font-family:var(--font-b); font-style:normal; font-size:.8rem; color:var(--text-3);}
+
+  .summary-box{
+    background:linear-gradient(135deg, var(--teal-soft), var(--violet-soft));
+    border:1px solid rgba(45,212,191,.3);
+    border-radius:20px; padding:28px 26px; margin-top:60px;
+  }
+  .summary-box h3{font-family:var(--font-d); font-size:1.25rem; margin-bottom:14px;}
+  .summary-box ul{padding-left:20px; color:var(--text-2); font-size:.92rem;}
+  .summary-box li{margin-bottom:8px;}
+
+  .nav-bottom{
+    display:flex; justify-content:space-between; align-items:center; gap:16px;
+    margin-top:40px; flex-wrap:wrap;
+  }
+  .nav-btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:13px 22px; border-radius:14px; text-decoration:none;
+    font-weight:600; font-size:.9rem; transition:transform .25s, box-shadow .25s;
+  }
+  .nav-btn.home{background:var(--surface); border:1px solid var(--border); color:var(--text-1);}
+  .nav-btn.next{background:linear-gradient(135deg,var(--teal),var(--violet)); color:#0c211f;}
+  .nav-btn:hover{transform:translateY(-3px);}
+  .nav-btn.disabled{opacity:.5; pointer-events:none;}
+
+  footer{
+    position:relative; z-index:2; text-align:center; padding:44px 24px 60px;
+    border-top:1px solid var(--border); color:var(--text-3); font-size:.88rem; margin-top:40px;
+  }
+  footer a{color:var(--teal); text-decoration:none; font-weight:600;}
+
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-14px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+
+  @media(max-width:640px){
+    .abc-flow{grid-template-columns:1fr;}
+    .dialog .who{width:60px; font-size:.72rem;}
+  }
+</style>
+</head>
+<body>
+
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<div class="topbar">
+  <a class="topbar-brand" href="index.html">
+    <img src="../logo.png" alt="Логотип центра психологической поддержки и реабилитации AN">
+    <span class="tb-name">Центр психологической поддержки и реабилитации AN</span>
+  </a>
+  <div class="topbar-right">
+    <a class="back" href="index.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+      <span>Меню</span>
+    </a>
+    <span class="progress-pill">Модуль 1 / 20</span>
+  </div>
+</div>
+
+<main>
+
+  <div class="hero">
+    <div class="hero-illus">
+      <svg width="360" height="170" viewBox="0 0 360 170" fill="none">
+        <defs>
+          <linearGradient id="hg1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#d9a85a"/>
+            <stop offset="100%" stop-color="#7ba098"/>
+          </linearGradient>
+        </defs>
+        <circle cx="180" cy="85" r="80" fill="none" stroke="url(#hg1)" stroke-width="1.4" stroke-dasharray="3 7" opacity=".55"/>
+        <path d="M150 60c0-20 16-34 34-34 16 0 29 11 32 26 10 2 17 11 17 21 0 12-10 22-22 22h-58c-11 0-19-9-19-20 0-9 6-16 16-15z" fill="#1d423d" stroke="#d9a85a" stroke-width="2"/>
+        <circle cx="163" cy="52" r="3" fill="#d9a85a" opacity=".7"/>
+        <path d="M172 46a10 10 0 0 1 18 4" stroke="#f3eee1" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".6"/>
+        <g transform="translate(70,120)">
+          <circle r="22" fill="#7ba098" opacity=".85"/>
+          <path d="M-7 1c0-6 5-9 7-9s7 3 7 9c0 5-7 9-7 9s-7-4-7-9z" fill="#0c211f"/>
+        </g>
+        <g transform="translate(180,150)">
+          <circle r="22" fill="#8a6a3a" opacity=".85"/>
+          <path d="M-9 3l6-8 4 5 6-9" stroke="#f3eee1" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+        <g transform="translate(290,120)">
+          <circle r="22" fill="#d9a85a" opacity=".85"/>
+          <path d="M-8-6c0 8 4 10 8 13 4-3 8-5 8-13" stroke="#0c211f" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        </g>
+        <path d="M110 128 Q140 145 168 152" stroke="#d9a85a" stroke-width="1.6" fill="none" stroke-dasharray="3 5" opacity=".6"/>
+        <path d="M250 128 Q220 145 192 152" stroke="#d9a85a" stroke-width="1.6" fill="none" stroke-dasharray="3 5" opacity=".6"/>
+        <path d="M175 62 Q120 90 78 100" stroke="#7ba098" stroke-width="1.6" fill="none" stroke-dasharray="3 5" opacity=".5"/>
+        <path d="M195 62 Q250 90 288 100" stroke="#7ba098" stroke-width="1.6" fill="none" stroke-dasharray="3 5" opacity=".5"/>
+      </svg>
+    </div>
+    <span class="tag">Модуль 01 · Базовая теория</span>
+    <h1>Теория когнитивно-поведенческой терапии</h1>
+    <p>Восемнадцать лет я сижу за этим столом — и каждый раз нахожу что-то новое. Этот модуль один из тех, что мне особенно дороги: с него начинается всё остальное. Если фундамент шаткий, оставшиеся девятнадцать модулей повисают в воздухе. Так что давайте заложим его вместе. Кем бы вы ни были — практикующим терапевтом, студентом или просто человеком, которому интересна эта тема, — этот модуль для вас.</p>
+  </div>
+
+  <!-- 1. Что такое КПТ -->
+  <section>
+    <div class="sec-head"><div class="sec-num">1</div><h2>Что такое когнитивно-поведенческая терапия?</h2></div>
+    <p class="lead">Задам вопрос: почему одно и то же событие уводит двух людей в совершенно разные стороны? Один плачет, другой пожимает плечами и идёт дальше. Именно здесь начинается КПТ — нами управляет не само событие, а то, что мы про него думаем. Это, кстати, один из самых изученных и проверенных подходов во всей терапии.</p>
+    <div class="card">
+      <h3>🎯 Главная идея</h3>
+      <p>Студентам я объясняю это всегда одинаково: событие — фильтр — результат. Фильтр — это твоё мышление. Два человека слышат один и тот же сигнал, один злится, другой смеётся — просто у них разные фильтры. Вот и вся суть. Но именно в этом ключ ко всей терапии.</p>
+    </div>
+    <div class="example">
+      <b>Пример:</b> Как-то раз двое моих коллег в один день получили от руководителя одно и то же замечание. Один вечером пришёл домой и расплакался. Другой сказал "ладно, исправлю" и забыл об этом. Разница была не в событии. Разница была во внутреннем диалоге, который шёл у каждого в голове.
+    </div>
+    <div class="card"><h3>🎯 Как я применяю это на сессии</h3><p>На первой же сессии я обычно рассказываю именно эту историю — почему одно и то же может вызвать две разные реакции. Услышав её, клиент делает шаг назад от мысли "со мной что-то не так".</p></div>
+    <div class="simple-box"><b>Самое частое заблуждение, с которым я сталкиваюсь:</b> Цель КПТ не в том, чтобы заменить негативные мысли позитивными. Цель — проверить, насколько мысль соответствует реальности, и прийти к более сбалансированному выводу. Я подчёркиваю это каждому новому студенту, потому что путать КПТ с "просто думай позитивно" — самая распространённая ошибка, которую я вижу. Я никогда не говорю клиенту "подумай вместо этого о чём-то хорошем". Я спрашиваю: насколько эта мысль точна? Какие есть доказательства за, какие против? Итог иногда получается более позитивным, а иногда — просто более реалистичным и терпимым. Это разные вещи.</div>
+  </section>
+
+  <!-- 2. История -->
+  <section>
+    <div class="sec-head"><div class="sec-num">2</div><h2>Историческое развитие</h2></div>
+    <p class="lead">КПТ родилась на пересечении двух параллельных теоретических линий: рационально-эмотивной терапии Альберта Эллиса и когнитивной терапии Аарона Бека.</p>
+    <div class="timeline">
+      <div class="t-item"><b>1950-е годы</b><span>Когда Альберт Эллис заявил, что людей расстраивают не события, а иррациональные убеждения о них, многие встретили это скептически. Он назвал свой подход рационально-эмотивной терапией.</span></div>
+      <div class="t-item"><b>1960-е годы</b><span>Несколько лет спустя, работая с пациентами с депрессией, Аарон Бек заметил странную вещь: в голове у пациентов быстро проносился поток негативных мыслей, которые они сами едва замечали. Он назвал их "автоматическими мыслями" — термин используется до сих пор.</span></div>
+      <div class="t-item"><b>1970–1980-е годы</b><span>Бек превратил это наблюдение в простую, обучаемую модель. Годы спустя эта модель стала самым изученным подходом во всей психотерапии.</span></div>
+      <div class="t-item"><b>С 1990-х по сегодняшний день</b><span>Дальше КПТ вышла далеко за пределы депрессии — в ОКР, панические атаки, работу с детьми и подростками. Подходы "третьей волны" — ACT, DBT, майндфулнес-ориентированная КПТ — выросли именно отсюда.</span></div>
+    </div>
+    <div class="card"><h3>🎯 Как я применяю это на сессии</h3><p>Клиенту историю я, честно говоря, не рассказываю. А вот студентам постоянно напоминаю — это не теория, придуманная кем-то за одну ночь, она прошла десятилетия проверок, прежде чем дойти до нас.</p></div>
+  </section>
+
+  <!-- 3. Когнитивный треугольник -->
+  <section>
+    <div class="sec-head"><div class="sec-num">3</div><h2>Когнитивный треугольник: мысль – эмоция – поведение</h2></div>
+    <p class="lead">Этот треугольник висит у меня на стене в кабинете, потому что я возвращаюсь к нему почти на каждой сессии. Мысль, эмоция, поведение — всё три связаны между собой. Тронешь одно — сдвигаются и остальные два.</p>
+
+    <div class="triangle-wrap">
+      <svg width="380" height="360" viewBox="0 0 380 360">
+        <defs>
+          <linearGradient id="triGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#2dd4bf"/>
+            <stop offset="100%" stop-color="#8b5cf6"/>
+          </linearGradient>
+        </defs>
+        <polygon points="190,30 340,300 40,300" fill="none" stroke="url(#triGrad)" stroke-width="2.5" stroke-linejoin="round"/>
+        <circle cx="190" cy="30" r="46" fill="#2dd4bf"/>
+        <text x="190" y="26" text-anchor="middle" class="tri-label">Мысль</text>
+        <text x="190" y="42" text-anchor="middle" class="tri-sub">"Меня никто не любит"</text>
+
+        <circle cx="340" cy="300" r="46" fill="#8b5cf6"/>
+        <text x="340" y="296" text-anchor="middle" class="tri-label">Эмоция</text>
+        <text x="340" y="312" text-anchor="middle" class="tri-sub">Грусть, одиночество</text>
+
+        <circle cx="40" cy="300" r="46" fill="#f59e0b"/>
+        <text x="40" y="296" text-anchor="middle" class="tri-label">Поведение</text>
+        <text x="40" y="312" text-anchor="middle" class="tri-sub">Уход в изоляцию</text>
+
+        <path d="M 220 55 Q 280 150 310 260" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.6" stroke-dasharray="4 5" marker-end="url(#arrow)"/>
+        <path d="M 160 55 Q 100 150 70 260" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.6" stroke-dasharray="4 5" marker-end="url(#arrow)"/>
+        <path d="M 290 300 Q 190 340 90 300" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.6" stroke-dasharray="4 5" marker-end="url(#arrow)"/>
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 z" fill="rgba(255,255,255,.4)"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+
+    <div class="example">
+      <b>Клиническое применение:</b> Выбирая, откуда начать вмешательство, я сначала смотрю, где клиент больше всего "застрял". Иногда начинаю с проверки мысли (<span class="prog-link" onclick="openProgram('koqnitiv-restrukturizasiya')">когнитивная реструктуризация</span>), иногда — просто с изменения поведения: например, прошу человека, боящегося выходить из дома, сделать один маленький шаг наружу. Оба пути двигают весь треугольник.
+    </div>
+    <div class="card"><h3>🎯 Как я применяю это на сессии</h3><p>Рисую этот треугольник на бумаге и кладу перед клиентом. Потом просто спрашиваю: с какого угла начнём сегодня — с мысли или с поведения? Ответ часто приходит сам собой.</p></div>
+  </section>
+
+  <!-- 4. Модель ABC -->
+  <section>
+    <div class="sec-head"><div class="sec-num">4</div><h2>Модель ABC (Альберт Эллис)</h2></div>
+    <p class="lead">Модель Эллиса проста, но очень действенна: расстраивает нас не Событие (A), а Убеждение (B), которое мы вокруг него строим. Именно оно порождает Последствие (C). Вот и вся модель.</p>
+
+    <div class="abc-flow">
+      <div class="abc-box a">
+        <span class="letter">A</span>
+        <h4>Activating Event</h4>
+        <p>Триггер: руководитель прошёл мимо, даже не взглянув.</p>
+      </div>
+      <div class="abc-box b">
+        <span class="letter">B</span>
+        <h4>Belief</h4>
+        <p>Убеждение: "Значит, она мной недовольна, скоро уволит."</p>
+      </div>
+      <div class="abc-box c">
+        <span class="letter">C</span>
+        <h4>Consequence</h4>
+        <p>Последствие: узел в животе, тревога весь день, избегание работы.</p>
+      </div>
+    </div>
+
+    <div class="dialog">
+      <div class="line"><span class="who t">Терапевт:</span><span class="txt">Камран, что именно пронеслось у вас в голове, когда руководитель прошла мимо?</span></div>
+      <div class="line"><span class="who k">Клиент:</span><span class="txt">Она даже не взглянула на меня. Значит, недовольна моей работой.</span></div>
+      <div class="line"><span class="who t">Терапевт:</span><span class="txt">На чём основана эта мысль — было какое-то конкретное доказательство?</span></div>
+      <div class="line"><span class="who k">Клиент:</span><span class="txt">Вообще-то... ничего такого. Просто прошла мимо.</span></div>
+      <div class="line"><span class="who t">Терапевт:</span><span class="txt">Возможно ли другое объяснение?</span></div>
+      <div class="line"><span class="who k">Клиент:</span><span class="txt">Может, спешила. В то утро было совещание.</span></div>
+      <div class="line"><span class="who t">Терапевт:</span><span class="txt">Получается, у одного и того же события есть как минимум два разных прочтения. Видите? Другое убеждение — и совсем другое чувство.</span></div>
+    </div>
+    <div class="card"><h3>🎯 Как я применяю это на сессии</h3><p>Как и с Камраном — я никогда не говорю "твоя мысль неверна". Задаю вопросы, а он находит ответ сам. То, что человек находит сам, запоминается куда прочнее, чем то, что я ему просто сказал.</p></div>
+  </section>
+
+  <!-- 5. Уровни когниций -->
+  <section>
+    <div class="sec-head"><div class="sec-num">5</div><h2>Три уровня когнитивной структуры</h2></div>
+    <p class="lead">По Беку, наши мысли организованы в три слоя — от поверхности к глубине. Я называю это "три слоя айсберга": верхний слой виден сразу, а нижние приходится раскапывать.</p>
+    <div class="card">
+      <h3>1️⃣ Автоматические мысли</h3>
+      <p>Это незваные гости, которые сами являются к нам в голову. Перед экзаменом мелькает мысль "я это не сдам" — мы её даже толком не слышим, только чувствуем результат. Детям сложно облечь такие мысли в слова, поэтому я часто прошу их порисовать, чтобы мысль обрела форму. У подростков процесс идёт быстрее — абстрактное мышление уже сформировано.</p>
+    </div>
+    <div class="card">
+      <h3>2️⃣ Промежуточные убеждения (правила, допущения)</h3>
+      <p>Это скрытые правила в форме "если... то...". Например: "Если я не идеален, меня не будут любить." Человек часто даже не подозревает, что носит в себе такое правило, — а ведь именно оно управляет его поведением.</p>
+    </div>
+    <div class="card">
+      <h3>3️⃣ Базовые убеждения (схемы)</h3>
+      <p>Это самый глубокий слой. Убеждения вроде "я ничего не стою" или "мир опасен". Обычно они родом из детства, и меняются дольше всего — но не невозможно. Я видел это своими глазами не раз за все эти годы.</p>
+    </div>
+    <div class="dialog">
+      <div class="line"><span class="who t">Терапевт:</span><span class="txt">Что именно проносится в голове прямо перед экзаменом?</span></div>
+      <div class="line"><span class="who k">Клиент:</span><span class="txt">Приходит мысль "я не справлюсь".</span></div>
+      <div class="line"><span class="who t">Терапевт:</span><span class="txt">А какое правило стоит за этой мыслью — если сформулировать в духе "если... то..."?</span></div>
+      <div class="line"><span class="who k">Клиент:</span><span class="txt">Кажется... что-то вроде "если я не идеален, значит, я провалился".</span></div>
+    </div>
+    <div class="card"><h3>🎯 Как я применяю это на сессии</h3><p>Сначала ловим автоматическую мысль, потом спрашиваю — какое правило за ней стоит? Иногда после трёх-четырёх вопросов мы доходим прямо до базового убеждения, и клиент сам удивляется.</p></div>
+  </section>
+
+  <!-- 6. Когнитивные искажения -->
+  <section>
+    <div class="sec-head"><div class="sec-num">6</div><h2>Когнитивные искажения</h2></div>
+    <p class="lead">Их не выучишь за одну ночь. Признаюсь честно — даже сейчас, спустя годы, я иногда ловлю некоторые из них в собственных мыслях. Их распознавание — один из базовых навыков в КПТ.</p>
+    <div class="dist-grid">
+      <div class="dist-card"><div class="name">Мышление "всё или ничего"</div><div class="ex">"Если я не идеален, значит, я полный неудачник."</div></div>
+      <div class="dist-card"><div class="name">Сверхобобщение</div><div class="ex">"Один раз ошибся — значит, всегда ошибаюсь."</div></div>
+      <div class="dist-card"><div class="name">Катастрофизация</div><div class="ex">"Сердце сильно бьётся — у меня инфаркт!"</div></div>
+      <div class="dist-card"><div class="name">Чтение мыслей</div><div class="ex">"Он думает, что я глупый."</div></div>
+      <div class="dist-card"><div class="name">Предсказание будущего</div><div class="ex">"Эта деловая встреча точно пройдёт плохо."</div></div>
+      <div class="dist-card"><div class="name">Эмоциональное обоснование</div><div class="ex">"Я чувствую себя неудачником, значит, я и есть неудачник."</div></div>
+      <div class="dist-card"><div class="name">Долженствования</div><div class="ex">"Я никогда не должен ошибаться."</div></div>
+      <div class="dist-card"><div class="name">Навешивание ярлыков</div><div class="ex">"Я полный неудачник" (один поступок превращён в целую личность).</div></div>
+      <div class="dist-card"><div class="name">Фильтрация (выбор негатива)</div><div class="ex">Из 10 положительных отзывов фиксируешься на одном негативном.</div></div>
+      <div class="dist-card"><div class="name">Персонализация</div><div class="ex">"Встреча прошла плохо, потому что там был я."</div></div>
+    </div>
+    <div class="dialog">
+      <div class="line"><span class="who k">Клиент:</span><span class="txt">Если проект не понравится, значит, я вообще не умею работать.</span></div>
+      <div class="line"><span class="who t">Терапевт:</span><span class="txt">На какой паттерн это похоже, как думаете?</span></div>
+      <div class="line"><span class="who k">Клиент:</span><span class="txt">Наверное... на "всё или ничего".</span></div>
+    </div>
+    <div class="card"><h3>🎯 Как я применяю это на сессии</h3><p>Этот список я клиенту заучивать не заставляю. Просто, услышав его собственную фразу, спрашиваю: "на что это похоже?" Найденное самим запоминается глубже, чем названное мной.</p></div>
+  </section>
+
+  <!-- 7. Основные принципы -->
+  <section>
+    <div class="sec-head"><div class="sec-num">7</div><h2>Основные принципы КПТ</h2></div>
+    <div class="card"><h3>🤝 Совместный эмпиризм</h3><p>Я никогда не говорю клиенту "твоя мысль неверна". Мы оба — детективы, кладём мысль на стол как гипотезу, которую нужно проверить доказательствами.</p></div>
+    <div class="card"><h3>🎯 Целенаправленность и структура</h3><p>У каждой сессии есть повестка. Сессия без структуры — потеря времени, говорю это из опыта.</p></div>
+    <div class="card"><h3>⏱️ Ограниченность во времени (краткосрочность)</h3><p>Обычно 8–20 сессий. Затягивание само по себе становится проблемой — сила КПТ именно в быстром, конкретном результате.</p></div>
+    <div class="card"><h3>❓ Сократический диалог</h3><p>Я никогда не даю готовый ответ. Спрашиваю: "На чём основана эта мысль?", "Возможно ли другое объяснение?", "Что случится в худшем случае, и как ты с этим справишься?" Эти вопросы открывают клиенту путь к собственному ответу.</p></div>
+    <div class="card"><h3>📓 Домашние задания и дневники мыслей</h3><p>Если то, что усвоено в кабинете, не проверено дома — оно не закрепится. В конце каждой сессии я даю небольшое, но конкретное задание — не масштабное, но настоящее.</p></div>
+    <div class="card"><h3>🎯 Как я применяю это на сессии</h3><p>Эти пять принципов я клиенту вслух не перечисляю — просто показываю своим поведением. Они — тихий фон, на котором строится вся сессия.</p></div>
+  </section>
+
+  <!-- 8. Структура сессии -->
+  <section>
+    <div class="sec-head"><div class="sec-num">8</div><h2>Структура типичной сессии КПТ</h2></div>
+    <div class="steps">
+      <div class="step"><div class="stxt"><h4>Проверка настроения</h4><p>Спрашиваю по шкале от 0 до 10: насколько тревожно тебе сегодня? Простой вопрос, но говорит о многом.</p></div></div>
+      <div class="step"><div class="stxt"><h4>Мостик — связь с прошлой сессией</h4><p>Что осталось в памяти с прошлого раза? Этот вопрос связывает сессии между собой.</p></div></div>
+      <div class="step"><div class="stxt"><h4>Согласование повестки</h4><p>На чём сфокусируемся сегодня? Решаем вместе, я не назначаю в одиночку.</p></div></div>
+      <div class="step"><div class="stxt"><h4>Разбор домашнего задания</h4><p>Сделал? Если нет — почему? Это тот шаг, который чаще всего пропускают, а он один из важнейших.</p></div></div>
+      <div class="step"><div class="stxt"><h4>Работа над основной темой</h4><p>Здесь показывается новая техника либо глубже прорабатывается старая проблема.</p></div></div>
+      <div class="step"><div class="stxt"><h4>Итог и обратная связь</h4><p>Что сегодня было полезным? Это нужно услышать от клиента его собственными словами.</p></div></div>
+      <div class="step"><div class="stxt"><h4>Новое домашнее задание</h4><p>Что попробуем до следующей встречи? Небольшое, конкретное, измеримое.</p></div></div>
+    </div>
+    <div class="card"><h3>🎯 Как я применяю это на сессии</h3><p>Эти шаги я не прохожу механически, но не пропускаю ни один из них — особенно проверку домашнего задания. Именно здесь многие терапевты торопятся, я — нет.</p></div>
+  </section>
+
+  <!-- 9. Практический бланк -->
+  <section>
+    <div class="sec-head"><div class="sec-num">9</div><h2>Практический бланк: дневник мыслей</h2></div>
+    <p class="lead">Этот бланк никогда не покидает мою сумку. Выглядит просто, но за все эти годы это самый используемый мной инструмент — клиент учится отслеживать собственное мышление в реальных ситуациях.</p>
+    <div class="worksheet">
+      <table>
+        <thead>
+          <tr><th>Ситуация</th><th>Автоматическая мысль</th><th>Эмоция (0–100)</th><th>Доказательства против</th><th>Сбалансированная мысль</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Написал другу, ответа не последовало</td>
+            <td>"Он злится на меня, больше не хочет дружить"</td>
+            <td>Тревога — 80</td>
+            <td>Раньше тоже отвечал с задержкой, на работе много дел</td>
+            <td>"Наверное, просто занят, это не обязательно про дружбу"</td>
+          </tr>
+          <tr>
+            <td>Одноклассники засмеялись, а я стоял рядом</td>
+            <td>"Они смеются надо мной"</td>
+            <td>Стыд — 75</td>
+            <td>Они смотрели в телефоны, тема могла быть другой</td>
+            <td>"Их смех может быть вовсе не про меня"</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="example"><b>Задание (для клиента):</b> На этой неделе зафиксируйте минимум 3 ситуации в таком формате. На следующей сессии разберём их вместе.</div>
+    <div class="card"><h3>🎯 Как я применяю это на сессии</h3><p>Первый раз я заполняю этот бланк вместе с клиентом прямо в кабинете, чтобы дома он не растерялся. Дать пустой бланк "на дом" без разбора — самая частая ошибка, которую я вижу.</p></div>
+  </section>
+
+  <!-- 10. Клинический случай -->
+  <section>
+    <div class="sec-head"><div class="sec-num">10</div><h2>Клинический случай: полная история Камрана</h2></div>
+    <p class="lead">Камрану было 34 года, менеджер среднего звена в технологической компании. Когда он впервые пришёл ко мне, его жалобой была "постоянная тревога и невозможность сосредоточиться на работе". На первый взгляд — обычный рабочий стресс. Но чем глубже мы копали, тем яснее становилось, что дело куда серьёзнее.</p>
+    <div class="card">
+      <h3>📋 Клиническая картина</h3>
+      <p>Камран трактовал каждое нейтральное действие руководителя — не поздоровалась, быстро прошла мимо — как "она мной недовольна". Это прочтение повторялось по несколько раз в день, каждый раз запуская часы тревоги и избегания работы. Так продолжалось уже три месяца, сон был нарушен, работоспособность реально начала снижаться — собственный страх начал сбываться сам по себе.</p>
+    </div>
+    <div class="card">
+      <h3>🔍 Что мы обнаружили</h3>
+      <p>За шесть сессий выяснилось, что базовое убеждение Камрана — "если я не идеален, меня отвергнут" — уходило корнями в детство, к очень требовательному отцу. Любой неоднозначный сигнал на работе активировал это старое убеждение. То, что руководитель не поздоровалась, для него, сам того не осознавая, становилось "неодобрительным взглядом отца".</p>
+    </div>
+    <div class="example"><b>Результат:</b> После 12 сессий у Камрана выработалась привычка в подобных ситуациях спрашивать себя: "это подкреплено доказательствами, или это старый паттерн?" Тревога не исчезла полностью — я никогда этого не обещаю, — но снизилась до управляемого уровня.</div>
+  </section>
+
+  <!-- 11. Концептуализация случая -->
+  <section>
+    <div class="sec-head"><div class="sec-num">11</div><h2>Бланк концептуализации случая</h2></div>
+    <p class="lead">Этот бланк я заполняю на каждого клиента, обычно в течение первых 2–3 сессий. Это не просто бумажная работа — это стержень плана лечения. Работать без него — всё равно что путешествовать без карты.</p>
+    <div class="worksheet">
+      <table>
+        <thead><tr><th>Компонент</th><th>Пример Камрана</th></tr></thead>
+        <tbody>
+          <tr><td><b>Заявленная проблема</b></td><td>Постоянная тревога, связанная с работой, трудности концентрации</td></tr>
+          <tr><td><b>Провоцирующие факторы (что запускает)</b></td><td>Нейтральное поведение руководителя, новые проекты</td></tr>
+          <tr><td><b>Предрасполагающие факторы (корни)</b></td><td>Требовательный родитель, опыт условной любви в детстве</td></tr>
+          <tr><td><b>Поддерживающие факторы (почему не проходит)</b></td><td>Избегающее поведение, постоянный поиск одобрения</td></tr>
+          <tr><td><b>Защитные факторы (сильные стороны)</b></td><td>Высокая самоосознанность, поддерживающая семья, трудовая этика</td></tr>
+          <tr><td><b>Базовое когнитивное убеждение</b></td><td>"Если я не идеален, меня отвергнут"</td></tr>
+          <tr><td><b>Цель лечения</b></td><td>Навык когнитивной проверки мыслей, регуляция тревоги</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card"><h3>🎯 Как я применяю это на сессии</h3><p>Этот бланк я заполняю вместе с клиентом, не прячу его за спиной. Когда Камран прочитал строку про свои "предрасполагающие факторы", он надолго замолчал — это был очень сильный момент.</p></div>
+  </section>
+
+  <!-- 12. Протокол сессии -->
+  <section>
+    <div class="sec-head"><div class="sec-num">12</div><h2>Пример протокола сессии</h2></div>
+    <p class="lead">Ниже — реальная структура протокола 4-й сессии с Камраном. Такой формат я веду после каждой сессии — и для собственных записей, и как образец для студентов на супервизии.</p>
+    <div class="worksheet">
+      <table>
+        <thead><tr><th>Этап</th><th>Время</th><th>Заметка</th></tr></thead>
+        <tbody>
+          <tr><td>Проверка настроения</td><td>5 мин</td><td>Тревога: 6/10 (на прошлой сессии было 8/10)</td></tr>
+          <tr><td>Разбор домашнего задания</td><td>10 мин</td><td>Дневник мыслей — зафиксировано 4 ситуации, 3 заполнены полностью</td></tr>
+          <tr><td>Согласование повестки</td><td>3 мин</td><td>Сегодня: продолжаем работу над автоматическими мыслями о руководителе</td></tr>
+          <tr><td>Основная работа</td><td>25 мин</td><td>Сократический диалог, углубление колонки "доказательства против"</td></tr>
+          <tr><td>Новое домашнее задание</td><td>5 мин</td><td>На этой неделе зафиксировать 2 новые ситуации в том же формате</td></tr>
+          <tr><td>Итоговая обратная связь</td><td>2 мин</td><td>Клиент: "Сегодня я впервые смог поставить под вопрос свою мысль без посторонней помощи"</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 13. Шкалы оценки -->
+  <section>
+    <div class="sec-head"><div class="sec-num">13</div><h2>Диагностические инструменты и шкалы КПТ</h2></div>
+    <p class="lead">Перед первой сессией я обычно использую несколько стандартизированных инструментов — простого вопроса "как дела" недостаточно, нужна объективная стартовая точка.</p>
+    <div class="grid-3">
+      <div class="lens-card"><span class="ico">📊</span><h4>Шкала депрессии Бека (BDI-II)</h4><p>Самая распространённая шкала самооценки для измерения тяжести симптомов депрессии.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>Шкала тревоги Бека (BAI)</h4><p>Отдельно измеряет физические и когнитивные симптомы тревоги.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>Опросник автоматических мыслей (ATQ)</h4><p>Оценивает частоту негативных автоматических мыслей.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>Шкала дисфункциональных установок (DAS)</h4><p>Шкала, измеряющая глубокие, дисфункциональные базовые убеждения.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>GAD-7</h4><p>Короткий, быстрый скрининговый инструмент для генерализованного тревожного расстройства.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>PHQ-9</h4><p>Скрининговый инструмент для депрессии, широко используемый в повседневной практике.</p></div>
+    </div>
+    <div class="example"><b>Важно:</b> Эти шкалы не ставят диагноз — они лишь измеряют тяжесть и помогают отслеживать прогресс в ходе лечения. Я повторяю BAI с Камраном каждые 4 сессии, чтобы видеть прогресс и в цифрах тоже — иногда клиент видит прогресс на бумаге раньше, чем чувствует его сам.</div>
+  </section>
+
+  <section>
+    <div class="sec-head"><div class="sec-num">🏠</div><h2>Домашнее задание (для вас)</h2></div>
+    <p class="lead">Прежде чем закрыть этот модуль, хочу попросить вас об одной вещи. Сегодня или завтра найдите небольшую ситуацию, которая вас беспокоит, — не большая травма, обычного момента напряжения достаточно.</p>
+    <div class="card">
+      <p>Заполните для себя дневник мыслей. Запишите автоматическую мысль, оцените эмоцию от 0 до 100, а затем задайте себе тот же вопрос, что я задавал Камрану: "На чём основана эта мысль? Возможно ли другое объяснение?" Если сначала не опробуете это упражнение на себе, требовать его от клиента будет труднее. Я говорю это каждому своему студенту — сначала на себе, потом на клиенте.</p>
+    </div>
+  </section>
+
+
+<section>
+  <div class="sec-head"><div class="sec-num">14</div><h2>Место скрининга риска на этапе оценки</h2></div>
+  <div class="crisis-box">
+    <h4>⚠️ Когда требуется срочное вмешательство</h4>
+    <p>Хотя этот модуль охватывает теоретические основы, первая сессия любой программы КПТ должна включать структурированный скрининг риска — это общая рамка, к которой возвращаются тематические протоколы во всех последующих модулях.</p>
+    <ul>
+      <li>Любое прямое или косвенное упоминание вреда себе или другим со стороны клиента или родителя на первой встрече;</li>
+      <li>Положительный ответ на 9-й пункт PHQ-9, 9-й пункт GAD-7 или аналогичный пункт в других инструментах первичной оценки;</li>
+      <li>Психиатрические заболевания в семье, история суицида или текущий серьёзный семейный кризис;</li>
+      <li>Собственная субъективная тревога клинициста — ощущение "что-то не так", даже без конкретной формулировки.</li>
+    </ul>
+    <ol class="crisis-steps">
+      <li>Применяйте структурированный скрининг риска как стандартный протокол в первые 2 сессии с каждым новым клиентом, независимо от темы работы.</li>
+      <li>При положительном результате составьте план безопасности прежде, чем переходить к терапевтическому плану.</li>
+      <li>Всегда документируйте результаты письменно, с датой, — это важно и клинически, и юридически.</li>
+      <li>При любых сомнениях не избегайте консультации с коллегами — не принимайте решение в одиночку.</li>
+    </ol>
+    <p><b>Примечание:</b> Тематические протоколы кризисных ситуаций в каждом следующем модуле дополняют эту общую рамку, а не заменяют её.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="sec-num">15</div><h2>Библиография</h2></div>
+  <div class="biblio-box">
+    <h4>📚 Основные источники по теме</h4>
+    <ul class="biblio-list">
+      <li><b>Beck, J. S.</b> (2020). <i>Cognitive Behavior Therapy: Basics and Beyond</i> (3rd ed.). Guilford Press.</li>
+      <li><b>Beck, A. T., & Haigh, E. A. P.</b> (2014). Advances in cognitive theory and therapy: The generic cognitive model. <i>Annual Review of Clinical Psychology, 10</i>, 1–24.</li>
+      <li><b>Kazantzis, N., Dattilio, F. M., & Dobson, K. S.</b> (2017). <i>The Therapeutic Relationship in Cognitive-Behavioral Therapy.</i> Guilford Press.</li>
+      <li><b>Posner, K., et al.</b> (2011). The Columbia-Suicide Severity Rating Scale. <i>American Journal of Psychiatry, 168</i>(12), 1266–1277.</li>
+      <li><b>Kroenke, K., Spitzer, R. L., & Williams, J. B.</b> (2001). The PHQ-9. <i>Journal of General Internal Medicine, 16</i>(9), 606–613.</li>
+      <li><b>American Psychiatric Association.</b> (2022). <i>Diagnostic and Statistical Manual of Mental Disorders</i> (5th ed., text rev.).</li>
+    </ul>
+  </div>
+</section>
+
+<div class="quote">
+    "Людей расстраивают не сами вещи, а то, как они на них смотрят."
+    <span>— Эпиктет, философ-стоик (один из философских корней КПТ)</span>
+  </div>
+
+  <div class="summary-box">
+    <h3>📌 Резюме модуля</h3>
+    <ul>
+      <li>КПТ строится на треугольнике мысль – эмоция – поведение, все три элемента взаимосвязаны.</li>
+      <li>Модель ABC Эллиса показывает: эмоциональный результат определяет не событие, а убеждение.</li>
+      <li>Когнитивная структура состоит из трёх слоёв: автоматические мысли, промежуточные убеждения, базовые убеждения (схемы).</li>
+      <li>Когнитивные искажения — системные ошибки мышления — нужно уметь распознавать и у себя, и у клиента.</li>
+      <li>КПТ — структурированный, целенаправленный, совместный и ограниченный по времени подход, это стоит держать в голове.</li>
+    </ul>
+  </div>
+
+  <div class="nav-bottom">
+    <a class="nav-btn home" href="index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+      Вернуться в меню
+    </a>
+    <a class="nav-btn next" href="02-ptsd.html">
+      Следующий модуль: ПТСР и КПТ
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+
+</main>
+
+<footer>
+  <p>© 2026 Курс когнитивно-поведенческой терапии · Модуль 1/20</p>
+  <p style="margin-top:8px;">By <a href="https://aze-ai.az" target="_blank" rel="noopener">securtiy_group</a></p>
+  <p style="margin-top:10px;font-size:.82rem;"><a href="../privacy.html">Политика конфиденциальности</a> · <a href="../terms.html">Условия использования</a></p>
+</footer>
+
+<script>
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target);} });
+},{threshold:0.1});
+document.querySelectorAll('section').forEach(s=>io.observe(s));
+
+window.addEventListener('mousemove', e=>{
+  const mx = (e.clientX/window.innerWidth - 0.5);
+  const my = (e.clientY/window.innerHeight - 0.5);
+  document.querySelectorAll('.blob').forEach((b,i)=>{
+    const speed = (i+1)*18;
+    b.style.transform = `translate(${mx*speed}px, ${my*speed}px)`;
+  });
+});
+</script>
+<script src="../protect.js" defer></script>
+<script src="../engine.js"></script>
+
+<div class="modal-overlay" id="programModalOverlay" onclick="if(event.target===this)closeProgram()">
+  <div class="modal-box">
+    <div class="modal-close" onclick="closeProgram()">✕</div>
+    <div id="programModalContent"></div>
+  </div>
+</div>
+
+
+
+</body>
+</html>

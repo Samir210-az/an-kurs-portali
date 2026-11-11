@@ -1,0 +1,2871 @@
+﻿<!DOCTYPE html>
+<html lang="az">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#d9a85a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Modul 3 · Aqressiya və CBT</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1:#0c211f; --bg-2:#1d423d;
+    --surface: rgba(217,168,90,0.055);
+    --surface-h: rgba(217,168,90,0.10);
+    --border: rgba(217,168,90,0.14);
+    --teal:#7ba098; --teal-soft: rgba(123,160,152,0.18);
+    --violet:#8a6a3a; --violet-soft: rgba(138,106,58,0.20);
+    --amber:#d9a85a; --amber-soft: rgba(217,168,90,0.18);
+    --flame:#d9a85a; --flame-soft: rgba(217,168,90,0.18);
+    --rose:#d9705a; --rose-soft: rgba(217,112,90,0.16);
+    --sky:#f0cd8e; --sky-soft:rgba(240,205,142,0.18);
+    --text-1:#f3eee1; --text-2:#c9c2ae; --text-3:#8a9a93;
+    --font-d:'Fraunces', serif;
+    --font-b:'Inter', system-ui, sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{-webkit-user-select:none;-moz-user-select:none;user-select:none;}
+  body{
+    font-family:var(--font-b);
+    background:
+      radial-gradient(1100px 750px at 12% -10%, rgba(251,146,60,0.16), transparent 60%),
+      radial-gradient(1000px 700px at 110% 15%, rgba(139,92,246,0.14), transparent 55%),
+      linear-gradient(180deg, var(--bg-1), var(--bg-2));
+    color:var(--text-1);
+    min-height:100vh;
+    line-height:1.65;
+  }
+  .blob{position:fixed;border-radius:50%;filter:blur(80px);opacity:.45;pointer-events:none;z-index:0;}
+  .blob-1{width:400px;height:400px;background:var(--flame-soft);top:-100px;left:-120px;}
+  .blob-2{width:360px;height:360px;background:var(--violet-soft);top:40%;right:-140px;}
+  .blob-3{width:320px;height:320px;background:var(--amber-soft);bottom:-80px;left:30%;}
+
+  .topbar{position:sticky; top:0; z-index:50; display:flex; align-items:center; justify-content:space-between; padding:16px 28px; background:rgba(11,18,36,0.75); backdrop-filter:blur(16px); border-bottom:1px solid var(--border);}
+  .topbar-brand{display:flex; align-items:center; gap:10px; text-decoration:none; flex-shrink:0;}
+  .topbar-brand img{width:34px; height:34px; border-radius:9px; object-fit:cover; border:1px solid rgba(255,255,255,0.15);}
+  .topbar-brand .tb-name{font-family:var(--font-d); font-weight:700; font-size:.78rem; color:var(--text-1); line-height:1.2; max-width:150px;}
+  .topbar-right{display:flex; align-items:center; gap:14px; flex-shrink:0;}
+  @media(max-width:640px){ .topbar-brand .tb-name{display:none;} .topbar a.back span{display:none;} }
+  .topbar a.back{display:inline-flex; align-items:center; gap:8px; color:var(--text-2); text-decoration:none; font-size:.9rem; font-weight:600; transition:color .2s;}
+  .topbar a.back:hover{color:var(--flame);}
+  .progress-pill{font-size:.78rem; color:var(--text-3); border:1px solid var(--border); padding:6px 14px; border-radius:999px; background:var(--surface);}
+
+  main{position:relative; z-index:2; max-width:880px; margin:0 auto; padding:0 24px 100px;}
+
+  .hero{padding:64px 0 40px; text-align:center;}
+  .hero-illus{display:flex; justify-content:center; margin-bottom:28px;}
+  .hero-illus svg{max-width:100%; height:auto;}
+  .tag{display:inline-block; font-size:.76rem; letter-spacing:.14em; text-transform:uppercase; color:var(--flame); background:var(--flame-soft); border:1px solid rgba(251,146,60,.35); padding:6px 16px; border-radius:999px; margin-bottom:22px; animation:fadeDown .7s ease both;}
+  h1{font-family:var(--font-d); font-weight:800; font-size:clamp(1.9rem,4.6vw,3rem); line-height:1.2; background:linear-gradient(90deg,#fff,#ffd8c2 45%, var(--flame)); -webkit-background-clip:text;background-clip:text;color:transparent; animation:fadeUp .8s ease both .1s;}
+  .hero p{color:var(--text-2); max-width:620px; margin:20px auto 0; animation:fadeUp .8s ease both .2s;}
+
+  section{margin-top:64px; animation:fadeUp .8s ease both; opacity:0;}
+  section.show{opacity:1;}
+  .sec-head{display:flex; align-items:center; gap:14px; margin-bottom:24px;}
+  .sec-num{font-family:var(--font-d); font-size:1.4rem; font-weight:800; color:var(--bg-1); background:linear-gradient(135deg,var(--flame),var(--violet)); width:44px;height:44px; border-radius:13px; display:flex;align-items:center;justify-content:center; flex-shrink:0;}
+  h2{font-family:var(--font-d); font-size:clamp(1.35rem,3vw,1.7rem); font-weight:700;}
+  .lead{color:var(--text-2); margin-bottom:22px;}
+
+  .card{background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:24px 26px; margin-bottom:18px; backdrop-filter:blur(10px);}
+  .card h3{font-size:1.05rem; margin-bottom:10px; color:var(--text-1); display:flex; align-items:center; gap:10px;}
+  .card p{color:var(--text-2); font-size:.95rem;}
+  .card p + p{margin-top:10px;}
+
+  .simple-box{border-left:3px solid var(--sky); background:var(--sky-soft); border-radius:0 14px 14px 0; padding:18px 22px; margin:18px 0; font-size:.94rem;}
+  .simple-box b{color:var(--sky);}
+  .sci-box{border-left:3px solid var(--violet); background:var(--violet-soft); border-radius:0 14px 14px 0; padding:18px 22px; margin:18px 0; font-size:.94rem;}
+  .sci-box b{color:var(--violet);}
+  .example{border-left:3px solid var(--amber); background:var(--amber-soft); border-radius:0 14px 14px 0; padding:16px 20px; margin:16px 0; font-size:.92rem;}
+  .example b{color:var(--amber);}
+
+  .dialog{background:rgba(255,255,255,.03); border:1px solid var(--border); border-radius:16px; padding:20px 22px; margin:18px 0; font-size:.92rem;}
+  .dialog .line{display:flex; gap:12px; margin-bottom:14px;}
+  .dialog .line:last-child{margin-bottom:0;}
+  .dialog .who{flex-shrink:0; width:78px; font-weight:700; font-size:.8rem; padding-top:2px;}
+  .dialog .who.t{color:var(--teal);}
+  .dialog .who.k{color:var(--flame);}
+  .dialog .txt{color:var(--text-2);}
+
+  /* Specialist lens grid */
+  .lens-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:16px; margin:26px 0;}
+  .lens-card{background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:20px 22px; transition:transform .3s, border-color .3s;}
+  .lens-card:hover{transform:translateY(-4px); border-color:rgba(251,146,60,.4);}
+  .lens-card .ico{font-size:1.6rem; margin-bottom:10px; display:block;}
+  .lens-card h4{font-size:.94rem; margin-bottom:8px; color:var(--flame);}
+  .lens-card p{font-size:.85rem; color:var(--text-2);}
+
+  .age-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; margin:26px 0;}
+  .age-card{border-radius:18px; padding:20px; border:1px solid var(--border);}
+  .age-card.child{background:var(--teal-soft);}
+  .age-card.teen{background:var(--violet-soft);}
+  .age-card.adult{background:var(--flame-soft);}
+  .age-card h4{font-size:1rem; margin-bottom:10px;}
+  .age-card ul{padding-left:18px; font-size:.85rem; color:var(--text-2);}
+  .age-card li{margin-bottom:6px;}
+
+  /* Anger cycle diagram */
+  .cycle-wrap{display:flex; justify-content:center; margin:30px 0;}
+  .cycle-wrap svg{max-width:100%; height:auto;}
+
+  /* Anger thermometer reuse */
+  .thermo-wrap{display:flex; justify-content:center; margin:30px 0;}
+  .thermo{display:flex; align-items:flex-end; gap:8px;}
+  .thermo-bar{width:34px; border-radius:8px 8px 0 0; display:flex; align-items:flex-end; justify-content:center; color:#0c211f; font-weight:800; font-size:.72rem; padding-bottom:4px;}
+
+  /* Stop think act */
+  .sta-flow{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:26px 0;}
+  .sta-box{border-radius:16px; padding:18px 16px; text-align:center; border:1px solid var(--border);}
+  .sta-box.s1{background:var(--rose-soft);}
+  .sta-box.s2{background:var(--sky-soft);}
+  .sta-box.s3{background:var(--teal-soft);}
+  .sta-box .ico2{font-size:1.7rem; display:block; margin-bottom:8px;}
+  .sta-box h4{font-size:.9rem; margin-bottom:6px;}
+  .sta-box p{font-size:.78rem; color:var(--text-2);}
+
+  .session-plan{margin:26px 0;}
+  .sess-row{display:grid; grid-template-columns:56px 1fr auto; gap:14px; align-items:center; padding:15px 12px; border-bottom:1px solid var(--border); cursor:pointer; border-radius:14px; transition:background .25s, transform .25s;}
+  .sess-row:hover{background:var(--surface); transform:translateX(4px);}
+  .sess-row:last-child{border-bottom:none;}
+  .sess-num{font-family:var(--font-d); font-weight:800; color:var(--flame); font-size:1rem; display:flex; align-items:center; justify-content:center; background:var(--flame-soft); border-radius:12px; height:40px;}
+  .sess-txt h4{font-size:.94rem; margin-bottom:3px;}
+  .sess-txt p{font-size:.83rem; color:var(--text-2);}
+  .sess-open{font-size:.76rem; color:var(--flame); font-weight:700; white-space:nowrap; display:flex; align-items:center; gap:5px;}
+
+  /* Session modal */
+  .modal-overlay{position:fixed; inset:0; z-index:200; background:rgba(6,9,20,0.72); backdrop-filter:blur(6px); display:flex; align-items:flex-end; justify-content:center; opacity:0; visibility:hidden; transition:opacity .3s;}
+  .modal-overlay.active{opacity:1; visibility:visible;}
+  @media(min-width:720px){ .modal-overlay{align-items:center;} }
+  .modal-box{width:100%; max-width:680px; max-height:88vh; overflow-y:auto; background:linear-gradient(180deg, #1d423d, #0c211f); border:1px solid var(--border); border-radius:26px 26px 0 0; padding:32px 26px 40px; position:relative; transform:translateY(40px); transition:transform .35s cubic-bezier(.2,.8,.2,1); -webkit-user-select:text; user-select:text;}
+  @media(min-width:720px){ .modal-box{border-radius:26px; transform:translateY(0) scale(.94);} }
+  .modal-overlay.active .modal-box{transform:translateY(0) scale(1);}
+  .modal-close{position:sticky; top:0; float:right; margin-left:12px; width:36px;height:36px; border-radius:50%; border:1px solid var(--border); background:rgba(255,255,255,.06); color:var(--text-1); font-size:1.1rem; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:5;}
+  .modal-close:hover{background:rgba(255,255,255,.14);}
+  .m-tag{display:inline-block; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--flame); background:var(--flame-soft); border:1px solid rgba(251,146,60,.35); padding:5px 13px; border-radius:999px; margin-bottom:14px;}
+  .m-title{font-family:var(--font-d); font-size:1.45rem; font-weight:800; margin-bottom:18px; line-height:1.3; clear:both;}
+  .m-block{margin-bottom:22px;}
+  .m-block h5{font-size:.82rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-3); margin-bottom:10px; display:flex; align-items:center; gap:8px;}
+  .m-goal{background:var(--sky-soft); border-left:3px solid var(--sky); border-radius:0 12px 12px 0; padding:14px 18px; font-size:.9rem; color:var(--text-1);}
+  .m-materials{display:flex; flex-wrap:wrap; gap:8px;}
+  .m-materials span{background:var(--surface); border:1px solid var(--border); padding:6px 13px; border-radius:999px; font-size:.8rem; color:var(--text-2);}
+  .m-phase{background:rgba(255,255,255,.03); border:1px solid var(--border); border-radius:16px; padding:16px 18px; margin-bottom:12px;}
+  .m-phase .ph-name{font-weight:700; font-size:.88rem; color:var(--flame); margin-bottom:8px; display:flex; align-items:center; gap:8px;}
+  .m-phase p{font-size:.87rem; color:var(--text-2); margin-bottom:8px;}
+  .m-phase p:last-child{margin-bottom:0;}
+  .m-dialog{background:rgba(0,0,0,.18); border-radius:12px; padding:12px 14px; margin-top:8px;}
+  .m-dialog .dl{display:flex; gap:10px; margin-bottom:9px; font-size:.86rem;}
+  .m-dialog .dl:last-child{margin-bottom:0;}
+  .m-dialog .dw{flex-shrink:0; width:64px; font-weight:700; font-size:.75rem; padding-top:1px;}
+  .m-dialog .dw.t{color:var(--teal);}
+  .m-dialog .dw.k{color:var(--flame);}
+  .m-dialog .dt{color:var(--text-2);}
+  .m-homework{background:var(--amber-soft); border-left:3px solid var(--amber); border-radius:0 12px 12px 0; padding:14px 18px; font-size:.87rem; color:var(--text-1);}
+  .m-nextprev{display:flex; justify-content:space-between; gap:12px; margin-top:26px; padding-top:20px; border-top:1px solid var(--border);}
+  .m-navbtn{flex:1; text-align:center; padding:10px 14px; border-radius:12px; background:var(--surface); border:1px solid var(--border); color:var(--text-2); font-size:.82rem; font-weight:600; cursor:pointer; transition:background .2s;}
+  .m-navbtn:hover{background:var(--surface-h); color:var(--text-1);}
+  .m-navbtn.disabled{opacity:.4; pointer-events:none;}
+  body.modal-open{overflow:hidden;}
+
+  .sensory-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin:26px 0;}
+  .sensory-card{text-align:center; padding:18px 14px; border-radius:16px; background:var(--surface); border:1px solid var(--border);}
+  .sensory-card .ico3{font-size:1.7rem; display:block; margin-bottom:8px;}
+  .sensory-card h4{font-size:.86rem; margin-bottom:6px;}
+  .sensory-card p{font-size:.78rem; color:var(--text-2);}
+
+  .worksheet{overflow-x:auto; margin:24px 0; border-radius:16px; border:1px solid var(--border);}
+  table{width:100%; border-collapse:collapse; font-size:.84rem; min-width:600px;}
+  thead th{background:rgba(255,255,255,.05); color:var(--flame); text-align:left; padding:12px 14px; font-size:.78rem; letter-spacing:.03em; text-transform:uppercase; border-bottom:1px solid var(--border);}
+  tbody td{padding:13px 14px; color:var(--text-2); border-bottom:1px solid rgba(255,255,255,.06); vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+
+  .parent-tips{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; margin:26px 0;}
+  .tip-card{background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:18px 20px;}
+  .tip-card h4{font-size:.9rem; margin-bottom:6px; color:var(--teal);}
+  .tip-card p{font-size:.83rem; color:var(--text-2);}
+
+  .quote{border-left:3px solid var(--violet); padding:18px 22px; margin:26px 0; font-family:var(--font-d); font-style:italic; font-size:1.05rem; color:var(--text-1); background:var(--violet-soft); border-radius:0 14px 14px 0;}
+  .quote span{display:block; margin-top:10px; font-family:var(--font-b); font-style:normal; font-size:.8rem; color:var(--text-3);}
+
+  .summary-box{background:linear-gradient(135deg, var(--flame-soft), var(--violet-soft)); border:1px solid rgba(251,146,60,.3); border-radius:20px; padding:28px 26px; margin-top:60px;}
+  .summary-box h3{font-family:var(--font-d); font-size:1.25rem; margin-bottom:14px;}
+  .summary-box ul{padding-left:20px; color:var(--text-2); font-size:.92rem;}
+  .summary-box li{margin-bottom:8px;}
+
+  .nav-bottom{display:flex; justify-content:space-between; align-items:center; gap:16px; margin-top:40px; flex-wrap:wrap;}
+  .nav-btn{display:inline-flex; align-items:center; gap:8px; padding:13px 22px; border-radius:14px; text-decoration:none; font-weight:600; font-size:.9rem; transition:transform .25s, box-shadow .25s;}
+  .nav-btn.home{background:var(--surface); border:1px solid var(--border); color:var(--text-1);}
+  .nav-btn.next{background:linear-gradient(135deg,var(--flame),var(--violet)); color:#0c211f;}
+  .nav-btn:hover{transform:translateY(-3px);}
+  .nav-btn.disabled{opacity:.5; pointer-events:none;}
+
+  footer{position:relative; z-index:2; text-align:center; padding:44px 24px 60px; border-top:1px solid var(--border); color:var(--text-3); font-size:.88rem; margin-top:40px;}
+  footer a{color:var(--teal); text-decoration:none; font-weight:600;}
+
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-14px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+
+  @media(max-width:640px){
+    .sta-flow{grid-template-columns:1fr;}
+    .dialog .who{width:60px; font-size:.72rem;}
+  }
+</style>
+</head>
+<body>
+
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<div class="topbar">
+  <a class="topbar-brand" href="index.html">
+    <img src="logo.png" alt="AN Psixoloji Dəstək və Reabilitasiya Mərkəzi loqosu">
+    <span class="tb-name">AN Psixoloji Dəstək və Reabilitasiya Mərkəzi</span>
+  </a>
+  <div class="topbar-right">
+    <a class="back" href="index.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+      <span>Menyu</span>
+    </a>
+    <span class="progress-pill">Modul 3 / 20</span>
+  </div>
+</div>
+
+<main>
+
+    <div class="hero">
+    <div class="hero-illus">
+      <svg width="360" height="170" viewBox="0 0 360 170" fill="none">
+        <defs>
+          <linearGradient id="flameGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#d9705a"/>
+            <stop offset="55%" stop-color="#d9a85a"/>
+            <stop offset="100%" stop-color="#7ba098"/>
+          </linearGradient>
+        </defs>
+        <circle cx="180" cy="88" r="78" fill="none" stroke="#d9a85a" stroke-width="1.4" stroke-dasharray="3 7" opacity=".5"/>
+        <path d="M180 32c14 18 26 30 26 50a26 26 0 0 1-52 0c0-10 6-18 12-26-2 10 2 14 6 16-2-16 2-28 8-40z" fill="url(#flameGrad)" opacity=".92"/>
+        <g stroke="#7ba098" stroke-width="1.6" opacity=".55" stroke-linecap="round">
+          <path d="M120 60 Q100 88 112 118"/>
+          <path d="M240 60 Q260 88 248 118"/>
+        </g>
+        <g transform="translate(70,135)">
+          <circle r="18" fill="#7ba098" opacity=".85"/>
+          <path d="M-6 1c0-5 4-8 6-8s6 3 6 8c0 4-6 7-6 7s-6-3-6-7z" fill="#0c211f"/>
+        </g>
+        <g transform="translate(290,135)">
+          <circle r="18" fill="#8a6a3a" opacity=".85"/>
+          <path d="M-6-4a8 8 0 1 0 12 0" stroke="#f3eee1" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+    <span class="tag">Modul 03 · Emosiya Tənzimlənməsi</span>
+    <h1>Aqressiya və CBT</h1>
+    <p>"Uşağım pisdirmi?" Bu sualı ilk seansda demək olar hər ailədən eşidirəm. Cavabım dəyişmir — yox. Aşağıda illər ərzində qurduğum 10 seanslıq yol xəritəsi var: psixoloji, sensor-inteqrasiya, pedaqoji və kommunikativ baxış bucaqları ilə, hər biri öz yerində.</p>
+  </div>
+
+  <!-- 1. Elmi tərif və sadə izah -->
+  <section>
+    <div class="sec-head"><div class="sec-num">1</div><h2>Elmi tərif: Aqressiv Davranışın Klinik Modeli</h2></div>
+    <div class="sci-box">
+      <b>Klinik tərif:</b> Dollard və Miller-in "Məyusluq-Aqressiya" nəzəriyyəsinə görə aqressiya hədəfə çatmağa mane olan bir amilə qarşı yaranan, zərər vermə niyyəti daşıyan davranışdır. Klinik olaraq reaktiv (emosional, impulsiv) və proaktiv (planlaşdırılmış, alət kimi istifadə olunan) aqressiya fərqləndirilir. CBT müdaxiləsi emosiya tənzimləmə bacarıqlarının, <span class="prog-link" onclick="openProgram('koqnitiv-restrukturizasiya')">koqnitiv restrukturizasiya</span>nın və sosial-problem həll bacarıqlarının inkişafına fokuslanır.
+    </div>
+    <div class="simple-box">
+      <b>Sadə dildə deyilsə:</b> Aqressiyanı bir vulkana bənzədirəm həmişə. Təzyiq — gərginlik, məyusluq, yorğunluq — yavaş-yavaş yığılır. Vaxtında "buxarlanmasa", partlayış şəklində çıxır. Bu, çox vaxt "pis uşaq" əlaməti deyil. Tənzimlənməmiş, yığılıb qalmış emosional təzyiqin çıxış yoludur, sadəcə.
+    </div>
+    <p class="lead">Məqsədim heç vaxt aqressiyanı cəzalandırmaq olmayıb. Altında duran ehtiyacı, tənzimlənməyən emosiyanı tapmaq — və ona daha sağlam bir çıxış yolu göstərmək. Elvin adlı klientimlə işə məhz bu sualla başlamışdıq: vurmaqdan əvvəl bədənində nə baş verirdi?</p>
+  </section>
+
+  <!-- 2. Elmi növlər -->
+  <section>
+    <div class="sec-head"><div class="sec-num">2</div><h2>Elmi baxış: Aqressiyanın növləri</h2></div>
+    <p class="lead">Hansı növ aqressiya ilə iş apardığımı bilmədən proqram qura bilmərəm. Klinik ədəbiyyatda bu, bir neçə formaya bölünür.</p>
+    <div class="lens-grid">
+      <div class="lens-card"><span class="ico">💥</span><h4>Reaktiv aqressiya</h4><p>Ani təhrikə qarşı impulsiv, emosional partlayış. Kimsə itələyəndə dərhal vurmaq, məsələn.</p></div>
+      <div class="lens-card"><span class="ico">🎯</span><h4>Proaktiv aqressiya</h4><p>Məqsədyönlü, planlaşdırılmış. Nəyisə əldə etmək üçün alət kimi istifadə olunur — oyuncağı almaq üçün vurma kimi.</p></div>
+      <div class="lens-card"><span class="ico">🗣️</span><h4>Verbal aqressiya</h4><p>Sözlə hücum: təhqir, hədə, qışqırıq.</p></div>
+      <div class="lens-card"><span class="ico">👊</span><h4>Fiziki aqressiya</h4><p>Vurma, itələmə, əşya atma kimi bədən hərəkətləri ilə ifadə.</p></div>
+      <div class="lens-card"><span class="ico">🕸️</span><h4>Əlaqə aqressiyası</h4><p>Sosial təcridetmə, şayiə yayma, "dost qrupundan çıxarma". Xüsusən yeniyetmələrdə tez-tez görürəm bunu.</p></div>
+    </div>
+  </section>
+
+  <!-- 3. Multidisiplinar baxış -->
+  <section>
+    <div class="sec-head"><div class="sec-num">3</div><h2>Aqressiyanın kökündə nə dayanır? — Multidisiplinar baxış</h2></div>
+    <p class="lead">Aqressiya tək bir səbəbdən yaranmır, demək olar heç vaxt. Bunu 18 illik təcrübəmdə dəfələrlə görmüşəm — düz proqram üçün fərqli mütəxəssis gözüylə baxmaq şərtdir.</p>
+    <div class="card"><h3>🧠 Psixoloji baxış</h3><p>Emosiya tənzimləmə bacarığının çatışmazlığı, "Məyusluq–Aqressiya" nəzəriyyəsi — istənilən şeyə maneə törədildikdə aqressiya ehtimalı artır. Öyrənilmiş davranış amilini də unutmaq olmaz: uşaq aqressiya ilə istədiyinə çatdığını bir dəfə görübsə, bu davranış özü-özünü gücləndirir.</p></div>
+    <div class="card"><h3>✋ Erqoterapevt / Sensor inteqrasiya baxışı</h3><p>Bəzi uşaqlarda aqressiya əslində "sensor overload" nəticəsidir — səs-küy, işıq, izdiham kimi həddindən artıq sensor məlumat. Bəzən də əksinə, "sensor axtarışı" — hərəkətə, təzyiqə bir ehtiyac. Bədən özünü tənzimləyə bilmədikdə davranış partlayışı baş verir.</p></div>
+    <div class="card"><h3>🗣️ Loqoped / Kommunikasiya baxışı</h3><p>Nitq və dil çətinliyi olan uşaqlar öz ehtiyaclarını sözlə ifadə edə bilmədikdə, məyusluqlarını fiziki yolla göstərirlər — vurma, dişləmə. "Kommunikasiya çətinliyi = aqressiya riski" düsturu kiçik yaşda xüsusilə doğru çıxır.</p></div>
+    <div class="card"><h3>🏫 Psixopedaqoji baxış</h3><p>Öyrənmə çətinlikləri, akademik uğursuzluq hissi, tapşırığın həddindən çətin (ya da əksinə, çox asan) olması, sinifdə uyğun struktur olmaması — bunların hamısı aqressiv davranışı artıra bilər.</p></div>
+  </section>
+
+  <!-- 4. Yaş qrupları -->
+  <section>
+    <div class="sec-head"><div class="sec-num">4</div><h2>Yaş qruplarına görə fərqli görünüş</h2></div>
+    <p class="lead">Eyni tənzimlənməmiş emosiya, üç fərqli yaşda üç ayrı üzlə çıxır qarşımıza.</p>
+    <div class="age-grid">
+      <div class="age-card child">
+        <h4>👶 Uşaqlar (3-10 yaş)</h4>
+        <ul>
+          <li>Vurma, dişləmə, itələmə, əşya atma</li>
+          <li>Qışqırma, yerə uzanıb ağlama (tantrum)</li>
+          <li>Paylaşma çətinliyi ilə bağlı münaqişələr</li>
+        </ul>
+      </div>
+      <div class="age-card teen">
+        <h4>🧑 Yeniyetmələr (11-17 yaş)</h4>
+        <ul>
+          <li>Sözlə hücum, təhqir, qapını çırpma</li>
+          <li>Qaydalara qarşı çıxma, üsyankarlıq</li>
+          <li>Sosial media üzərindən aqressiya (kiberbulling)</li>
+        </ul>
+      </div>
+      <div class="age-card adult">
+        <h4>🧑‍🦱 Böyüklər</h4>
+        <ul>
+          <li>Passiv-aqressiv davranış (sarkazm, susma)</li>
+          <li>Qəzəb partlayışları, ailə/iş münaqişələri</li>
+          <li>Fiziki gərginlik əlamətləri (baş ağrısı, əzələ sıxılması)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Qəzəb dövranı -->
+  <section>
+    <div class="sec-head"><div class="sec-num">5</div><h2>Qəzəbin CBT dövranı</h2></div>
+    <p class="lead">Aqressiya bir anlıq partlayış deyil. Bir zəncirin son həlqəsidir. Bunu anlamaq — zənciri qırmağın açarıdır.</p>
+    <div class="cycle-wrap">
+      <svg width="360" height="200" viewBox="0 0 360 200">
+        <defs>
+          <linearGradient id="cg" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#fb923c"/><stop offset="100%" stop-color="#8b5cf6"/>
+          </linearGradient>
+        </defs>
+        <rect x="10" y="80" width="80" height="50" rx="12" fill="#fb923c" opacity=".9"/>
+        <text x="50" y="100" text-anchor="middle" font-size="11" font-weight="700" fill="#0c211f">Tetikləyici</text>
+        <text x="50" y="115" text-anchor="middle" font-size="9" fill="#0c211f">(hadisə)</text>
+
+        <rect x="100" y="20" width="80" height="50" rx="12" fill="#8b5cf6" opacity=".9"/>
+        <text x="140" y="40" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Düşüncə</text>
+        <text x="140" y="55" text-anchor="middle" font-size="9" fill="#fff">"Ədalətsizlikdir"</text>
+
+        <rect x="190" y="80" width="80" height="50" rx="12" fill="#38bdf8" opacity=".9"/>
+        <text x="230" y="100" text-anchor="middle" font-size="11" font-weight="700" fill="#0c211f">Bədən reaksiyası</text>
+        <text x="230" y="115" text-anchor="middle" font-size="9" fill="#0c211f">Ürək döyüntüsü ↑</text>
+
+        <rect x="100" y="140" width="80" height="50" rx="12" fill="#fb7185" opacity=".9"/>
+        <text x="140" y="160" text-anchor="middle" font-size="11" font-weight="700" fill="#0c211f">Davranış</text>
+        <text x="140" y="175" text-anchor="middle" font-size="9" fill="#0c211f">Qışqırma / vurma</text>
+
+        <path d="M90 100 Q95 60 100 45" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.6" marker-end="url(#ar2)"/>
+        <path d="M180 45 Q195 60 200 80" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.6" marker-end="url(#ar2)"/>
+        <path d="M220 130 Q190 150 180 155" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.6" marker-end="url(#ar2)"/>
+        <path d="M100 165 Q60 150 55 130" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.6" marker-end="url(#ar2)"/>
+        <defs><marker id="ar2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="rgba(255,255,255,.4)"/></marker></defs>
+      </svg>
+    </div>
+    <div class="example"><b>Müdaxilə nöqtəsi:</b> Bu dövranın istənilən yerində "dayanma" öyrədirəm klientə. Amma ən effektivi "bədən reaksiyası" mərhələsidir — hələ davranışa keçməmiş, fasilə vermək mümkün olan an.</div>
+  </section>
+
+  <!-- 6. Qəzəb termometri -->
+  <section>
+    <div class="sec-head"><div class="sec-num">6</div><h2>İş dəftəri materialı: Qəzəb Termometri</h2></div>
+    <p class="lead">Qəzəbi erkən mərhələdə tanımağı öyrədən vizual bir alət — "partlayışdan" əvvəl siqnalları tutmaq üçün. Elvinlə işlədiyimiz kimi.</p>
+    <div class="thermo-wrap">
+      <div class="thermo">
+        <div class="thermo-bar" style="height:30px;background:#4ade80;">Sakit</div>
+        <div class="thermo-bar" style="height:55px;background:#a3e635;">Narahat</div>
+        <div class="thermo-bar" style="height:80px;background:#facc15;">Əsəbi</div>
+        <div class="thermo-bar" style="height:105px;background:#fb923c;">Qəzəbli</div>
+        <div class="thermo-bar" style="height:130px;background:#f87171;">Partlayış</div>
+      </div>
+    </div>
+    <div class="example"><b>Tapşırıq:</b> Klient gündə ən azı bir dəfə özünə "İndi termometrdə haradayam?" sualını versin və dəftərə qeyd etsin.</div>
+  </section>
+
+  <!-- 7. Dayan-Düşün-Fəaliyyət göstər -->
+  <section>
+    <div class="sec-head"><div class="sec-num">7</div><h2>Praktik texnika: "Dayan – Düşün – Fəaliyyət göstər"</h2></div>
+    <p class="lead">Sadə, yadda qalan üç addımlı strategiya. Qəzəb siqnalı hiss ediləndə istifadə olunur — mən özüm bunu ilk dəfə işlədəndə klientdən çox özümə söz vermişdim, demə asan deyilmiş həqiqətən sadə saxlamaq.</p>
+    <div class="sta-flow">
+      <div class="sta-box s1"><span class="ico2">🛑</span><h4>1. Dayan</h4><p>Hərəkəti dayandır, 3 dərin nəfəs al.</p></div>
+      <div class="sta-box s2"><span class="ico2">🤔</span><h4>2. Düşün</h4><p>"İndi nə hiss edirəm? Başqa yol varmı?"</p></div>
+      <div class="sta-box s3"><span class="ico2">✅</span><h4>3. Fəaliyyət göstər</h4><p>Sakit, düşünülmüş cavab seç — söz və ya hərəkət.</p></div>
+    </div>
+  </section>
+
+  <!-- 8. Sensor tənzimləmə -->
+  <section>
+    <div class="sec-head"><div class="sec-num">8</div><h2>Erqoterapevt tövsiyəsi: Sensor tənzimləmə alətləri</h2></div>
+    <p class="lead">Sensor ehtiyacları olan uşaqlar üçün evdə balaca bir "sakitləşdirmə küncü" qururam məsləhət kimi — bu alətlərlə:</p>
+    <div class="sensory-grid">
+      <div class="sensory-card"><span class="ico3">🧸</span><h4>Ağır yorğan/yastıq</h4><p>Dərin təzyiq bədəni sakitləşdirir.</p></div>
+      <div class="sensory-card"><span class="ico3">🎧</span><h4>Səs-keçirməyən qulaqlıq</h4><p>Sensor həddindən artıq yükü azaldır.</p></div>
+      <div class="sensory-card"><span class="ico3">🤏</span><h4>Fidget alətləri</h4><p>Əllərin məşğul olması diqqəti yönləndirir.</p></div>
+      <div class="sensory-card"><span class="ico3">🏃</span><h4>Hərəkət fasiləsi</h4><p>Tullanma, divara itələmə (heavy work) enerjini boşaldır.</p></div>
+    </div>
+  </section>
+
+  <!-- 9. Seans proqramı -->
+  <section>
+    <div class="sec-head"><div class="sec-num">9</div><h2>Seans-seans proqram (10 seanslıq model)</h2></div>
+    <p class="lead">10 seans — bu, illərdir işlətdiyim orta template. Bəzi klientdə 7-yə enir, bəzində 14-ə çatır.</p>
+    <div class="session-plan">
+      <div class="sess-row" onclick="openSession(1)"><div class="sess-num">1</div><div class="sess-txt"><h4>Qiymətləndirmə və etibar</h4><p>Aqressiyanın tezliyi, tetikləyiciləri, konteksti müəyyənləşdirilir.</p></div><div class="sess-open">Seansı aç ▸</div></div>
+      <div class="sess-row" onclick="openSession(2)"><div class="sess-num">2</div><div class="sess-txt"><h4>Psixotəhsil: Qəzəb nədir?</h4><p>Qəzəbin normal emosiya olduğu, lakin ifadə formasının seçim olduğu izah edilir.</p></div><div class="sess-open">Seansı aç ▸</div></div>
+      <div class="sess-row" onclick="openSession(3)"><div class="sess-num">3</div><div class="sess-txt"><h4>Bədən siqnallarını tanımaq</h4><p>Qəzəb termometri təqdim olunur, erkən fiziki siqnallar öyrədilir.</p></div><div class="sess-open">Seansı aç ▸</div></div>
+      <div class="sess-row" onclick="openSession(4)"><div class="sess-num">4</div><div class="sess-txt"><h4>Nəfəs və sakitləşdirmə bacarıqları</h4><p><span class="prog-link" onclick="openProgram('qutu-nefesi')">Qutu nəfəsi</span>, sayma texnikası, sensor alətlərin tanıdılması.</p></div><div class="sess-open">Seansı aç ▸</div></div>
+      <div class="sess-row" onclick="openSession(5)"><div class="sess-num">5</div><div class="sess-txt"><h4>Dayan-Düşün-Fəaliyyət göstər</h4><p>Texnika öyrədilir, rollu oyunla məşq edilir.</p></div><div class="sess-open">Seansı aç ▸</div></div>
+      <div class="sess-row" onclick="openSession(6)"><div class="sess-num">6</div><div class="sess-txt"><h4>Koqnitiv restrukturizasiya</h4><p>"Ədalətsizlik" kimi tetikləyici düşüncələrin sorğulanması.</p></div><div class="sess-open">Seansı aç ▸</div></div>
+      <div class="sess-row" onclick="openSession(7)"><div class="sess-num">7</div><div class="sess-txt"><h4>Kommunikasiya bacarıqları</h4><p>"Mən" dili ilə ehtiyacı ifadə etmə (məs: "Mən bunu istəyirəm" vs qışqırıq).</p></div><div class="sess-open">Seansı aç ▸</div></div>
+      <div class="sess-row" onclick="openSession(8)"><div class="sess-num">8</div><div class="sess-txt"><h4><span class="prog-link" onclick="openProgram('problem-hell')">Problem-həll bacarıqları</span></h4><p>Münaqişəli vəziyyətlərdə alternativ həll yollarının axtarılması.</p></div><div class="sess-open">Seansı aç ▸</div></div>
+      <div class="sess-row" onclick="openSession(9)"><div class="sess-num">9</div><div class="sess-txt"><h4>Rollu oyun və məruzəetmə</h4><p>Real həyat ssenarilərinin təhlükəsiz mühitdə canlandırılması.</p></div><div class="sess-open">Seansı aç ▸</div></div>
+      <div class="sess-row" onclick="openSession(10)"><div class="sess-num">10</div><div class="sess-txt"><h4>Yekun və davamlılıq planı</h4><p>Öyrənilən bacarıqların ümumiləşdirilməsi, valideyn/müəllimlə koordinasiya.</p></div><div class="sess-open">Seansı aç ▸</div></div>
+    </div>
+    <div class="example"><b>💡 Tövsiyə:</b> Hər seansın üzərinə klikləyəndə tam ssenarini (giriş, əsas hissə, real dialoq, ev tapşırığı) görəcəksən.</div>
+  </section>
+
+  <!-- 10. Nümunə dialoq -->
+  <section>
+    <div class="sec-head"><div class="sec-num">10</div><h2>Nümunə dialoq (10 yaşlı uşaqla)</h2></div>
+    <div class="dialog">
+      <div class="line"><span class="who t">Terapevt:</span><span class="txt">Sinif yoldaşın oyuncağını alanda nə hiss etdin?</span></div>
+      <div class="line"><span class="who k">Uşaq:</span><span class="txt">Çox əsəbiləşdim, ona görə vurdum.</span></div>
+      <div class="line"><span class="who t">Terapevt:</span><span class="txt">Anlayıram, əsəbiləşmək tamamilə normaldır. Bədənində vurmazdan əvvəl hansı siqnalları hiss etdin? Ürəyin necə idi?</span></div>
+      <div class="line"><span class="who k">Uşaq:</span><span class="txt">Ürəyim bərk vururdu, əllərim isti oldu.</span></div>
+      <div class="line"><span class="who t">Terapevt:</span><span class="txt">Əla müşahidə! Bax, bu, sənin "termometrinin" qırmızıya yaxınlaşdığı andır. Növbəti dəfə bu siqnalları hiss edəndə, "Dayan" düyməsini necə basa bilərik?</span></div>
+    </div>
+    <div class="example"><b>Nəzərə alın:</b> Elvinlə də iş elə bu sualla başladı — bədən hər dəfə sözdən əvvəl xəbərdarlıq edir, sadəcə oxumağı öyrənməliyik.</div>
+  </section>
+
+  <!-- 11. Valideyn/müəllim tövsiyələri -->
+  <section>
+    <div class="sec-head"><div class="sec-num">11</div><h2>Valideyn və müəllimlər üçün tövsiyələr</h2></div>
+    <div class="parent-tips">
+      <div class="tip-card"><h4>🚫 Aqressiyaya aqressiya ilə cavab verməyin</h4><p>Qışqırıqla qışqırığa cavab vermək modeli gücləndirir. Sakit tonu qoruyun.</p></div>
+      <div class="tip-card"><h4>🏅 Sakit davranışı təqdir edin</h4><p>"Bu dəfə sakit qaldın, çox gözəl idi" — müsbət gücləndirmə vacibdir.</p></div>
+      <div class="tip-card"><h4>📐 Aydın, sabit qaydalar qoyun</h4><p>Uşaqlar proqnozlaşdırıla bilən mühitdə daha az təhrik olunur.</p></div>
+      <div class="tip-card"><h4>🔍 Tetikləyiciləri qeyd edin</h4><p>Kiçik jurnal tutaraq, hansı vəziyyətlərin aqressiyaya səbəb olduğunu izləyin.</p></div>
+    </div>
+    <div class="example"><b>Ev tapşırığı (valideyn üçün):</b> Bu həftə uşağının sakit qaldığı bir anı tapıb, elə həmin gün ona bunu söylə: "Bu dəfə özünü çox yaxşı idarə etdin." Bir cümlə kifayətdir, amma təkrarla.</div>
+  </section>
+
+  <!-- Klinik hadisə -->
+  <section>
+    <div class="sec-head"><div class="sec-num">➕</div><h2>"Əsəbi uşaq" etiketinin arxasında nə var?</h2></div>
+    <p class="lead">Elvinlə tanış olanda müəllimi onu belə təqdim etmişdi: "əsəbi, aqressiv, cəza ilə düzəlmir". Altı seansdan sonra gördüm ki, bu, düzgün sual deyilmiş — düzgün sual "niyə" idi, "necə" yox.</p>
+    <div class="card">
+      <h3>📋 Təqdimat</h3>
+      <p>Elvin 11 yaşında idi, dörd aydır məktəbdə həftədə 2-3 dəfə fiziki münaqişəyə qarışırdı. Əvvəllər isə belə problem olmamışdı. Valideynlər boşanma prosesində idi, Elvin atası ilə həftədə bir dəfə görüşürdü. Müəllim onu "manipulyativ" adlandırırdı, valideynlər isə "diqqət çəkmək istəyir" deyirdi. Heç kim ondan soruşmamışdı: "sən nə hiss edirsən?"</p>
+    </div>
+    <div class="card">
+      <h3>🔍 Nə tapdıq</h3>
+      <p>Davranış müşahidə jurnalını doldurduqca aydın oldu ki, aqressiya təsadüfi deyildi — demək olar həmişə əşyasının icazəsiz alınması və ya "ədalətsizlik" hissi ilə tetiklənirdi. Altında isə daha dərin bir şey vardı: Elvin valideynlərinin ayrılmasını özünün "pis oğlan" olmasına bağlayırdı. Qəzəb, əslində kömək çağırışı idi.</p>
+    </div>
+    <div class="dialog">
+      <div class="line"><span class="who t">Terapevt:</span><span class="txt">Elvin, o vaxt vurmazdan əvvəl, bədənində nə hiss etdin?</span></div>
+      <div class="line"><span class="who k">Klient:</span><span class="txt">Sinəm isti oldu, əllərim yumruqlaşdı, elə bil partlamaq istəyirdim.</span></div>
+      <div class="line"><span class="who t">Terapevt:</span><span class="txt">O anda ağlından hansı fikir keçdi?</span></div>
+      <div class="line"><span class="who k">Klient:</span><span class="txt">"Heç kim mənə hörmət etmir, hamı mənə qarşıdır."</span></div>
+      <div class="line"><span class="who t">Terapevt:</span><span class="txt">Bu fikir doğru olsa da, olmasa da — o an sənə çox real gəlib. Peki, bu fikirlə vurmaq arasında başqa bir seçim ola bilərdimi?</span></div>
+      <div class="line"><span class="who k">Klient:</span><span class="txt">Bəlkə gedib bir şey deyərdim müəllimə.</span></div>
+      <div class="line"><span class="who t">Terapevt:</span><span class="txt">Əla fikir. Bu, dediyin "seçim anı" — biz elə bu anı tapmaq üçün işləyirik, sinəndəki istilik gələndə, yumruq atmazdan əvvəlki o boşluğu.</span></div>
+    </div>
+    <div class="example"><b>Əsas müşahidə:</b> Elvində aqressiya nizamsız deyildi — sistemli idi, konkret tetikləyiciləri var idi. Cəza bu naxışı dəyişmədi, çünki naxışın kökü emosional idi, davranış səthdəki əlamətdən başqa bir şey deyildi.</div>
+    <div class="card"><h3>🎯 Seansda bunu necə tətbiq edirəm?</h3><p>Elvinlə "yumruq atmazdan əvvəlki boşluq" ifadəsini birlikdə tapdıq — sonra hər seansda elə bu boşluğu genişləndirməyə çalışdıq. Bədən siqnalını tanımaq, ilk addımdır, hər şeydən əvvəl gəlir.</p></div>
+  </section>
+
+  <!-- Case formulation -->
+  <section>
+    <div class="sec-head"><div class="sec-num">➕</div><h2>Terapevtik Qiymətləndirmə Forması</h2></div>
+    <p class="lead">Aqressiya işində bu formanı doldurarkən xüsusi diqqət verdiyim yer "presipitasiya" sətridir — çünki çox vaxt ailə valideynlər arasındakı münaqişəni fərqinə varmadan uşağın davranışına bağlayır.</p>
+    <div class="worksheet">
+      <table>
+        <thead><tr><th>Komponent</th><th>Elvinin nümunəsi</th></tr></thead>
+        <tbody>
+          <tr><td><b>Təqdim olunan problem</b></td><td>Tez-tez fiziki münaqişə, aşağı özünütənzimləmə</td></tr>
+          <tr><td><b>Presipitasiya edən amillər (nə tetikləyir)</b></td><td>Valideyn boşanması, əşyanın icazəsiz alınması, "ədalətsizlik" hissi</td></tr>
+          <tr><td><b>Predispozisiya edən amillər (kök)</b></td><td>Ailədaxili münaqişəyə erkən məruz qalma, emosiyaları sözlə ifadə bacarığının zəif olması</td></tr>
+          <tr><td><b>Davam etdirən amillər (niyə dayanmır)</b></td><td>Cəza əsaslı reaksiyalar, emosional dəstəyin olmaması, "pis uşaq" etiketinin gücləndirilməsi</td></tr>
+          <tr><td><b>Qoruyucu amillər (güclü tərəflər)</b></td><td>Yüksək zəka, idmana marağı, terapevtlə tez əlaqə quran xarakter</td></tr>
+          <tr><td><b>Əsas inanc</b></td><td>"Mən pis oğlanam, ona görə valideynlərim ayrılır"</td></tr>
+          <tr><td><b>Müalicə hədəfi</b></td><td>Emosional tanınma, özünütənzimləmə bacarığı, əsas inancın yenidən çərçivələnməsi</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card"><h3>🎯 Seansda bunu necə tətbiq edirəm?</h3><p>Bu cədvəli ana-ata ilə ayrıca, uşaqla ayrıca müzakirə etdim. Valideynlər öz sətirlərini oxuyanda çox vaxt susurlar — bu, faydalı bir sükutdur, özünü müşahidəyə açır.</p></div>
+  </section>
+
+  <!-- Seans protokolu -->
+  <section>
+    <div class="sec-head"><div class="sec-num">➕</div><h2>Seans protokolu nümunəsi</h2></div>
+    <p class="lead">Elvinlə 5-ci seansın protokolu — "boşluq" konsepsiyasının ilk tətbiq edildiyi seans.</p>
+    <div class="worksheet">
+      <table>
+        <thead><tr><th>Mərhələ</th><th>Vaxt</th><th>Qeyd</th></tr></thead>
+        <tbody>
+          <tr><td>Həftənin nəzərdən keçirilməsi</td><td>7 dəq</td><td>1 münaqişə hadisəsi olub (əvvəlki həftə 3 idi)</td></tr>
+          <tr><td>Ev tapşırığının yoxlanışı</td><td>8 dəq</td><td>Bədən siqnalı jurnalı — 4 qeyd, hamısı "sinədə istilik" təsviri ilə</td></tr>
+          <tr><td>Gündəliyin razılaşdırılması</td><td>3 dəq</td><td>Bu gün: "seçim anı"nın rol-oyunla məşqi</td></tr>
+          <tr><td>Əsas iş</td><td>22 dəq</td><td>Rol-oyun: tetikləyici ssenari, dayanma siqnalı, alternativ cavab</td></tr>
+          <tr><td>Ev tapşırığının müəyyənləşdirilməsi</td><td>5 dəq</td><td>Növbəti həftə "dayan-nəfəs al-seç" ardıcıllığını sınamaq</td></tr>
+          <tr><td>Yekun rəy</td><td>3 dəq</td><td>Klient: "Bu dəfə demək olar dayana bildim, tam yox amma"</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Qiymətləndirmə testləri -->
+  <section>
+    <div class="sec-head"><div class="sec-num">➕</div><h2>CBT qiymətləndirmə testi və şkalaları</h2></div>
+    <p class="lead">Aqressiv davranış işində standartlaşdırılmış alətlər olmadan iş aparmıram — subyektiv təəssürat aldadıcı ola bilər, xüsusən valideyn-müəllim təsviri fərqli olanda.</p>
+    <div class="grid-3">
+      <div class="lens-card"><span class="ico">📊</span><h4>CBCL (Child Behavior Checklist)</h4><p>Davranış və emosional problemləri geniş spektrdə qiymətləndirən, valideyn dolduran standart alət.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>ECBI (Eyberg Child Behavior Inventory)</h4><p>Davranış problemlərinin tezliyini və valideynin narahatlıq səviyyəsini ayrı-ayrı ölçür.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>Conners-3</h4><p>Davranış, diqqət və aqressiya subşkalalarını əhatə edən çoxmənbəli qiymətləndirmə sistemidir.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>SDQ (Strengths and Difficulties Questionnaire)</h4><p>Həm çətinlikləri, həm güclü tərəfləri qısa formatda ölçən, sürətli screening alətidir.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>Overt Aggression Scale (OAS)</h4><p>Aqressiv epizodların şiddətini və tipini (sözlü, əşyaya qarşı, fiziki) qeydə alan müşahidə cədvəlidir.</p></div>
+    </div>
+    <div class="example"><b>Diqqət:</b> Elvin üçün ECBI-ni həm ana, həm ata ayrıca doldurdu — fərq maraqlı idi: ata evində epizodları daha az hesab edirdi. Bu fərq özü müalicə mövzusuna çevrildi.</div>
+  </section>
+
+  <!-- Ev tapşırığı nümunəsi -->
+  <section>
+    <div class="sec-head"><div class="sec-num">🏠</div><h2>Ev tapşırığı nümunəsi</h2></div>
+    <p class="lead">Elvinə verdiyim konkret tapşırıq bu idi.</p>
+    <div class="card">
+      <p>Hər dəfə sinəndə istiliyi hiss edəndə, əvvəlcə heç nə etmə — sadəcə dayan. Sonra üçə qədər say, bir dərin nəfəs al. Yalnız bundan sonra qərar ver: nə edəcəyəm? Bunu bir dəftərdə izlə — neçə dəfə "dayana" bildin, neçə dəfə bilmədin. Uğursuzluq da məlumatdır, uğur qədər dəyərlidir. Mən Elvinə dedim: məqsəd mükəmməl olmaq deyil, boşluğu bir az da genişləndirməkdir — hər dəfə bir az.</p>
+    </div>
+  </section>
+
+  
+<section>
+  <div class="sec-head"><div class="sec-num">12</div><h2>Aqressiyanın eskalasiya nöqtəsi</h2></div>
+  <div class="crisis-box">
+    <h4>⚠️ Nə vaxt təcili müdaxilə lazımdır</h4>
+    <p>Qəzəb nəzarəti üzərində işlərkən terapevt aşağıdakı işarələri həmişə fərqləndirməlidir — bunlar adi terapevtik müqavimətdən fərqli, təcili müdaxilə tələb edən vəziyyətlərdir:</p>
+    <ul>
+      <li>Konkret hədəfə yönəlmiş təhdid — kim, necə, nə vaxt sualına aydın cavab olması ("plan + vasitə + vaxt");</li>
+      <li>Heyvanlara qəddarlıq epizodlarının təkrarlanması və ya ağırlaşması;</li>
+      <li>Silaha çıxış imkanı olan mühitdə yaşama (ov silahı, iti alətlər asan əlçatan yerdə);</li>
+      <li>Aqressiyanın öz-özünə yönəlməsi — özünü cəzalandırma, özünə zərər izləri.</li>
+    </ul>
+    <ol class="crisis-steps">
+      <li>Sakit tərzdə, mühakimə etmədən birbaşa sual verin: kiməsə və ya özünə zərər vermək fikri olub-olmadığını.</li>
+      <li>Plan+vasitə+vaxt üçlüyü aşkarlansa, dərhal valideynlə birgə təcili psixiatrik yönləndirmə edin.</li>
+      <li>Evdə silah/iti alətlərin əlçatmazlığı barədə valideynlə konkret danışın (means restriction) — bu addımı seans sonunadək gecikdirməyin.</li>
+      <li>Davranış Pozuntusu əlamətləri komorbid görünsə, geniş psixiatrik qiymətləndirməyə yönləndirin.</li>
+      <li>Hər epizodu tarix, aşkarlanan amillər və atılan addımlarla yazılı sənədləşdirin.</li>
+    </ol>
+    <p><b>Qeyd:</b> Reaktiv aqressiyada eskalasiya adətən dəqiqələr içində baş verir — terapevtin bu pəncərəni tanıması, seansın təhlükəsiz sonlanması üçün həlledicidir.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="sec-num">13</div><h2>Biblioqrafiya</h2></div>
+  <div class="biblio-box">
+    <h4>📚 Mövzuda istinad olunan əsas mənbələr</h4>
+    <ul class="biblio-list">
+      <li><b>Goldstein, A. P., Glick, B., & Gibbs, J. C.</b> (1998). <i>Aggression Replacement Training.</i> Research Press.</li>
+      <li><b>Dodge, K. A., & Crick, N. R.</b> (1990). Social information-processing bases of aggressive behavior. <i>Personality and Social Psychology Bulletin, 16</i>(1), 8–22.</li>
+      <li><b>Buss, A. H., & Perry, M.</b> (1992). The aggression questionnaire. <i>Journal of Personality and Social Psychology, 63</i>(3), 452–459.</li>
+      <li><b>Greene, R. W.</b> (2014). <i>The Explosive Child</i> (5th ed.). Harper.</li>
+      <li><b>Kazdin, A. E.</b> (2005). <i>Parent Management Training.</i> Oxford University Press.</li>
+      <li><b>Posner, K., et al.</b> (2011). Columbia-Suicide Severity Rating Scale. <i>American Journal of Psychiatry, 168</i>(12), 1266–1277.</li>
+    </ul>
+  </div>
+</section>
+
+<div class="quote">
+    "Davranış kommunikasiyadır. Aqressiv davranışın arxasında həmişə bir ehtiyac və ya çatışmayan bacarıq dayanır."
+    <span>— Ross Greene, "The Explosive Child" kitabının müəllifi</span>
+  </div>
+
+  <div class="summary-box">
+    <h3>📌 Modulun xülasəsi</h3>
+    <ul>
+      <li>Aqressiya — yığılmış emosional təzyiqin idarə olunmayan ifadəsidir, "pis xarakter" deyil.</li>
+      <li>Reaktiv, proaktiv, verbal, fiziki və əlaqə aqressiyası fərqli müdaxilə tələb edir.</li>
+      <li>Kök səbəblər psixoloji, sensor, kommunikativ və pedaqoji ola bilər — multidisiplinar qiymətləndirmə vacibdir.</li>
+      <li>Qəzəb Termometri və "Dayan-Düşün-Fəaliyyət göstər" — ən effektiv praktik alətlərdir.</li>
+      <li>Sensor tənzimləmə vasitələri (ağır yorğan, fidget, hərəkət fasiləsi) aqressiyanın fiziki köklərini azalda bilər.</li>
+      <li>Valideyn/müəllim əməkdaşlığı davranış dəyişikliyinin davamlılığı üçün açardır.</li>
+    </ul>
+  </div>
+
+
+  <div class="nav-bottom">
+    <a class="nav-btn home" href="index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+      Menyuya qayıt
+    </a>
+    <a class="nav-btn next" href="04-qayghi-qorxu.html">
+      Növbəti modul: Qayğı, gərginlik və qorxu
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+
+</main>
+
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeSession()">
+  <div class="modal-box">
+    <div class="modal-close" onclick="closeSession()">✕</div>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Koqnitiv Davranış Terapiyası Kursu · Modul 3/20</p>
+  <p style="margin-top:8px;">By <a href="https://aze-ai.az" target="_blank" rel="noopener">securtiy_group</a></p>
+  <p style="margin-top:10px;font-size:.82rem;"><a href="privacy.html">Məxfilik Siyasəti</a> · <a href="terms.html">İstifadə Şərtləri</a></p>
+</footer>
+
+<script>
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target);} });
+},{threshold:0.1});
+document.querySelectorAll('section').forEach(s=>io.observe(s));
+
+window.addEventListener('mousemove', e=>{
+  const mx = (e.clientX/window.innerWidth - 0.5);
+  const my = (e.clientY/window.innerHeight - 0.5);
+  document.querySelectorAll('.blob').forEach((b,i)=>{
+    const speed = (i+1)*16;
+    b.style.transform = `translate(${mx*speed}px, ${my*speed}px)`;
+  });
+});
+</script>
+<script>
+const SESSIONS = [
+  {
+    "num": 1,
+    "title": "Qiymətləndirmə və Etibar",
+    "goal": "Aqressiyanın tezliyini, tetikləyicilərini və kontekstini müəyyənləşdirmək, klientlə etibarlı əlaqə qurmaq.",
+    "materials": [
+      "Davranış qiymətləndirmə anketi",
+      "Müşahidə jurnalı şablonu"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Giriş",
+        "text": [
+          "İlk seansda mövzunu 'cəzalandırma' kimi deyil, 'anlama' kimi çərçivəyə salıram — bu, klientin müdafiə mövqeyini azaldır."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Kamran, xoş gəlmisiniz. Bu, ilk görüşümüzdür — özünüzü tanıtmaqdan başlaya bilərik."
+          ],
+          [
+            "K",
+            "Sağ olun. Açığı, bura necə gələcəyimi tam bilmirdim."
+          ],
+          [
+            "T",
+            "Bu normaldır. Sizi bura gətirən nədir, qısaca?"
+          ],
+          [
+            "K",
+            "Son aylarda özümü idarə edə bilmədiyim anlar oldu, ailəmlə, işdə."
+          ],
+          [
+            "T",
+            "Bunu bölüşdüyünüz üçün sağ olun. Bu, nə vaxtdan davam edir?"
+          ],
+          [
+            "K",
+            "Bir neçə aydır, amma son həftələr daha pisləşdi."
+          ],
+          [
+            "T",
+            "Bu barədə danışmaq çətindirmi sizin üçün?"
+          ],
+          [
+            "K",
+            "Bir az, açığı — utanc hissi var."
+          ],
+          [
+            "T",
+            "Bunu anlayıram, çoxları belə hiss edir bura ilk gələndə."
+          ],
+          [
+            "K",
+            "Yaxşı, bu məni bir az rahatladır."
+          ],
+          [
+            "T",
+            "Burada mühakimə olunmayacaqsınız, sadəcə birlikdə baxacağıq."
+          ],
+          [
+            "K",
+            "Sağ olun, buna ehtiyacım var idi."
+          ],
+          [
+            "T",
+            "Başlamazdan əvvəl sualınız var mı?"
+          ],
+          [
+            "K",
+            "Yox, hazıram başlamağa."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Əsas hissə — Tetikləyicilərin xəritələnməsi",
+        "text": [
+          "Son bir-iki həftədəki 2-3 konkret hadisə detallı təhlil olunur: kim, harada, nə vaxt, nə baş verdi."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Bu çətinlik ilk nə vaxt başladı, xatırlayırsan?"
+          ],
+          [
+            "K",
+            "Dəqiq bilmirəm, tədricən başladı sanki."
+          ],
+          [
+            "T",
+            "Kamran, sən bunu necə xatırlayırsan?"
+          ],
+          [
+            "K",
+            "Bir hadisədən sonra bəlkə, tam əmin deyiləm."
+          ],
+          [
+            "T",
+            "Bu, gündəlik həyata necə təsir edir?"
+          ],
+          [
+            "K",
+            "Çox, işimə də, münasibətlərimə də."
+          ],
+          [
+            "T",
+            "Bu yaxınlarda əsəbləşdiyiniz konkret bir hadisəni xatırlaya bilərsinizmi?"
+          ],
+          [
+            "K",
+            "Bəli, işdə bir həmkarım mənim gördüyüm işi öz adına çıxdı."
+          ],
+          [
+            "T",
+            "O anda ağlınızdan nə keçdi?"
+          ],
+          [
+            "K",
+            "'Bu ədalətsizdir, burada heç kim mənim işimə hörmət etmir.'"
+          ],
+          [
+            "T",
+            "O anda bədəninizdə nə hiss etdiniz?"
+          ],
+          [
+            "K",
+            "Çənəm sıxıldı, səsim özbaşına ucaldı."
+          ],
+          [
+            "T",
+            "Sonra nə etdiniz?"
+          ],
+          [
+            "K",
+            "Hamının qarşısında ona sərt cavab verdim, sonra peşman oldum."
+          ],
+          [
+            "T",
+            "Bu hadisədən sonra münasibətləriniz necə oldu?"
+          ],
+          [
+            "K",
+            "Bir az gərgin, üzr istəməli oldum sonradan."
+          ],
+          [
+            "T",
+            "Başqa bir nümunə də var mı bu iki həftə ərzində?"
+          ],
+          [
+            "K",
+            "Bəli, evdə də bir dəfə, uşağım oyuncaqları yığmayanda."
+          ],
+          [
+            "T",
+            "O zaman nə fərqli idi, işdəkindən?"
+          ],
+          [
+            "K",
+            "Daha tez sakitləşdim, açığı, amma yenə səsimi qaldırdım."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Bağlanış",
+        "text": [
+          "Seans klientə ümid və proqramın nə üçün faydalı olacağını izah etməklə bitir."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Bu ilk görüş sizin üçün necə keçdi?"
+          ],
+          [
+            "K",
+            "Düşündüyümdən asan oldu, açığı."
+          ],
+          [
+            "T",
+            "Bunu eşitmək məni sevindirir."
+          ],
+          [
+            "K",
+            "Növbəti həftə də gələcəyəm?"
+          ],
+          [
+            "T",
+            "Bəli, birlikdə 10 seanslıq bir yol xəritəmiz olacaq."
+          ],
+          [
+            "K",
+            "Yaxşı, bu mənə struktur hissi verir."
+          ],
+          [
+            "T",
+            "Evə gedərkən bu barədə düşünmək istəsəniz, kiçik qeydlər tuta bilərsiniz."
+          ],
+          [
+            "K",
+            "Cəhd edərəm."
+          ],
+          [
+            "T",
+            "Bu addımı atdığınız üçün təbrik edirəm."
+          ],
+          [
+            "K",
+            "Sağ olun."
+          ]
+        ]
+      }
+    ],
+    "homework": "Bu həftə əsəbiləşdiyin anları (kim, nə, harada) balaca dəftərə qeyd et.",
+    "about": "Bu ilk seansda formal test tətbiq edilmir — davranışın tezliyi, tetikləyiciləri və konteksti struktur söhbətlə qiymətləndirilir.",
+    "specialists": [
+      "Klinik psixoloq",
+      "Uşaq psixoloqu",
+      "KDT terapevti"
+    ]
+  },
+  {
+    "num": 2,
+    "title": "Psixotəhsil: Qəzəb Nədir?",
+    "goal": "Qəzəbin normal, hətta faydalı bir emosiya olduğunu, lakin onun ifadə formasının seçim olduğunu izah etmək.",
+    "materials": [
+      "Vulkan metaforası şəkli",
+      "Psixotəhsil vərəqi"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Giriş",
+        "text": [
+          "Gündəliyə baxılır, körpü qurulur."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Kamran, keçən görüşümüzdən sonra necə keçdi?"
+          ],
+          [
+            "K",
+            "Normal, bir-iki dəfə yenə qəzəbləndim, amma az."
+          ],
+          [
+            "T",
+            "Bunu qeyd etdiyiniz üçün sağ olun. Bu barədə sual yarandımı?"
+          ],
+          [
+            "K",
+            "Bəzən düşünürəm ki, qəzəb pis bir şeydir, ondan tam qurtulmalıyam."
+          ],
+          [
+            "T",
+            "Bu, çox rast gəlinən bir fikirdir. Bu gün elə bunu araşdıracağıq."
+          ],
+          [
+            "K",
+            "Maraqlıdır, dinləyirəm."
+          ],
+          [
+            "T",
+            "Özünüzü necə hiss edirsiniz bu gün, sakitsinizmi?"
+          ],
+          [
+            "K",
+            "Nisbətən, bir az yorğunam işdən sonra."
+          ],
+          [
+            "T",
+            "Bu həftə yuxu necə idi?"
+          ],
+          [
+            "K",
+            "Orta, iki gecə pis yatdım."
+          ],
+          [
+            "T",
+            "Qeyd etdiyiniz üçün sağ olun, bunu nəzərə alacağıq."
+          ],
+          [
+            "K",
+            "Yaxşı."
+          ],
+          [
+            "T",
+            "Başlamazdan əvvəl bir şey soruşmaq istəyirsiniz?"
+          ],
+          [
+            "K",
+            "Yox, hazıram."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Əsas hissə — Vulkan metaforası",
+        "text": [
+          "Qəzəbin yığılan təzyiq kimi olduğu, lakin partlayışın yeganə çıxış yolu olmadığı izah edilir."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Bu izahat sənə məntiqli gəlirmi?"
+          ],
+          [
+            "K",
+            "Bir az, amma hələ tam anlamıram niyə belə hiss edirəm."
+          ],
+          [
+            "T",
+            "Bu, sənin 'zəif' olduğun demək deyil, beynin bir şəkildə reaksiya verir."
+          ],
+          [
+            "K",
+            "Bunu bilmək bir az rahatlıq verir, açığı."
+          ],
+          [
+            "T",
+            "Bu barədə sual varmı?"
+          ],
+          [
+            "K",
+            "Bəs bu, nə vaxt keçəcək, bilirsinizmi?"
+          ],
+          [
+            "T",
+            "Gəl qəzəbi bir vulkana bənzədək — təzyiq yavaş-yavaş yığılır, gərginlikdən, məyusluqdan, yorğunluqdan."
+          ],
+          [
+            "K",
+            "Bu, mənə məntiqli gəlir, açığı."
+          ],
+          [
+            "T",
+            "Təzyiq vaxtında boşalmasa, partlayış şəklində çıxır. Sizdə təzyiqi ən çox nə artırır?"
+          ],
+          [
+            "K",
+            "Hörmətsizlik hissi, əsasən. Ya da işlərin gözlədiyim kimi getməməsi."
+          ],
+          [
+            "T",
+            "Bəs partlayış təzyiqi boşaltmağın yeganə yoludurmu?"
+          ],
+          [
+            "K",
+            "Düşünəndə... elə deyil əslində."
+          ],
+          [
+            "T",
+            "'Təzyiqi erkən buraxmaq' sizin üçün necə görünərdi?"
+          ],
+          [
+            "K",
+            "Bəlkə gərginləşdiyimi hiss edən kimi bir şey deyim, içimdə saxlamaq əvəzinə."
+          ],
+          [
+            "T",
+            "Bu, çox dəyərli bir fikir oldu. Qəzəbin özü burada problem deyil."
+          ],
+          [
+            "K",
+            "Doğrudur, onunla nə etdiyim önəmlidir."
+          ],
+          [
+            "T",
+            "Tam belədir. Emosiya normaldır — forma seçimdir."
+          ],
+          [
+            "K",
+            "Bunu seçim kimi düşünməmişdim əvvəllər."
+          ],
+          [
+            "T",
+            "Bu vulkan metaforasını öz sözlərinizlə təkrar etsəniz necə olardı?"
+          ],
+          [
+            "K",
+            "Təzyiq yığılır, mən onu vaxtında buraxmasam, partlayır."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Bağlanış",
+        "text": [
+          "Qəzəbin özünün 'pis' olmadığı, sadəcə ifadə yolunun seçim olduğu vurğulanır."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Bu gün qəzəb haqqında öyrəndiklərinizi necə xülasə edərdiniz?"
+          ],
+          [
+            "K",
+            "Qəzəb özü pis deyil, onu necə ifadə etdiyim önəmlidir."
+          ],
+          [
+            "T",
+            "Tam doğrudur."
+          ],
+          [
+            "K",
+            "Bunu bilmək məni bir az rahatlatdı."
+          ],
+          [
+            "T",
+            "Bu həftə qəzəbin sizə nə demək istədiyini bir dəfə düşünə bilərsinizmi?"
+          ],
+          [
+            "K",
+            "Cəhd edərəm."
+          ],
+          [
+            "T",
+            "Özünüzü necə hiss edirsiniz gedərkən?"
+          ],
+          [
+            "K",
+            "Daha sakin, açığı gözləmirdim belə."
+          ],
+          [
+            "T",
+            "Bu, çox gözəl bir başlanğıcdır."
+          ],
+          [
+            "K",
+            "Sağ olun, görüşənədək."
+          ]
+        ]
+      }
+    ],
+    "homework": "Bu həftə qəzəbləndiyin anı 'vulkan' səviyyəsi (aşağı/orta/yüksək) ilə qeyd et.",
+    "about": "Psixotəhsil seansıdır — qəzəbin normal emosiya olduğu, amma ifadə formasının seçim olduğu izah edilir.",
+    "specialists": [
+      "Klinik psixoloq",
+      "KDT terapevti",
+      "Psixopedaqoq"
+    ]
+  },
+  {
+    "num": 3,
+    "title": "Bədən Siqnallarını Tanımaq",
+    "goal": "Qəzəb Termometri vasitəsilə erkən fiziki siqnalları (ürək döyüntüsü, isti hiss, yumruq sıxma) tanımağı öyrətmək.",
+    "materials": [
+      "Qəzəb termometri şablonu"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Giriş",
+        "text": [
+          "Sadə giriş, bədən mövzusuna keçid."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Kamran, bu gün qəzəbin bədəndə necə göründüyünə baxacağıq."
+          ],
+          [
+            "K",
+            "Maraqlıdır, açığı heç düşünməmişəm bu barədə."
+          ],
+          [
+            "T",
+            "Son dəfə əsəbləşəndə bədəninizdə nə hiss etdiniz?"
+          ],
+          [
+            "K",
+            "Ürəyim sürətləndi, yumruqlarım sıxıldı sanki özbaşına."
+          ],
+          [
+            "T",
+            "Başqa nə var idi — nəfəs, çənə, çiyinlər?"
+          ],
+          [
+            "K",
+            "Çənəm gərginləşdi, nəfəsim də sürətləndi bir az."
+          ],
+          [
+            "T",
+            "Bunlar qəzəbin erkən siqnallarıdır — bədən sözdən əvvəl xəbərdarlıq edir."
+          ],
+          [
+            "K",
+            "İndi bunu bilmək faydalı olacaq deyəsən."
+          ],
+          [
+            "T",
+            "Bu həftə bu siqnalları izləyə bilərsinizmi?"
+          ],
+          [
+            "K",
+            "Cəhd edərəm, maraqlı gəlir açığı."
+          ],
+          [
+            "T",
+            "Kiçik qeydlər kifayətdir, mükəmməl olmasın."
+          ],
+          [
+            "K",
+            "Yaxşı, sınayacam."
+          ],
+          [
+            "T",
+            "Başlamazdan əvvəl bir sualınız var mı?"
+          ],
+          [
+            "K",
+            "Yox, hazıram."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Əsas hissə — Bədən skaneri",
+        "text": [
+          "Klientdən keçmiş bir hadisədə bədənində nə hiss etdiyi soruşulur, addım-addım xatırlanır."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Kamran, bu gün qəzəbin bədəndə necə göründüyünə baxacağıq."
+          ],
+          [
+            "K",
+            "Maraqlıdır, açığı heç düşünməmişəm bu barədə."
+          ],
+          [
+            "T",
+            "Son dəfə əsəbləşəndə bədəninizdə nə hiss etdiniz?"
+          ],
+          [
+            "K",
+            "Ürəyim sürətləndi, yumruqlarım sıxıldı sanki özbaşına."
+          ],
+          [
+            "T",
+            "Başqa nə var idi — nəfəs, çənə, çiyinlər?"
+          ],
+          [
+            "K",
+            "Çənəm gərginləşdi, nəfəsim də sürətləndi bir az."
+          ],
+          [
+            "T",
+            "Bunlar qəzəbin erkən siqnallarıdır — bədən sözdən əvvəl xəbərdarlıq edir."
+          ],
+          [
+            "K",
+            "İndi bunu bilmək faydalı olacaq deyəsən."
+          ],
+          [
+            "T",
+            "Gəl bir Qəzəb Termometri düzəldək, bu siqnalları rəqəmlərlə əlaqələndirək."
+          ],
+          [
+            "K",
+            "Yaxşı, necə işləyir bu?"
+          ],
+          [
+            "T",
+            "1-dən 10-a qədər, hansı səviyyədə hansı bədən siqnalı gəlir, qeyd edirik."
+          ],
+          [
+            "K",
+            "Anladım, 3-4-də çənə gərginləşir deyəsən mənə görə."
+          ],
+          [
+            "T",
+            "7-8-də nə olur sizcə?"
+          ],
+          [
+            "K",
+            "Yumruqlar tam sıxılır, səs ucalır."
+          ],
+          [
+            "T",
+            "Bu fərqindəlik, qəzəb partlamadan əvvəl dayanmaq üçün ən vacib alətdir."
+          ],
+          [
+            "K",
+            "İndi başa düşdüm niyə bunu öyrədirsiniz əvvəlcə."
+          ],
+          [
+            "T",
+            "Bu həftə bu siqnalları izləyə bilərsinizmi?"
+          ],
+          [
+            "K",
+            "Cəhd edərəm, maraqlı gəlir açığı."
+          ],
+          [
+            "T",
+            "Kiçik qeydlər kifayətdir, mükəmməl olmasın."
+          ],
+          [
+            "K",
+            "Yaxşı, sınayacam."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Bağlanış",
+        "text": [
+          "Termometr şablonu doldurulur, ev tapşırığı izah edilir."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Bu gün öyrəndiyiniz bədən siqnallarını xatırlayırsınızmı?"
+          ],
+          [
+            "K",
+            "Ürək döyüntüsü, çənə gərginliyi, yumruq sıxma — erkən xəbərdarlıqlar."
+          ],
+          [
+            "T",
+            "Tam belədir. Bu həftə bunları izləyə bilərsinizmi?"
+          ],
+          [
+            "K",
+            "Bəli, dəftərimə qeyd edərəm."
+          ],
+          [
+            "T",
+            "Kiçik qeydlər kifayətdir."
+          ],
+          [
+            "K",
+            "Yaxşı."
+          ],
+          [
+            "T",
+            "Bu fərqindəlik sizə necə hiss etdirdi?"
+          ],
+          [
+            "K",
+            "Bir az güc verdi, deyəsən artıq nəzarətdə bir şey var."
+          ],
+          [
+            "T",
+            "Bu, çox dəyərli bir müşahidə."
+          ],
+          [
+            "K",
+            "Sağ olun, görüşənədək."
+          ]
+        ]
+      }
+    ],
+    "homework": "Gün ərzində 'termometrini' azı 2 dəfə yoxla və rəqəmini qeyd et.",
+    "about": "Qəzəb Termometri diaqnostik test deyil, erkən bədən siqnallarını tanımaq üçün özünüzləmə alətidir.",
+    "specialists": [
+      "Klinik psixoloq",
+      "Erqoterapevt"
+    ]
+  },
+  {
+    "num": 4,
+    "title": "Nəfəs və Sakitləşdirmə Bacarıqları",
+    "goal": "Qutu nəfəsi, geriyə sayma və sensor alətlərdən istifadə ilə bədəni sürətlə sakitləşdirməyi öyrətmək.",
+    "materials": [
+      "Nəfəs kartı",
+      "Fidget alət (əgər varsa)"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Giriş",
+        "text": [
+          "Oyunbaz ton ilə giriş."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Kamran, keçən seansdan sonra bədən siqnallarını izlədinizmi?"
+          ],
+          [
+            "K",
+            "Bəli, iki dəfə qeyd etdim, faydalı idi."
+          ],
+          [
+            "T",
+            "Bu, çox yaxşı bir başlanğıcdır. Bu gün özünüzü necə hiss edirsiniz?"
+          ],
+          [
+            "K",
+            "Nisbətən sakit, amma iş günü yorucu idi."
+          ],
+          [
+            "T",
+            "Bu həftə əsəbləşdiyiniz bir an oldu mu?"
+          ],
+          [
+            "K",
+            "Bir dəfə, amma keçən dəfəki qədər şiddətli deyildi."
+          ],
+          [
+            "T",
+            "Bu, özü bir irəliləyişdir."
+          ],
+          [
+            "K",
+            "Mən də belə düşünürəm, açığı."
+          ],
+          [
+            "T",
+            "Bu gün bədəni sürətlə sakitləşdirən konkret alətlərə baxacağıq."
+          ],
+          [
+            "K",
+            "Buna ehtiyacım var, real vaxtda nə edəcəyimi bilmirəm həmişə."
+          ],
+          [
+            "T",
+            "Elə bu boşluğu dolduracağıq bu gün."
+          ],
+          [
+            "K",
+            "Yaxşı, hazıram."
+          ],
+          [
+            "T",
+            "Başlamazdan əvvəl sualınız var mı?"
+          ],
+          [
+            "K",
+            "Yox, başlayaq."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Əsas hissə — Məşq",
+        "text": [
+          "Qutu nəfəsi və 10-dan geriyə sayma birlikdə məşq edilir."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Bu nəfəs texnikasını neçə dəfə təkrarlamaq lazımdır?"
+          ],
+          [
+            "K",
+            "Bilmirəm, bir neçə dəfə bəlkə."
+          ],
+          [
+            "T",
+            "Bunu indi bir daha sınayaq."
+          ],
+          [
+            "K",
+            "(dərin nəfəs alır) Bir az kömək etdi, tam yox amma."
+          ],
+          [
+            "T",
+            "Gəl indi geriyə saymanı da əlavə edək — 10-dan aşağı sayaq nəfəslə birgə."
+          ],
+          [
+            "K",
+            "Yaxşı, sınayaq."
+          ],
+          [
+            "T",
+            "10, nəfəs al... 9, ver..."
+          ],
+          [
+            "K",
+            "(sayır) Bu, diqqətimi yayındırır bir az, yaxşı mənada."
+          ],
+          [
+            "T",
+            "Tam belədir, məqsəd də budur — beyni başqa bir işə yönəltmək."
+          ],
+          [
+            "K",
+            "İndi bədənim bir az daha sakit."
+          ],
+          [
+            "T",
+            "Sensor alətlərdən — soyuq su, sərt bir əşya sıxmaq kimi — hansı sizə uyğun gələ bilər?"
+          ],
+          [
+            "K",
+            "Soyuq su üzümə çox işə yarayır həmişə."
+          ],
+          [
+            "T",
+            "Əla, bunu da alət qutunuza əlavə edək."
+          ],
+          [
+            "K",
+            "Yaxşı fikirdir."
+          ],
+          [
+            "T",
+            "Bu üç alətdən — nəfəs, geriyə sayma, soyuq su — hansını daha çox işlədəcəksiniz?"
+          ],
+          [
+            "K",
+            "Sanırım nəfəs və soyuq su, ikisi də sadədir."
+          ],
+          [
+            "T",
+            "Bu həftə əsəbləşən kimi birini dərhal sınayın."
+          ],
+          [
+            "K",
+            "Cəhd edərəm, söz verirəm."
+          ],
+          [
+            "T",
+            "Nəticəni növbəti seansda müzakirə edərik."
+          ],
+          [
+            "K",
+            "Yaxşı, gözləyirəm."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Bağlanış",
+        "text": [
+          "Sensor alətlərdən (fidget, ağır yorğan) necə istifadə ediləcəyi göstərilir."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Bu gün öyrəndiyiniz alətlərdən hansı sizə ən uyğun gəldi?"
+          ],
+          [
+            "K",
+            "Nəfəs və soyuq su, ikisi də sadə görünür."
+          ],
+          [
+            "T",
+            "Bu həftə bunları sınamağa hazırsınızmı?"
+          ],
+          [
+            "K",
+            "Bəli, hazıram."
+          ],
+          [
+            "T",
+            "Nəticəni növbəti seansda paylaşarsınız."
+          ],
+          [
+            "K",
+            "Yaxşı, edərəm."
+          ],
+          [
+            "T",
+            "Özünüzü necə hiss edirsiniz bu gün gedərkən?"
+          ],
+          [
+            "K",
+            "Daha güclü, əlimdə real alətlər var indi."
+          ],
+          [
+            "T",
+            "Bu, çox gözəl bir irəliləyişdir."
+          ],
+          [
+            "K",
+            "Sağ olun."
+          ]
+        ]
+      }
+    ],
+    "homework": "Termometr yüksələndə geriyə sayma və ya nəfəs texnikasını sına, nəticəni yaz.",
+    "about": "Bu seans sensor tənzimləmə bacarıqlarının öyrədildiyi praktik təlim seansıdır.",
+    "specialists": [
+      "Erqoterapevt",
+      "Klinik psixoloq",
+      "Sensor inteqrasiya mütəxəssisi"
+    ]
+  },
+  {
+    "num": 5,
+    "title": "Dayan-Düşün-Fəaliyyət Göstər",
+    "goal": "3 addımlı strategiyanı öyrətmək və rollu oyunla real vəziyyətlərdə tətbiqini məşq etmək.",
+    "materials": [
+      "Dayan-Düşün-Fəaliyyət göstər kartı"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Giriş",
+        "text": [
+          "Keçən həftənin nəfəs məşqləri yoxlanılır."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Kamran, bu gün üç addımlı bir strategiya öyrənəcəyik. Hazır hiss edirsinizmi?"
+          ],
+          [
+            "K",
+            "Hazıram, maraqlıdır."
+          ],
+          [
+            "T",
+            "Keçən həftə nəfəs alətlərini sınadınızmı?"
+          ],
+          [
+            "K",
+            "Bəli, soyuq su xüsusilə işə yaradı."
+          ],
+          [
+            "T",
+            "Bu, çox gözəl bir seçim oldu."
+          ],
+          [
+            "K",
+            "Bir neçə dəfə istifadə etdim, kömək etdi."
+          ],
+          [
+            "T",
+            "Bu gün özünüzü necə hiss edirsiniz?"
+          ],
+          [
+            "K",
+            "Nisbətən rahat, bu gün iş sakit keçdi."
+          ],
+          [
+            "T",
+            "Bu gün rollu oyun da işlədəcəyik, bunu necə qarşılayırsınız?"
+          ],
+          [
+            "K",
+            "Bir az qəribə gəlir, amma sınamağa hazıram."
+          ],
+          [
+            "T",
+            "Rollu oyun bəzən qəribə gəlir, amma çox effektivdir."
+          ],
+          [
+            "K",
+            "İnanıram sizə."
+          ],
+          [
+            "T",
+            "Başlamazdan əvvəl sualınız var mı?"
+          ],
+          [
+            "K",
+            "Yox, başlayaq."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Əsas hissə — Rollu oyun",
+        "text": [
+          "Terapevt real ssenari yaradır (məs. oyuncağın alınması) və klient 3 addımı tətbiq edir."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Bu gün üç addımlı bir strategiya öyrədəcəyəm — Dayan, Düşün, Fəaliyyət göstər."
+          ],
+          [
+            "K",
+            "Sadə səslənir, dinləyirəm."
+          ],
+          [
+            "T",
+            "Birinci addım — Dayan. Qəzəb siqnalını hiss edən kimi fiziki olaraq dayanırsan, hərəkət etmirsən."
+          ],
+          [
+            "K",
+            "Yəni sözün əsl mənasında dayanmaq?"
+          ],
+          [
+            "T",
+            "Bəli, bir addım geri, ya da sadəcə donub qalmaq — hərəkətə keçməmək."
+          ],
+          [
+            "K",
+            "Anladım, sonra?"
+          ],
+          [
+            "T",
+            "İkinci addım — Düşün. Özünə sual verirsən: bu reaksiya mənə nə qazandıracaq?"
+          ],
+          [
+            "K",
+            "Maraqlı sual, adətən bunu düşünmürəm həmin anda."
+          ],
+          [
+            "T",
+            "Elə buna görə öyrədirik — vərdiş halına gətirmək üçün."
+          ],
+          [
+            "K",
+            "Üçüncü addım nədir?"
+          ],
+          [
+            "T",
+            "Fəaliyyət göstər. Düşündükdən sonra ən yaxşı seçimi edirsən — bəzən heç nə etməmək, bəzən sakit danışmaq."
+          ],
+          [
+            "K",
+            "Bunu real vəziyyətdə sınamaq istəyirəm."
+          ],
+          [
+            "T",
+            "Gəl bir rollu oyun edək — mən sizin işdəki həmkarınız oluram, siz Dayan-Düşün-Fəaliyyət-i tətbiq edirsiniz."
+          ],
+          [
+            "K",
+            "Yaxşı, hazıram."
+          ],
+          [
+            "T",
+            "(rol) 'Sənin işini yenə mən düzəltməli oldum, bu neçənci dəfədir?'"
+          ],
+          [
+            "K",
+            "(dayanır) ...Dayanıram indi... düşünürəm... 'Bu barədə sakit danışa bilərikmi, məni narahat etdi bu.'"
+          ],
+          [
+            "T",
+            "Əla tətbiq etdiniz! Necə hiss etdiniz bu prosesdə?"
+          ],
+          [
+            "K",
+            "Çətin idi dayanmaq, amma bacardım."
+          ],
+          [
+            "T",
+            "Bu, məşq tələb edən bir bacarıqdır, ilk dəfədən mükəmməl olmayacaq."
+          ],
+          [
+            "K",
+            "Yaxşı, bu həftə real həyatda sınayacam."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Bağlanış",
+        "text": [
+          "Texnika kartı klientə verilir, evdə görünən yerə asması tövsiyə olunur."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Dayan-Düşün-Fəaliyyət göstər strategiyasını bir cümləylə desəniz?"
+          ],
+          [
+            "K",
+            "Dayan, sual ver özünə, sonra ən yaxşısını et."
+          ],
+          [
+            "T",
+            "Tam doğrudur. Bu həftə bunu sınaya bilərsinizmi?"
+          ],
+          [
+            "K",
+            "Cəhd edərəm, söz verirəm."
+          ],
+          [
+            "T",
+            "Kiçik bir uğur da qeyd olunmalıdır."
+          ],
+          [
+            "K",
+            "Yaxşı, yazaram nə baş verdiyini."
+          ],
+          [
+            "T",
+            "Bu gün rollu oyun sizə necə hiss etdirdi?"
+          ],
+          [
+            "K",
+            "Əvvəlcə qəribə, sonra faydalı."
+          ],
+          [
+            "T",
+            "Bu, çox təbiidir — yeni bacarıq həmişə qəribə başlayır."
+          ],
+          [
+            "K",
+            "Sağ olun, görüşənədək."
+          ]
+        ]
+      }
+    ],
+    "homework": "Bu texnikanı bir real vəziyyətdə sınamağa çalış, nəticəni növbəti seansda paylaş.",
+    "about": "Dayan-Düşün-Fəaliyyət göstər rollu oyun vasitəsilə məşq edilən davranış strategiyasıdır.",
+    "specialists": [
+      "Klinik psixoloq",
+      "KDT terapevti",
+      "Məktəb psixoloqu"
+    ]
+  },
+  {
+    "num": 6,
+    "title": "Koqnitiv Restrukturizasiya",
+    "goal": "Aqressiyanı tetikləyən 'ədalətsizlik' kimi düşüncələri tanımaq və sorğulamaq.",
+    "materials": [
+      "Fikir qeydiyyat vərəqi"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Giriş",
+        "text": [
+          "Sual ilə mövzuya keçid."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Kamran, bu gün düşüncələrimizi necə sorğulayacağımıza baxacağıq."
+          ],
+          [
+            "K",
+            "Bu, mənə maraqlı gəlir, düşüncələrimi heç sorğulamamışam."
+          ],
+          [
+            "T",
+            "Keçən həftə Dayan-Düşün-Fəaliyyət göstər-i sınadınızmı?"
+          ],
+          [
+            "K",
+            "Bir dəfə, yarımçıq oldu, amma köhnə tərzimdən fərqli idi."
+          ],
+          [
+            "T",
+            "Bu, əla bir başlanğıcdır."
+          ],
+          [
+            "K",
+            "Sağ olun, çətin idi amma."
+          ],
+          [
+            "T",
+            "Bu gün özünüzü necə hiss edirsiniz?"
+          ],
+          [
+            "K",
+            "Düşüncəli, bir az da həyəcanlı."
+          ],
+          [
+            "T",
+            "Bu həftə hansı düşüncə sizi ən çox narahat etdi?"
+          ],
+          [
+            "K",
+            "'Bu, ədalətsizdir' düşüncəsi tez-tez gəlir."
+          ],
+          [
+            "T",
+            "Elə bu gün bunu birlikdə araşdıracağıq."
+          ],
+          [
+            "K",
+            "Yaxşı, maraqlıdır."
+          ],
+          [
+            "T",
+            "Başlamazdan əvvəl sualınız var mı?"
+          ],
+          [
+            "K",
+            "Yox, hazıram."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Əsas hissə — Düşüncənin sorğulanması",
+        "text": [
+          "Klientin tez-tez təkrarlanan tetikləyici fikri seçilir və birlikdə araşdırılır."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Bu düşüncənin əleyhinə hansı sübutlar var?"
+          ],
+          [
+            "K",
+            "Bilmirəm, bəlkə var, indi düşünə bilmirəm."
+          ],
+          [
+            "T",
+            "Bu düşüncəni necə yenidən formalaşdıra bilərik?"
+          ],
+          [
+            "K",
+            "Çətindir, amma sınaya bilərəm bəlkə."
+          ],
+          [
+            "T",
+            "Bu yeni düşüncəni necə xatırlayacaqsan?"
+          ],
+          [
+            "K",
+            "Bilmirəm dəqiq, unutmasam yazaram bir yerə."
+          ],
+          [
+            "T",
+            "Gəl konkret bir nümunədən başlayaq — son əsəbləşdiyiniz an hansı düşüncə var idi başınızda?"
+          ],
+          [
+            "K",
+            "'Bu, ədalətsizdir, mənə qarşı bilərəkdən edir' kimi bir şey."
+          ],
+          [
+            "T",
+            "Bu düşüncəyə nə qədər inanırsınız, 0-100 arası?"
+          ],
+          [
+            "K",
+            "80 kimi bir şey, o an çox inanmışdım."
+          ],
+          [
+            "T",
+            "İndi, sakit halda, bu rəqəm neçəyə düşür?"
+          ],
+          [
+            "K",
+            "Bəlkə 40, indi bir az şübhələnirəm."
+          ],
+          [
+            "T",
+            "Başqa bir izah ola bilərmi həmin insanın davranışına?"
+          ],
+          [
+            "K",
+            "Bəlkə... o da öz problemləri ilə məşğuldur, mənimlə bağlı deyil."
+          ],
+          [
+            "T",
+            "Bu, maraqlı bir alternativ oldu."
+          ],
+          [
+            "K",
+            "Bəli, bunu düşünməmişdim əvvəllər."
+          ],
+          [
+            "T",
+            "Bu təhrifin adı nədir sizcə — fikir oxuma, yoxsa katastrofikləşdirmə?"
+          ],
+          [
+            "K",
+            "Fikir oxumaya bənzəyir, onun niyyətini bildiyimi düşünmüşəm."
+          ],
+          [
+            "T",
+            "Dəqiq belədir. Bunu tanımaq özü böyük bir addımdır."
+          ],
+          [
+            "K",
+            "Sağ olun, bu, çox faydalı oldu mənim üçün."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Bağlanış",
+        "text": [
+          "Balanslaşdırılmış fikir birlikdə formalaşdırılır və yazılır."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Bu gün düşüncələrinizi sorğulamağı necə hiss etdiniz?"
+          ],
+          [
+            "K",
+            "Çətin idi əvvəlcə, amma faydalı oldu."
+          ],
+          [
+            "T",
+            "Bu həftə bir düşüncəni bu şəkildə sorğulaya bilərsinizmi?"
+          ],
+          [
+            "K",
+            "Cəhd edərəm."
+          ],
+          [
+            "T",
+            "Kağıza yazmaq kömək edə bilər."
+          ],
+          [
+            "K",
+            "Yaxşı, edərəm."
+          ],
+          [
+            "T",
+            "Özünüzü necə hiss edirsiniz indi?"
+          ],
+          [
+            "K",
+            "Daha aydın düşünürəm, sanki dumandan çıxmışam."
+          ],
+          [
+            "T",
+            "Bu, çox güclü bir təsvir oldu."
+          ],
+          [
+            "K",
+            "Sağ olun."
+          ]
+        ]
+      }
+    ],
+    "homework": "Əsəbiləşdiyin bir vəziyyətdə özünə 'başqa izah varmı?' sualını ver və yaz.",
+    "about": "Koqnitiv restrukturizasiya seansıdır — aqressiyanı tetikləyən 'ədalətsizlik' kimi düşüncələr sorğulanır.",
+    "specialists": [
+      "Klinik psixoloq",
+      "KDT terapevti"
+    ]
+  },
+  {
+    "num": 7,
+    "title": "Kommunikasiya Bacarıqları",
+    "goal": "'Mən' dili ilə ehtiyacı ifadə etməyi öyrətmək — qışqırıq və ya vurma əvəzinə sözlə tələb etmək.",
+    "materials": [
+      "'Mən' cümlələri kartı"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Giriş",
+        "text": [
+          "Keçən seansın nəticəsi yoxlanılır."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Kamran, bu gün kommunikasiya bacarıqlarına baxacağıq."
+          ],
+          [
+            "K",
+            "Bu mövzu mənə lazımdır, açığı, ailəmdə problem var bu sahədə."
+          ],
+          [
+            "T",
+            "Keçən həftə düşüncələrinizi sorğulamağı sınadınızmı?"
+          ],
+          [
+            "K",
+            "Bəli, bir dəfə, faydalı oldu."
+          ],
+          [
+            "T",
+            "Bu, çox yaxşı bir vərdiş formalaşdırır."
+          ],
+          [
+            "K",
+            "Ümid edirəm."
+          ],
+          [
+            "T",
+            "Bu gün özünüzü necə hiss edirsiniz?"
+          ],
+          [
+            "K",
+            "Bir az narahat, açığı ailə mövzusu həssasdır mənim üçün."
+          ],
+          [
+            "T",
+            "Bunu anlayıram, yavaş gedəcəyik."
+          ],
+          [
+            "K",
+            "Sağ olun."
+          ],
+          [
+            "T",
+            "Bu gün 'Mən' dilini öyrənəcəyik — ittiham etmədən öz hissini ifadə etmək."
+          ],
+          [
+            "K",
+            "Maraqlıdır, indiyə qədər belə düşünməmişəm."
+          ],
+          [
+            "T",
+            "Başlamazdan əvvəl sualınız var mı?"
+          ],
+          [
+            "K",
+            "Yox, başlayaq."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Əsas hissə — 'Mən' dili məşqi",
+        "text": [
+          "'Sən həmişə...' ittihamedici dili 'Mən... hiss edirəm, çünki...' formasına çevirmək məşq edilir."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Bu ifadəni necə deyərsən sakit səslə?"
+          ],
+          [
+            "K",
+            "(sınayır, tərəddüdlə) Bilmirəm, qəribə gəlir belə demək."
+          ],
+          [
+            "T",
+            "Bu, necə hiss etdirdi sənə deyirkən?"
+          ],
+          [
+            "K",
+            "Bir az qeyri-adi, öyrəşməmişəm belə danışmağa."
+          ],
+          [
+            "T",
+            "'Mən' dili ilə desək necə olardı — 'sən məni əsəbləşdirdin' əvəzinə?"
+          ],
+          [
+            "K",
+            "Bəlkə... 'mən bu vəziyyətdə əsəbiləşirəm, çünki...' kimi?"
+          ],
+          [
+            "T",
+            "Tam doğrudur. Davam edin, cümləni tamamlayın."
+          ],
+          [
+            "K",
+            "'...çünki fikrim eşidilmir kimi hiss edirəm.'"
+          ],
+          [
+            "T",
+            "Bu, çox güclü bir cümlə oldu. Fərqi hiss etdiniz?"
+          ],
+          [
+            "K",
+            "Bəli, ittiham etmirəm, sadəcə öz hissimi deyirəm."
+          ],
+          [
+            "T",
+            "İşdəki bir vəziyyətdə bunu necə tətbiq edərdiniz?"
+          ],
+          [
+            "K",
+            "Həmkarıma 'sən həmişə gecikirsən' əvəzinə 'mən vaxtında başlamağı vacib sayıram' deyərdim bəlkə."
+          ],
+          [
+            "T",
+            "Əla nümunə. Bu, qarşı tərəfi müdafiəyə keçirmir."
+          ],
+          [
+            "K",
+            "İndi görürəm niyə köhnə tərzim münaqişəni artırırmış."
+          ],
+          [
+            "T",
+            "Bu həftə bu formulanı bir dəfə real vəziyyətdə sınaya bilərsinizmi?"
+          ],
+          [
+            "K",
+            "Cəhd edərəm, çətin olsa da."
+          ],
+          [
+            "T",
+            "Kiçik bir uğur da böyük addımdır."
+          ],
+          [
+            "K",
+            "Yaxşı, məqbul gəlir mənə."
+          ],
+          [
+            "T",
+            "Nəticəni növbəti seansda paylaşarsınız."
+          ],
+          [
+            "K",
+            "Yaxşı, edərəm."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Bağlanış",
+        "text": [
+          "3 nümunə cümlə birlikdə yazılır və məşq edilir."
+        ],
+        "dialog": [
+          [
+            "T",
+            "'Mən' dilini bir cümləylə xatırlatsanız necə olardı?"
+          ],
+          [
+            "K",
+            "İttiham etmək əvəzinə öz hissimi ifadə etmək."
+          ],
+          [
+            "T",
+            "Tam doğrudur. Bu həftə bunu sınayacaqsınızmı?"
+          ],
+          [
+            "K",
+            "Bəli, xüsusən işdə."
+          ],
+          [
+            "T",
+            "Kiçik bir cəhd də böyük dəyişiklikdir."
+          ],
+          [
+            "K",
+            "Yaxşı, xatırlayaram."
+          ],
+          [
+            "T",
+            "Bu gün özünüzü necə hiss edirsiniz?"
+          ],
+          [
+            "K",
+            "Bir az açıq, sanki yeni bir dil öyrənirəm."
+          ],
+          [
+            "T",
+            "Elə də düşünmək olar, əslində."
+          ],
+          [
+            "K",
+            "Sağ olun, görüşənədək."
+          ]
+        ]
+      }
+    ],
+    "homework": "Bu həftə ən azı 1 dəfə 'Mən' dilindən istifadə et və nəticəni qeyd et.",
+    "about": "'Mən' dili məşqi kommunikasiya bacarığı təlimidir, xüsusən nitq/ifadə çətinliyi olan klientlərdə loqopedin dəstəyi faydalıdır.",
+    "specialists": [
+      "Klinik psixoloq",
+      "Loqoped",
+      "KDT terapevti"
+    ]
+  },
+  {
+    "num": 8,
+    "title": "Problem-Həll Bacarıqları",
+    "goal": "Münaqişəli vəziyyətlərdə aqressiya əvəzinə alternativ həll yolları axtarmağı öyrətmək.",
+    "materials": [
+      "Problem-həll addımları vərəqi"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Giriş",
+        "text": [
+          "Sadə giriş sualı ilə başlanır."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Kamran, bu gün problem-həll bacarıqlarına baxacağıq."
+          ],
+          [
+            "K",
+            "Yaxşı, buna ehtiyacım var, çox problemi həll etmədən buraxıram."
+          ],
+          [
+            "T",
+            "Keçən həftə 'Mən' dilini sınadınızmı?"
+          ],
+          [
+            "K",
+            "Bir dəfə, evdə, işə yaradı əslində."
+          ],
+          [
+            "T",
+            "Bu, çox gözəl bir nəticədir."
+          ],
+          [
+            "K",
+            "Özüm də təəccübləndim."
+          ],
+          [
+            "T",
+            "Bu gün özünüzü necə hiss edirsiniz?"
+          ],
+          [
+            "K",
+            "Nisbətən inamlı, artıq bəzi alətlərim var."
+          ],
+          [
+            "T",
+            "Bu gün konkret bir problemi addım-addım həll etməyi məşq edəcəyik."
+          ],
+          [
+            "K",
+            "Yaxşı, konkret bir şeyim var açığı."
+          ],
+          [
+            "T",
+            "Əla, elə onunla başlayaq."
+          ],
+          [
+            "K",
+            "Sağ olun."
+          ],
+          [
+            "T",
+            "Başlamazdan əvvəl sualınız var mı?"
+          ],
+          [
+            "K",
+            "Yox, hazıram."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Əsas hissə — Alternativ axtarışı",
+        "text": [
+          "Real bir münaqişə üzərində 3-4 mümkün həll yolu birlikdə fikirləşilir."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Bu problemi həll etmək üçün hansı addımlar lazımdır?"
+          ],
+          [
+            "K",
+            "Bilmirəm, çətindir addımlara bölmək."
+          ],
+          [
+            "T",
+            "Bu addımları real vəziyyətdə necə tətbiq edəcəksən?"
+          ],
+          [
+            "K",
+            "Cəhd edərəm, amma tam əmin deyiləm bacaracağıma."
+          ],
+          [
+            "T",
+            "Gəl konkret bir problemdən başlayaq — hazırda sizi ən çox əsəbləşdirən nədir?"
+          ],
+          [
+            "K",
+            "İşdə bir layihə var, komandam vaxtında bitirmir."
+          ],
+          [
+            "T",
+            "Problemi bir cümləylə tərif etsək necə olardı?"
+          ],
+          [
+            "K",
+            "'Komanda son tarixlərə əməl etmir, bu məni gərginləşdirir.'"
+          ],
+          [
+            "T",
+            "İndi mümkün həll yollarını sadalayaq, mühakimə etmədən — ağlınıza nə gəlir?"
+          ],
+          [
+            "K",
+            "Danışa bilərəm onlarla, ya da rəhbərə xəbər verə bilərəm, ya da özüm bitirə bilərəm."
+          ],
+          [
+            "T",
+            "Üç seçim də var. Hər birinin nəticəsi nə olardı?"
+          ],
+          [
+            "K",
+            "Danışmaq ən yaxşısı görünür, digərləri münaqişəni artıra bilər."
+          ],
+          [
+            "T",
+            "Bu seçimi necə tətbiq edərdiniz, addım-addım?"
+          ],
+          [
+            "K",
+            "Əvvəlcə sakit vaxt seçərəm, sonra 'mən' dilində problemi izah edərəm."
+          ],
+          [
+            "T",
+            "Bu, çox strukturlu bir yanaşma oldu."
+          ],
+          [
+            "K",
+            "Əvvəllər birbaşa partlayardım, indi fərqli hiss edirəm."
+          ],
+          [
+            "T",
+            "Bu addımları başqa bir problemə də tətbiq edə bilərsinizmi?"
+          ],
+          [
+            "K",
+            "Sanırım bəli, məntiq eynidir."
+          ],
+          [
+            "T",
+            "Bu, ən dəyərli bacarıqlardan biridir — problemi hissədən ayırmaq."
+          ],
+          [
+            "K",
+            "Sağ olun, bu, çox aydınladı fikrimi."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Bağlanış",
+        "text": [
+          "Ən yaxşı alternativ seçilir və növbəti dəfə necə tətbiq ediləcəyi planlaşdırılır."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Problem-həll addımlarını bir daha xatırlasaq?"
+          ],
+          [
+            "K",
+            "Problemi tərif et, seçimləri sadala, ən yaxşısını seç, tətbiq et."
+          ],
+          [
+            "T",
+            "Mükəmməl xatırladınız."
+          ],
+          [
+            "K",
+            "Sağ olun."
+          ],
+          [
+            "T",
+            "Bu həftə real bir problemə tətbiq edə bilərsinizmi?"
+          ],
+          [
+            "K",
+            "Cəhd edərəm, artıq bir neçə fikrim var."
+          ],
+          [
+            "T",
+            "Bu, çox yaxşı bir başlanğıcdır."
+          ],
+          [
+            "K",
+            "Özümü daha az çarəsiz hiss edirəm indi."
+          ],
+          [
+            "T",
+            "Bu, dəyərli bir dəyişiklikdir."
+          ],
+          [
+            "K",
+            "Sağ olun, görüşənədək."
+          ]
+        ]
+      }
+    ],
+    "homework": "Münaqişə yarananda 'başqa hansı yol var?' sualını özünə ver.",
+    "about": "Problem-həll bacarıqları seansı münaqişəli vəziyyətlərdə alternativ həll yollarının birgə axtarışına yönəlib.",
+    "specialists": [
+      "Klinik psixoloq",
+      "Psixopedaqoq"
+    ]
+  },
+  {
+    "num": 9,
+    "title": "Rollu Oyun və Məruzəetmə",
+    "goal": "Öyrənilən bütün bacarıqları (Dayan-Düşün-Fəaliyyət göstər, 'Mən' dili, problem-həll) real ssenarilərdə birləşdirərək tətbiq etmək.",
+    "materials": [
+      "Ssenari kartları"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Giriş",
+        "text": [
+          "Bugünkü seansın məqsədi izah olunur."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Kamran, bu gün öyrəndiyimiz bacarıqları birlikdə real ssenarilərdə sınayacağıq."
+          ],
+          [
+            "K",
+            "Bir az həyəcanlıyam, açığı."
+          ],
+          [
+            "T",
+            "Bu normaldır, hər şeyi birlikdə edəcəyik."
+          ],
+          [
+            "K",
+            "Yaxşı, bu məni rahatladır."
+          ],
+          [
+            "T",
+            "Keçən həftə problem-həll addımlarını sınadınızmı?"
+          ],
+          [
+            "K",
+            "Bəli, işdə bir məsələni bu şəkildə həll etdim."
+          ],
+          [
+            "T",
+            "Bu, əla bir nəticədir."
+          ],
+          [
+            "K",
+            "Özümdən razıyam, açığı."
+          ],
+          [
+            "T",
+            "Bu gün özünüzü necə hiss edirsiniz?"
+          ],
+          [
+            "K",
+            "Hazır, bir az gərgin olsam da."
+          ],
+          [
+            "T",
+            "Gərginlik normaldır, bu, çətin bir seansdır."
+          ],
+          [
+            "K",
+            "Anlayıram."
+          ],
+          [
+            "T",
+            "Başlamazdan əvvəl sualınız var mı?"
+          ],
+          [
+            "K",
+            "Yox, başlayaq."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Əsas hissə — Kombinə edilmiş məşq",
+        "text": [
+          "Bir neçə real həyat ssenarisi canlandırılır, klient bütün bacarıqları ardıcıl tətbiq edir."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Bu ssenaridə necə hiss etdin?"
+          ],
+          [
+            "K",
+            "Gərgin, real olsaydı daha pis olardı yəqin."
+          ],
+          [
+            "T",
+            "Bu məşqi real vəziyyətdə necə tətbiq edəcəksən?"
+          ],
+          [
+            "K",
+            "Bilmirəm, çətin ola bilər, amma sınayacam."
+          ],
+          [
+            "T",
+            "Gəl daha bir ssenari sınayaq — bu dəfə ailə mühitindən. Hazırsınız?"
+          ],
+          [
+            "K",
+            "Hazıram, əvvəlkindən bir az daha rahatam indi."
+          ],
+          [
+            "T",
+            "(rol) 'Sən heç vaxt evdə köməkçi olmursan, hər şeyi mən görürəm!'"
+          ],
+          [
+            "K",
+            "(dayanır, nəfəs alır) 'Anlayıram ki, bu səni yorur, gəl bölüşək kim nəyi edəcək.'"
+          ],
+          [
+            "T",
+            "Bu, üç bacarığı birdən istifadə etdiniz — dayanma, nəfəs, 'mən' dili."
+          ],
+          [
+            "K",
+            "Fərq etmədim özüm, avtomatik gəldi."
+          ],
+          [
+            "T",
+            "Bu, çox gözəl bir işarədir — vərdiş formalaşmağa başlayır."
+          ],
+          [
+            "K",
+            "Deməli təkrar məşq işə yarayır."
+          ],
+          [
+            "T",
+            "Bir ssenari də sınayaq — bu dəfə siz seçin, hansı vəziyyət sizi ən çox çətinləşdirir?"
+          ],
+          [
+            "K",
+            "Trafikdə, kimsə qəfil qabağıma keçəndə."
+          ],
+          [
+            "T",
+            "(rol edir) Yaxşı, təsəvvür edin bu az əvvəl oldu."
+          ],
+          [
+            "K",
+            "(dayanır) Bu, çətin bir ssenari, amma... dərin nəfəs alıram, bunun dəyməyəcəyini xatırlayıram."
+          ],
+          [
+            "T",
+            "Bu vəziyyətdə tez qərar vermək lazımdır, yaxşı idarə etdiniz."
+          ],
+          [
+            "K",
+            "Sağ olun, bu, ən çətin sınadığım ssenari idi."
+          ],
+          [
+            "T",
+            "Çətin ssenarilərlə məşq etmək, real həyatda hazır olmağı asanlaşdırır."
+          ],
+          [
+            "K",
+            "İndi bir az daha inamlıyam özümə görə."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Bağlanış",
+        "text": [
+          "İrəliləyiş qeyd edilir, klient təqdir olunur."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Bu gün bir neçə çətin ssenari sınadınız, necə hiss edirsiniz?"
+          ],
+          [
+            "K",
+            "Yorğun, amma özümə güvənim artdı."
+          ],
+          [
+            "T",
+            "Bu, çox gözəl bir irəliləyişdir."
+          ],
+          [
+            "K",
+            "Sağ olun."
+          ],
+          [
+            "T",
+            "Bu həftə real həyatda bir vəziyyətdə bu bacarıqları tətbiq edə bilərsinizmi?"
+          ],
+          [
+            "K",
+            "Cəhd edərəm, artıq hazır hiss edirəm özümü."
+          ],
+          [
+            "T",
+            "Kiçik uğurları da qeyd edin, hamısı önəmlidir."
+          ],
+          [
+            "K",
+            "Yaxşı, edərəm."
+          ],
+          [
+            "T",
+            "Bu proqramın sonuna yaxınlaşırıq, gördüyünüz iş təqdirəlayiqdir."
+          ],
+          [
+            "K",
+            "Sağ olun, bunu eşitmək dəyərlidir mənim üçün."
+          ]
+        ]
+      }
+    ],
+    "homework": "Bu həftə ən azı 2 real vəziyyətdə öyrəndiyin bacarıqları tətbiq et.",
+    "about": "Bu, əvvəlki bütün bacarıqların (Dayan-Düşün-Fəaliyyət göstər, 'Mən' dili, problem-həll) inteqrasiya olunduğu tətbiqi seansdır.",
+    "specialists": [
+      "Klinik psixoloq",
+      "KDT terapevti"
+    ]
+  },
+  {
+    "num": 10,
+    "title": "Yekun və Davamlılıq Planı",
+    "goal": "Bütün öyrənilən bacarıqları ümumiləşdirmək, valideyn/müəllimlə koordinasiya etmək və gələcək üçün dəstək planı qurmaq.",
+    "materials": [
+      "Bacarıqlar siyahısı şablonu",
+      "Kiçik nailiyyət sertifikatı"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Giriş",
+        "text": [
+          "İlk seansla müqayisədə irəliləyiş nəzərdən keçirilir."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Kamran, bu proqram boyu nə dəyişdi sənə görə?"
+          ],
+          [
+            "K",
+            "Bəzi şeylər yaxşılaşdı, amma hər şey həll olmadı."
+          ],
+          [
+            "T",
+            "Hələ də çətin olan nə var?"
+          ],
+          [
+            "K",
+            "Bir neçə şey, amma indi bilirəm necə yanaşım."
+          ],
+          [
+            "T",
+            "Bu bacarıqları necə davam etdirəcəksən?"
+          ],
+          [
+            "K",
+            "Bilmirəm dəqiq, cəhd edəcəm xatırlamağa."
+          ],
+          [
+            "T",
+            "Bu, bizim son seansımızdır. Bunu necə qarşılayırsınız?"
+          ],
+          [
+            "K",
+            "Bir az qəribə, amma hazır hiss edirəm özümü."
+          ],
+          [
+            "T",
+            "İlk gəldiyiniz günü xatırlayırsınızmı?"
+          ],
+          [
+            "K",
+            "Bəli, çox utanmışdım, danışmaq belə çətin idi."
+          ],
+          [
+            "T",
+            "İndi ilə müqayisə etsəniz, nə fərq görürsünüz?"
+          ],
+          [
+            "K",
+            "Daha sakinəm, özümü idarə edə bilirəm."
+          ],
+          [
+            "T",
+            "Bu, böyük bir yol qət etməkdir."
+          ],
+          [
+            "K",
+            "Sağ olun köməyiniz üçün."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Əsas hissə — Davamlılıq planı",
+        "text": [
+          "Klient öz 'alətlər qutusunu' formalaşdırır və çətin anlar üçün konkret addımlar müəyyənləşdirir."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Bu proqram boyu nə dəyişdi sənə görə?"
+          ],
+          [
+            "K",
+            "Bəzi şeylər yaxşılaşdı, amma hər şey həll olmadı."
+          ],
+          [
+            "T",
+            "Hələ də çətin olan nə var?"
+          ],
+          [
+            "K",
+            "Bir neçə şey, amma indi bilirəm necə yanaşım."
+          ],
+          [
+            "T",
+            "Bu bacarıqları necə davam etdirəcəksən?"
+          ],
+          [
+            "K",
+            "Bilmirəm dəqiq, cəhd edəcəm xatırlamağa."
+          ],
+          [
+            "T",
+            "Bu proqram boyu öyrəndiyiniz bacarıqlardan hansı ən çox işə yaradı?"
+          ],
+          [
+            "K",
+            "Dayan-Düşün-Fəaliyyət göstər, kəsinliklə. Ən çox onu işlədirəm."
+          ],
+          [
+            "T",
+            "Ailənizlə, iş yerinizlə bu dəyişikliyi necə əlaqələndirəcəksiniz?"
+          ],
+          [
+            "K",
+            "Ailəyə artıq danışmışam bəzi şeyləri, onlar da dəstək olur."
+          ],
+          [
+            "T",
+            "Bu, çox vacibdir — dəstək şəbəkəsi bu işi asanlaşdırır."
+          ],
+          [
+            "K",
+            "Doğrudur, tək başıma daha çətin olardı."
+          ],
+          [
+            "T",
+            "Gərginlik geri gəlsə, ilk nə edəcəksiniz?"
+          ],
+          [
+            "K",
+            "Dayanacam, nəfəs alacam, sonra düşünəcəm."
+          ],
+          [
+            "T",
+            "Bu, çox möhkəm bir plandır."
+          ],
+          [
+            "K",
+            "Sağ olun, özümü hazır hiss edirəm."
+          ],
+          [
+            "T",
+            "Əgər çətin bir an olsa və bu alətlər kifayət etməsə, nə edərsiniz?"
+          ],
+          [
+            "K",
+            "Yenidən sizə müraciət edərəm lazım olsa."
+          ],
+          [
+            "T",
+            "Bu qapı həmişə açıqdır. Bu aylar ərzində böyük irəliləyiş etdiniz."
+          ],
+          [
+            "K",
+            "Sağ olun, bu proqram həyatımı dəyişdi deyə bilərəm."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Bağlanış",
+        "text": [
+          "Valideyn/müəllimlə qısa görüş planlaşdırılır ki, evdə/məktəbdə dəstək davam etsin."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Bu proqram bitsə də, öyrəndiyiniz bacarıqlar sizinlədir həmişə."
+          ],
+          [
+            "K",
+            "Yadımda saxlayacam, xüsusən Dayan-Düşün-Fəaliyyət göstər-i."
+          ],
+          [
+            "T",
+            "Çətinlik yarananda kimə müraciət edə bilərsiniz?"
+          ],
+          [
+            "K",
+            "Ailəmə, ya da lazım olsa yenə sizə."
+          ],
+          [
+            "T",
+            "Bu qapı həmişə açıqdır."
+          ],
+          [
+            "K",
+            "Sağ olun, hər şey üçün."
+          ],
+          [
+            "T",
+            "Sizinlə işləmək çox dəyərli oldu mənim üçün."
+          ],
+          [
+            "K",
+            "Mənim üçün də, özümü tamam fərqli hiss edirəm əvvəlkindən."
+          ],
+          [
+            "T",
+            "Bu dəyişikliyi özünüzlə aparın, Kamran."
+          ],
+          [
+            "K",
+            "Aparacam, sağ olun yenə."
+          ]
+        ]
+      }
+    ],
+    "homework": "Bacarıqlar siyahısını görünən yerdə saxla və hər həftə bir dəfə nəzərdən keçir.",
+    "about": "Yekun seans qiymətləndirmə deyil, ümumiləşdirmə və valideyn/məktəblə koordinasiya planının qurulmasıdır.",
+    "specialists": [
+      "Klinik psixoloq",
+      "Məktəb psixoloqu",
+      "Sosial işçi"
+    ]
+  }
+];
+
+function renderSession(s){
+  let html = `<span class="m-tag">Seans ${s.num} / 10</span><h3 class="m-title">${s.title}</h3>`;
+  html += `<div class="m-block"><h5>🎯 Seansın məqsədi</h5><div class="m-goal">${s.goal}</div></div>`;
+  html += `<div class="m-block"><h5>🧰 Lazım olan materiallar</h5><div class="m-materials">${s.materials.map(m=>`<span>${m}</span>`).join('')}</div></div>`;
+  html += `<div class="m-block"><h5>📋 Seansın gedişi</h5>`;
+  s.phases.forEach(ph=>{
+    html += `<div class="m-phase"><div class="ph-name">${ph.name}</div>`;
+    (ph.text||[]).forEach(t=>{ html += `<p>${t}</p>`; });
+    if(ph.dialog && ph.dialog.length){
+      html += `<div class="m-dialog">`;
+      ph.dialog.forEach(d=>{
+        const who = d[0]==='T' ? 'Terapevt' : (d[0]==='K' ? 'Klient' : d[0]);
+        const cls = d[0]==='T' ? 't' : (d[0]==='K' ? 'k' : '');
+        html += `<div class="dl"><span class="dw ${cls}">${who}:</span><span class="dt">${d[1]}</span></div>`;
+      });
+      html += `</div>`;
+    }
+    html += `</div>`;
+  });
+  html += `</div>`;
+  html += `<div class="m-block"><h5>📝 Ev tapşırığı</h5><div class="m-homework">${s.homework}</div></div>`;
+  html += `<div class="m-nextprev">
+    <div class="m-navbtn ${s.num<=1?'disabled':''}" onclick="openSession(${s.num-1})">◂ Əvvəlki seans</div>
+    <div class="m-navbtn ${s.num>=10?'disabled':''}" onclick="openSession(${s.num+1})">Növbəti seans ▸</div>
+  </div>`;
+  return html;
+}
+
+function openSession(n){
+  const s = SESSIONS.find(x=>x.num===n);
+  if(!s) return;
+  document.getElementById('modalContent').innerHTML = renderSession(s);
+  document.getElementById('modalOverlay').classList.add('active');
+  document.body.classList.add('modal-open');
+  document.querySelector('.modal-box').scrollTop = 0;
+}
+function closeSession(){
+  document.getElementById('modalOverlay').classList.remove('active');
+  document.body.classList.remove('modal-open');
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeSession(); });
+</script>
+<script src="protect.js" defer></script>
+<script src="engine.js"></script>
+
+<div class="modal-overlay" id="programModalOverlay" onclick="if(event.target===this)closeProgram()">
+  <div class="modal-box">
+    <div class="modal-close" onclick="closeProgram()">✕</div>
+    <div id="programModalContent"></div>
+  </div>
+</div>
+
+
+
+</body>
+</html>

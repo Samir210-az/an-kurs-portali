@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#d9a85a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Модуль 3 · Агрессия и КПТ</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1:#0c211f; --bg-2:#1d423d;
+    --surface: rgba(217,168,90,0.055);
+    --surface-h: rgba(217,168,90,0.10);
+    --border: rgba(217,168,90,0.14);
+    --teal:#7ba098; --teal-soft: rgba(123,160,152,0.18);
+    --violet:#8a6a3a; --violet-soft: rgba(138,106,58,0.20);
+    --amber:#d9a85a; --amber-soft: rgba(217,168,90,0.18);
+    --flame:#d9a85a; --flame-soft: rgba(217,168,90,0.18);
+    --rose:#d9705a; --rose-soft: rgba(217,112,90,0.16);
+    --sky:#f0cd8e; --sky-soft:rgba(240,205,142,0.18);
+    --text-1:#f3eee1; --text-2:#c9c2ae; --text-3:#8a9a93;
+    --font-d:'Fraunces', serif;
+    --font-b:'Inter', system-ui, sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{-webkit-user-select:none;-moz-user-select:none;user-select:none;}
+  body{
+    font-family:var(--font-b);
+    background:
+      radial-gradient(1100px 750px at 12% -10%, rgba(251,146,60,0.16), transparent 60%),
+      radial-gradient(1000px 700px at 110% 15%, rgba(139,92,246,0.14), transparent 55%),
+      linear-gradient(180deg, var(--bg-1), var(--bg-2));
+    color:var(--text-1);
+    min-height:100vh;
+    line-height:1.65;
+  }
+  .blob{position:fixed;border-radius:50%;filter:blur(80px);opacity:.45;pointer-events:none;z-index:0;}
+  .blob-1{width:400px;height:400px;background:var(--flame-soft);top:-100px;left:-120px;}
+  .blob-2{width:360px;height:360px;background:var(--violet-soft);top:40%;right:-140px;}
+  .blob-3{width:320px;height:320px;background:var(--amber-soft);bottom:-80px;left:30%;}
+
+  .topbar{position:sticky; top:0; z-index:50; display:flex; align-items:center; justify-content:space-between; padding:16px 28px; background:rgba(11,18,36,0.75); backdrop-filter:blur(16px); border-bottom:1px solid var(--border);}
+  .topbar-brand{display:flex; align-items:center; gap:10px; text-decoration:none; flex-shrink:0;}
+  .topbar-brand img{width:34px; height:34px; border-radius:9px; object-fit:cover; border:1px solid rgba(255,255,255,0.15);}
+  .topbar-brand .tb-name{font-family:var(--font-d); font-weight:700; font-size:.78rem; color:var(--text-1); line-height:1.2; max-width:150px;}
+  .topbar-right{display:flex; align-items:center; gap:14px; flex-shrink:0;}
+  @media(max-width:640px){ .topbar-brand .tb-name{display:none;} .topbar a.back span{display:none;} }
+  .topbar a.back{display:inline-flex; align-items:center; gap:8px; color:var(--text-2); text-decoration:none; font-size:.9rem; font-weight:600; transition:color .2s;}
+  .topbar a.back:hover{color:var(--flame);}
+  .progress-pill{font-size:.78rem; color:var(--text-3); border:1px solid var(--border); padding:6px 14px; border-radius:999px; background:var(--surface);}
+
+  main{position:relative; z-index:2; max-width:880px; margin:0 auto; padding:0 24px 100px;}
+
+  .hero{padding:64px 0 40px; text-align:center;}
+  .hero-illus{display:flex; justify-content:center; margin-bottom:28px;}
+  .hero-illus svg{max-width:100%; height:auto;}
+  .tag{display:inline-block; font-size:.76rem; letter-spacing:.14em; text-transform:uppercase; color:var(--flame); background:var(--flame-soft); border:1px solid rgba(251,146,60,.35); padding:6px 16px; border-radius:999px; margin-bottom:22px; animation:fadeDown .7s ease both;}
+  h1{font-family:var(--font-d); font-weight:800; font-size:clamp(1.9rem,4.6vw,3rem); line-height:1.2; background:linear-gradient(90deg,#fff,#ffd8c2 45%, var(--flame)); -webkit-background-clip:text;background-clip:text;color:transparent; animation:fadeUp .8s ease both .1s;}
+  .hero p{color:var(--text-2); max-width:620px; margin:20px auto 0; animation:fadeUp .8s ease both .2s;}
+
+  section{margin-top:64px; animation:fadeUp .8s ease both; opacity:0;}
+  section.show{opacity:1;}
+  .sec-head{display:flex; align-items:center; gap:14px; margin-bottom:24px;}
+  .sec-num{font-family:var(--font-d); font-size:1.4rem; font-weight:800; color:var(--bg-1); background:linear-gradient(135deg,var(--flame),var(--violet)); width:44px;height:44px; border-radius:13px; display:flex;align-items:center;justify-content:center; flex-shrink:0;}
+  h2{font-family:var(--font-d); font-size:clamp(1.35rem,3vw,1.7rem); font-weight:700;}
+  .lead{color:var(--text-2); margin-bottom:22px;}
+
+  .card{background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:24px 26px; margin-bottom:18px; backdrop-filter:blur(10px);}
+  .card h3{font-size:1.05rem; margin-bottom:10px; color:var(--text-1); display:flex; align-items:center; gap:10px;}
+  .card p{color:var(--text-2); font-size:.95rem;}
+  .card p + p{margin-top:10px;}
+
+  .simple-box{border-left:3px solid var(--sky); background:var(--sky-soft); border-radius:0 14px 14px 0; padding:18px 22px; margin:18px 0; font-size:.94rem;}
+  .simple-box b{color:var(--sky);}
+  .sci-box{border-left:3px solid var(--violet); background:var(--violet-soft); border-radius:0 14px 14px 0; padding:18px 22px; margin:18px 0; font-size:.94rem;}
+  .sci-box b{color:var(--violet);}
+  .example{border-left:3px solid var(--amber); background:var(--amber-soft); border-radius:0 14px 14px 0; padding:16px 20px; margin:16px 0; font-size:.92rem;}
+  .example b{color:var(--amber);}
+
+  .dialog{background:rgba(255,255,255,.03); border:1px solid var(--border); border-radius:16px; padding:20px 22px; margin:18px 0; font-size:.92rem;}
+  .dialog .line{display:flex; gap:12px; margin-bottom:14px;}
+  .dialog .line:last-child{margin-bottom:0;}
+  .dialog .who{flex-shrink:0; width:78px; font-weight:700; font-size:.8rem; padding-top:2px;}
+  .dialog .who.t{color:var(--teal);}
+  .dialog .who.k{color:var(--flame);}
+  .dialog .txt{color:var(--text-2);}
+
+  .lens-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:16px; margin:26px 0;}
+  .lens-card{background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:20px 22px; transition:transform .3s, border-color .3s;}
+  .lens-card:hover{transform:translateY(-4px); border-color:rgba(251,146,60,.4);}
+  .lens-card .ico{font-size:1.6rem; margin-bottom:10px; display:block;}
+  .lens-card h4{font-size:.94rem; margin-bottom:8px; color:var(--flame);}
+  .lens-card p{font-size:.85rem; color:var(--text-2);}
+
+  .age-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; margin:26px 0;}
+  .age-card{border-radius:18px; padding:20px; border:1px solid var(--border);}
+  .age-card.child{background:var(--teal-soft);}
+  .age-card.teen{background:var(--violet-soft);}
+  .age-card.adult{background:var(--flame-soft);}
+  .age-card h4{font-size:1rem; margin-bottom:10px;}
+  .age-card ul{padding-left:18px; font-size:.85rem; color:var(--text-2);}
+  .age-card li{margin-bottom:6px;}
+
+  .cycle-wrap{display:flex; justify-content:center; margin:30px 0;}
+  .cycle-wrap svg{max-width:100%; height:auto;}
+
+  .thermo-wrap{display:flex; justify-content:center; margin:30px 0;}
+  .thermo{display:flex; align-items:flex-end; gap:8px;}
+  .thermo-bar{width:34px; border-radius:8px 8px 0 0; display:flex; align-items:flex-end; justify-content:center; color:#0c211f; font-weight:800; font-size:.72rem; padding-bottom:4px;}
+
+  .sta-flow{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:26px 0;}
+  .sta-box{border-radius:16px; padding:18px 16px; text-align:center; border:1px solid var(--border);}
+  .sta-box.s1{background:var(--rose-soft);}
+  .sta-box.s2{background:var(--sky-soft);}
+  .sta-box.s3{background:var(--teal-soft);}
+  .sta-box .ico2{font-size:1.7rem; display:block; margin-bottom:8px;}
+  .sta-box h4{font-size:.9rem; margin-bottom:6px;}
+  .sta-box p{font-size:.78rem; color:var(--text-2);}
+
+  .session-plan{margin:26px 0;}
+  .sess-row{display:grid; grid-template-columns:56px 1fr auto; gap:14px; align-items:center; padding:15px 12px; border-bottom:1px solid var(--border); cursor:pointer; border-radius:14px; transition:background .25s, transform .25s;}
+  .sess-row:hover{background:var(--surface); transform:translateX(4px);}
+  .sess-row:last-child{border-bottom:none;}
+  .sess-num{font-family:var(--font-d); font-weight:800; color:var(--flame); font-size:1rem; display:flex; align-items:center; justify-content:center; background:var(--flame-soft); border-radius:12px; height:40px;}
+  .sess-txt h4{font-size:.94rem; margin-bottom:3px;}
+  .sess-txt p{font-size:.83rem; color:var(--text-2);}
+  .sess-open{font-size:.76rem; color:var(--flame); font-weight:700; white-space:nowrap; display:flex; align-items:center; gap:5px;}
+
+  .modal-overlay{position:fixed; inset:0; z-index:200; background:rgba(6,9,20,0.72); backdrop-filter:blur(6px); display:flex; align-items:flex-end; justify-content:center; opacity:0; visibility:hidden; transition:opacity .3s;}
+  .modal-overlay.active{opacity:1; visibility:visible;}
+  @media(min-width:720px){ .modal-overlay{align-items:center;} }
+  .modal-box{width:100%; max-width:680px; max-height:88vh; overflow-y:auto; background:linear-gradient(180deg, #1d423d, #0c211f); border:1px solid var(--border); border-radius:26px 26px 0 0; padding:32px 26px 40px; position:relative; transform:translateY(40px); transition:transform .35s cubic-bezier(.2,.8,.2,1); -webkit-user-select:text; user-select:text;}
+  @media(min-width:720px){ .modal-box{border-radius:26px; transform:translateY(0) scale(.94);} }
+  .modal-overlay.active .modal-box{transform:translateY(0) scale(1);}
+  .modal-close{position:sticky; top:0; float:right; margin-left:12px; width:36px;height:36px; border-radius:50%; border:1px solid var(--border); background:rgba(255,255,255,.06); color:var(--text-1); font-size:1.1rem; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:5;}
+  .modal-close:hover{background:rgba(255,255,255,.14);}
+  .m-tag{display:inline-block; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--flame); background:var(--flame-soft); border:1px solid rgba(251,146,60,.35); padding:5px 13px; border-radius:999px; margin-bottom:14px;}
+  .m-title{font-family:var(--font-d); font-size:1.45rem; font-weight:800; margin-bottom:18px; line-height:1.3; clear:both;}
+  .m-block{margin-bottom:22px;}
+  .m-block h5{font-size:.82rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-3); margin-bottom:10px; display:flex; align-items:center; gap:8px;}
+  .m-goal{background:var(--sky-soft); border-left:3px solid var(--sky); border-radius:0 12px 12px 0; padding:14px 18px; font-size:.9rem; color:var(--text-1);}
+  .m-materials{display:flex; flex-wrap:wrap; gap:8px;}
+  .m-materials span{background:var(--surface); border:1px solid var(--border); padding:6px 13px; border-radius:999px; font-size:.8rem; color:var(--text-2);}
+  .m-phase{background:rgba(255,255,255,.03); border:1px solid var(--border); border-radius:16px; padding:16px 18px; margin-bottom:12px;}
+  .m-phase .ph-name{font-weight:700; font-size:.88rem; color:var(--flame); margin-bottom:8px; display:flex; align-items:center; gap:8px;}
+  .m-phase p{font-size:.87rem; color:var(--text-2); margin-bottom:8px;}
+  .m-phase p:last-child{margin-bottom:0;}
+  .m-dialog{background:rgba(0,0,0,.18); border-radius:12px; padding:12px 14px; margin-top:8px;}
+  .m-dialog .dl{display:flex; gap:10px; margin-bottom:9px; font-size:.86rem;}
+  .m-dialog .dl:last-child{margin-bottom:0;}
+  .m-dialog .dw{flex-shrink:0; width:64px; font-weight:700; font-size:.75rem; padding-top:1px;}
+  .m-dialog .dw.t{color:var(--teal);}
+  .m-dialog .dw.k{color:var(--flame);}
+  .m-dialog .dt{color:var(--text-2);}
+  .m-homework{background:var(--amber-soft); border-left:3px solid var(--amber); border-radius:0 12px 12px 0; padding:14px 18px; font-size:.87rem; color:var(--text-1);}
+  .m-nextprev{display:flex; justify-content:space-between; gap:12px; margin-top:26px; padding-top:20px; border-top:1px solid var(--border);}
+  .m-navbtn{flex:1; text-align:center; padding:10px 14px; border-radius:12px; background:var(--surface); border:1px solid var(--border); color:var(--text-2); font-size:.82rem; font-weight:600; cursor:pointer; transition:background .2s;}
+  .m-navbtn:hover{background:var(--surface-h); color:var(--text-1);}
+  .m-navbtn.disabled{opacity:.4; pointer-events:none;}
+  body.modal-open{overflow:hidden;}
+
+  .sensory-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin:26px 0;}
+  .sensory-card{text-align:center; padding:18px 14px; border-radius:16px; background:var(--surface); border:1px solid var(--border);}
+  .sensory-card .ico3{font-size:1.7rem; display:block; margin-bottom:8px;}
+  .sensory-card h4{font-size:.86rem; margin-bottom:6px;}
+  .sensory-card p{font-size:.78rem; color:var(--text-2);}
+
+  .worksheet{overflow-x:auto; margin:24px 0; border-radius:16px; border:1px solid var(--border);}
+  table{width:100%; border-collapse:collapse; font-size:.84rem; min-width:600px;}
+  thead th{background:rgba(255,255,255,.05); color:var(--flame); text-align:left; padding:12px 14px; font-size:.78rem; letter-spacing:.03em; text-transform:uppercase; border-bottom:1px solid var(--border);}
+  tbody td{padding:13px 14px; color:var(--text-2); border-bottom:1px solid rgba(255,255,255,.06); vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+
+  .parent-tips{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; margin:26px 0;}
+  .tip-card{background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:18px 20px;}
+  .tip-card h4{font-size:.9rem; margin-bottom:6px; color:var(--teal);}
+  .tip-card p{font-size:.83rem; color:var(--text-2);}
+
+  .quote{border-left:3px solid var(--violet); padding:18px 22px; margin:26px 0; font-family:var(--font-d); font-style:italic; font-size:1.05rem; color:var(--text-1); background:var(--violet-soft); border-radius:0 14px 14px 0;}
+  .quote span{display:block; margin-top:10px; font-family:var(--font-b); font-style:normal; font-size:.8rem; color:var(--text-3);}
+
+  .summary-box{background:linear-gradient(135deg, var(--flame-soft), var(--violet-soft)); border:1px solid rgba(251,146,60,.3); border-radius:20px; padding:28px 26px; margin-top:60px;}
+  .summary-box h3{font-family:var(--font-d); font-size:1.25rem; margin-bottom:14px;}
+  .summary-box ul{padding-left:20px; color:var(--text-2); font-size:.92rem;}
+  .summary-box li{margin-bottom:8px;}
+
+  .nav-bottom{display:flex; justify-content:space-between; align-items:center; gap:16px; margin-top:40px; flex-wrap:wrap;}
+  .nav-btn{display:inline-flex; align-items:center; gap:8px; padding:13px 22px; border-radius:14px; text-decoration:none; font-weight:600; font-size:.9rem; transition:transform .25s, box-shadow .25s;}
+  .nav-btn.home{background:var(--surface); border:1px solid var(--border); color:var(--text-1);}
+  .nav-btn.next{background:linear-gradient(135deg,var(--flame),var(--violet)); color:#0c211f;}
+  .nav-btn:hover{transform:translateY(-3px);}
+  .nav-btn.disabled{opacity:.5; pointer-events:none;}
+
+  footer{position:relative; z-index:2; text-align:center; padding:44px 24px 60px; border-top:1px solid var(--border); color:var(--text-3); font-size:.88rem; margin-top:40px;}
+  footer a{color:var(--teal); text-decoration:none; font-weight:600;}
+
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-14px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+
+  @media(max-width:640px){
+    .sta-flow{grid-template-columns:1fr;}
+    .dialog .who{width:60px; font-size:.72rem;}
+  }
+</style>
+</head>
+<body>
+
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<div class="topbar">
+  <a class="topbar-brand" href="index.html">
+    <img src="../logo.png" alt="Логотип центра психологической поддержки и реабилитации AN">
+    <span class="tb-name">Центр психологической поддержки и реабилитации AN</span>
+  </a>
+  <div class="topbar-right">
+    <a class="back" href="index.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+      <span>Меню</span>
+    </a>
+    <span class="progress-pill">Модуль 3 / 20</span>
+  </div>
+</div>
+
+<main>
+
+    <div class="hero">
+    <div class="hero-illus">
+      <svg width="360" height="170" viewBox="0 0 360 170" fill="none">
+        <defs>
+          <linearGradient id="flameGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#d9705a"/>
+            <stop offset="55%" stop-color="#d9a85a"/>
+            <stop offset="100%" stop-color="#7ba098"/>
+          </linearGradient>
+        </defs>
+        <circle cx="180" cy="88" r="78" fill="none" stroke="#d9a85a" stroke-width="1.4" stroke-dasharray="3 7" opacity=".5"/>
+        <path d="M180 32c14 18 26 30 26 50a26 26 0 0 1-52 0c0-10 6-18 12-26-2 10 2 14 6 16-2-16 2-28 8-40z" fill="url(#flameGrad)" opacity=".92"/>
+        <g stroke="#7ba098" stroke-width="1.6" opacity=".55" stroke-linecap="round">
+          <path d="M120 60 Q100 88 112 118"/>
+          <path d="M240 60 Q260 88 248 118"/>
+        </g>
+        <g transform="translate(70,135)">
+          <circle r="18" fill="#7ba098" opacity=".85"/>
+          <path d="M-6 1c0-5 4-8 6-8s6 3 6 8c0 4-6 7-6 7s-6-3-6-7z" fill="#0c211f"/>
+        </g>
+        <g transform="translate(290,135)">
+          <circle r="18" fill="#8a6a3a" opacity=".85"/>
+          <path d="M-6-4a8 8 0 1 0 12 0" stroke="#f3eee1" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+    <span class="tag">Модуль 03 · Регуляция эмоций</span>
+    <h1>Агрессия и КПТ</h1>
+    <p>"Мой ребёнок плохой?" Этот вопрос я слышу почти от каждой семьи на первой сессии. Мой ответ не меняется — нет. Ниже — маршрут из 10 сессий, выстроенный годами: с точки зрения психолога, специалиста по сенсорной интеграции, педагога и специалиста по коммуникации, каждый на своём месте.</p>
+  </div>
+
+  <!-- 1. Научное определение -->
+  <section>
+    <div class="sec-head"><div class="sec-num">1</div><h2>Научное определение: клиническая модель агрессивного поведения</h2></div>
+    <div class="sci-box">
+      <b>Клиническое определение:</b> Согласно теории "фрустрация-агрессия" Долларда и Миллера, агрессия — это поведение с намерением причинить вред, возникающее в ответ на препятствие к достижению цели. Клинически различают реактивную (эмоциональную, импульсивную) и проактивную (спланированную, используемую как инструмент) агрессию. Вмешательство КПТ фокусируется на развитии навыков регуляции эмоций, <span class="prog-link" onclick="openProgram('koqnitiv-restrukturizasiya')">когнитивной реструктуризации</span> и навыков социального решения проблем.
+    </div>
+    <div class="simple-box">
+      <b>Если сказать простыми словами:</b> Я всегда сравниваю агрессию с вулканом. Давление — напряжение, разочарование, усталость — накапливается постепенно. Если оно вовремя не "выпускается", оно выходит в виде извержения. Чаще всего это не признак "плохого ребёнка". Это просто выход для нерегулируемого эмоционального давления, которое накопилось.
+    </div>
+    <p class="lead">Моя цель никогда не была наказывать агрессию. Найти потребность за ней, нерегулируемую эмоцию — и показать более здоровый выход. С клиентом по имени Эльвин мы начали именно с этого вопроса: что происходило в его теле перед тем, как он ударил кого-то?</p>
+  </section>
+
+  <!-- 2. Научный взгляд -->
+  <section>
+    <div class="sec-head"><div class="sec-num">2</div><h2>Научный взгляд: виды агрессии</h2></div>
+    <p class="lead">Я не могу построить программу, не зная, с каким видом агрессии работаю. В клинической литературе она делится на несколько форм.</p>
+    <div class="lens-grid">
+      <div class="lens-card"><span class="ico">💥</span><h4>Реактивная агрессия</h4><p>Импульсивный, эмоциональный взрыв в ответ на мгновенную провокацию. Например, ударить сразу, когда кто-то толкнул.</p></div>
+      <div class="lens-card"><span class="ico">🎯</span><h4>Проактивная агрессия</h4><p>Целенаправленная, спланированная. Используется как инструмент для получения чего-то — например, удар, чтобы забрать игрушку.</p></div>
+      <div class="lens-card"><span class="ico">🗣️</span><h4>Вербальная агрессия</h4><p>Нападение словом: оскорбление, угроза, крик.</p></div>
+      <div class="lens-card"><span class="ico">👊</span><h4>Физическая агрессия</h4><p>Выражается через телесные действия — удар, толчок, бросание предметов.</p></div>
+      <div class="lens-card"><span class="ico">🕸️</span><h4>Реляционная агрессия</h4><p>Социальная изоляция, распространение слухов, "исключение из группы друзей". Особенно часто вижу это у подростков.</p></div>
+    </div>
+  </section>
+
+  <!-- 3. Мультидисциплинарный взгляд -->
+  <section>
+    <div class="sec-head"><div class="sec-num">3</div><h2>Что стоит в корне агрессии? — Мультидисциплинарный взгляд</h2></div>
+    <p class="lead">Агрессия почти никогда не возникает по одной причине. Я видел это множество раз за 18 лет практики — для построения правильной программы необходим взгляд разных специалистов.</p>
+    <div class="card"><h3>🧠 Психологический взгляд</h3><p>Дефицит навыка регуляции эмоций, теория "фрустрация-агрессия" — вероятность агрессии растёт, когда что-то препятствует достижению желаемого. Нельзя забывать и о факторе выученного поведения: если ребёнок хоть раз увидел, что агрессией добивается своего, это поведение начинает само себя подкреплять.</p></div>
+    <div class="card"><h3>✋ Взгляд эрготерапевта / сенсорной интеграции</h3><p>У некоторых детей агрессия на самом деле результат "сенсорной перегрузки" — избыточной сенсорной информации от шума, света, скопления людей. Иногда наоборот — "сенсорный поиск", потребность в движении, в давлении. Когда тело не может себя регулировать, происходит поведенческий взрыв.</p></div>
+    <div class="card"><h3>🗣️ Взгляд логопеда / коммуникации</h3><p>Дети с трудностями речи и языка, не умея выразить свои потребности словами, показывают разочарование физически — удар, укус. Формула "трудность коммуникации = риск агрессии" особенно верна в раннем возрасте.</p></div>
+    <div class="card"><h3>🏫 Психопедагогический взгляд</h3><p>Трудности обучения, чувство академической неудачи, задание слишком сложное (или, наоборот, слишком лёгкое), отсутствие подходящей структуры в классе — всё это может усиливать агрессивное поведение.</p></div>
+  </section>
+
+  <!-- 4. Возрастные группы -->
+  <section>
+    <div class="sec-head"><div class="sec-num">4</div><h2>Разный облик по возрастным группам</h2></div>
+    <p class="lead">Одна и та же нерегулируемая эмоция предстаёт перед нами в трёх разных обликах в трёх разных возрастах.</p>
+    <div class="age-grid">
+      <div class="age-card child">
+        <h4>👶 Дети (3-10 лет)</h4>
+        <ul>
+          <li>Удар, укус, толчок, бросание предметов</li>
+          <li>Крик, истерика с падением на пол (tantrum)</li>
+          <li>Конфликты, связанные с трудностью делиться</li>
+        </ul>
+      </div>
+      <div class="age-card teen">
+        <h4>🧑 Подростки (11-17 лет)</h4>
+        <ul>
+          <li>Словесное нападение, оскорбление, хлопанье дверью</li>
+          <li>Противостояние правилам, бунтарство</li>
+          <li>Агрессия через социальные сети (кибербуллинг)</li>
+        </ul>
+      </div>
+      <div class="age-card adult">
+        <h4>🧑‍🦱 Взрослые</h4>
+        <ul>
+          <li>Пассивно-агрессивное поведение (сарказм, молчание)</li>
+          <li>Вспышки гнева, конфликты в семье/на работе</li>
+          <li>Признаки физического напряжения (головная боль, сжатие мышц)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Цикл гнева -->
+  <section>
+    <div class="sec-head"><div class="sec-num">5</div><h2>Цикл гнева в КПТ</h2></div>
+    <p class="lead">Агрессия — не сиюминутный взрыв. Это последнее звено цепи. Понять это — ключ к тому, чтобы разорвать цепь.</p>
+    <div class="cycle-wrap">
+      <svg width="360" height="200" viewBox="0 0 360 200">
+        <defs>
+          <linearGradient id="cg" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#fb923c"/><stop offset="100%" stop-color="#8b5cf6"/>
+          </linearGradient>
+        </defs>
+        <rect x="10" y="80" width="80" height="50" rx="12" fill="#fb923c" opacity=".9"/>
+        <text x="50" y="100" text-anchor="middle" font-size="11" font-weight="700" fill="#0c211f">Триггер</text>
+        <text x="50" y="115" text-anchor="middle" font-size="9" fill="#0c211f">(событие)</text>
+
+        <rect x="100" y="20" width="80" height="50" rx="12" fill="#8b5cf6" opacity=".9"/>
+        <text x="140" y="40" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Мысль</text>
+        <text x="140" y="55" text-anchor="middle" font-size="9" fill="#fff">"Это несправедливо"</text>
+
+        <rect x="190" y="80" width="80" height="50" rx="12" fill="#38bdf8" opacity=".9"/>
+        <text x="230" y="100" text-anchor="middle" font-size="11" font-weight="700" fill="#0c211f">Реакция тела</text>
+        <text x="230" y="115" text-anchor="middle" font-size="9" fill="#0c211f">Сердцебиение ↑</text>
+
+        <rect x="100" y="140" width="80" height="50" rx="12" fill="#fb7185" opacity=".9"/>
+        <text x="140" y="160" text-anchor="middle" font-size="11" font-weight="700" fill="#0c211f">Поведение</text>
+        <text x="140" y="175" text-anchor="middle" font-size="9" fill="#0c211f">Крик / удар</text>
+
+        <path d="M90 100 Q95 60 100 45" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.6" marker-end="url(#ar2)"/>
+        <path d="M180 45 Q195 60 200 80" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.6" marker-end="url(#ar2)"/>
+        <path d="M220 130 Q190 150 180 155" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.6" marker-end="url(#ar2)"/>
+        <path d="M100 165 Q60 150 55 130" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.6" marker-end="url(#ar2)"/>
+        <defs><marker id="ar2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="rgba(255,255,255,.4)"/></marker></defs>
+      </svg>
+    </div>
+    <div class="example"><b>Точка вмешательства:</b> Я учу клиента "останавливаться" в любой точке этого цикла. Но самая эффективная — это стадия "реакции тела", момент до перехода к поведению, когда пауза ещё возможна.</div>
+  </section>
+
+  <!-- 6. Термометр гнева -->
+  <section>
+    <div class="sec-head"><div class="sec-num">6</div><h2>Материал для рабочей тетради: Термометр гнева</h2></div>
+    <p class="lead">Визуальный инструмент, обучающий распознавать гнев на ранней стадии — ловить сигналы до "взрыва". Так, как мы работали с Эльвином.</p>
+    <div class="thermo-wrap">
+      <div class="thermo">
+        <div class="thermo-bar" style="height:30px;background:#4ade80;">Спокоен</div>
+        <div class="thermo-bar" style="height:55px;background:#a3e635;">Тревожен</div>
+        <div class="thermo-bar" style="height:80px;background:#facc15;">Раздражён</div>
+        <div class="thermo-bar" style="height:105px;background:#fb923c;">Зол</div>
+        <div class="thermo-bar" style="height:130px;background:#f87171;">Взрыв</div>
+      </div>
+    </div>
+    <div class="example"><b>Задание:</b> Пусть клиент как минимум раз в день задаёт себе вопрос "Где я сейчас на термометре?" и записывает это в тетрадь.</div>
+  </section>
+
+  <!-- 7. Остановись-Подумай-Действуй -->
+  <section>
+    <div class="sec-head"><div class="sec-num">7</div><h2>Практическая техника: "Остановись – Подумай – Действуй"</h2></div>
+    <p class="lead">Простая, легко запоминающаяся стратегия из трёх шагов. Применяется в момент, когда чувствуется сигнал гнева — когда я сам впервые её применил, честно говоря, я дал больше обещание себе, чем клиенту, что сохранить простоту на деле окажется непросто.</p>
+    <div class="sta-flow">
+      <div class="sta-box s1"><span class="ico2">🛑</span><h4>1. Остановись</h4><p>Прерви действие, сделай 3 глубоких вдоха.</p></div>
+      <div class="sta-box s2"><span class="ico2">🤔</span><h4>2. Подумай</h4><p>"Что я сейчас чувствую? Есть ли другой путь?"</p></div>
+      <div class="sta-box s3"><span class="ico2">✅</span><h4>3. Действуй</h4><p>Выбери спокойный, обдуманный ответ — слово или действие.</p></div>
+    </div>
+  </section>
+
+  <!-- 8. Сенсорная регуляция -->
+  <section>
+    <div class="sec-head"><div class="sec-num">8</div><h2>Рекомендация эрготерапевта: инструменты сенсорной регуляции</h2></div>
+    <p class="lead">Для детей с сенсорными потребностями я обычно рекомендую устроить дома маленький "уголок успокоения" — с такими инструментами:</p>
+    <div class="sensory-grid">
+      <div class="sensory-card"><span class="ico3">🧸</span><h4>Утяжелённое одеяло/подушка</h4><p>Глубокое давление успокаивает тело.</p></div>
+      <div class="sensory-card"><span class="ico3">🎧</span><h4>Шумоподавляющие наушники</h4><p>Снижает сенсорную перегрузку.</p></div>
+      <div class="sensory-card"><span class="ico3">🤏</span><h4>Фиджет-игрушки</h4><p>Занятость рук перенаправляет внимание.</p></div>
+      <div class="sensory-card"><span class="ico3">🏃</span><h4>Двигательная пауза</h4><p>Прыжки, отжимания от стены (heavy work) высвобождают энергию.</p></div>
+    </div>
+  </section>
+
+  <!-- 9. Программа сессий -->
+  <section>
+    <div class="sec-head"><div class="sec-num">9</div><h2>Программа по сессиям (модель из 10 сессий)</h2></div>
+    <p class="lead">10 сессий — это средний шаблон, который я использую годами. У некоторых клиентов сокращается до 7, у других растягивается до 14.</p>
+    <div class="session-plan">
+      <div class="sess-row" onclick="openSession(1)"><div class="sess-num">1</div><div class="sess-txt"><h4>Оценка и доверие</h4><p>Определяются частота, триггеры и контекст агрессии.</p></div><div class="sess-open">Открыть сессию ▸</div></div>
+      <div class="sess-row" onclick="openSession(2)"><div class="sess-num">2</div><div class="sess-txt"><h4>Психообразование: что такое гнев?</h4><p>Объясняется, что гнев — нормальная эмоция, но форма её выражения — выбор.</p></div><div class="sess-open">Открыть сессию ▸</div></div>
+      <div class="sess-row" onclick="openSession(3)"><div class="sess-num">3</div><div class="sess-txt"><h4>Распознавание сигналов тела</h4><p>Представляется Термометр гнева, изучаются ранние физические сигналы.</p></div><div class="sess-open">Открыть сессию ▸</div></div>
+      <div class="sess-row" onclick="openSession(4)"><div class="sess-num">4</div><div class="sess-txt"><h4>Дыхательные и успокаивающие навыки</h4><p><span class="prog-link" onclick="openProgram('qutu-nefesi')">Квадратное дыхание</span>, техника счёта, знакомство с сенсорными инструментами.</p></div><div class="sess-open">Открыть сессию ▸</div></div>
+      <div class="sess-row" onclick="openSession(5)"><div class="sess-num">5</div><div class="sess-txt"><h4>Остановись-Подумай-Действуй</h4><p>Техника изучается, отрабатывается через ролевую игру.</p></div><div class="sess-open">Открыть сессию ▸</div></div>
+      <div class="sess-row" onclick="openSession(6)"><div class="sess-num">6</div><div class="sess-txt"><h4>Когнитивная реструктуризация</h4><p>Проверка триггерных мыслей вроде "это несправедливо".</p></div><div class="sess-open">Открыть сессию ▸</div></div>
+      <div class="sess-row" onclick="openSession(7)"><div class="sess-num">7</div><div class="sess-txt"><h4>Навыки коммуникации</h4><p>Выражение потребности языком "Я" (напр.: "я хочу это" вместо крика).</p></div><div class="sess-open">Открыть сессию ▸</div></div>
+      <div class="sess-row" onclick="openSession(8)"><div class="sess-num">8</div><div class="sess-txt"><h4><span class="prog-link" onclick="openProgram('problem-hell')">Навыки решения проблем</span></h4><p>Поиск альтернативных решений в конфликтных ситуациях.</p></div><div class="sess-open">Открыть сессию ▸</div></div>
+      <div class="sess-row" onclick="openSession(9)"><div class="sess-num">9</div><div class="sess-txt"><h4>Ролевая игра и экспозиция</h4><p>Проигрывание реальных сценариев в безопасной обстановке.</p></div><div class="sess-open">Открыть сессию ▸</div></div>
+      <div class="sess-row" onclick="openSession(10)"><div class="sess-num">10</div><div class="sess-txt"><h4>Завершение и план поддержки</h4><p>Обобщение изученных навыков, координация с родителем/учителем.</p></div><div class="sess-open">Открыть сессию ▸</div></div>
+    </div>
+    <div class="example"><b>💡 Совет:</b> Нажмите на любую сессию, чтобы увидеть полный сценарий — вступление, основную часть, реальный диалог, домашнее задание.</div>
+  </section>
+
+  <!-- 10. Пример диалога -->
+  <section>
+    <div class="sec-head"><div class="sec-num">10</div><h2>Пример диалога (с 10-летним ребёнком)</h2></div>
+    <div class="dialog">
+      <div class="line"><span class="who t">Терапевт:</span><span class="txt">Что ты почувствовал, когда одноклассник забрал твою игрушку?</span></div>
+      <div class="line"><span class="who k">Ребёнок:</span><span class="txt">Очень разозлился, поэтому ударил его.</span></div>
+      <div class="line"><span class="who t">Терапевт:</span><span class="txt">Понимаю, злиться — это совершенно нормально. Какие сигналы ты почувствовал в теле перед тем, как ударить? Как было с сердцем?</span></div>
+      <div class="line"><span class="who k">Ребёнок:</span><span class="txt">Сердце сильно билось, руки стали горячими.</span></div>
+      <div class="line"><span class="who t">Терапевт:</span><span class="txt">Отличное наблюдение! Вот это как раз момент, когда твой "термометр" приближается к красному. В следующий раз, почувствовав эти сигналы, как мы можем нажать кнопку "Стоп"?</span></div>
+    </div>
+    <div class="example"><b>Обратите внимание:</b> С Эльвином работа тоже началась именно с этого вопроса — тело всегда предупреждает раньше слов, нам просто нужно научиться его читать.</div>
+  </section>
+
+  <!-- 11. Рекомендации родителям/учителям -->
+  <section>
+    <div class="sec-head"><div class="sec-num">11</div><h2>Рекомендации для родителей и учителей</h2></div>
+    <div class="parent-tips">
+      <div class="tip-card"><h4>🚫 Не отвечайте агрессией на агрессию</h4><p>Ответ криком на крик усиливает модель. Сохраняйте спокойный тон.</p></div>
+      <div class="tip-card"><h4>🏅 Поощряйте спокойное поведение</h4><p>"На этот раз ты остался спокоен, это здорово" — позитивное подкрепление важно.</p></div>
+      <div class="tip-card"><h4>📐 Устанавливайте ясные, стабильные правила</h4><p>В предсказуемой среде дети провоцируются меньше.</p></div>
+      <div class="tip-card"><h4>🔍 Отмечайте триггеры</h4><p>Ведя небольшой журнал, отслеживайте, какие ситуации приводят к агрессии.</p></div>
+    </div>
+    <div class="example"><b>Домашнее задание (для родителя):</b> На этой неделе найдите момент, когда ваш ребёнок остался спокоен, и в тот же день скажите ему: "На этот раз ты отлично себя контролировал." Одной фразы достаточно, но повторяйте её.</div>
+  </section>
+
+  <!-- Клинический случай -->
+  <section>
+    <div class="sec-head"><div class="sec-num">➕</div><h2>Что стоит за ярлыком "проблемный ребёнок"?</h2></div>
+    <p class="lead">Когда я познакомился с Эльвином, его учитель представил его так: "нервный, агрессивный, наказание не помогает". После шести сессий я понял, что это был неверный вопрос — правильным вопросом было "почему", а не "как".</p>
+    <div class="card">
+      <h3>📋 Обращение</h3>
+      <p>Эльвину было 11 лет, четыре месяца он 2-3 раза в неделю вступал в физические конфликты в школе. Раньше такой проблемы не было. Родители находились в процессе развода, Эльвин виделся с отцом раз в неделю. Учитель называл его "манипулятивным", родители говорили, что он "хочет привлечь внимание". Никто не спросил его: "что ты чувствуешь?"</p>
+    </div>
+    <div class="card">
+      <h3>🔍 Что мы обнаружили</h3>
+      <p>По мере заполнения журнала наблюдения за поведением стало ясно, что агрессия не была случайной — она почти всегда запускалась тем, что кто-то без разрешения брал его вещи, или чувством "несправедливости". Но под этим стояло нечто более глубокое: Эльвин связывал развод родителей с тем, что он сам "плохой мальчик". Гнев, по сути, был криком о помощи.</p>
+    </div>
+    <div class="dialog">
+      <div class="line"><span class="who t">Терапевт:</span><span class="txt">Эльвин, что ты почувствовал в теле перед тем, как ударить его тогда?</span></div>
+      <div class="line"><span class="who k">Клиент:</span><span class="txt">Грудь стала горячей, кулаки сжались сами собой, будто я вот-вот взорвусь.</span></div>
+      <div class="line"><span class="who t">Терапевт:</span><span class="txt">Какая мысль пронеслась у тебя в голове в тот момент?</span></div>
+      <div class="line"><span class="who k">Клиент:</span><span class="txt">"Никто меня не уважает, все против меня."</span></div>
+      <div class="line"><span class="who t">Терапевт:</span><span class="txt">Была эта мысль верной или нет — в тот момент она казалась тебе очень реальной. А между этой мыслью и ударом мог ли быть другой выбор?</span></div>
+      <div class="line"><span class="who k">Клиент:</span><span class="txt">Может, я мог пойти и сказать что-то учителю.</span></div>
+      <div class="line"><span class="who t">Терапевт:</span><span class="txt">Отличная мысль. Это и есть тот "момент выбора" — именно его мы ищем, тот промежуток между теплом в груди и ударом кулака.</span></div>
+    </div>
+    <div class="example"><b>Ключевое наблюдение:</b> Агрессия Эльвина не была хаотичной — она была системной, с конкретными триггерами. Наказание не изменило этот паттерн, потому что корень паттерна был эмоциональным, поведение было лишь поверхностным признаком.</div>
+    <div class="card"><h3>🎯 Как я применяю это на сессии</h3><p>Мы с Эльвином вместе нашли фразу "промежуток перед ударом" — и потом на каждой сессии старались расширить именно этот промежуток. Распознавание сигнала тела — первый шаг, он идёт прежде всего остального.</p></div>
+  </section>
+
+  <!-- Концептуализация случая -->
+  <section>
+    <div class="sec-head"><div class="sec-num">➕</div><h2>Бланк концептуализации случая</h2></div>
+    <p class="lead">В работе с агрессией строка, которой я уделяю особое внимание при заполнении этого бланка, — "провоцирующие факторы", потому что семья часто, не осознавая этого, связывает конфликт между родителями с поведением ребёнка.</p>
+    <div class="worksheet">
+      <table>
+        <thead><tr><th>Компонент</th><th>Пример Эльвина</th></tr></thead>
+        <tbody>
+          <tr><td><b>Заявленная проблема</b></td><td>Частые физические конфликты, низкая саморегуляция</td></tr>
+          <tr><td><b>Провоцирующие факторы (что запускает)</b></td><td>Развод родителей, вещи, взятые без разрешения, чувство "несправедливости"</td></tr>
+          <tr><td><b>Предрасполагающие факторы (корни)</b></td><td>Раннее воздействие внутрисемейного конфликта, слабое умение словесно выражать эмоции</td></tr>
+          <tr><td><b>Поддерживающие факторы (почему не проходит)</b></td><td>Реакции, основанные на наказании, отсутствие эмоциональной поддержки, закрепление ярлыка "плохого ребёнка"</td></tr>
+          <tr><td><b>Защитные факторы (сильные стороны)</b></td><td>Высокий интеллект, интерес к спорту, характер, быстро устанавливающий контакт с терапевтом</td></tr>
+          <tr><td><b>Базовое убеждение</b></td><td>"Я плохой мальчик, поэтому мои родители расстаются"</td></tr>
+          <tr><td><b>Цель лечения</b></td><td>Эмоциональное распознавание, навык саморегуляции, переформулирование базового убеждения</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card"><h3>🎯 Как я применяю это на сессии</h3><p>Я обсуждал этот бланк отдельно с родителями и отдельно с ребёнком. Родители часто замолкают, читая свою строку, — это полезное молчание, оно открывает их к самонаблюдению.</p></div>
+  </section>
+
+  <!-- Протокол сессии -->
+  <section>
+    <div class="sec-head"><div class="sec-num">➕</div><h2>Пример протокола сессии</h2></div>
+    <p class="lead">Протокол 5-й сессии с Эльвином — сессии, где впервые была применена концепция "промежутка".</p>
+    <div class="worksheet">
+      <table>
+        <thead><tr><th>Этап</th><th>Время</th><th>Заметка</th></tr></thead>
+        <tbody>
+          <tr><td>Обзор недели</td><td>7 мин</td><td>1 конфликтный инцидент (на прошлой неделе было 3)</td></tr>
+          <tr><td>Разбор домашнего задания</td><td>8 мин</td><td>Журнал сигналов тела — 4 записи, все с описанием "тепло в груди"</td></tr>
+          <tr><td>Согласование повестки</td><td>3 мин</td><td>Сегодня: отработка "момента выбора" через ролевую игру</td></tr>
+          <tr><td>Основная работа</td><td>22 мин</td><td>Ролевая игра: триггерный сценарий, сигнал остановки, альтернативный ответ</td></tr>
+          <tr><td>Определение домашнего задания</td><td>5 мин</td><td>На следующей неделе попробовать последовательность "стоп-вдох-выбор"</td></tr>
+          <tr><td>Итоговая обратная связь</td><td>3 мин</td><td>Клиент: "На этот раз я почти смог остановиться, не полностью, но почти"</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Шкалы оценки -->
+  <section>
+    <div class="sec-head"><div class="sec-num">➕</div><h2>Диагностические инструменты и шкалы КПТ</h2></div>
+    <p class="lead">Я не работаю со случаями агрессивного поведения без стандартизированных инструментов — субъективное впечатление может вводить в заблуждение, особенно когда описания родителя и учителя расходятся.</p>
+    <div class="grid-3">
+      <div class="lens-card"><span class="ico">📊</span><h4>CBCL (Child Behavior Checklist)</h4><p>Стандартный инструмент, заполняемый родителем, оценивающий поведенческие и эмоциональные проблемы в широком спектре.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>ECBI (Eyberg Child Behavior Inventory)</h4><p>Раздельно измеряет частоту поведенческих проблем и уровень обеспокоенности родителя.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>Conners-3</h4><p>Многоисточниковая система оценки, охватывающая субшкалы поведения, внимания и агрессии.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>SDQ (Strengths and Difficulties Questionnaire)</h4><p>Короткий скрининговый инструмент, измеряющий как трудности, так и сильные стороны.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>Overt Aggression Scale (OAS)</h4><p>Наблюдательная шкала, фиксирующая тяжесть и тип (словесный, против предметов, физический) агрессивных эпизодов.</p></div>
+    </div>
+    <div class="example"><b>Обратите внимание:</b> Для Эльвина ECBI отдельно заполнили и мать, и отец — разница была показательной: отец считал эпизоды дома менее частыми. Эта разница сама стала темой лечения.</div>
+  </section>
+
+  <!-- Пример домашнего задания -->
+  <section>
+    <div class="sec-head"><div class="sec-num">🏠</div><h2>Пример домашнего задания</h2></div>
+    <p class="lead">Это было конкретное задание, которое я дал Эльвину.</p>
+    <div class="card">
+      <p>Каждый раз, почувствовав тепло в груди, сначала ничего не делай — просто остановись. Потом посчитай до трёх, сделай один глубокий вдох. И только после этого реши: что я буду делать? Отслеживай это в тетради — сколько раз ты смог "остановиться", сколько раз нет. Неудача — это тоже данные, они так же ценны, как и успех. Я сказал Эльвину: цель не в том, чтобы быть идеальным, а в том, чтобы понемногу расширять этот промежуток — каждый раз чуть больше.</p>
+    </div>
+  </section>
+
+
+<section>
+  <div class="sec-head"><div class="sec-num">12</div><h2>Точка эскалации агрессии</h2></div>
+  <div class="crisis-box">
+    <h4>⚠️ Когда требуется срочное вмешательство</h4>
+    <p>Работая над контролем гнева, терапевт всегда должен уметь отличать следующие признаки — они отличаются от обычного терапевтического сопротивления и требуют срочного вмешательства:</p>
+    <ul>
+      <li>Конкретная, направленная угроза — ясный ответ на вопрос кто, как, когда ("план + средство + время");</li>
+      <li>Повторение или усиление эпизодов жестокости по отношению к животным;</li>
+      <li>Проживание в среде с доступом к оружию (охотничье ружьё, острые инструменты в легкодоступном месте);</li>
+      <li>Агрессия, направленная на себя, — самонаказание, следы самоповреждения.</li>
+    </ul>
+    <ol class="crisis-steps">
+      <li>Спокойно, без осуждения, задайте прямой вопрос: были ли мысли причинить вред кому-то или себе.</li>
+      <li>Если обнаружена триада план+средство+время, немедленно организуйте срочное совместное с родителем психиатрическое направление.</li>
+      <li>Проведите с родителем конкретный разговор о недоступности оружия/острых инструментов дома (means restriction) — не откладывайте этот шаг до конца сессии.</li>
+      <li>Если проявляются признаки коморбидного расстройства поведения, направьте на расширенную психиатрическую оценку.</li>
+      <li>Документируйте каждый эпизод письменно — с датой, выявленными факторами и предпринятыми шагами.</li>
+    </ol>
+    <p><b>Примечание:</b> При реактивной агрессии эскалация обычно происходит в течение минут — умение терапевта распознать это окно решающее для безопасного завершения сессии.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="sec-num">13</div><h2>Библиография</h2></div>
+  <div class="biblio-box">
+    <h4>📚 Основные источники по теме</h4>
+    <ul class="biblio-list">
+      <li><b>Goldstein, A. P., Glick, B., & Gibbs, J. C.</b> (1998). <i>Aggression Replacement Training.</i> Research Press.</li>
+      <li><b>Dodge, K. A., & Crick, N. R.</b> (1990). Social information-processing bases of aggressive behavior. <i>Personality and Social Psychology Bulletin, 16</i>(1), 8–22.</li>
+      <li><b>Buss, A. H., & Perry, M.</b> (1992). The aggression questionnaire. <i>Journal of Personality and Social Psychology, 63</i>(3), 452–459.</li>
+      <li><b>Greene, R. W.</b> (2014). <i>The Explosive Child</i> (5th ed.). Harper.</li>
+      <li><b>Kazdin, A. E.</b> (2005). <i>Parent Management Training.</i> Oxford University Press.</li>
+      <li><b>Posner, K., et al.</b> (2011). Columbia-Suicide Severity Rating Scale. <i>American Journal of Psychiatry, 168</i>(12), 1266–1277.</li>
+    </ul>
+  </div>
+</section>
+
+<div class="quote">
+    "Поведение — это коммуникация. За агрессивным поведением всегда стоит потребность или недостающий навык."
+    <span>— Росс Грин, автор книги "Взрывной ребёнок"</span>
+  </div>
+
+  <div class="summary-box">
+    <h3>📌 Резюме модуля</h3>
+    <ul>
+      <li>Агрессия — это неуправляемое выражение накопленного эмоционального давления, а не "плохой характер".</li>
+      <li>Реактивная, проактивная, вербальная, физическая и реляционная агрессия требуют разного вмешательства.</li>
+      <li>Корневые причины могут быть психологическими, сенсорными, коммуникативными и педагогическими — важна мультидисциплинарная оценка.</li>
+      <li>Термометр гнева и "Остановись-Подумай-Действуй" — самые эффективные практические инструменты.</li>
+      <li>Средства сенсорной регуляции (утяжелённое одеяло, фиджет, двигательная пауза) могут снизить физические корни агрессии.</li>
+      <li>Сотрудничество с родителем/учителем — ключ к устойчивости изменения поведения.</li>
+    </ul>
+  </div>
+
+
+  <div class="nav-bottom">
+    <a class="nav-btn home" href="index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+      Вернуться в меню
+    </a>
+    <a class="nav-btn next" href="04-qayghi-qorxu.html">
+      Следующий модуль: Тревога, напряжение и страх
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+
+</main>
+
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeSession()">
+  <div class="modal-box">
+    <div class="modal-close" onclick="closeSession()">✕</div>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Курс когнитивно-поведенческой терапии · Модуль 3/20</p>
+  <p style="margin-top:8px;">By <a href="https://aze-ai.az" target="_blank" rel="noopener">securtiy_group</a></p>
+  <p style="margin-top:10px;font-size:.82rem;"><a href="../privacy.html">Политика конфиденциальности</a> · <a href="../terms.html">Условия использования</a></p>
+</footer>
+
+<script>
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target);} });
+},{threshold:0.1});
+document.querySelectorAll('section').forEach(s=>io.observe(s));
+
+window.addEventListener('mousemove', e=>{
+  const mx = (e.clientX/window.innerWidth - 0.5);
+  const my = (e.clientY/window.innerHeight - 0.5);
+  document.querySelectorAll('.blob').forEach((b,i)=>{
+    const speed = (i+1)*16;
+    b.style.transform = `translate(${mx*speed}px, ${my*speed}px)`;
+  });
+});
+</script>
+<script>
+const SESSIONS = [
+  {
+    "num": 1,
+    "title": "Оценка и Доверие",
+    "goal": "Определить частоту, триггеры и контекст агрессии, установить доверительную связь с клиентом.",
+    "materials": [
+      "Анкета оценки поведения",
+      "Шаблон журнала наблюдения"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Вступление",
+        "text": [
+          "На первой сессии я обозначаю тему не как 'наказание', а как 'понимание' — это снижает защитную позицию клиента."
+        ],
+        "dialog": [["T","Камран, добро пожаловать. Это наша первая встреча — можем начать со знакомства."],["K","Спасибо. Честно говоря, я не совсем понимал, чего ожидать, идя сюда."],["T","Это совершенно нормально. Что привело вас сюда, вкратце?"],["K","В последние месяцы были моменты, когда я не мог себя контролировать — с семьёй, на работе."],["T","Спасибо, что поделились этим. Как долго это продолжается?"],["K","Несколько месяцев, но последние недели стало хуже."],["T","Вам трудно об этом говорить?"],["K","Немного, честно говоря — есть чувство стыда."],["T","Я понимаю это, многие люди чувствуют так же, приходя сюда впервые."],["K","Хорошо, это меня немного успокаивает."],["T","Здесь вас не будут осуждать, мы просто вместе посмотрим на это."],["K","Спасибо, мне нужно было это услышать."],["T","Есть вопросы перед началом?"],["K","Нет, я готов."]]
+      },
+      {
+        "name": "🔵 Основная часть — Картирование триггеров",
+        "text": [
+          "Детально разбираются 2-3 конкретных инцидента за последнюю неделю-две: кто, где, когда, что произошло."
+        ],
+        "dialog": [["T","Вы помните, когда впервые началась эта трудность?"],["K","Точно не помню, кажется, накапливалось постепенно."],["T","Камран, как вы это помните?"],["K","Может быть, после какого-то случая, я не совсем уверен."],["T","Как это влияет на повседневную жизнь?"],["K","Сильно — на работу, на отношения тоже."],["T","Можете вспомнить конкретный случай, когда вы недавно разозлились?"],["K","Да, на работе коллега присвоил себе то, что сделал я."],["T","Что пронеслось у вас в голове в тот момент?"],["K","'Это несправедливо, здесь никто не уважает мою работу.'"],["T","Что вы почувствовали в теле в тот момент?"],["K","Челюсть сжалась, голос сам собой стал громче."],["T","Что вы сделали потом?"],["K","Резко ответил ему при всех, потом пожалел об этом."],["T","Какими стали отношения между вами после этого?"],["K","Немного напряжёнными, пришлось потом извиниться."],["T","Был ли ещё пример за эти две недели?"],["K","Да, и дома тоже, один раз, когда мой ребёнок не убирал игрушки."],["T","Чем этот случай отличался от рабочего?"],["K","Я успокоился быстрее, честно говоря, но всё равно повысил голос."]]
+      },
+      {
+        "name": "🟣 Завершение",
+        "text": [
+          "Сессия заканчивается тем, что клиенту даётся ощущение надежды и объясняется, почему программа будет полезна."
+        ],
+        "dialog": [["T","Как для вас прошла эта первая встреча?"],["K","Легче, чем я ожидал, честно говоря."],["T","Мне приятно это слышать."],["K","Я приду и на следующей неделе?"],["T","Да, у нас будет совместный маршрут из 10 сессий."],["K","Хорошо, это даёт мне ощущение структуры."],["T","Если захотите подумать об этом по дороге домой, можете делать короткие заметки."],["K","Попробую."],["T","Я хочу отметить, что вы сделали важный шаг."],["K","Спасибо."]]
+      }
+    ],
+    "homework": "На этой неделе записывайте в небольшую тетрадь моменты, когда вы злились (кто, что, где).",
+    "about": "На этой первой сессии формальный тест не применяется — частота, триггеры и контекст поведения оцениваются через структурированную беседу.",
+    "specialists": [
+      "Клинический психолог",
+      "Детский психолог",
+      "КПТ-терапевт"
+    ]
+  },
+  {
+    "num": 2,
+    "title": "Психообразование: Что Такое Гнев?",
+    "goal": "Объяснить, что гнев — нормальная, даже полезная эмоция, но форма её выражения — выбор.",
+    "materials": [
+      "Картинка с метафорой вулкана",
+      "Рабочий лист психообразования"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Вступление",
+        "text": [
+          "Просматривается повестка, строится мостик к прошлой сессии."
+        ],
+        "dialog": [["T","Камран, как было после нашей последней встречи?"],["K","Нормально, один-два раза снова разозлился, но меньше."],["T","Спасибо, что отметили это. Возник ли по этому поводу какой-то вопрос?"],["K","Иногда думаю, что гнев сам по себе плохая вещь, что мне нужно полностью от него избавиться."],["T","Это очень распространённое убеждение. Именно это мы сегодня и исследуем."],["K","Интересно, слушаю."],["T","Как вы себя чувствуете сегодня, довольно спокойно?"],["K","Относительно, немного устал после работы."],["T","Как был сон на этой неделе?"],["K","Средне, две тяжёлые ночи."],["T","Спасибо, что упомянули, мы это учтём."],["K","Хорошо."],["T","Хотите что-то спросить перед началом?"],["K","Нет, я готов."]]
+      },
+      {
+        "name": "🔵 Основная часть — Метафора вулкана",
+        "text": [
+          "Объясняется, что гнев подобен накапливающемуся давлению, но взрыв — не единственный выход."
+        ],
+        "dialog": [["T","Это объяснение вам понятно?"],["K","Немного, но я всё ещё не до конца понимаю, почему так себя чувствую."],["T","Это не значит, что вы 'слабый', ваш мозг просто определённым образом реагирует."],["K","От того, что я это знаю, мне правда становится легче."],["T","Есть вопросы по этому поводу?"],["K","А когда это проходит, вы знаете?"],["T","Давайте представим гнев как вулкан — давление накапливается постепенно, от напряжения, разочарования, усталости."],["K","Мне это понятно, честно говоря."],["T","Если давление вовремя не выпустить, оно выходит в виде извержения. Что больше всего повышает у вас давление?"],["K","В основном чувство неуважения. Или то, что дела идут не так, как я ожидаю."],["T","А извержение — единственный способ выпустить это давление?"],["K","Если подумать... на самом деле нет."],["T","Как бы выглядело для вас 'выпускать давление заранее'?"],["K","Может, сказать что-то в момент, когда замечаю напряжение, вместо того чтобы держать его в себе."],["T","Это очень ценное наблюдение. Сам гнев здесь не проблема."],["K","Верно, важно то, что я с ним делаю."],["T","Именно так. Эмоция нормальна — форма является выбором."],["K","Раньше я не думал об этом как о выборе."],["T","Если бы вы повторили эту метафору вулкана своими словами?"],["K","Давление накапливается, и если я не выпущу его вовремя, оно взрывается."]]
+      },
+      {
+        "name": "🟣 Завершение",
+        "text": [
+          "Подчёркивается, что сам гнев не 'плохой' — выбором является только форма выражения."
+        ],
+        "dialog": [["T","Как бы вы обобщили то, что узнали сегодня о гневе?"],["K","Сам гнев не плохой, важно то, как я его выражаю."],["T","Совершенно верно."],["K","Знать это меня немного успокаивает."],["T","На этой неделе сможете один раз подумать, что ваш гнев пытается вам сказать?"],["K","Попробую."],["T","Как вы себя чувствуете, уходя?"],["K","Спокойнее, честно говоря, не ожидал этого."],["T","Это очень хорошее начало."],["K","Спасибо, до встречи."]]
+      }
+    ],
+    "homework": "На этой неделе отмечайте момент гнева уровнем 'вулкана' (низкий/средний/высокий).",
+    "about": "Это сессия психообразования — объясняется, что гнев нормальная эмоция, но форма выражения — выбор.",
+    "specialists": [
+      "Клинический психолог",
+      "КПТ-терапевт",
+      "Психопедагог"
+    ]
+  },
+  {
+    "num": 3,
+    "title": "Распознавание Сигналов Тела",
+    "goal": "Научить распознавать ранние физические сигналы (сердцебиение, ощущение жара, сжатие кулаков) с помощью Термометра гнева.",
+    "materials": [
+      "Шаблон термометра гнева"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Вступление",
+        "text": [
+          "Простое вступление, переход к теме тела."
+        ],
+        "dialog": [["T","Камран, сегодня мы посмотрим, как гнев проявляется в теле."],["K","Интересно, честно говоря, никогда об этом не думал."],["T","В последний раз, когда вы разозлились, что вы почувствовали в теле?"],["K","Сердце заколотилось, кулаки сжались почти сами собой."],["T","Что ещё было — дыхание, челюсть, плечи?"],["K","Челюсть напряглась, дыхание тоже немного участилось."],["T","Это ранние сигналы гнева — тело предупреждает раньше слов."],["K","Теперь знать это, кажется, будет полезно."],["T","Сможете отслеживать эти сигналы на этой неделе?"],["K","Попробую, это действительно интересно."],["T","Небольших заметок достаточно, не обязательно идеально."],["K","Хорошо, попробую."],["T","Есть вопрос перед началом?"],["K","Нет, я готов."]]
+      },
+      {
+        "name": "🔵 Основная часть — Сканирование тела",
+        "text": [
+          "У клиента спрашивают, что он чувствовал в теле во время прошлого инцидента, вспоминая шаг за шагом."
+        ],
+        "dialog": [["T","Камран, сегодня мы посмотрим, как гнев проявляется в теле."],["K","Интересно, честно говоря, никогда об этом не думал."],["T","В последний раз, когда вы разозлились, что вы почувствовали в теле?"],["K","Сердце заколотилось, кулаки сжались почти сами собой."],["T","Что ещё было — дыхание, челюсть, плечи?"],["K","Челюсть напряглась, дыхание тоже немного участилось."],["T","Это ранние сигналы гнева — тело предупреждает раньше слов."],["K","Теперь знать это, кажется, будет полезно."],["T","Давайте построим Термометр гнева, свяжем эти сигналы с цифрами."],["K","Хорошо, как это работает?"],["T","От 1 до 10 отмечаем, какой сигнал тела появляется на каком уровне."],["K","Понял, на 3-4, кажется, у меня напрягается челюсть."],["T","А что происходит на 7-8, по-вашему?"],["K","Кулаки сжимаются полностью, голос повышается."],["T","Это осознание — самый важный инструмент для паузы перед взрывом."],["K","Теперь понимаю, почему вы учите этому в первую очередь."],["T","Сможете отслеживать эти сигналы на этой неделе?"],["K","Попробую, это действительно интересно."],["T","Небольших заметок достаточно, не обязательно идеально."],["K","Хорошо, попробую."]]
+      },
+      {
+        "name": "🟣 Завершение",
+        "text": [
+          "Заполняется шаблон термометра, объясняется домашнее задание."
+        ],
+        "dialog": [["T","Вы помните сигналы тела, которые мы сегодня разобрали?"],["K","Сердцебиение, напряжение челюсти, сжатие кулаков — ранние предупреждения."],["T","Совершенно верно. Сможете отслеживать это на этой неделе?"],["K","Да, буду отмечать в тетради."],["T","Небольших заметок достаточно."],["K","Хорошо."],["T","Как это осознание заставило вас себя почувствовать?"],["K","Немного сильнее, будто теперь есть что-то в моём контроле."],["T","Это очень ценное наблюдение."],["K","Спасибо, до встречи."]]
+      }
+    ],
+    "homework": "Проверяйте свой 'термометр' минимум 2 раза в день и записывайте число.",
+    "about": "Термометр гнева — не диагностический тест, а инструмент самонаблюдения для распознавания ранних сигналов тела.",
+    "specialists": [
+      "Клинический психолог",
+      "Эрготерапевт"
+    ]
+  },
+  {
+    "num": 4,
+    "title": "Дыхательные и Успокаивающие Навыки",
+    "goal": "Научить быстро успокаивать тело с помощью квадратного дыхания, обратного счёта и сенсорных инструментов.",
+    "materials": [
+      "Дыхательная карточка",
+      "Фиджет-инструмент (если есть)"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Вступление",
+        "text": [
+          "Игривый тон вступления."
+        ],
+        "dialog": [["T","Камран, отслеживали сигналы тела после прошлой сессии?"],["K","Да, отметил дважды, было полезно."],["T","Это очень хорошее начало. Как вы себя чувствуете сегодня, довольно спокойно?"],["K","Относительно, работа сегодня была утомительной."],["T","Были моменты гнева на этой неделе?"],["K","Один раз, но не так сильно, как в прошлый раз."],["T","Это уже само по себе улучшение."],["K","Я тоже так думаю, честно говоря."],["T","Сегодня мы посмотрим на конкретные инструменты для быстрого успокоения тела."],["K","Мне это нужно, я не всегда знаю, что делать в моменте."],["T","Именно этот пробел мы сегодня и заполним."],["K","Хорошо, я готов."],["T","Есть вопрос перед началом?"],["K","Нет, начнём."]]
+      },
+      {
+        "name": "🔵 Основная часть — Практика",
+        "text": [
+          "Вместе практикуются квадратное дыхание и обратный счёт от 10."
+        ],
+        "dialog": [["T","Сколько раз нужно повторять эту дыхательную технику?"],["K","Не знаю, может быть несколько раз."],["T","Давайте попробуем ещё раз прямо сейчас."],["K","(делает глубокий вдох) Немного помогло, не полностью."],["T","Давайте добавим ещё и обратный счёт — считаем от 10 вместе с дыханием."],["K","Хорошо, попробуем."],["T","10, вдох... 9, выдох..."],["K","(считает) Это меня немного отвлекает, в хорошем смысле."],["T","Именно в этом суть — переключить мозг на другую задачу."],["K","Тело сейчас чувствует себя немного спокойнее."],["T","Среди сенсорных инструментов — холодная вода, сжатие чего-то твёрдого — что могло бы вам подойти?"],["K","Холодная вода на лицо мне всегда хорошо помогала."],["T","Отлично, добавим это в ваш набор инструментов."],["K","Хорошая идея."],["T","Из этих трёх инструментов — дыхание, обратный счёт, холодная вода — какой вы будете использовать чаще всего?"],["K","Наверное, дыхание и холодную воду, оба простые."],["T","На этой неделе, как только заметите злость, сразу попробуйте один из них."],["K","Попробую, обещаю."],["T","Результат обсудим на следующей сессии."],["K","Хорошо, буду ждать."]]
+      },
+      {
+        "name": "🟣 Завершение",
+        "text": [
+          "Показывается, как использовать сенсорные инструменты (фиджет, утяжелённое одеяло)."
+        ],
+        "dialog": [["T","Какой из сегодняшних инструментов показался вам наиболее подходящим?"],["K","Дыхание и холодная вода, оба кажутся простыми."],["T","Готовы попробовать их на этой неделе?"],["K","Да, готов."],["T","Результат сможете рассказать на следующей сессии."],["K","Хорошо, расскажу."],["T","Как вы себя чувствуете сегодня, уходя?"],["K","Сильнее, теперь у меня есть реальные инструменты."],["T","Это очень хороший шаг вперёд."],["K","Спасибо."]]
+      }
+    ],
+    "homework": "Когда термометр поднимается, попробуйте обратный счёт или дыхательную технику, запишите результат.",
+    "about": "Это практическая тренировочная сессия, обучающая навыкам сенсорной регуляции.",
+    "specialists": [
+      "Эрготерапевт",
+      "Клинический психолог",
+      "Специалист по сенсорной интеграции"
+    ]
+  },
+  {
+    "num": 5,
+    "title": "Остановись-Подумай-Действуй",
+    "goal": "Обучить трёхшаговой стратегии и отработать её применение в реальных ситуациях через ролевую игру.",
+    "materials": [
+      "Карточка Остановись-Подумай-Действуй"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Вступление",
+        "text": [
+          "Проверяются дыхательные упражнения за прошлую неделю."
+        ],
+        "dialog": [["T","Камран, сегодня мы изучим трёхшаговую стратегию. Чувствуете себя готовым?"],["K","Готов, это интересно."],["T","Пробовали дыхательные инструменты на прошлой неделе?"],["K","Да, холодная вода особенно хорошо сработала."],["T","Это был очень хороший выбор."],["K","Использовал несколько раз, помогало."],["T","Как вы себя чувствуете сегодня?"],["K","Довольно расслабленно, работа сегодня была спокойной."],["T","Сегодня мы также используем ролевую игру, как вы к этому относитесь?"],["K","Немного странно, но готов попробовать."],["T","Ролевая игра сначала может казаться странной, но она очень эффективна."],["K","Доверяю вам в этом."],["T","Есть вопрос перед началом?"],["K","Нет, начнём."]]
+      },
+      {
+        "name": "🔵 Основная часть — Ролевая игра",
+        "text": [
+          "Терапевт создаёт реальный сценарий (например, забрать игрушку), и клиент применяет 3 шага."
+        ],
+        "dialog": [["T","Сегодня я научу вас трёхшаговой стратегии — Остановись, Подумай, Действуй."],["K","Звучит просто, слушаю."],["T","Первый шаг — Остановись. В момент, когда чувствуешь сигнал гнева, физически останавливаешься, не двигаешься."],["K","То есть буквально остановиться?"],["T","Да, шаг назад, или просто замереть — не переходить к действию."],["K","Понял, а дальше?"],["T","Второй шаг — Подумай. Задаёшь себе вопрос: что мне даст эта реакция?"],["K","Интересный вопрос, обычно я об этом не думаю в момент."],["T","Именно поэтому мы этому учим — чтобы превратить в привычку."],["K","Какой третий шаг?"],["T","Действуй. После размышления делаешь лучший выбор — иногда ничего не делать, иногда спокойно поговорить."],["K","Хочу попробовать это в реальной ситуации."],["T","Давайте сыграем — я буду вашим коллегой на работе, вы применяете Остановись-Подумай-Действуй."],["K","Хорошо, готов."],["T","(в роли) 'Мне снова пришлось исправлять твою работу, который раз уже?'"],["K","(останавливается) ...Останавливаюсь сейчас... думаю... 'Можем ли мы поговорить об этом спокойно, меня это беспокоит.'"],["T","Отлично применили! Как это было для вас?"],["K","Остановиться было трудно, но я справился."],["T","Это навык, требующий практики, с первого раза он не будет идеальным."],["K","Хорошо, попробую в реальной жизни на этой неделе."]]
+      },
+      {
+        "name": "🟣 Завершение",
+        "text": [
+          "Клиенту вручается карточка с техникой, рекомендуется повесить её дома на видном месте."
+        ],
+        "dialog": [["T","Если бы вы одной фразой описали Остановись-Подумай-Действуй?"],["K","Остановись, задай себе вопрос, потом сделай лучшее."],["T","Совершенно верно. Сможете попробовать это на этой неделе?"],["K","Попробую, обещаю."],["T","Небольшие успехи тоже стоит отмечать."],["K","Хорошо, запишу, что произойдёт."],["T","Как вам сегодняшняя ролевая игра?"],["K","Сначала странно, потом полезно."],["T","Это совершенно естественно — новый навык всегда сначала кажется странным."],["K","Спасибо, до встречи."]]
+      }
+    ],
+    "homework": "Попробуйте применить эту технику в одной реальной ситуации, поделитесь результатом на следующей сессии.",
+    "about": "Остановись-Подумай-Действуй — поведенческая стратегия, отрабатываемая через ролевую игру.",
+    "specialists": [
+      "Клинический психолог",
+      "КПТ-терапевт",
+      "Школьный психолог"
+    ]
+  },
+  {
+    "num": 6,
+    "title": "Когнитивная Реструктуризация",
+    "goal": "Распознать и подвергнуть сомнению триггерные мысли вроде 'это несправедливо'.",
+    "materials": [
+      "Лист регистрации мыслей"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Вступление",
+        "text": [
+          "Вопрос открывает переход к теме."
+        ],
+        "dialog": [["T","Камран, сегодня мы посмотрим, как можно подвергать сомнению свои мысли."],["K","Это мне интересно, я никогда раньше не сомневался в собственных мыслях."],["T","Пробовали Остановись-Подумай-Действуй на прошлой неделе?"],["K","Один раз, не полностью, но по-другому, чем раньше."],["T","Это отличное начало."],["K","Спасибо, было трудно, правда."],["T","Как вы себя чувствуете сегодня?"],["K","Задумчиво, немного тревожно тоже."],["T","Какая мысль больше всего беспокоила вас на этой неделе?"],["K","'Это несправедливо' приходит часто."],["T","Именно это мы сегодня вместе и исследуем."],["K","Хорошо, интересно."],["T","Есть вопрос перед началом?"],["K","Нет, я готов."]]
+      },
+      {
+        "name": "🔵 Основная часть — Проверка мысли",
+        "text": [
+          "Выбирается часто повторяющаяся триггерная мысль клиента и вместе исследуется."
+        ],
+        "dialog": [["T","Какие доказательства есть против этой мысли?"],["K","Не знаю, может, есть, сейчас не могу придумать."],["T","Как мы могли бы переформулировать эту мысль?"],["K","Трудно, но, может, я смогу попробовать."],["T","Как вы запомните эту новую мысль?"],["K","Точно не знаю, запишу где-нибудь, чтобы не забыть."],["T","Давайте начнём с конкретного примера — какая мысль была у вас в голове, когда вы в последний раз разозлились?"],["K","Что-то вроде 'это несправедливо, они делают это мне намеренно.'"],["T","Насколько вы верите этой мысли, от 0 до 100?"],["K","Что-то вроде 80, в тот момент я очень верил."],["T","А сейчас, спокойно, где находится это число?"],["K","Может 40, сейчас немного сомневаюсь."],["T","Могло ли быть другое объяснение поведению того человека?"],["K","Может... он занят своими проблемами, это не связано со мной."],["T","Это интересная альтернатива."],["K","Да, я раньше об этом не думал."],["T","Как бы вы назвали это искажение — чтение мыслей или катастрофизацию?"],["K","Похоже на чтение мыслей, я думал, что знаю его намерение."],["T","Именно так. Распознать это уже большой шаг."],["K","Спасибо, это было очень полезно для меня."]]
+      },
+      {
+        "name": "🟣 Завершение",
+        "text": [
+          "Вместе формулируется и записывается сбалансированная мысль."
+        ],
+        "dialog": [["T","Каково было сегодня подвергать сомнению свои мысли?"],["K","Сначала трудно, потом полезно."],["T","Сможете подвергнуть сомнению одну мысль таким образом на этой неделе?"],["K","Попробую."],["T","Записать на бумаге может помочь."],["K","Хорошо, сделаю."],["T","Как вы сейчас себя чувствуете?"],["K","Мыслю яснее, будто вышел из тумана."],["T","Это очень сильное описание."],["K","Спасибо."]]
+      }
+    ],
+    "homework": "В ситуации, когда вы злитесь, спросите себя 'есть ли другое объяснение?' и запишите это.",
+    "about": "Это сессия когнитивной реструктуризации — подвергаются сомнению триггерные мысли вроде 'это несправедливо'.",
+    "specialists": [
+      "Клинический психолог",
+      "КПТ-терапевт"
+    ]
+  },
+  {
+    "num": 7,
+    "title": "Навыки Коммуникации",
+    "goal": "Научить выражать потребность языком 'Я' — словесная просьба вместо крика или удара.",
+    "materials": [
+      "Карточка фраз 'Я'"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Вступление",
+        "text": [
+          "Проверяется результат прошлой сессии."
+        ],
+        "dialog": [["T","Камран, сегодня мы посмотрим на навыки коммуникации."],["K","Мне нужна эта тема, честно говоря, у меня с этим проблемы в семье."],["T","Пробовали подвергать сомнению свои мысли на прошлой неделе?"],["K","Да, один раз, было полезно."],["T","Это формирует очень хорошую привычку."],["K","Надеюсь."],["T","Как вы себя чувствуете сегодня?"],["K","Немного неспокойно, честно говоря, семейная тема для меня чувствительна."],["T","Я понимаю это, пойдём медленно."],["K","Спасибо."],["T","Сегодня мы изучим язык 'Я' — выражение собственного чувства без обвинения."],["K","Интересно, я раньше об этом так не думал."],["T","Есть вопрос перед началом?"],["K","Нет, начнём."]]
+      },
+      {
+        "name": "🔵 Основная часть — Практика языка 'Я'",
+        "text": [
+          "Отрабатывается превращение обвинительного языка 'ты всегда...' в форму 'я чувствую... потому что...'."
+        ],
+        "dialog": [["T","Как бы вы сказали эту фразу спокойным голосом?"],["K","(пробует, с колебанием) Не знаю, странно так говорить."],["T","Каково было для вас произнести это?"],["K","Немного непривычно, я не привык так разговаривать."],["T","На языке 'Я', как это выглядело бы вместо 'ты меня разозлил'?"],["K","Может... 'я злюсь в этой ситуации, потому что...' что-то такое?"],["T","Совершенно верно. Продолжайте, закончите фразу."],["K","'...потому что чувствую, что моё мнение не слышат.'"],["T","Это очень сильная фраза получилась. Заметили разницу?"],["K","Да, я не обвиняю, я просто выражаю своё чувство."],["T","Как бы вы применили это в рабочей ситуации?"],["K","Вместо того чтобы сказать коллеге 'ты всегда опаздываешь', может, сказал бы 'я считаю важным начинать вовремя.'"],["T","Отличный пример. Это не ставит другого человека в защитную позицию."],["K","Теперь понимаю, почему мой старый стиль усиливал конфликт."],["T","Сможете попробовать эту формулу один раз в реальной ситуации на этой неделе?"],["K","Попробую, даже если будет трудно."],["T","Маленький успех тоже важен."],["K","Хорошо, это кажется мне разумным."],["T","Результат сможете рассказать на следующей сессии."],["K","Хорошо, расскажу."]]
+      },
+      {
+        "name": "🟣 Завершение",
+        "text": [
+          "Вместе пишутся и отрабатываются 3 примера фраз."
+        ],
+        "dialog": [["T","Если бы вы одной фразой напомнили себе про язык 'Я'?"],["K","Выражать своё чувство вместо обвинения."],["T","Совершенно верно. Попробуете это на этой неделе?"],["K","Да, особенно на работе."],["T","Даже маленькая попытка — это большое изменение."],["K","Хорошо, запомню."],["T","Как вы себя чувствуете сегодня?"],["K","Немного открыто, будто учу новый язык."],["T","На самом деле это справедливое сравнение."],["K","Спасибо, до встречи."]]
+      }
+    ],
+    "homework": "Используйте язык 'Я' минимум 1 раз на этой неделе и отметьте результат.",
+    "about": "Практика языка 'Я' — тренинг коммуникативных навыков, особенно у клиентов с трудностями речи/выражения полезна поддержка логопеда.",
+    "specialists": [
+      "Клинический психолог",
+      "Логопед",
+      "КПТ-терапевт"
+    ]
+  },
+  {
+    "num": 8,
+    "title": "Навыки Решения Проблем",
+    "goal": "Научить искать альтернативные решения вместо агрессии в конфликтных ситуациях.",
+    "materials": [
+      "Лист шагов решения проблем"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Вступление",
+        "text": [
+          "Начинается с простого вопроса-проверки."
+        ],
+        "dialog": [["T","Камран, сегодня мы посмотрим на навыки решения проблем."],["K","Хорошо, мне это нужно, я оставляю много проблем нерешёнными."],["T","Пробовали язык 'Я' на прошлой неделе?"],["K","Один раз, дома, реально сработало."],["T","Это очень хороший результат."],["K","Сам удивился, честно говоря."],["T","Как вы себя чувствуете сегодня?"],["K","Относительно уверенно, теперь у меня есть кое-какие инструменты."],["T","Сегодня мы отработаем пошаговое решение конкретной проблемы."],["K","Хорошо, у меня как раз есть кое-что конкретное."],["T","Отлично, давайте начнём с этого."],["K","Спасибо."],["T","Есть вопрос перед началом?"],["K","Нет, я готов."]]
+      },
+      {
+        "name": "🔵 Основная часть — Поиск альтернатив",
+        "text": [
+          "Над реальным конфликтом вместе продумываются 3-4 возможных решения."
+        ],
+        "dialog": [["T","Какие шаги нужны для решения этой проблемы?"],["K","Не знаю, трудно разбить на шаги."],["T","Как вы примените эти шаги в реальной ситуации?"],["K","Попробую, но не совсем уверен, что справлюсь."],["T","Давайте начнём с конкретной проблемы — что вас сейчас больше всего злит?"],["K","На работе есть проект, моя команда не укладывается в сроки."],["T","Как бы мы определили проблему одной фразой?"],["K","'Команда не соблюдает сроки, это меня напрягает.'"],["T","Теперь давайте перечислим возможные решения, не оценивая — что приходит в голову?"],["K","Могу поговорить с ними, или сообщить руководителю, или закончить сам."],["T","Три варианта. Каким был бы результат каждого?"],["K","Разговор кажется лучшим, остальные могут усилить конфликт."],["T","Как бы вы применили этот выбор, шаг за шагом?"],["K","Сначала выберу спокойное время, потом объясню проблему на языке 'Я'."],["T","Это очень структурированный подход."],["K","Раньше я бы сразу взорвался, сейчас чувствую себя по-другому."],["T","Сможете применить эти шаги и к другой проблеме?"],["K","Думаю, да, логика та же."],["T","Это один из самых ценных навыков — отделять проблему от эмоции."],["K","Спасибо, это очень прояснило мои мысли."]]
+      },
+      {
+        "name": "🟣 Завершение",
+        "text": [
+          "Выбирается лучшая альтернатива и планируется, как применить её в следующий раз."
+        ],
+        "dialog": [["T","Если ещё раз вспомнить шаги решения проблем?"],["K","Определить проблему, перечислить варианты, выбрать лучший, применить."],["T","Вы прекрасно запомнили."],["K","Спасибо."],["T","Сможете применить это к реальной проблеме на этой неделе?"],["K","Попробую, у меня уже есть несколько идей."],["T","Это очень хорошее начало."],["K","Чувствую себя менее беспомощным сейчас."],["T","Это ценное изменение."],["K","Спасибо, до встречи."]]
+      }
+    ],
+    "homework": "Когда возникает конфликт, спросите себя 'какой ещё есть путь?'",
+    "about": "Сессия навыков решения проблем направлена на совместный поиск альтернативных решений в конфликтных ситуациях.",
+    "specialists": [
+      "Клинический психолог",
+      "Психопедагог"
+    ]
+  },
+  {
+    "num": 9,
+    "title": "Ролевая Игра и Экспозиция",
+    "goal": "Применить все изученные навыки (Остановись-Подумай-Действуй, язык 'Я', решение проблем) вместе в реальных сценариях.",
+    "materials": [
+      "Карточки сценариев"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Вступление",
+        "text": [
+          "Объясняется цель сегодняшней сессии."
+        ],
+        "dialog": [["T","Камран, сегодня мы применим всё изученное вместе в реальных сценариях."],["K","Немного нервничаю, честно говоря."],["T","Это нормально, мы сделаем всё вместе."],["K","Хорошо, это меня успокаивает."],["T","Пробовали шаги решения проблем на прошлой неделе?"],["K","Да, решил рабочий вопрос таким образом."],["T","Это отличный результат."],["K","Горжусь собой, честно говоря."],["T","Как вы себя чувствуете сегодня?"],["K","Готов, хоть немного и напряжён."],["T","Напряжение нормально, это требовательная сессия."],["K","Понимаю."],["T","Есть вопрос перед началом?"],["K","Нет, начнём."]]
+      },
+      {
+        "name": "🔵 Основная часть — Комбинированная практика",
+        "text": [
+          "Проигрывается несколько реальных жизненных сценариев, клиент последовательно применяет все навыки."
+        ],
+        "dialog": [["T","Каково было для вас в этом сценарии?"],["K","Напряжённо, если бы было реально, было бы, наверное, хуже."],["T","Как вы примените это упражнение в реальной ситуации?"],["K","Не знаю, может быть трудно, но попробую."],["T","Давайте попробуем ещё один сценарий — на этот раз из семейной обстановки. Готовы?"],["K","Готов, сейчас чувствую себя немного увереннее, чем раньше."],["T","(в роли) 'Ты никогда не помогаешь дома, всё делаю я!'"],["K","(останавливается, дышит) 'Понимаю, что это тебя утомляет, давай распределим, кто что делает.'"],["T","Вы только что использовали сразу три навыка — остановку, дыхание, язык 'Я'."],["K","Сам не заметил, получилось автоматически."],["T","Это очень хороший знак — начинает формироваться привычка."],["K","Значит, повторная практика работает."],["T","Давайте попробуем ещё один сценарий — на этот раз выбираете вы, какая ситуация вам труднее всего даётся?"],["K","В пробке, когда кто-то резко подрезает меня."],["T","(разыгрывает) Хорошо, представьте, что это только что произошло."],["K","(останавливается) Это трудный сценарий, но... делаю глубокий вдох, вспоминаю, что оно того не стоит."],["T","Эта ситуация требует быстрого решения, вы хорошо справились."],["K","Спасибо, это был самый трудный сценарий из тех, что я пробовал."],["T","Практика трудных сценариев делает вас более готовым к реальной жизни."],["K","Сейчас чувствую себя немного увереннее в себе."]]
+      },
+      {
+        "name": "🟣 Завершение",
+        "text": [
+          "Отмечается прогресс, клиент получает признание."
+        ],
+        "dialog": [["T","Вы сегодня попробовали несколько трудных сценариев, как вы себя чувствуете?"],["K","Устал, но моя уверенность в себе выросла."],["T","Это очень хорошее улучшение."],["K","Спасибо."],["T","Сможете применить эти навыки в реальной ситуации на этой неделе?"],["K","Попробую, уже чувствую себя готовым."],["T","Отмечайте и маленькие успехи, все они важны."],["K","Хорошо, буду."],["T","Мы приближаемся к концу этой программы, проделанная вами работа заслуживает признания."],["K","Спасибо, для меня это много значит."]]
+      }
+    ],
+    "homework": "Примените изученные навыки минимум в 2 реальных ситуациях на этой неделе.",
+    "about": "Это прикладная сессия, где интегрируются все предыдущие навыки (Остановись-Подумай-Действуй, язык 'Я', решение проблем).",
+    "specialists": [
+      "Клинический психолог",
+      "КПТ-терапевт"
+    ]
+  },
+  {
+    "num": 10,
+    "title": "Завершение и План Поддержки",
+    "goal": "Обобщить все изученные навыки, скоординироваться с родителем/учителем и построить план поддержки на будущее.",
+    "materials": [
+      "Шаблон списка навыков",
+      "Небольшой сертификат достижения"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Вступление",
+        "text": [
+          "Прогресс рассматривается в сравнении с первой сессией."
+        ],
+        "dialog": [["T","Камран, что изменилось для вас за время этой программы?"],["K","Некоторые вещи улучшились, но не всё решено."],["T","Что для вас всё ещё трудно?"],["K","Несколько вещей, но теперь я знаю, как к ним подходить."],["T","Как вы будете поддерживать эти навыки дальше?"],["K","Не совсем уверен, постараюсь их помнить."],["T","Это наша последняя сессия. Как вы к этому относитесь?"],["K","Немного странно, но чувствую себя готовым."],["T","Помните день, когда вы впервые сюда пришли?"],["K","Да, мне было очень стыдно, было трудно даже говорить."],["T","Сравнивая с сегодняшним днём, какую разницу вы видите?"],["K","Я спокойнее, могу себя контролировать."],["T","Это большой путь, который вы прошли."],["K","Спасибо за вашу помощь."]]
+      },
+      {
+        "name": "🔵 Основная часть — План поддержки",
+        "text": [
+          "Клиент формирует собственный 'ящик инструментов' и определяет конкретные шаги для трудных моментов."
+        ],
+        "dialog": [["T","Эта программа заканчивается, но изученные вами навыки остаются с вами навсегда."],["K","Буду их помнить, особенно Остановись-Подумай-Действуй."],["T","К кому вы можете обратиться, когда станет трудно?"],["K","К семье, или снова к вам, если понадобится."],["T","Эта дверь всегда открыта."],["K","Спасибо, за всё."],["T","Какой из всех навыков, что мы отработали, помог больше всего?"],["K","Остановись-Подумай-Действуй, точно. Использую его больше всего."],["T","Как вы свяжете это изменение с семьёй, с работой?"],["K","Я уже рассказал семье о некоторых вещах, они тоже поддерживают."],["T","Это очень важно — сеть поддержки облегчает эту работу."],["K","Правда, в одиночку было бы намного труднее."],["T","Если напряжение вернётся, что вы сделаете в первую очередь?"],["K","Остановлюсь, подышу, потом подумаю."],["T","Это очень надёжный план."],["K","Спасибо, чувствую себя готовым."],["T","Если наступит трудный момент, и этих инструментов не хватит, что вы сделаете?"],["K","Снова обращусь к вам, если понадобится."],["T","Эта дверь всегда открыта. Вы добились огромного прогресса за эти месяцы."],["K","Спасибо, могу честно сказать, что эта программа изменила мою жизнь."]]
+      },
+      {
+        "name": "🟣 Завершение",
+        "text": [
+          "Планируется короткая встреча с родителем/учителем, чтобы поддержка продолжалась дома/в школе."
+        ],
+        "dialog": [["T","Хотя эта программа заканчивается, изученные навыки остаются с вами."],["K","Буду их помнить, особенно Остановись-Подумай-Действуй."],["T","К кому вы можете обратиться, когда станет трудно?"],["K","К семье, или снова к вам, если понадобится."],["T","Эта дверь всегда открыта."],["K","Спасибо, за всё."],["T","Работать с вами было очень ценно для меня."],["K","Для меня тоже, чувствую себя совершенно иначе, чем раньше."],["T","Несите это изменение с собой, Камран."],["K","Понесу, спасибо ещё раз."]]
+      }
+    ],
+    "homework": "Держите список навыков на видном месте и просматривайте его раз в неделю.",
+    "about": "Эта завершающая сессия — не оценка, а обобщение и построение плана координации с родителем/школой.",
+    "specialists": [
+      "Клинический психолог",
+      "Школьный психолог",
+      "Социальный работник"
+    ]
+  }
+];
+
+function renderSession(s){
+  let html = `<span class="m-tag">Сессия ${s.num} / 10</span><h3 class="m-title">${s.title}</h3>`;
+  html += `<div class="m-block"><h5>🎯 Цель сессии</h5><div class="m-goal">${s.goal}</div></div>`;
+  html += `<div class="m-block"><h5>🧰 Необходимые материалы</h5><div class="m-materials">${s.materials.map(m=>`<span>${m}</span>`).join('')}</div></div>`;
+  html += `<div class="m-block"><h5>📋 Ход сессии</h5>`;
+  s.phases.forEach(ph=>{
+    html += `<div class="m-phase"><div class="ph-name">${ph.name}</div>`;
+    (ph.text||[]).forEach(t=>{ html += `<p>${t}</p>`; });
+    if(ph.dialog && ph.dialog.length){
+      html += `<div class="m-dialog">`;
+      ph.dialog.forEach(d=>{
+        const who = d[0]==='T' ? 'Терапевт' : (d[0]==='K' ? 'Клиент' : d[0]);
+        const cls = d[0]==='T' ? 't' : 'k';
+        html += `<div class="dl"><span class="dw ${cls}">${who}:</span><span class="dt">${d[1]}</span></div>`;
+      });
+      html += `</div>`;
+    }
+    html += `</div>`;
+  });
+  html += `</div>`;
+  html += `<div class="m-block"><h5>📝 Домашнее задание</h5><div class="m-homework">${s.homework}</div></div>`;
+  html += `<div class="m-nextprev">
+    <div class="m-navbtn ${s.num<=1?'disabled':''}" onclick="openSession(${s.num-1})">◂ Предыдущая сессия</div>
+    <div class="m-navbtn ${s.num>=10?'disabled':''}" onclick="openSession(${s.num+1})">Следующая сессия ▸</div>
+  </div>`;
+  return html;
+}
+
+function openSession(n){
+  const s = SESSIONS.find(x=>x.num===n);
+  if(!s) return;
+  document.getElementById('modalContent').innerHTML = renderSession(s);
+  document.getElementById('modalOverlay').classList.add('active');
+  document.body.classList.add('modal-open');
+  document.getElementById('modalOverlay').scrollTop = 0;
+  document.querySelector('.modal-box').scrollTop = 0;
+}
+function closeSession(){
+  document.getElementById('modalOverlay').classList.remove('active');
+  document.body.classList.remove('modal-open');
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeSession(); });
+</script>
+<script src="../protect.js" defer></script>
+<script src="../engine.js"></script>
+
+<div class="modal-overlay" id="programModalOverlay" onclick="if(event.target===this)closeProgram()">
+  <div class="modal-box">
+    <div class="modal-close" onclick="closeProgram()">✕</div>
+    <div id="programModalContent"></div>
+  </div>
+</div>
+
+
+
+</body>
+</html>

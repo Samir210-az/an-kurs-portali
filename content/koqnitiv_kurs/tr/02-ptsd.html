@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#d9a85a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Modül 2 · Travma Sonrası Stres ve BDT</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1:#0c211f; --bg-2:#1d423d;
+    --surface: rgba(217,168,90,0.055);
+    --surface-h: rgba(217,168,90,0.10);
+    --border: rgba(217,168,90,0.14);
+    --teal:#7ba098; --teal-soft: rgba(123,160,152,0.18);
+    --violet:#8a6a3a; --violet-soft: rgba(138,106,58,0.20);
+    --amber:#d9a85a; --amber-soft: rgba(217,168,90,0.18);
+    --rose:#d9705a; --rose-soft: rgba(217,112,90,0.16);
+    --sky:#f0cd8e; --sky-soft:rgba(240,205,142,0.18);
+    --text-1:#f3eee1; --text-2:#c9c2ae; --text-3:#8a9a93;
+    --font-d:'Fraunces', serif;
+    --font-b:'Inter', system-ui, sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{-webkit-user-select:none;-moz-user-select:none;user-select:none;}
+  body{
+    font-family:var(--font-b);
+    background:
+      radial-gradient(1100px 750px at 12% -10%, rgba(139,92,246,0.18), transparent 60%),
+      radial-gradient(1000px 700px at 110% 15%, rgba(45,212,191,0.14), transparent 55%),
+      linear-gradient(180deg, var(--bg-1), var(--bg-2));
+    color:var(--text-1);
+    min-height:100vh;
+    line-height:1.65;
+  }
+  .blob{position:fixed;border-radius:50%;filter:blur(80px);opacity:.45;pointer-events:none;z-index:0;}
+  .blob-1{width:400px;height:400px;background:var(--violet-soft);top:-100px;left:-120px;}
+  .blob-2{width:360px;height:360px;background:var(--teal-soft);top:40%;right:-140px;}
+  .blob-3{width:320px;height:320px;background:var(--rose-soft);bottom:-80px;left:30%;}
+
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px;
+    background:rgba(11,18,36,0.75);
+    backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--border);
+  }
+  .topbar-brand{display:flex; align-items:center; gap:10px; text-decoration:none; flex-shrink:0;}
+  .topbar-brand img{width:34px; height:34px; border-radius:9px; object-fit:cover; border:1px solid rgba(255,255,255,0.15);}
+  .topbar-brand .tb-name{font-family:var(--font-d); font-weight:700; font-size:.78rem; color:var(--text-1); line-height:1.2; max-width:150px;}
+  .topbar-right{display:flex; align-items:center; gap:14px; flex-shrink:0;}
+  @media(max-width:640px){ .topbar-brand .tb-name{display:none;} .topbar a.back span{display:none;} }
+  .topbar a.back{
+    display:inline-flex; align-items:center; gap:8px;
+    color:var(--text-2); text-decoration:none; font-size:.9rem; font-weight:600;
+    transition:color .2s;
+  }
+  .topbar a.back:hover{color:var(--teal);}
+  .progress-pill{
+    font-size:.78rem; color:var(--text-3);
+    border:1px solid var(--border); padding:6px 14px; border-radius:999px;
+    background:var(--surface);
+  }
+
+  main{position:relative; z-index:2; max-width:880px; margin:0 auto; padding:0 24px 100px;}
+
+  .hero{padding:64px 0 40px; text-align:center;}
+  .hero-illus{display:flex; justify-content:center; margin-bottom:28px;}
+  .hero-illus svg{max-width:100%; height:auto;}
+  .tag{
+    display:inline-block; font-size:.76rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--rose); background:var(--rose-soft); border:1px solid rgba(251,113,133,.35);
+    padding:6px 16px; border-radius:999px; margin-bottom:22px;
+    animation:fadeDown .7s ease both;
+  }
+  h1{
+    font-family:var(--font-d); font-weight:800; font-size:clamp(1.9rem,4.6vw,3rem); line-height:1.2;
+    background:linear-gradient(90deg,#fff,#cdd8ff 45%, var(--rose));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:fadeUp .8s ease both .1s;
+  }
+  .hero p{color:var(--text-2); max-width:620px; margin:20px auto 0; animation:fadeUp .8s ease both .2s;}
+
+  section{margin-top:64px; animation:fadeUp .8s ease both; opacity:0;}
+  section.show{opacity:1;}
+  .sec-head{display:flex; align-items:center; gap:14px; margin-bottom:24px;}
+  .sec-num{
+    font-family:var(--font-d); font-size:1.4rem; font-weight:800; color:var(--bg-1);
+    background:linear-gradient(135deg,var(--rose),var(--violet));
+    width:44px;height:44px; border-radius:13px; display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  h2{font-family:var(--font-d); font-size:clamp(1.35rem,3vw,1.7rem); font-weight:700;}
+  .lead{color:var(--text-2); margin-bottom:22px;}
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:18px;
+    padding:24px 26px; margin-bottom:18px; backdrop-filter:blur(10px);
+  }
+  .card h3{font-size:1.05rem; margin-bottom:10px; color:var(--text-1); display:flex; align-items:center; gap:10px;}
+  .card p{color:var(--text-2); font-size:.95rem;}
+  .card p + p{margin-top:10px;}
+
+  .simple-box{
+    border-left:3px solid var(--sky);
+    background:var(--sky-soft);
+    border-radius:0 14px 14px 0;
+    padding:18px 22px;
+    margin:18px 0;
+    font-size:.94rem;
+  }
+  .simple-box b{color:var(--sky);}
+  .sci-box{
+    border-left:3px solid var(--violet);
+    background:var(--violet-soft);
+    border-radius:0 14px 14px 0;
+    padding:18px 22px;
+    margin:18px 0;
+    font-size:.94rem;
+  }
+  .sci-box b{color:var(--violet);}
+
+  .example{
+    border-left:3px solid var(--amber);
+    background:var(--amber-soft);
+    border-radius:0 14px 14px 0;
+    padding:16px 20px;
+    margin:16px 0;
+    font-size:.92rem;
+  }
+  .example b{color:var(--amber);}
+
+  .dialog{
+    background:rgba(255,255,255,.03);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:20px 22px;
+    margin:18px 0;
+    font-size:.92rem;
+  }
+  .dialog .line{display:flex; gap:12px; margin-bottom:14px;}
+  .dialog .line:last-child{margin-bottom:0;}
+  .dialog .who{flex-shrink:0; width:78px; font-weight:700; font-size:.8rem; padding-top:2px;}
+  .dialog .who.t{color:var(--teal);}
+  .dialog .who.k{color:var(--rose);}
+  .dialog .txt{color:var(--text-2);}
+
+  /* Symptom groups grid */
+  .symptom-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:16px; margin:26px 0;}
+  .symptom-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:20px 22px;
+    transition:transform .3s, border-color .3s;
+  }
+  .symptom-card:hover{transform:translateY(-4px); border-color:rgba(251,113,133,.4);}
+  .symptom-card .ico{font-size:1.6rem; margin-bottom:10px; display:block;}
+  .symptom-card h4{font-size:.98rem; margin-bottom:8px;}
+  .symptom-card p{font-size:.85rem; color:var(--text-2);}
+  .symptom-card .ex-line{font-size:.8rem; color:var(--text-3); font-style:italic; margin-top:8px;}
+
+  /* Age comparison */
+  .age-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; margin:26px 0;}
+  .age-card{border-radius:18px; padding:20px; border:1px solid var(--border);}
+  .age-card.child{background:var(--teal-soft);}
+  .age-card.teen{background:var(--violet-soft);}
+  .age-card.adult{background:var(--amber-soft);}
+  .age-card h4{font-size:1rem; margin-bottom:10px;}
+  .age-card ul{padding-left:18px; font-size:.85rem; color:var(--text-2);}
+  .age-card li{margin-bottom:6px;}
+
+  /* PRACTICE model */
+  .practice-list{margin:26px 0;}
+  .practice-item{
+    display:flex; gap:16px; padding:16px 0; border-bottom:1px solid var(--border); align-items:flex-start;
+  }
+  .practice-item:last-child{border-bottom:none;}
+  .practice-letter{
+    flex-shrink:0; width:40px;height:40px; border-radius:11px;
+    background:linear-gradient(135deg,var(--rose),var(--violet));
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-d); font-weight:800; color:#0c211f; font-size:1.1rem;
+  }
+  .practice-item h4{font-size:.96rem; margin-bottom:4px;}
+  .practice-item p{font-size:.86rem; color:var(--text-2);}
+
+  /* Session plan timeline */
+  .session-plan{margin:26px 0;}
+  .sess-row{
+    display:grid; grid-template-columns:56px 1fr auto; gap:14px; align-items:center;
+    padding:15px 12px; border-bottom:1px solid var(--border);
+    cursor:pointer; border-radius:14px; transition:background .25s, transform .25s;
+  }
+  .sess-row:hover{background:var(--surface); transform:translateX(4px);}
+  .sess-row:last-child{border-bottom:none;}
+  .sess-num{
+    font-family:var(--font-d); font-weight:800; color:var(--rose); font-size:1rem;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--rose-soft); border-radius:12px; height:40px;
+  }
+  .sess-txt h4{font-size:.94rem; margin-bottom:3px;}
+  .sess-txt p{font-size:.83rem; color:var(--text-2);}
+  .sess-open{font-size:.76rem; color:var(--rose); font-weight:700; white-space:nowrap; display:flex; align-items:center; gap:5px;}
+
+  /* Session modal */
+  .modal-overlay{position:fixed; inset:0; z-index:200; background:rgba(6,9,20,0.72); backdrop-filter:blur(6px); display:flex; align-items:flex-end; justify-content:center; opacity:0; visibility:hidden; transition:opacity .3s;}
+  .modal-overlay.active{opacity:1; visibility:visible;}
+  @media(min-width:720px){ .modal-overlay{align-items:center;} }
+  .modal-box{width:100%; max-width:680px; max-height:88vh; overflow-y:auto; background:linear-gradient(180deg, #1d423d, #0c211f); border:1px solid var(--border); border-radius:26px 26px 0 0; padding:32px 26px 40px; position:relative; transform:translateY(40px); transition:transform .35s cubic-bezier(.2,.8,.2,1); -webkit-user-select:text; user-select:text;}
+  @media(min-width:720px){ .modal-box{border-radius:26px; transform:translateY(0) scale(.94);} }
+  .modal-overlay.active .modal-box{transform:translateY(0) scale(1);}
+  .modal-close{position:sticky; top:0; float:right; margin-left:12px; width:36px;height:36px; border-radius:50%; border:1px solid var(--border); background:rgba(255,255,255,.06); color:var(--text-1); font-size:1.1rem; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:5;}
+  .modal-close:hover{background:rgba(255,255,255,.14);}
+  .m-tag{display:inline-block; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--rose); background:var(--rose-soft); border:1px solid rgba(251,113,133,.35); padding:5px 13px; border-radius:999px; margin-bottom:14px;}
+  .m-title{font-family:var(--font-d); font-size:1.45rem; font-weight:800; margin-bottom:18px; line-height:1.3; clear:both;}
+  .m-block{margin-bottom:22px;}
+  .m-block h5{font-size:.82rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-3); margin-bottom:10px; display:flex; align-items:center; gap:8px;}
+  .m-goal{background:var(--sky-soft); border-left:3px solid var(--sky); border-radius:0 12px 12px 0; padding:14px 18px; font-size:.9rem; color:var(--text-1);}
+  .m-materials{display:flex; flex-wrap:wrap; gap:8px;}
+  .m-materials span{background:var(--surface); border:1px solid var(--border); padding:6px 13px; border-radius:999px; font-size:.8rem; color:var(--text-2);}
+  .m-phase{background:rgba(255,255,255,.03); border:1px solid var(--border); border-radius:16px; padding:16px 18px; margin-bottom:12px;}
+  .m-phase .ph-name{font-weight:700; font-size:.88rem; color:var(--rose); margin-bottom:8px; display:flex; align-items:center; gap:8px;}
+  .m-phase p{font-size:.87rem; color:var(--text-2); margin-bottom:8px;}
+  .m-phase p:last-child{margin-bottom:0;}
+  .m-dialog{background:rgba(0,0,0,.18); border-radius:12px; padding:12px 14px; margin-top:8px;}
+  .m-dialog .dl{display:flex; gap:10px; margin-bottom:9px; font-size:.86rem;}
+  .m-dialog .dl:last-child{margin-bottom:0;}
+  .m-dialog .dw{flex-shrink:0; width:64px; font-weight:700; font-size:.75rem; padding-top:1px;}
+  .m-dialog .dw.t{color:var(--teal);}
+  .m-dialog .dw.k{color:var(--rose);}
+  .m-dialog .dt{color:var(--text-2);}
+  .m-homework{background:var(--amber-soft); border-left:3px solid var(--amber); border-radius:0 12px 12px 0; padding:14px 18px; font-size:.87rem; color:var(--text-1);}
+  .m-nextprev{display:flex; justify-content:space-between; gap:12px; margin-top:26px; padding-top:20px; border-top:1px solid var(--border);}
+  .m-navbtn{flex:1; text-align:center; padding:10px 14px; border-radius:12px; background:var(--surface); border:1px solid var(--border); color:var(--text-2); font-size:.82rem; font-weight:600; cursor:pointer; transition:background .2s;}
+  .m-navbtn:hover{background:var(--surface-h); color:var(--text-1);}
+  .m-navbtn.disabled{opacity:.4; pointer-events:none;}
+  body.modal-open{overflow:hidden;}
+
+  /* Fear thermometer */
+  .thermo-wrap{display:flex; justify-content:center; margin:30px 0;}
+  .thermo{display:flex; align-items:flex-end; gap:8px;}
+  .thermo-bar{width:34px; border-radius:8px 8px 0 0; display:flex; align-items:flex-end; justify-content:center; color:#0c211f; font-weight:800; font-size:.72rem; padding-bottom:4px;}
+
+  /* Breathing animation */
+  .breathe-wrap{display:flex; flex-direction:column; align-items:center; gap:16px; margin:30px 0;}
+  .breathe-circle{
+    width:140px;height:140px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, rgba(56,189,248,.55), rgba(139,92,246,.35));
+    border:1px solid rgba(56,189,248,.4);
+    display:flex;align-items:center;justify-content:center;
+    font-size:.85rem; font-weight:700; color:var(--text-1);
+    animation:breathe 8s ease-in-out infinite;
+  }
+  @keyframes breathe{
+    0%{transform:scale(0.75);}
+    35%{transform:scale(1.15);}
+    50%{transform:scale(1.15);}
+    85%{transform:scale(0.75);}
+    100%{transform:scale(0.75);}
+  }
+  .breathe-label{font-size:.82rem; color:var(--text-3);}
+
+  /* Grounding <span class="prog-link" onclick="openProgram('5-4-3-2-1')">5-4-3-2-1</span> */
+  .ground-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin:26px 0;}
+  .ground-card{
+    text-align:center; padding:18px 10px; border-radius:16px;
+    background:var(--surface); border:1px solid var(--border);
+  }
+  .ground-card .big{font-family:var(--font-d); font-size:1.8rem; font-weight:800; color:var(--sky); display:block;}
+  .ground-card p{font-size:.78rem; color:var(--text-2); margin-top:6px;}
+
+  .worksheet{overflow-x:auto; margin:24px 0; border-radius:16px; border:1px solid var(--border);}
+  table{width:100%; border-collapse:collapse; font-size:.84rem; min-width:600px;}
+  thead th{
+    background:rgba(255,255,255,.05); color:var(--rose); text-align:left;
+    padding:12px 14px; font-size:.78rem; letter-spacing:.03em; text-transform:uppercase;
+    border-bottom:1px solid var(--border);
+  }
+  tbody td{padding:13px 14px; color:var(--text-2); border-bottom:1px solid rgba(255,255,255,.06); vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+
+  .parent-tips{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; margin:26px 0;}
+  .tip-card{background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:18px 20px;}
+  .tip-card h4{font-size:.9rem; margin-bottom:6px; color:var(--teal);}
+  .tip-card p{font-size:.83rem; color:var(--text-2);}
+
+  .quote{
+    border-left:3px solid var(--violet);
+    padding:18px 22px; margin:26px 0; font-family:var(--font-d); font-style:italic;
+    font-size:1.05rem; color:var(--text-1); background:var(--violet-soft); border-radius:0 14px 14px 0;
+  }
+  .quote span{display:block; margin-top:10px; font-family:var(--font-b); font-style:normal; font-size:.8rem; color:var(--text-3);}
+
+  .summary-box{
+    background:linear-gradient(135deg, var(--rose-soft), var(--violet-soft));
+    border:1px solid rgba(251,113,133,.3);
+    border-radius:20px; padding:28px 26px; margin-top:60px;
+  }
+  .summary-box h3{font-family:var(--font-d); font-size:1.25rem; margin-bottom:14px;}
+  .summary-box ul{padding-left:20px; color:var(--text-2); font-size:.92rem;}
+  .summary-box li{margin-bottom:8px;}
+
+  .nav-bottom{display:flex; justify-content:space-between; align-items:center; gap:16px; margin-top:40px; flex-wrap:wrap;}
+  .nav-btn{display:inline-flex; align-items:center; gap:8px; padding:13px 22px; border-radius:14px; text-decoration:none; font-weight:600; font-size:.9rem; transition:transform .25s, box-shadow .25s;}
+  .nav-btn.home{background:var(--surface); border:1px solid var(--border); color:var(--text-1);}
+  .nav-btn.next{background:linear-gradient(135deg,var(--rose),var(--violet)); color:#0c211f;}
+  .nav-btn:hover{transform:translateY(-3px);}
+  .nav-btn.disabled{opacity:.5; pointer-events:none;}
+
+  footer{position:relative; z-index:2; text-align:center; padding:44px 24px 60px; border-top:1px solid var(--border); color:var(--text-3); font-size:.88rem; margin-top:40px;}
+  footer a{color:var(--teal); text-decoration:none; font-weight:600;}
+
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-14px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+
+  @media(max-width:640px){
+    .dialog .who{width:60px; font-size:.72rem;}
+  }
+</style>
+</head>
+<body>
+
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<div class="topbar">
+  <a class="topbar-brand" href="index.html">
+    <img src="../logo.png" alt="AN Psikolojik Destek ve Rehabilitasyon Merkezi logosu">
+    <span class="tb-name">AN Psikolojik Destek ve Rehabilitasyon Merkezi</span>
+  </a>
+  <div class="topbar-right">
+    <a class="back" href="index.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+      <span>Menü</span>
+    </a>
+    <span class="progress-pill">Modül 2 / 20</span>
+  </div>
+</div>
+
+<main>
+
+    <div class="hero">
+    <div class="hero-illus">
+      <svg width="360" height="170" viewBox="0 0 360 170" fill="none">
+        <defs>
+          <radialGradient id="lightg" cx="50%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#f0cd8e" stop-opacity="0.55"/>
+            <stop offset="100%" stop-color="#f0cd8e" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="shieldg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#d9a85a"/>
+            <stop offset="100%" stop-color="#d9705a"/>
+          </linearGradient>
+        </defs>
+        <circle cx="180" cy="75" r="85" fill="url(#lightg)"/>
+        <path d="M180 20 L150 22 Q135 22 132 40 L128 80 Q128 118 180 148 Q232 118 232 80 L228 40 Q225 22 210 22 Z" fill="none" stroke="url(#shieldg)" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M180 20 L150 22 Q135 22 132 40 L128 80 Q128 118 180 148 Q232 118 232 80 L228 40 Q225 22 210 22 Z" fill="#1d423d" opacity=".55"/>
+        <path d="M158 78 l16 16 32-36" stroke="#f3eee1" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>
+        <g stroke="#f0cd8e" stroke-width="1.6" opacity=".55" stroke-linecap="round">
+          <path d="M180 8 L180 -4"/>
+          <path d="M120 30 L108 20"/>
+          <path d="M240 30 L252 20"/>
+          <path d="M105 75 L90 75"/>
+          <path d="M255 75 L270 75"/>
+        </g>
+      </svg>
+    </div>
+    <span class="tag">Modül 02 · Travmayla Çalışmak</span>
+    <h1>Travma Sonrası Stres ve BDT</h1>
+    <p>Açıkçası bu modüle her seferinde biraz farklı giriyorum. Travma odaya girdiğinde acele edilmez — ne sözde, ne adımda. Aşağıda yılların getirdiği 12 seanslık bir yol haritası var: gerçek diyaloglar, çalışma kitabı materyalleri, küçük çocuktan yetişkine kadar her yaşa uyarlanan bir tempo. Oku, ama acele etme — bu modülün kendisi de acele etmemeyi öğretiyor zaten.</p>
+  </div>
+
+  <!-- 1. Bilimsel tanım ve basit açıklama -->
+  <section>
+    <div class="sec-head"><div class="sec-num">1</div><h2>Bilimsel tanım: Travma Sonrası Stres Bozukluğu</h2></div>
+    <div class="sci-box">
+      <b>Klinik tanım:</b> DSM-5-TR'ye göre TSSB dört semptom grubuyla karakterizedir: yeniden yaşama, kaçınma, biliş ve duygudurumda olumsuz değişiklikler, aşırı uyarılmışlık. Bunlar gerçek ölüm veya ciddi yaralanma tehlikesini doğrudan yaşamaktan, buna tanık olmaktan ya da yakın birinin başına geldiğini öğrenmekten sonra ortaya çıkar ve en az bir ay sürer. TF-BDT bugün çocuklar ve ergenler için en güçlü bilimsel kanıt temeline sahip protokoldür.
+    </div>
+    <div class="simple-box">
+      <b>Basit bir dille söylemek gerekirse:</b> Evindeki duman alarmını hayal et. Şimdi düşün ki bu alarm ekmek kızartırken bile, hatta biraz buhar görünce bile çalıyor. Beden seni korumak için bu sistemi kurmuştur — ama travmadan sonra bu sistem "aşırı tetikte" moduna geçer ve artık geçmişte kalmış bir tehlikeye sanki şu an oluyormuş gibi tepki vermeye devam eder. Danışana tam olarak bu şekilde anlatıyorum.
+    </div>
+    <p class="lead">Bunu ilk duyduğunda insanın yüzünde bir rahatlama görüyorum hep. Çünkü bu, irade zayıflığı değil. Hayatta kalmak için gelişmiş, artık gerekli olmayan bir savunma refleksi — beden hâlâ eski savaşı sürdürüyor sadece.</p>
+  </section>
+
+  <!-- 2. Semptom grupları -->
+  <section>
+    <div class="sec-head"><div class="sec-num">2</div><h2>Semptomların klinik sınıflandırması (DSM-5)</h2></div>
+    <p class="lead">Tanı koyarken dört semptom grubuna bakarım, hepsi bir aydan uzun sürmeli ve günlük hayatı belirgin şekilde bozmalıdır. Aşağıdakiler sadece bir liste değil — her birinin arkasında somut bir klinik tablo var.</p>
+    <div class="symptom-grid">
+      <div class="symptom-card">
+        <span class="ico">🔄</span>
+        <h4>1. Yeniden yaşama (İstila)</h4>
+        <p>Olay istemsizce "geri döner" — flashback, kâbus, ani rahatsız edici anılar biçiminde.</p>
+        <div class="ex-line">Röya, 8 yaşında, kazadan sonra her araba kornası duyduğunda o anı yeniden "görüyordu". Sanki zaman geri sarıyordu.</div>
+      </div>
+      <div class="symptom-card">
+        <span class="ico">🚪</span>
+        <h4>2. Kaçınma</h4>
+        <p>Hatırlatan yer, kişi, konudan mümkün her yolla uzak durulur.</p>
+        <div class="ex-line">Kaza geçirmiş bir genç artık o yoldan gitmek istemiyordu — yolcu olarak bile.</div>
+      </div>
+      <div class="symptom-card">
+        <span class="ico">☁️</span>
+        <h4>3. Olumsuz düşünce ve duygudurum değişikliği</h4>
+        <p>Kendisi, başkaları, dünya hakkında olumsuz inançlar oluşur. Duygusal hissizlik, sevinçten uzaklaşma da buraya dahildir.</p>
+        <div class="ex-line">"Dünya tehlikelidir." "Kimseye güvenilmez." Bu cümleleri sık sık duyuyorum.</div>
+      </div>
+      <div class="symptom-card">
+        <span class="ico">⚡</span>
+        <h4>4. Aşırı uyarılmışlık</h4>
+        <p>Sürekli tehlike bekleme, kolay ürkme, uyku sorunu, sinirlilik, dikkati toplamada zorluk.</p>
+        <div class="ex-line">En küçük sesten irkilme. Beden sanki hiç tam olarak rahatlamıyor.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Yaş grupları -->
+  <section>
+    <div class="sec-head"><div class="sec-num">3</div><h2>Yaş gruplarına göre farklı belirtiler</h2></div>
+    <p class="lead">Aynı travma çocukta, ergende, yetişkinde tamamen farklı biçimlerde ortaya çıkar. Bir program seçerken ilk baktığım şey tam olarak budur — yaş, semptomu nasıl giydiriyor?</p>
+    <div class="age-grid">
+      <div class="age-card child">
+        <h4>👶 Çocuklar (3-10 yaş)</h4>
+        <ul>
+          <li>Travmayı oyunda tekrar tekrar canlandırma</li>
+          <li>Gerileme (daha küçük yaş davranışlarına dönüş, parmak emme)</li>
+          <li>Ayrılık kaygısı, uyku sorunları</li>
+          <li>Bedensel şikayetler (karın ağrısı, baş ağrısı)</li>
+        </ul>
+      </div>
+      <div class="age-card teen">
+        <h4>🧑 Ergenler (11-17 yaş)</h4>
+        <ul>
+          <li>Riskli davranışlar, saldırganlık</li>
+          <li>Sosyal içe kapanma, okuldan kaçınma</li>
+          <li>Kendine zarar verme riski</li>
+          <li>Utanç ve suçluluk duygusunun güçlenmesi</li>
+        </ul>
+      </div>
+      <div class="age-card adult">
+        <h4>🧑‍🦱 Yetişkinler</h4>
+        <ul>
+          <li>Duygusal donukluk, ilişkilerden uzaklaşma</li>
+          <li>İş ve günlük işlevsellikte azalma</li>
+          <li>Uyku bozuklukları, sürekli gerginlik</li>
+          <li>Öz eleştiri, özgüvende azalma</li>
+        </ul>
+      </div>
+    </div>
+    <p class="lead" style="margin-top:18px;">Küçük çocuklarda bedenin tepkisi sözden önce gelir. Bu yüzden buraya mutlaka duyu bütünleme bakış açısını da katarım — ağırlıklı battaniye, dans veya tıklama gibi harekete dayalı araçlar çok işe yarar. Ergoterapist gözüyle: önce beden sakinleşmeli ki söz gelsin.</p>
+  </section>
+
+  <!-- 4. TF-BDT modeli -->
+  <section>
+    <div class="sec-head"><div class="sec-num">4</div><h2>TF-BDT modeli — PRACTICE bileşenleri</h2></div>
+    <p class="lead">Travma Odaklı BDT dünyada en çok araştırılmış, kanıta dayalı travma tedavi modelidir. "PRACTICE" kısaltması temel adımları akılda tutmaya yardımcı olur — ben de bazen seansı bu kelimeyi hatırlayarak planlıyorum hâlâ.</p>
+    <div class="practice-list">
+      <div class="practice-item"><div class="practice-letter">P</div><div><h4>Psikoeğitim ve ebeveyn becerileri</h4><p>Travmayı ve etkisini sade bir dille anlatıyorum, ebeveyne somut destek becerileri gösteriyorum.</p></div></div>
+      <div class="practice-item"><div class="practice-letter">R</div><div><h4>Gevşeme becerileri</h4><p>Nefes teknikleri, <span class="prog-link" onclick="openProgram('ezele-bosaltma')">kas gevşetme</span> — bedeni sakinleştiren somut araçlar.</p></div></div>
+      <div class="practice-item"><div class="practice-letter">A</div><div><h4>Duygu düzenleme (Affect)</h4><p>Duyguyu tanımak, adlandırmak, yönetmeyi öğrenmek.</p></div></div>
+      <div class="practice-item"><div class="practice-letter">C</div><div><h4>Bilişsel baş etme (Cognitive coping)</h4><p>Düşünce-duygu-davranış bağlantısını göstermek, işe yaramayan düşünceleri nazikçe sorgulamak.</p></div></div>
+      <div class="practice-item"><div class="practice-letter">T</div><div><h4>Travma anlatısı (Trauma narrative)</h4><p>Olayı güvenli bir ortamda adım adım söze dökmek. En hassas aşama tam olarak budur.</p></div></div>
+      <div class="practice-item"><div class="practice-letter">I</div><div><h4>In-vivo maruz bırakma</h4><p>Gerçek, güvenli ama kaçınılan durumlarla kademeli bir temas kuruyoruz.</p></div></div>
+      <div class="practice-item"><div class="practice-letter">C</div><div><h4>Birlikte ebeveyn-çocuk seansları (Conjoint)</h4><p>Çocuğun hikâyesini ebeveynle paylaşmak, aile bağını güçlendirmek.</p></div></div>
+      <div class="practice-item"><div class="practice-letter">E</div><div><h4>Güvenliğin güçlendirilmesi (Enhancing safety)</h4><p>Gelecek için somut, yazılı bir güvenlik planı kuruyoruz.</p></div></div>
+    </div>
+  </section>
+
+  <!-- 5. Seans programı -->
+  <section>
+    <div class="sec-head"><div class="sec-num">5</div><h2>Seans seans program (12 seanslık model)</h2></div>
+    <p class="lead">Aşağıdaki yapı yıllardır kullandığım orta model. Bireysel ihtiyaca göre uzayabilir de kısalabilir de — tam 12 seans bir kural değil, bir başlangıç noktasıdır.</p>
+    <div class="session-plan">
+      <div class="sess-row" onclick="openSession(1)"><div class="sess-num">1</div><div class="sess-txt"><h4>Tanışma ve değerlendirme</h4><p>Güven ilişkisinin kurulması, semptomların değerlendirilmesi, hedeflerin belirlenmesi.</p></div><div class="sess-open">Seansı aç ▸</div></div>
+      <div class="sess-row" onclick="openSession(2)"><div class="sess-num">2</div><div class="sess-txt"><h4>Psikoeğitim</h4><p>Travma ve beyin hakkında sade bir açıklama — "neden böyle hissediyorum" sorusuna cevap.</p></div><div class="sess-open">Seansı aç ▸</div></div>
+      <div class="sess-row" onclick="openSession(3)"><div class="sess-num">3</div><div class="sess-txt"><h4>Nefes ve gevşeme becerileri</h4><p><span class="prog-link" onclick="openProgram('qutu-nefesi')">Kutu nefesi</span> ve kas gevşetme teknikleri öğretilir ve uygulanır.</p></div><div class="sess-open">Seansı aç ▸</div></div>
+      <div class="sess-row" onclick="openSession(4)"><div class="sess-num">4</div><div class="sess-txt"><h4>Duyguları tanıma</h4><p>Duygu sözlüğü, "<span class="prog-link" onclick="openProgram('qorxu-termometri')">Korku Termometresi</span>" ile duygu yoğunluğunun ölçülmesi.</p></div><div class="sess-open">Seansı aç ▸</div></div>
+      <div class="sess-row" onclick="openSession(5)"><div class="sess-num">5</div><div class="sess-txt"><h4>Bilişsel baş etme becerileri</h4><p>Düşünce-duygu-davranış üçgeni, işe yaramayan düşüncelerin tanınması.</p></div><div class="sess-open">Seansı aç ▸</div></div>
+      <div class="sess-row" onclick="openSession(6)"><div class="sess-num">6</div><div class="sess-txt"><h4>Travma anlatısı — başlangıç</h4><p>Olayın en "güvenli" kısmından başlayarak resim ya da sözle ifade.</p></div><div class="sess-open">Seansı aç ▸</div></div>
+      <div class="sess-row" onclick="openSession(7)"><div class="sess-num">7</div><div class="sess-txt"><h4>Travma anlatısı — devamı</h4><p>Hikâyenin en zor noktasına kademeli olarak yaklaşma, duyguların yönetilmesi.</p></div><div class="sess-open">Seansı aç ▸</div></div>
+      <div class="sess-row" onclick="openSession(8)"><div class="sess-num">8</div><div class="sess-txt"><h4>Travma anlatısı — tamamlanma</h4><p>Hikâyenin bütünleştirilmesi, yeni anlam ve bakış açısının kurulması.</p></div><div class="sess-open">Seansı aç ▸</div></div>
+      <div class="sess-row" onclick="openSession(9)"><div class="sess-num">9</div><div class="sess-txt"><h4>Bilişsel işleme</h4><p>Travmayla ilgili çarpıtılmış inançların (örn. kendini suçlama) işlenmesi.</p></div><div class="sess-open">Seansı aç ▸</div></div>
+      <div class="sess-row" onclick="openSession(10)"><div class="sess-num">10</div><div class="sess-txt"><h4>In-vivo maruz bırakma</h4><p>Kaçınılan ama gerçekten güvenli durumlarla kademeli karşılaşma planı.</p></div><div class="sess-open">Seansı aç ▸</div></div>
+      <div class="sess-row" onclick="openSession(11)"><div class="sess-num">11</div><div class="sess-txt"><h4>Birlikte ebeveyn-çocuk seansı</h4><p>Hikâyenin paylaşılması, ailevi desteğin güçlendirilmesi.</p></div><div class="sess-open">Seansı aç ▸</div></div>
+      <div class="sess-row" onclick="openSession(12)"><div class="sess-num">12</div><div class="sess-txt"><h4>Güvenlik planı ve kapanış</h4><p>Becerilerin geleceğe yönelik özetlenmesi, ilerlemenin kaydedilmesi.</p></div><div class="sess-open">Seansı aç ▸</div></div>
+    </div>
+    <div class="example"><b>💡 Öneri:</b> Herhangi bir seansa tıkladığında tam senaryoyu (giriş, ana bölüm, gerçek diyalog, ev ödevi) göreceksin.</div>
+  </section>
+
+  <!-- 6. Örnek diyalog -->
+  <section>
+    <div class="sec-head"><div class="sec-num">6</div><h2>Örnek diyalog (8 yaşında bir çocukla)</h2></div>
+    <div class="dialog">
+      <div class="line"><span class="who t">Terapist:</span><span class="txt">Röya, beynimizde küçük bir "tehlike zili" var. O bizi korumak için var. Ama bazen korkutucu bir şey olduktan sonra o zil çok hassaslaşır, gerekmediğinde de çalar. Senin zilin nasıl?</span></div>
+      <div class="line"><span class="who k">Çocuk:</span><span class="txt">Benim zilim her zaman çalıyor! Uyurken bile.</span></div>
+      <div class="line"><span class="who t">Terapist:</span><span class="txt">Anlıyorum, bu çok yorucu olmalı. Hadi birlikte o zili biraz sakinleştirmeyi öğrenelim, olur mu?</span></div>
+      <div class="line"><span class="who k">Çocuk:</span><span class="txt">Evet, zilin biraz sakin olmasını istiyorum.</span></div>
+    </div>
+    <div class="example"><b>Dikkat:</b> Çocukla çalışırken metafor, oyun, resim — temel araçlar bunlardır. "TSSB" kelimesini çocuğa asla söylemem. Onun anlayabileceği imgelerle konuşurum.</div>
+  </section>
+
+  <!-- 7. Nefes becerisi -->
+  <section>
+    <div class="sec-head"><div class="sec-num">7</div><h2>Çalışma kitabı materyali: Kutu Nefesi (Box Breathing)</h2></div>
+    <p class="lead">Bu, çantamdan hiç eksik olmayan araçlardan biri. Daire büyüyünce nefes al, küçülünce ver. Bu kadar basit, ama etkisi hiç de basit değil.</p>
+    <div class="breathe-wrap">
+      <div class="breathe-circle">Nefes al / ver</div>
+      <div class="breathe-label">4 saniye al → 4 saniye tut → 4 saniye ver → 4 saniye tut</div>
+    </div>
+  </section>
+
+  <!-- 8. Korku termometresi -->
+  <section>
+    <div class="sec-head"><div class="sec-num">8</div><h2>Çalışma kitabı materyali: Korku Termometresi</h2></div>
+    <p class="lead">Danışana, özellikle çocuğa, duygusunu bir sayıyla ifade etmeyi öğreten görsel bir araç. Görünüşte basit. Ama seansların çoğu tam olarak bu küçük sayının üzerine kurulur.</p>
+    <div class="thermo-wrap">
+      <div class="thermo">
+        <div class="thermo-bar" style="height:30px;background:#4ade80;">1-2</div>
+        <div class="thermo-bar" style="height:55px;background:#a3e635;">3-4</div>
+        <div class="thermo-bar" style="height:80px;background:#facc15;">5-6</div>
+        <div class="thermo-bar" style="height:105px;background:#fb923c;">7-8</div>
+        <div class="thermo-bar" style="height:130px;background:#f87171;">9-10</div>
+      </div>
+    </div>
+    <div class="example"><b>Kullanım şekli:</b> "Şu an 1'den 10'a kadar ne kadar korkuyorsun?" Basit bir soru gibi görünür. Ama hem bana hem danışana duygunun tam olarak nerede durduğunu gösterir.</div>
+  </section>
+
+  <!-- 9. Topraklanma -->
+  <section>
+    <div class="sec-head"><div class="sec-num">9</div><h2>Çalışma kitabı materyali: 5-4-3-2-1 Topraklanma Tekniği</h2></div>
+    <p class="lead">Flashback ya da güçlü bir kaygı anında "şimdiye" dönmek için kullandığım en hızlı teknik budur. Beş duyuya dayanır. Ezberlemeye bile gerek yok — beden kendisi hatırlar.</p>
+    <div class="ground-grid">
+      <div class="ground-card"><span class="big">5</span><p>Gördüğün şey</p></div>
+      <div class="ground-card"><span class="big">4</span><p>Dokunduğun şey</p></div>
+      <div class="ground-card"><span class="big">3</span><p>Duyduğun ses</p></div>
+      <div class="ground-card"><span class="big">2</span><p>Hissettiğin koku</p></div>
+      <div class="ground-card"><span class="big">1</span><p>Tattığın tat</p></div>
+    </div>
+  </section>
+
+  <!-- 10. Ebeveyn önerileri -->
+  <section>
+    <div class="sec-head"><div class="sec-num">10</div><h2>Ebeveynler için öneriler</h2></div>
+    <div class="parent-tips">
+      <div class="tip-card"><h4>🗣️ Konuşmaya zorlamayın</h4><p>Çocuk hazır olduğunda kendisi konuşacaktır. Zaman verin, soru yağmuruna tutmayın.</p></div>
+      <div class="tip-card"><h4>🛏️ Rutini koruyun</h4><p>Düzenli uyku, yemek, günlük etkinlik — bu, sözlerden çok daha fazla iş görür. Çocuğa güvenlik hissi tam olarak böyle ulaşır.</p></div>
+      <div class="tip-card"><h4>💬 Duyguları kabul edin</h4><p>"Korkma" demek yerine "korktuğunu anlıyorum, yanındayım" deyin.</p></div>
+      <div class="tip-card"><h4>🚫 Yeniden travmatize etmeyin</h4><p>Olayın ayrıntılarını tekrar tekrar sormaktan kaçının.</p></div>
+      <div class="tip-card"><h4>🏫 Okulla iletişimde kalın</h4><p>Öğretmeni durumdan haberdar edin ki çocuk okulda da desteklensin. Bu, psikopedagojik desteğin en basit biçimidir.</p></div>
+    </div>
+    <div class="example"><b>Ev ödevi (ebeveyn için):</b> Bu hafta her akşam çocuğunuzla beş dakika "günün nasıl geçti" sohbeti yapın — soru yağmuruna tutmadan, sadece dinleyin. Bir cümle not edin: bugün ne farklıydı?</div>
+  </section>
+
+  <!-- 11. Klinik vaka -->
+  <section>
+    <div class="sec-head"><div class="sec-num">11</div><h2>Röya ile çalışmak: hikâyenin arkasında kalanlar</h2></div>
+    <p class="lead">Bazen bir çocuğun gözlerine bakınca artık her şeyi anladığını sanırsın. Röya ile de ilk düşüncem bu oldu — sonra yanıldığımı anladım.</p>
+    <div class="card">
+      <h3>📋 Başvuru</h3>
+      <p>Röya 9 yaşındaydı, annesi tarafından bir araba kazasından üç hafta sonra bana getirildi. Kendisi kazada ciddi yaralanmamıştı, ama annesi bir süre bilincini kaybetmişti, arabanın kapısı ezilmişti, yol kenarında uzun süre yardım beklemişlerdi. Fiziksel olarak ikisi de iyileşmişti. Ama Röya artık geceleri uyuyamıyordu, her araba kornasında donup kalıyordu, okulda sınıf arkadaşlarından uzaklaşmıştı.</p>
+    </div>
+    <div class="card">
+      <h3>🔍 Ne bulduk</h3>
+      <p>İlk üç seansta hiçbir resmi test uygulamadım — sadece oyun ve resim üzerinden güven kurdum. Dördüncü seansta Röya kendisi, hiç sorulmadan, araba hakkında konuşmaya başladı. Bu, benim için bir dönüm noktası oldu: çocuk hazır olduğunda kapıyı kendisi açar, sen onu çalmamalısın.</p>
+    </div>
+    <div class="dialog">
+      <div class="line"><span class="who t">Terapist:</span><span class="txt">Röya, bugün bana o günden bahsetmek ister misin, yoksa hâlâ erken mi geliyor?</span></div>
+      <div class="line"><span class="who k">Danışan:</span><span class="txt">Bilmiyorum... ama her araba sesi duyduğumda kalbim çok hızlı atıyor.</span></div>
+      <div class="line"><span class="who t">Terapist:</span><span class="txt">Bu çok anlaşılır bir tepki. Beynin sana "dikkatli ol" demeye çalışıyor. Bu his geldiğinde genelde ne yaparsın?</span></div>
+      <div class="line"><span class="who k">Danışan:</span><span class="txt">Kulaklarımı kapatıyorum, bazen pencereden uzaklaşıyorum.</span></div>
+      <div class="line"><span class="who t">Terapist:</span><span class="txt">Anlıyorum. Sana bir şey söylemek istiyorum — o günü hatırlamak kendi başına tehlikeli değil. Anı seni gerçekten yaralamaz, sadece rahatsız hissettirir. Ama ondan her kaçtığında, beynin "demek ki bu gerçekten tehlikeli" diye öğreniyor.</span></div>
+      <div class="line"><span class="who k">Danışan:</span><span class="txt">Yani kaçmam beni daha da korkak mı yapıyor?</span></div>
+      <div class="line"><span class="who t">Terapist:</span><span class="txt">Tam olarak öyle. Burada, küçük adımlarla, bu anıya yaklaşmayı öğreneceğiz — acele etmeden, ama kaçmadan da.</span></div>
+    </div>
+    <div class="example"><b>Temel ilke:</b> Travmayı hatırlamak kendi başına tehlikeli değildir. Sorunu sürdüren asıl etken, travma anılarından sistematik kaçınmadır. Bunu her aileye ilk seanstan itibaren anlatıyorum, çünkü aksi halde ebeveyn de çocuğu korumak adına farkında olmadan kaçınmayı güçlendirebilir.</div>
+    <div class="card"><h3>🎯 Seansta bunu nasıl uyguluyorum?</h3><p>Röya'ya asla "korkma" demedim. Bunun yerine korkunun mantığını birlikte açtık — neden var, neye hizmet ediyor, ne zaman artık gerekmiyor. Çocuk bunu anladığında, önündeki yol daha az korkutucu görünüyor.</p></div>
+  </section>
+
+  <!-- 12. Vaka formülasyonu -->
+  <section>
+    <div class="sec-head"><div class="sec-num">12</div><h2>Terapötik Değerlendirme Formu</h2></div>
+    <p class="lead">Bir çocukla çalıştığım için bu formu genellikle ebeveynle birlikte doldururum — çocuğun kendi sözleriyle şekillenen kısımları ise ayrıca not ederim. Kâğıt üzerinde basit görünür. Pratikte, tüm tedavi planının iskeletidir.</p>
+    <div class="worksheet">
+      <table>
+        <thead><tr><th>Bileşen</th><th>Röya'nın örneği</th></tr></thead>
+        <tbody>
+          <tr><td><b>Başvuru sorunu</b></td><td>Uyku bozukluğu, aşırı uyarılmışlık, sosyal geri çekilme</td></tr>
+          <tr><td><b>Tetikleyici faktörler</b></td><td>Araba kazası (3 hafta önce)</td></tr>
+          <tr><td><b>Yatkınlaştırıcı faktörler (kök)</b></td><td>Hassas mizaç, geçmişte ayrılık kaygısı öyküsü</td></tr>
+          <tr><td><b>Sürdürücü faktörler (neden devam ediyor)</b></td><td>Sistematik kaçınma (araba sesi, pencere, yol), ailenin de kaçınmayı güçlendirmesi</td></tr>
+          <tr><td><b>Koruyucu faktörler (güçlü yönler)</b></td><td>Destekleyici anne, iyi sözel ifade becerisi, geçmişte sağlıklı bağlanma</td></tr>
+          <tr><td><b>Temel inanç</b></td><td>"Dünya aniden tehlikeli, kendimi koruyamıyorum"</td></tr>
+          <tr><td><b>Tedavi hedefi</b></td><td>Kademeli maruz bırakma, güvenlik hissinin yeniden kurulması, uykunun sabitlenmesi</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card"><h3>🎯 Seansta bunu nasıl uyguluyorum?</h3><p>Bu tablodaki "sürdürücü faktörler" satırı benim için en önemlisi — çünkü tedavi genellikle tam oradan başlar. Röya'da bu kaçınmaydı, bir başkasında tamamen farklı bir kalıp olabilir.</p></div>
+  </section>
+
+  <!-- 13. Seans protokolü -->
+  <section>
+    <div class="sec-head"><div class="sec-num">13</div><h2>Seans protokolü örneği</h2></div>
+    <p class="lead">Aşağıda Röya ile 7. seansın (travma anlatısının devamı) gerçek protokol yapısı var. Bu formatı her seanstan sonra doldururum, hem kendi kayıtlarım için, hem de gerekirse başka bir uzmana aktarmak için.</p>
+    <div class="worksheet">
+      <table>
+        <thead><tr><th>Aşama</th><th>Süre</th><th>Not</th></tr></thead>
+        <tbody>
+          <tr><td>Ruh hâli ve korku termometresi kontrolü</td><td>5 dk</td><td>Termometre: 5/10 (önceki seansta 7/10 idi)</td></tr>
+          <tr><td>Ev ödevinin gözden geçirilmesi</td><td>8 dk</td><td>Anneyle günlük "günün nasıl geçti" ritüeli 5 günün 4'ünde uygulanmış</td></tr>
+          <tr><td>Gündemin belirlenmesi</td><td>2 dk</td><td>Bugün: travma anlatısının devamı, zor noktaya yaklaşma</td></tr>
+          <tr><td>Ana çalışma</td><td>25 dk</td><td>Hikâyenin devamı, korku termometresiyle sürekli izleme, gerektiğinde mola</td></tr>
+          <tr><td>Sakinleştirme ve kapanış</td><td>7 dk</td><td>Kutu nefesiyle sakin duruma dönüş sağlandı</td></tr>
+          <tr><td>Kapanış geri bildirimi</td><td>3 dk</td><td>Danışan: "Bu sefer daha az korktum, demek ki iyileşiyorum"</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 14. Değerlendirme ölçekleri -->
+  <section>
+    <div class="sec-head"><div class="sec-num">14</div><h2>BDT değerlendirme testi ve ölçekleri</h2></div>
+    <p class="lead">TSSB şüphesi olan çocuk ve ergenlerde ilk seanstan önce standartlaştırılmış araçlar kullanırım. Bunlar tanı koymaz, ama başlangıç noktasını rakamlaştırır ve tedavi boyunca ilerlemeyi izlemeye imkân verir.</p>
+    <div class="grid-3">
+      <div class="lens-card"><span class="ico">📊</span><h4>CPSS-5 (Child PTSD Symptom Scale)</h4><p>8-18 yaş için TSSB semptomlarının şiddetini ve işlevselliğe etkisini ölçen temel araç.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>UCLA PTSD Reaction Index</h4><p>Travmatik maruziyeti ve semptomları geniş bir yaş aralığında değerlendiren uluslararası standart.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>CRIES-8</h4><p>Yeniden yaşama ve kaçınma semptomlarını kısa formatta ölçen, klinikte hızlı uygulanan bir ölçek.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>IES-R (Impact of Event Scale)</h4><p>Ergen ve yetişkinlerde olayın etkisini üç boyutta (yeniden yaşama, kaçınma, uyarılmışlık) değerlendirir.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>PCL-5</h4><p>DSM-5 kriterlerine uygun TSSB semptomlarının öz-bildirim listesidir, yetişkinlerde yaygın kullanılır.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>TSCC (Trauma Symptom Checklist for Children)</h4><p>Travma sonrası geniş semptomatolojiyi (kaygı, depresyon, dissosiyasyon dahil) kapsayan genişletilmiş bir araç.</p></div>
+    </div>
+    <div class="example"><b>Dikkat:</b> Röya ile CPSS-5 ve CRIES-8'i birlikte kullandım, her 4 seansta bir tekrarladım. Rakamlardaki düşüş çoğu zaman ebeveyni sözlerden daha çok ikna eder — "bak, 7'ydi, şimdi 5" cümlesi gerçek bir umut yaratır.</div>
+  </section>
+
+  <!-- 15. Ev ödevi örneği -->
+  <section>
+    <div class="sec-head"><div class="sec-num">🏠</div><h2>Ev ödevi örneği</h2></div>
+    <p class="lead">Röya'ya verdiğim somut ödev buydu — senin için de bir örnek olabilir.</p>
+    <div class="card">
+      <p>Her gün, günün herhangi bir anında, bir araba sesi duyduğunda donup kalmak yerine üç derin nefes al ve kendine yüksek sesle (ya da içinden) de ki: "Bu şimdi oluyor, geçmişte değil. Anıyı hatırlamak beni yaralamıyor." Bunu defterine bir sayıyla (0-10 arası korku düzeyi) not et. Amaç korkuyu anında yok etmek değil — sadece ondan kaçmadan onunla kalmayı öğrenmektir. Bunu her danışanıma söylerim: canavar kaçtıkça büyür, kaldıkça küçülür.</p>
+    </div>
+  </section>
+
+
+<section>
+  <div class="sec-head"><div class="sec-num">15</div><h2>Travma sonrası dönemde kriz belirtileri</h2></div>
+  <div class="crisis-box">
+    <h4>⚠️ Ne zaman acil müdahale gerekir</h4>
+    <p>TF-BDT programı çerçevesinde, özellikle travma anlatısı (narrative) bileşenine geçildiğinde, aşağıdaki belirtiler seansın yönünü hemen değiştirmelidir:</p>
+    <ul>
+      <li>Dissosiyatif epizodların derinleşmesi — çocuğun gerçeklikle bağlantısını uzun süre (birkaç dakikadan fazla) kaybetmesi;</li>
+      <li>Flashback sırasında kendine zarar verici hareketler (kendine vurma, tırmalama) gözlemlenmesi;</li>
+      <li>"Artık yaşamak istemiyorum" biçiminde ifadeler, özellikle travma anlatısının en ağır kısmına yaklaşırken;</li>
+      <li>Yeniden travmatizasyon riski taşıyan mevcut ortam (devam eden şiddet, güvenli olmayan ev).</li>
+    </ul>
+    <ol class="crisis-steps">
+      <li>Travma anlatısı bileşenini durdurun, önce topraklanma (5-4-3-2-1) ve nefes teknikleriyle sabitleyin.</li>
+      <li>Dissosiyasyon uzun sürerse ya da tekrarlanırsa, ebeveynle birlikte psikiyatrik konsültasyon planlayın.</li>
+      <li>Mevcut güvenlik riski (devam eden şiddet) tespit edilirse, ilgili çocuk hakları kurumuna bildirim yükümlülüğü devreye girer.</li>
+      <li>Kendine zarar ifadeleriyle ilgili Columbia Risk Ölçeği temelinde yapılandırılmış soru sorun, sonucu belgeleyin.</li>
+      <li>Yeniden başlamadan önce danışanın sabitlendiğinden emin olun — anlatı bileşenine aceleyle dönmek ters etki yaratabilir.</li>
+    </ol>
+    <p><b>Not:</b> TF-BDT'nin PRACTICE modelinde "stabilizasyon" aşaması zorunlu bir geçiştir — anlatıya hazır olmayan bir danışanla bu aşamaya acele etmek klinik bir hatadır.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="sec-num">16</div><h2>Kaynakça</h2></div>
+  <div class="biblio-box">
+    <h4>📚 Konuyla ilgili başlıca kaynaklar</h4>
+    <ul class="biblio-list">
+      <li><b>Cohen, J. A., Mannarino, A. P., & Deblinger, E.</b> (2017). <i>Treating Trauma and Traumatic Grief in Children and Adolescents</i> (2nd ed.). Guilford Press.</li>
+      <li><b>Foa, E. B., et al.</b> (2018). The Child PTSD Symptom Scale (CPSS-5). <i>Journal of Clinical Child & Adolescent Psychology, 47</i>(1), 38–46.</li>
+      <li><b>van der Kolk, B.</b> (2014). <i>The Body Keeps the Score.</i> Viking.</li>
+      <li><b>Posner, K., et al.</b> (2011). The Columbia-Suicide Severity Rating Scale. <i>American Journal of Psychiatry, 168</i>(12), 1266–1277.</li>
+      <li><b>American Psychiatric Association.</b> (2022). <i>DSM-5-TR.</i></li>
+      <li><b>Kaminer, D., & Eagle, G.</b> (2010). <i>Traumatic Stress in South Africa.</i> Wits University Press.</li>
+    </ul>
+  </div>
+</section>
+
+<div class="quote">
+    "Travma bir olay değildir — bedenin o olaya verdiği sürekli tepkidir."
+    <span>— Bessel van der Kolk, "Beden Kayıt Tutar" kitabının yazarı</span>
+  </div>
+
+  <div class="summary-box">
+    <h3>📌 Modül özeti</h3>
+    <ul>
+      <li>TSSB, beynin tehlike alarm sisteminin travmadan sonra aşırı hassaslaşmasıdır. İrade zayıflığı değildir.</li>
+      <li>Dört temel semptom grubu vardır: yeniden yaşama, kaçınma, olumsuz düşünce/duygudurum, aşırı uyarılmışlık.</li>
+      <li>Belirtiler yaş grubuna göre farklıdır — programı buna göre uyarlamak gerekir.</li>
+      <li>TF-BDT (PRACTICE modeli) dünyada en fazla kanıt tabanına sahip travma tedavi yaklaşımıdır.</li>
+      <li>Nefes teknikleri, Korku Termometresi, Topraklanma becerisi — her seansta elinin altında olan araçlardır.</li>
+      <li>Ebeveyn desteği olmadan çocukla yapılan çalışma yarım kalır. Bunu yıllardır görüyorum.</li>
+    </ul>
+  </div>
+
+
+  <div class="nav-bottom">
+    <a class="nav-btn home" href="index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+      Menüye dön
+    </a>
+    <a class="nav-btn next" href="03-aqressiya.html">
+      Sonraki modül: Saldırganlık ve BDT
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+
+</main>
+
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeSession()">
+  <div class="modal-box">
+    <div class="modal-close" onclick="closeSession()">✕</div>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Bilişsel Davranışçı Terapi Kursu · Modül 2/20</p>
+  <p style="margin-top:8px;">By <a href="https://aze-ai.az" target="_blank" rel="noopener">securtiy_group</a></p>
+  <p style="margin-top:10px;font-size:.82rem;"><a href="../privacy.html">Gizlilik Politikası</a> · <a href="../terms.html">Kullanım Şartları</a></p>
+</footer>
+
+<script>
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target);} });
+},{threshold:0.1});
+document.querySelectorAll('section').forEach(s=>io.observe(s));
+
+window.addEventListener('mousemove', e=>{
+  const mx = (e.clientX/window.innerWidth - 0.5);
+  const my = (e.clientY/window.innerHeight - 0.5);
+  document.querySelectorAll('.blob').forEach((b,i)=>{
+    const speed = (i+1)*16;
+    b.style.transform = `translate(${mx*speed}px, ${my*speed}px)`;
+  });
+});
+</script>
+<script>
+const SESSIONS = [
+  {
+    "num": 1,
+    "title": "Tanışma ve Değerlendirme",
+    "goal": "Danışanla (çocuk, ergen ya da yetişkin) ilk güven köprüsünü kurmak, semptomların şiddetini sakin bir şekilde anlamak ve aileye ilk umut sinyalini vermek.",
+    "materials": [
+      "Sade bir değerlendirme sohbeti",
+      "Renkli kâğıt ve kalemler",
+      "Korku termometresi şablonu"
+    ],
+    "phases": [
+      {
+        "name": "🟢 İlk tanışma",
+        "text": [
+          "İlk seansta travma detayına dokunmam. Amaç basit — danışan bu odada kendini güvende hissetsin."
+        ],
+        "dialog": [["T","Merhaba Röya, bugün seninle konuşacak kişi benim. Bu odada istediğin kadar sessiz kalabilirsin, hiçbir baskı yok."],["K","Merhaba... annem bana iyi bir insan olduğunuzu söyledi."],["T","Öyle mi? Peki okul dışında ne yapmayı seviyorsun?"],["K","Resim çizmeyi seviyorum, bir de kedimle oynamayı."],["T","Kedinin adı ne?"],["K","Gri. Çünkü tamamen gri renkte."],["T","Güzel bir isim. Bugün sadece seninle tanışmak istiyorum, hiçbir şeyi aceleye getirmiyoruz."],["K","Tamam... ama ne soracaksınız?"],["T","İstersen sen de bana soru sorabilirsin, ben de sana."],["K","Kaç çocukla böyle konuştunuz?"],["T","Çok. Her biri farklı, sen de farklısın."],["K","Şu an ne diyeceğimi bilmiyorum."],["T","Hiçbir şey söylemek zorunda değilsin. Bugün burada olman yeterli."],["K","Tamam, o zaman biraz daha rahatladım."]]
+      },
+      {
+        "name": "🔵 Sakin değerlendirme",
+        "text": [
+          "Uyku, korku ve davranış değişikliklerinin sıklığını öğrenmek için ebeveynle ayrıca konuşuyorum. Bunu çocuğun yanında yapmıyorum."
+        ],
+        "dialog": [["T","Bu zorluk ilk ne zaman başladı, hatırlıyor musunuz?"],["K","Kazadan bir hafta sonra başladı, giderek kötüleşti."],["T","Uyku konusunda neler gözlemlediniz?"],["K","Gece birkaç kez uyanıyor, bazen bağırarak."],["T","Gündüz davranışlarında ne gibi değişiklikler var?"],["K","Sınıf arkadaşlarından uzaklaştı, eskisi gibi oynamıyor."],["T","Araba sesine tepkisi nasıl?"],["K","Donup kalıyor, bazen ellerini kulaklarına götürüyor."],["T","Bu, günlük hayatı nasıl etkiliyor?"],["K","Okula gitmekte zorlanıyor, iştahı da azaldı."],["T","Ailede bunu nasıl konuşuyorsunuz?"],["K","Açıkçası konudan kaçınıyoruz, onu üzmekten korkuyoruz."],["T","Bunu anlıyorum, birçok ebeveyn böyle yapıyor."],["K","Peki biz ne yapmalıyız?"],["T","Bugün buna birlikte bakacağız, adım adım."],["K","Tamam, gerçekten yardıma ihtiyacımız var."],["T","Daha önce buna benzer bir şey yaşamış mıydı?"],["K","Hayır, böyle bir şey hiç olmamıştı."],["T","Bu bilgi bana çok yardımcı olacak, teşekkür ederim."],["K","Teşekkürler, sizinle konuşmak bile rahatlattı."]]
+      },
+      {
+        "name": "🟣 İlk adım",
+        "text": [
+          "Seansı umut dolu bir notla kapatıyorum, sürecin ne kadar süreceğini sade bir dille anlatıyorum."
+        ],
+        "dialog": [["T","Bugün senin için nasıl geçti?"],["K","Düşündüğümden kolay oldu."],["T","Bunu duymak beni sevindirdi."],["K","Bir dahaki sefer de gelecek miyim?"],["T","Evet, bir süre her hafta görüşeceğiz."],["K","Tamam, öyleyse iyi."],["T","Eve gidince bugünle ilgili annene bir şey söylemek ister misin?"],["K","Korkunç biri olmadığınızı söylerim."],["T","Bunu duymak çok güzel."],["K","Teşekkürler."]]
+      }
+    ],
+    "homework": "Ebeveyn için: bu hafta çocuğunuzun uyku ve ruh hâlini tek satırlık günlük notlarla kaydedin — bir cümle yeterli.",
+    "about": "Bu ilk aşamada resmi bir test uygulanmaz — yapılandırılmış bir değerlendirme sohbeti yürütülür. Amaç klinik yargıyla semptomların şiddetini ve sıklığını anlamaktır.",
+    "specialists": [
+      "Klinik psikolog",
+      "TF-BDT sertifikalı terapist",
+      "Çocuk ve ergen psikoloğu"
+    ]
+  },
+  {
+    "num": 2,
+    "title": "Psikoeğitim — Neden Böyle Hissediyorum?",
+    "goal": "Travmayı ve beynin nasıl çalıştığını korkutmadan anlatmak, danışana 'ben bozuk değilim' hissini vermek.",
+    "materials": [
+      "Alarm sistemi metaforu için basit bir resim",
+      "Psikoeğitim çalışma sayfası"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Köprü",
+        "text": [
+          "Seansı geçen seferki konuşmayla bağlantı kurarak açıyorum, haftanın nasıl geçtiğini kontrol ediyorum."
+        ],
+        "dialog": [["T","Röya, son görüşmemizden sonra evde nasıl geçti?"],["K","Oldukça normal, kediyle birkaç kez oynadım."],["T","Konuşmamızdan sonra aklına bir soru geldi mi?"],["K","Bilmiyorum... bazen hâlâ neden korktuğumu düşünüyorum."],["T","Bu çok iyi bir soru, bugün tam olarak buna bakacağız."],["K","Tamam, ilginç geliyor."],["T","Şu an nasıl hissediyorsun, oldukça sakin misin?"],["K","Biraz gerginim, ama sorun değil."],["T","Gerginlik normal, geçecek."],["K","Umarım."],["T","Bu hafta uyku nasıldı?"],["K","İki gece kötü uyudum, geri kalanı normaldi."],["T","Söylediğin için teşekkürler, bunu dikkate alacağız."],["K","Tamam."]]
+      },
+      {
+        "name": "🔵 Alarm sistemi metaforu",
+        "text": [
+          "Duman alarmı metaforuyla beynin neden böyle tepki verdiğini açıklıyorum — ve bu tepkinin bozuk değil koruyucu olduğunu."
+        ],
+        "dialog": [["T","Bu açıklama sana mantıklı geliyor mu?"],["K","Biraz, ama hâlâ neden böyle hissettiğimi tam anlamıyorum."],["T","Bu, senin 'zayıf' olduğun anlamına gelmiyor, beynin belirli bir şekilde tepki veriyor sadece."],["K","Bunu bilmek açıkçası biraz rahatlatıyor."],["T","Bu konuda bir sorun var mı?"],["K","Peki bu ne zaman geçecek, biliyor musunuz?"],["T","Tam olarak söylemek zor, ama pratikle genellikle daha hızlı azalıyor."],["K","Tamam, bu umut verici bir cevap."],["T","Hadi bu zili kâğıda çizelim, sana göre nasıl görünüyor?"],["K","Belki kırmızı bir ışık gibi, çok parlak."],["T","Bu zil sence en çok ne zaman çalıyor?"],["K","Araba sesi duyduğumda, ya da pencereden baktığımda."],["T","Zil çaldığında bedeninde ne oluyor?"],["K","Kalbim hızlanıyor, nefesim değişiyor."],["T","Bunu bilmek, zili tanımak demek — bu büyük bir adım."],["K","Şimdi kendimi biraz daha iyi anlıyorum."],["T","Zilin çaldığını fark eder etmez ne yapabilirsin?"],["K","Nefes alabilirim, ya da kendime bunun geçeceğini söyleyebilirim."],["T","Tam olarak öyle, bu senin elindeki ilk araç."],["K","Teşekkürler, bunu bilmek yardımcı oluyor."]]
+      },
+      {
+        "name": "🟣 Kendi sözleriyle",
+        "text": [
+          "Anlayışı kontrol etmek ve pekiştirmek için danışandan bugün öğrendiklerini kendi sözleriyle özetlemesini istiyorum."
+        ],
+        "dialog": [["T","Bugün öğrendiğini kendi sözlerinle nasıl anlatırdın?"],["K","Beynimde bir zil var, bazen gerekmediği hâlde çalıyor."],["T","Tamamen doğru. Bunu hatırlamak sana yardımcı olacak."],["K","Bunu anneme de anlatabilir miyim?"],["T","Elbette, aksine çok iyi olur."],["K","Tamam, ona anlatırım."],["T","Bugün buradan giderken kendini nasıl hissediyorsun?"],["K","Açıkçası biraz daha hafif."],["T","Bunu duymak çok güzel."],["K","Teşekkürler, görüşürüz."]]
+      }
+    ],
+    "homework": "Evde kendi alarm zilini çiz ve istersen anneni göster, ne anlama geldiğini anlat.",
+    "about": "Burada resmi bir araç uygulanmaz — bu seans tamamen çocuğun gelişim düzeyine uyarlanmış metafor ve resim üzerine kuruludur.",
+    "specialists": [
+      "Klinik psikolog",
+      "TF-BDT sertifikalı terapist"
+    ]
+  },
+  {
+    "num": 3,
+    "title": "Nefes ve Gevşeme Becerileri",
+    "goal": "Alarm sistemi devreye girdiğinde bedenin fiziksel olarak sakinleşmesi için kullanabileceği somut bir araç öğretmek.",
+    "materials": [
+      "Kutu nefesi diyagramı",
+      "Kademeli kas gevşetme metni"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Bugünkü hedef",
+        "text": [
+          "Bugünkü çerçeveyi belirliyorum ve başlamadan önce bedenin durumunu kısaca kontrol ediyorum."
+        ],
+        "dialog": [["T","Röya, bugün bedenini sakinleştirmenin yollarını öğreneceğiz. Hazır mısın?"],["K","Hazırım, ama nasıl olacağını bilmiyorum."],["T","Sadece nefesle oynayacağız, zor değil."],["K","Tamam, nefes oyunlarını severim."],["T","Bu hafta ne zaman en gergin hissettin?"],["K","Gece, yatmadan önce, kalbim çok hızlı atıyordu."],["T","O anda bedeninde başka ne fark ettin?"],["K","Ellerim biraz üşüdü."],["T","Bunu bilmek çok faydalı, şimdi sana bunun için bir araç öğreteceğim."],["K","Tamam, gösterin."],["T","Önce rahat otur, omuzlarını gevşet."],["K","Böyle mi?"],["T","Tam öyle. Şimdi başlayalım."],["K","Tamam, hazırım."]]
+      },
+      {
+        "name": "🔵 Kutu nefesi pratiği",
+        "text": [
+          "Hayali bir karenin kenarlarını nefesle izleyerek kutu nefesini birlikte uyguluyoruz."
+        ],
+        "dialog": [["T","Bu nefes tekniğini kaç kez tekrarlamak gerekir?"],["K","Bilmiyorum, belki birkaç kez."],["T","Hadi şimdi bunu bir kez daha deneyelim."],["K","(derin bir nefes alır) Biraz yardımcı oldu, tam değil ama."],["T","Birlikte bir tur yapalım — 4 saniye al."],["K","(nefes alır) Tamam."],["T","Şimdi 4 saniye tut."],["K","Bu kısım benim için biraz zor."],["T","Bu normal, pratikle kolaylaşır."],["K","Tamam, devam edelim."],["T","Şimdi 4 saniye ver."],["K","(nefesini verir) Bu daha rahattı."],["T","Yine 4 saniye tut, boş hâlde."],["K","Sanırım şimdi yapabiliyorum."],["T","Bedeninde şimdi öncekine göre ne farklı?"],["K","Omuzlarım biraz düştü."],["T","Bunu bu hafta evde de yapabilir misin?"],["K","Evet, özellikle yatmadan önce deneyeceğim."],["T","Harika, bu senin en güçlü araçlarından biri olacak."],["K","Bunu bana öğrettiğiniz için teşekkürler."]]
+      },
+      {
+        "name": "🟣 Bedenin gevşemesi",
+        "text": [
+          "Bedenin durumunu bir kez daha kontrol ederek ve bunu evde ne zaman uygulayacağı konusunda anlaşarak kapatıyoruz."
+        ],
+        "dialog": [["T","Bedenin şimdi nasıl hissediyor?"],["K","Daha hafif, sanki omuzlarım biraz düştü."],["T","Bunu fark etmek bile başlı başına büyük bir adım."],["K","Bunu evde de yapabilir miyim?"],["T","Evet, özellikle yatmadan önce dene."],["K","Tamam, bu gece deneyeceğim."],["T","İhtiyacın olduğu kadar tekrar edebilirsin, sınır yok."],["K","Bunu aklımda tutacağım."],["T","Bugün çok iyi çalıştın."],["K","Teşekkürler."]]
+      }
+    ],
+    "homework": "Bu hafta her akşam yatmadan önce evde kutu nefesini uygula ve kaç tur yaptığını deftere not et.",
+    "about": "Bu seans tamamen beceri kazandırmaya odaklanır — değerlendirme aracı kullanılmaz, vurgu tekniğin fiziksel olarak kazanılmasındadır.",
+    "specialists": [
+      "Klinik psikolog",
+      "Ergoterapist (duyusal düzenleme açısından)"
+    ]
+  },
+  {
+    "num": 4,
+    "title": "Duyguları Tanıma",
+    "goal": "Bir duygu sözlüğü oluşturmak ve danışana korku termometresiyle bir duygunun yoğunluğunu değerlendirmeyi öğretmek.",
+    "materials": [
+      "Duygu sözlüğü kartları",
+      "Korku termometresi şeması"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Bugünkü ruh hâli",
+        "text": [
+          "Bugünkü ruh hâlini kontrol ediyorum ve geçen haftanın nefes ödevini kısaca gözden geçiriyorum."
+        ],
+        "dialog": [["T","Röya, bugün ruh hâlin nasıl?"],["K","Karışık, tam olarak ne diyeceğimi bilmiyorum."],["T","Karışık duygular normal, birkaçını aynı anda yaşayabiliriz."],["K","Tamam, hadi çözelim."],["T","Bu hafta nefes egzersizini denedin mi?"],["K","Evet, iki kez, biraz yardımcı oldu."],["T","Bunu duymak beni sevindirdi."],["K","Bazen unutuyorum ama."],["T","Bu normal, zamanla alışkanlık hâline gelecek."],["K","Umarım."],["T","Bugün duygular hakkında konuşacağız, hazır mısın?"],["K","Hazırım, bu bana ilginç geliyor."],["T","Harika, o zaman başlayalım."],["K","Tamam."]]
+      },
+      {
+        "name": "🔵 Beden dili",
+        "text": [
+          "Çocuğun renklendirdiği bir beden konturu kullanarak her duygunun fiziksel olarak nerede ortaya çıktığını keşfediyoruz."
+        ],
+        "dialog": [["T","Bu duyguyu nasıl adlandırırdın?"],["K","Tam olarak bilmiyorum, karışık, belki üzüntü ve korku birlikte."],["T","Bunu bedeninde nerede hissediyorsun?"],["K","Göğsümde, bir sıkışma gibi."],["T","Korku hissini bedeninde nerede hissediyorsun?"],["K","Karnımda, bazen ellerim de üşüyor."],["T","Peki sevinç senin için nerede?"],["K","Göğsümde, hafif bir his gibi."],["T","Hadi bir beden konturu çizelim, her duyguyu bir renkle işaretleyelim."],["K","Tamam, resim çizmeyi severim."],["T","Korkuya hangi rengi verirdin?"],["K","Gri, kapalı bir gün gibi."],["T","Sevince hangi rengi?"],["K","Sarı, güneş gibi."],["T","Bu çok faydalı bir yöntem — duygu büyümeden önce onu tanımak."],["K","Bunu daha önce renklerle hiç düşünmemiştim."],["T","Öfkenin de nerede olduğunu gösterebilir misin?"],["K","Burada, ellerimde, sıkı bir his gibi."],["T","Bu, kendinle ilgili çok değerli bir bilgi."],["K","Bu alıştırmayı sevdim."]]
+      },
+      {
+        "name": "🟣 Termometre pratiği",
+        "text": [
+          "Termometreyi kullanarak şu anki duyguya bir sayı veriyoruz, düşündürücü bir notla kapatıyoruz."
+        ],
+        "dialog": [["T","Şu an bu duyguya bir sayı versen, kaç olurdu?"],["K","Belki 3, öncekinden az."],["T","Bunu azaltmaya ne yardımcı oldu, fark ettin mi?"],["K","Biraz nefes aldım, yardımcı oldu."],["T","Bu çok güzel bir gözlem."],["K","Bunu bana öğrettiğiniz için teşekkürler."],["T","Bu hafta her gün bir duyguya sayı verebilirsin."],["K","Defterime yazarım."],["T","Harika fikir, bir dahaki sefer birlikte bakarız."],["K","Tamam, görüşürüz."]]
+      }
+    ],
+    "homework": "Her gün bir duygu seç ve deftere 0-10 arası yoğunluğunu, o anda ne yaptığınla birlikte not et.",
+    "about": "Resmi bir araç kullanılmaz — korku termometresinin kendisi seanslar boyunca tekrarlanabilir, basit bir izleme aracı olarak işlev görür.",
+    "specialists": [
+      "Klinik psikolog",
+      "Dil ve konuşma terapisti (sözcük dağarcığı sınırlı küçük çocuklar için)"
+    ]
+  },
+  {
+    "num": 5,
+    "title": "Bilişsel Baş Etme Becerileri",
+    "goal": "Düşünce-duygu-davranış üçgenini tanıtmak ve travmayla ilgili tetikleyicilere bağlı işe yaramayan düşünceleri belirlemeye başlamak.",
+    "materials": [
+      "Düşünce-duygu-davranış üçgeni çalışma sayfası",
+      "Renkli kalemler"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Giriş",
+        "text": [
+          "Bugünkü konuya geçmeden önce bir kontrolle açıyoruz ve geçen haftanın termometre kaydını gözden geçiriyoruz."
+        ],
+        "dialog": [["T","Röya, bugün düşünceler ve duygular arasındaki bağlantıya bakacağız."],["K","Bu karmaşık geliyor."],["T","Basit bir örnekle başlayalım, endişelenme."],["K","Tamam, dinliyorum."],["T","Geçen hafta termometre egzersizini yaptın mı?"],["K","Evet, üç gün yazdım."],["T","Harika, birazdan üzerinden geçeceğiz."],["K","Tamam."],["T","Şu an, bu anda kendini nasıl hissediyorsun?"],["K","Sakin, ama biraz yorgunum."],["T","Başlamadan önce bir sorun var mı?"],["K","Hayır, şu an yok."],["T","O zaman başlayalım, rahat otur."],["K","Hazırım."]]
+      },
+      {
+        "name": "🔵 Üçgeni doldurmak",
+        "text": [
+          "Yakın zamanda okuldan korktuğu bir sabahı örnek alarak düşünceyi, duyguyu ve bunun yol açtığı davranışı ortaya koyuyoruz."
+        ],
+        "dialog": [["T","Bu hafta okula gitmekten korktuğun bir sabah oldu, hatırlıyor musun?"],["K","Evet, pazartesi."],["T","O sabah aklından geçen ilk düşünce neydi?"],["K","Yine kötü bir şey olabilir diye düşündüm."],["T","Bu düşünce geldiğinde bedeninde ne hissettin?"],["K","Karnım ağrıdı, kalbim çarptı."],["T","Sonra ne yaptın?"],["K","Anneme hasta olduğumu söyledim, gitmek istemedim."],["T","Yani düşünce — korku — kaçınma, biri diğerini izledi."],["K","Evet, tam olarak öyle oldu."],["T","Hadi bu düşünceyi biraz test edelim — gerçekten kötü bir şey olma ihtimali ne kadar?"],["K","Bilmiyorum... belki fazla değil."],["T","En son gerçekten okula gittiğinde ne oldu?"],["K","Hiçbir şey, sıradan bir gündü."],["T","Demek ki o zaman da korku gerçekleşmedi."],["K","Doğru, bunu unutmuşum."],["T","Bunu tek bir cümleye çevirsek — daha dengeli bir düşünce — nasıl olurdu?"],["K","Belki... 'bugün de öncekiler gibi sıradan bir gün olabilir'."],["T","Bu çok güzel bir cümle oldu."],["K","Teşekkürler, şimdi biraz daha rahatım."]]
+      },
+      {
+        "name": "🟣 Dengeli düşünce",
+        "text": [
+          "Üçgeni özetliyoruz ve önümüzdeki hafta bu beceriyi uygulamak için küçük bir yol üzerinde anlaşıyoruz."
+        ],
+        "dialog": [["T","Bugün konuştuğumuz üçgeni hatırlıyor musun?"],["K","Düşünce, duygu, davranış — hepsi birbirine bağlı."],["T","Tam olarak doğru. Bu hafta bunu bir kez deneyebilir misin?"],["K","Denerim, söz veriyorum."],["T","Zor olursa deftere yaz, birlikte bakarız."],["K","Tamam, yazarım."],["T","Şu an kendini nasıl hissediyorsun?"],["K","Daha hafif, şimdi düşüncemi yakalayabiliyorum."],["T","Bu büyük bir ilerleme."],["K","Teşekkürler, görüşürüz."]]
+      }
+    ],
+    "homework": "Bu hafta okuldan önce korku hissettiğinde düşünceyi, duyguyu ve ne yaptığını yaz — defteri bir dahaki sefer getir.",
+    "about": "Resmi bir araç kullanılmaz — üçgen çalışma sayfası bu ve sonraki seans için çalışma aracı olarak işlev görür.",
+    "specialists": [
+      "Klinik psikolog",
+      "TF-BDT sertifikalı terapist"
+    ]
+  },
+  {
+    "num": 6,
+    "title": "Travma Anlatısı — Başlangıç",
+    "goal": "Travma anlatısına anının en güvenli, en nötr noktasından başlamak ve sürecin danışanın kendi temposunda ilerleyebileceğini göstermek.",
+    "materials": [
+      "Boş anlatı defteri",
+      "Korku termometresi"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Hazırlık",
+        "text": [
+          "Bugünkü çalışmayı biraz farklı bir şey olarak çerçeveliyorum ve tempoyu tamamen kendisinin belirlediğini hatırlatıyorum."
+        ],
+        "dialog": [["T","Röya, bugün biraz farklı bir şeye başlayacağız — kendini hazır hissediyor musun?"],["K","Tam emin değilim, biraz gerginim."],["T","Bu tamamen normal, hiçbir yere acelemiz yok."],["K","Tamam, bu beni biraz rahatlatıyor."],["T","İstediğin an 'dur' diyebilirsin, bunu unutma."],["K","Tamam, hatırlarım."],["T","Başlamadan önce şu an korku termometren kaç?"],["K","Bir 5 gibi bir şey."],["T","Bunu not edelim, sonra karşılaştırırız."],["K","Tamam."],["T","İstersen önce biraz nefes alarak başlayalım."],["K","Evet, bu yardımcı olur."],["T","Hazır olduğunda bana haber ver."],["K","Şimdi hazırım."]]
+      },
+      {
+        "name": "🔵 Hikâyenin başlangıcı",
+        "text": [
+          "Anının en güvenli, en sıradan kısmından — henüz bir şey olmadan önceki sabahtan — başlıyoruz, zor kısma henüz geçmiyoruz."
+        ],
+        "dialog": [["T","Hikâyeye en kolay noktadan başlayalım — o sabah nasıl başladı?"],["K","Sıradan bir sabahtı, okula hazırlanıyorduk."],["T","Ne giymiştin, hatırlıyor musun?"],["K","Sarı tişörtümü, en sevdiğim tişört."],["T","Kahvaltıda ne yediniz?"],["K","Annem bana omlet yapmıştı."],["T","Sonra arabaya binerken ne hissettin?"],["K","Özel bir şey yok, sıradan bir gün gibiydi."],["T","Bu kısmı anlatmak sana nasıl hissettirdi?"],["K","Kolaydı, hiç korkmadım."],["T","Güzel, tam olarak buradan başlıyoruz — sonraki kısma henüz geçmiyoruz."],["K","Tamam, bu bana uygun."],["T","Yolda annenle neler konuşuyordunuz?"],["K","Okuldaki bir projeden bahsediyorduk."],["T","Bu kısmı anlatırken termometreni kontrol edelim — şu an kaç?"],["K","2 civarı, çok düşük."],["T","Bu harika bir başlangıç, sonraki kısma acele etmiyoruz."],["K","Teşekkürler, bu kadar kolay olacağını düşünmemiştim."],["T","Bir dahaki sefer, sen hazır oldukça biraz daha ileri gideceğiz."],["K","Tamam, sanırım hazır olacağım."]]
+      },
+      {
+        "name": "🟣 Sakin kapanış",
+        "text": [
+          "Termometreyi başlangıçla karşılaştırıp başlamak için gereken cesareti kabul ederek seansı kapatıyoruz."
+        ],
+        "dialog": [["T","Şu an korku termometren kaç?"],["K","4, biraz düştü."],["T","Bunu yaptığın için seninle gurur duyuyorum."],["K","Açıkçası kendim de şaşırdım."],["T","Bugün buraya kadar gelmek bile cesaret ister."],["K","Teşekkürler."],["T","Eve gidince kendine karşı nazik ol, zor bir gündü."],["K","Tamam, denerim."],["T","Bir dahaki sefer acele etmeden devam edeceğiz."],["K","Açıkçası biraz da merak ediyorum."]]
+      }
+    ],
+    "homework": "Bu hafta bununla ilgili düşünceler gelirse bir not al — bir dahaki sefer birlikte bakarız. Kendi başına daha ileri gitmene gerek yok.",
+    "about": "Bu, ilk anlatı seansıdır — sadece anının en güvenli, en nötr kısmına yaklaşılır; zor çekirdek kasıtlı olarak sonraki seanslara bırakılır.",
+    "specialists": [
+      "Klinik psikolog",
+      "TF-BDT sertifikalı terapist"
+    ]
+  },
+  {
+    "num": 7,
+    "title": "Travma Anlatısı — Devamı",
+    "goal": "Tempo ve izleme yoluyla sıkıntıyı yönetilebilir tutarak anının daha zor kısmına kademeli olarak yaklaşmak.",
+    "materials": [
+      "Anlatı defteri (devam)",
+      "Korku termometresi"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Yeniden başlamak",
+        "text": [
+          "Geçen seansın çalışmasıyla yeniden bağlantı kuruyoruz ve devam etmeden önce mevcut sıkıntıyı kontrol ediyoruz."
+        ],
+        "dialog": [["T","Röya, geçen sefer hikâyenin başlangıcını konuşmuştuk, hatırlıyor musun?"],["K","Evet, hatırlıyorum, biraz zordu."],["T","Bu hafta bunu düşündün mü?"],["K","Birkaç kez, ama kendimi ona kaptırmadım."],["T","Bu çok iyi bir denge."],["K","Teşekkürler."],["T","Bugün termometreni kontrol edelim — şu an kaç?"],["K","4 ile 5 arası bir yerde."],["T","Tamam, bunu takip edeceğiz."],["K","Tamam."],["T","Bugün hikâyenin devamına geçeceğiz, hazır mısın?"],["K","Sanırım hazırım, biraz gerginim."],["T","Gerginlik normal, adım adım birlikte gideceğiz."],["K","Tamam, başlayalım."]]
+      },
+      {
+        "name": "🔵 Zor noktaya yaklaşma",
+        "text": [
+          "Termometre her yükseldiğinde düzenlemek için durarak, anının daha zor kısmına dikkatle yaklaşıyoruz."
+        ],
+        "dialog": [["T","Geçen sefer kaldığımız yerden devam etmek ister misin?"],["K","Evet, nerede kaldığımızı hatırlıyorum."],["T","Arabanın kapısı ezildiği anı hatırlıyor musun, hemen sonrasında ne oldu?"],["K","Annem bir süre konuşmadı, çok korktum."],["T","O anda bedeninde ne hissettin?"],["K","Bütün bedenim donmuş gibiydi."],["T","Şimdi bunu hatırlarken termometre kaça çıktı?"],["K","7 oldu."],["T","Tamam, biraz duralım, birlikte nefes alalım."],["K","Tamam, bu yardımcı oluyor."],["T","Şimdi daha iyi misin?"],["K","Evet, yine 5'e düştü."],["T","Devam etmek ister misin, yoksa bugün için bu kadar yeterli mi?"],["K","Sanırım biraz daha devam edebilirim."],["T","Sonra biri yardıma geldi, hatırlıyor musun?"],["K","Evet, bir adam durdu, birini aradı."],["T","Yardım geldiğinde ne hissettin?"],["K","Biraz rahatladım, ama hâlâ korkuyordum."],["T","Bu çok önemli bir ayrıntı — yardım geldi, yalnız kalmadınız."],["K","Doğru, bunu biraz unutmuşum."]]
+      },
+      {
+        "name": "🟣 Kapanış",
+        "text": [
+          "Yapılan işin zorluğunu kabul ederek ve bitirmeden önce sabitleyerek kapatıyoruz."
+        ],
+        "dialog": [["T","Bugün çok önemli bir kısmı anlattın."],["K","Evet, zordu, ama başardım."],["T","Şu an termometren kaç?"],["K","4 civarı, sakinleştim."],["T","Bu harika bir ilerleme."],["K","Yardımınız için teşekkürler."],["T","Evde bunu düşünürsen not al, birlikte bakarız."],["K","Tamam, yaparım."],["T","Bir dahaki sefer hikâyeyi tamamlayacağız."],["K","Tamam, hazır olurum."]]
+      }
+    ],
+    "homework": "Bugünkü seansla ilgili aklına düşünce ya da duygu gelirse not al — bir dahaki sefer birlikte gözden geçiririz.",
+    "about": "Bu seans, tempoyu ayarlamak için termometrenin sürekli bir sıkıntı kontrolü olarak kullanılmasıyla anının en zor noktasına kademeli olarak yaklaşır.",
+    "specialists": [
+      "Klinik psikolog",
+      "TF-BDT sertifikalı terapist"
+    ]
+  },
+  {
+    "num": 8,
+    "title": "Travma Anlatısı — Tamamlanma",
+    "goal": "Anlatıyı bir bütün olarak tamamlamak ve ondan yeni bir anlam ve bakış açısı inşa etmeye başlamak.",
+    "materials": [
+      "Tamamlanmış anlatı defteri",
+      "Korku termometresi"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Bütün hikâyeye bakış",
+        "text": [
+          "Haftayı kontrol ediyoruz ve bugün anlatıyı tamamen bitirmeye hazırlanıyoruz."
+        ],
+        "dialog": [["T","Röya, bugün hikâyeyi tamamen bitireceğiz, hazır mısın?"],["K","Sanırım evet, yine biraz gerginim."],["T","Buraya kadar zaten geldin, bunu unutma."],["K","Doğru, şimdi öncekinden daha kolay geliyor."],["T","Bu hafta genel olarak kendini nasıl hissettin?"],["K","Daha iyi, geceleri de biraz daha rahat uyudum."],["T","Bunu duymak çok güzel."],["K","Teşekkürler."],["T","Başlamadan önce termometreni kontrol edelim."],["K","Şu an 4 civarı."],["T","Tamam, bu öncekinden düşük, bu da iyi bir işaret."],["K","Evet, ben de fark ettim."],["T","Hazır olduğunda başlayalım."],["K","Hazırım."]]
+      },
+      {
+        "name": "🔵 Yeni bir bakış açısı",
+        "text": [
+          "Hikâyenin kalan kısmını tamamlıyoruz ve ondan birlikte yeni bir anlam çıkarmaya çalışıyoruz."
+        ],
+        "dialog": [["T","Bugün hikâyenin geri kalanını bitirelim, hastaneye vardığınız ana kadar."],["K","Tamam, hatırlıyorum, doktor bizi kontrol etti."],["T","O anda, hastanedeyken ne düşündün?"],["K","Artık güvende olduğumuzu düşündüm."],["T","Bu çok önemli bir düşünce — tehlike bitmişti."],["K","Evet, şimdi bunu daha iyi anlıyorum."],["T","Eve vardığında ne hissettin?"],["K","Yorgundum, ama ikimizin de sağ olmasına sevindim."],["T","Şimdi tüm hikâyeye baştan sona bakarsak, hangi kısım senin için en önemli?"],["K","Sanırım yardımın geldiği kısım."],["T","Neden öyle düşünüyorsun?"],["K","Çünkü yalnız değildik, biri bize yardım etti."],["T","Bu, bu hikâyeden çıkarılan çok güzel bir anlam."],["K","Evet, bunu daha önce böyle düşünmemiştim."],["T","Tüm hikâyeyi anlatırken şimdi termometre kaç?"],["K","3, öncekinden çok daha düşük."],["T","Bu büyük bir değişim, fark ettin mi?"],["K","Evet, artık o kadar ağır gelmiyor."],["T","Artık bu hikâyeyi korkmadan yanında taşıyabilirsin."],["K","Teşekkürler, kendimi hafif hissediyorum."]]
+      },
+      {
+        "name": "🟣 Tam okuma",
+        "text": [
+          "Anlatının tamamlanmasını gerçek bir başarı olarak işaretliyoruz ve termometreyi son kez kontrol ediyoruz."
+        ],
+        "dialog": [["T","Bugün hikâyeyi tamamen bitirdin, bu büyük bir adım."],["K","Evet, bunu başardığıma inanamıyorum."],["T","Sen başardın, ben sadece yanındaydım."],["K","Yardımınız için teşekkürler."],["T","Şimdi, hikâye bitmişken termometren kaç?"],["K","3, sabit kalıyor."],["T","Bu harika bir sonuç."],["K","Ben de aynı fikirdeyim."],["T","Bir sonraki seansta bu hikâyeyle ilgisi olmayan başka konulara geçeceğiz."],["K","Tamam, bu da ilginç geliyor."]]
+      }
+    ],
+    "homework": "İstersen bu hafta bitmiş hikâyeni annene oku ve onu paylaşmanın nasıl hissettirdiğini fark et.",
+    "about": "Bu seans travma anlatısını tamamlar ve odağı anlam kurmaya kaydırır — danışanın deneyimin şimdi kendisi için ne ifade ettiğine dair kendi anlatısına.",
+    "specialists": [
+      "Klinik psikolog",
+      "TF-BDT sertifikalı terapist"
+    ]
+  },
+  {
+    "num": 9,
+    "title": "Bilişsel İşleme",
+    "goal": "Travmayla ilgili çarpıtılmış inançları, özellikle kendini suçlamayı, belirlemek ve nazikçe sorgulamak.",
+    "materials": [
+      "Düşünce sorgulama çalışma sayfası",
+      "Kalem ve defter"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Ağır bir düşünce",
+        "text": [
+          "Seansı, travma sonrası sık görülen bir çarpıtmayı — kendini suçlamayı — adlandırarak açıyoruz ve burada geçerli olup olmadığını kontrol ediyoruz."
+        ],
+        "dialog": [["T","Röya, bugün kendinle ilgili bazı düşüncelere bakacağız."],["K","Hangi düşünceler?"],["T","Örneğin, olanla ilgili kendini suçladığın anlar oldu mu?"],["K","Bazen düşünüyorum ki, farklı bir şey yapsaydım belki olmazdı."],["T","Bu düşünceyi çok duyuyorum, sadece sen böyle düşünmüyorsun."],["K","Gerçekten mi?"],["T","Evet, birçok çocuk böyle düşünür, ama genellikle bu doğru değildir."],["K","Bilmiyorum, bazen yine de buna inanıyorum."],["T","Bugün bunu birlikte test etmek ister misin?"],["K","Evet, isterim."],["T","Bu hafta bu düşünce kaç kez geldi?"],["K","Birkaç kez, özellikle geceleri."],["T","Paylaştığın için teşekkürler, bu bugün işimize yarayacak."],["K","Tamam."]]
+      },
+      {
+        "name": "🔵 Sorgulama",
+        "text": [
+          "Kendini suçlama inancını durumun gerçek verileriyle test etmek için Sokratik sorgulama kullanıyoruz."
+        ],
+        "dialog": [["T","Bazen kendini suçladığını söyledin. Tam olarak ne düşünüyorsun?"],["K","Belki daha dikkatli olsaydım, kaza olmazdı."],["T","O gün arabayı sen mi kullanıyordun?"],["K","Hayır, tabii ki hayır, arkada oturuyordum."],["T","Demek ki karar senin elinde değildi."],["K","Doğru, ama yine de bazen böyle düşünüyorum."],["T","Bu his anlaşılır, ama gerçeklere bakalım — o zaman kaç yaşındaydın?"],["K","8 yaşındaydım."],["T","8 yaşındaki bir çocuk bir araba kazasını önleyebilir mi?"],["K","Hayır, sanmıyorum."],["T","Peki yolda kim karar veriyordu — hız, yön?"],["K","Yetişkinler, sürücüler."],["T","Demek ki bu senin kontrolünde olan bir şey değildi."],["K","Evet... şimdi biraz farklı görünüyor."],["T","En yakın arkadaşın sana aynı şeyi söyleseydi, ona ne derdin?"],["K","Bunun senin suçun olmadığını söylerdim."],["T","Peki kendine neden aynı şeyi söylemiyorsun?"],["K","Bilmiyorum, belki kendime karşı daha sertim."],["T","Bu bugün çok değerli bir farkındalık oldu."],["K","Evet, şimdi biraz daha hafifledim."]]
+      },
+      {
+        "name": "🟣 Yeni bir düşünce",
+        "text": [
+          "Bugünkü farkındalığı, önümüzdeki hafta boyunca aklında tutabileceği kısa bir cümleye dönüştürüyoruz."
+        ],
+        "dialog": [["T","Bugün kendine ne söylemeyi öğrendin?"],["K","Bu benim suçum değildi, ben bir çocuktum."],["T","Bu cümleyi bu hafta kendine tekrarlayabilir misin?"],["K","Denerim, bir kâğıda yazarım."],["T","Harika fikir, göreceğin bir yere as."],["K","Tamam, odama asarım."],["T","Bugün buradan giderken kendini nasıl hissediyorsun?"],["K","Daha hafif, açıkçası bunu beklemiyordum."],["T","Bu senin kendi işindi, ben sadece sorular sordum."],["K","Teşekkürler, yine."]]
+      }
+    ],
+    "homework": "Yeni cümleni — 'bu benim suçum değildi' — her gün göreceğin bir yere yaz ve eski düşünce geldiğinde fark et.",
+    "about": "Resmi bir araç kullanılmaz — bilişsel işleme burada, belirlenen spesifik kendini suçlama inancını hedef alan Sokratik diyalogla yürütülür.",
+    "specialists": [
+      "Klinik psikolog",
+      "TF-BDT sertifikalı terapist"
+    ]
+  },
+  {
+    "num": 10,
+    "title": "In-vivo Maruz Bırakma",
+    "goal": "En kolay adımdan başlayarak, kaçınılan ama gerçekten güvenli durumlarla yüzleşmek için kademeli bir plan oluşturmak.",
+    "materials": [
+      "Kaçınma listesi",
+      "Maruz bırakma merdiveni şablonu"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Kaçınılan şeyler",
+        "text": [
+          "Kademeli bir merdiven oluşturmaya hazırlık olarak, hâlâ kaçınılan durumları birlikte belirliyoruz."
+        ],
+        "dialog": [["T","Röya, bugün nelerden kaçındığına birlikte bakmak istiyorum."],["K","Tamam, mesela araba sesinden kaçıyorum."],["T","Başka ne var, düşünebilir misin?"],["K","Bazen pencere kenarında oturmaktan da kaçıyorum."],["T","Bunları not edelim, sonra bir sıraya koyacağız."],["K","Tamam."],["T","Bu hafta kendine söylediğin cümleyi yazdın mı?"],["K","Evet, kendime iki kez okudum."],["T","Okurken nasıl hissettin?"],["K","Kendimi biraz daha güçlü hissettim."],["T","Bu çok güzel bir işaret."],["K","Teşekkürler."],["T","Bugün küçük adımlarla başlayacağız, acele etmeden."],["K","Tamam, hazırım."]]
+      },
+      {
+        "name": "🔵 Merdivenin kurulması",
+        "text": [
+          "Kaçınılan durumları en kolaydan en zora doğru sıralıyor, her birine korku termometresinde bir sayı veriyoruz."
+        ],
+        "dialog": [["T","Bu durumları en kolaydan en zora sıralayalım."],["K","Tamam, pencere kenarında oturmak en kolayı gibi geliyor."],["T","Buna termometrede hangi sayıyı verirdin?"],["K","Belki 3."],["T","Peki araba kornası bu sırada nerede?"],["K","O daha zor, belki 7."],["T","İkisinin arasında ne var?"],["K","Belki anneyle kısa bir araba yolculuğu."],["T","Tamam, bunu 5 civarına koyalım."],["K","Bu sıra bana mantıklı geliyor."],["T","En kolay adımdan başlayıp yavaş yavaş yukarı çıkacağız."],["K","Acele edilmemesi hoşuma gidiyor."],["T","Bu listede henüz hazır olmadığın bir şey var mı?"],["K","Araba kornası, henüz değil."],["T","Bu tamamen normal, sen hazır olana kadar ona dokunmayacağız."],["K","Beni zorlamadığınız için teşekkürler."],["T","Bu merdiven senin, senin temponda gideceğiz."],["K","Bunu seviyorum."],["T","Bu hafta hangi adımı denemek istersin?"],["K","Pencere adımını, sanırım bunu başarabilirim."]]
+      },
+      {
+        "name": "🟣 Somutlaştırma",
+        "text": [
+          "Bu hafta pratik yapmak için tek, küçük, somut bir adım üzerinde ve bunu nasıl takip edeceği konusunda anlaşıyoruz."
+        ],
+        "dialog": [["T","Bu hafta için en kolay adımı seçelim — ne olsun?"],["K","Belki pencere kenarında beş dakika oturmak."],["T","Harika seçim, kaç kez deneyeceksin?"],["K","Günde bir kez denerim."],["T","Zor gelirse durabilirsin, zorunluluk yok."],["K","Tamam, şimdi bunu biliyorum."],["T","Sonucu deftere yaz, bir dahaki sefer birlikte bakarız."],["K","Tamam, yazarım."],["T","Bugün cesur bir adım attın, tebrikler."],["K","Teşekkürler, ben de kendimle gurur duyuyorum."]]
+      }
+    ],
+    "homework": "Bu hafta günde bir kez pencere kenarında beş dakika oturmayı pratik et ve her denemeden önce ve sonra korku termometresi sayını not et.",
+    "about": "Bu seans, sonraki in-vivo çalışmaya yön verecek maruz bırakma hiyerarşisini oluşturur — danışanın kendi termometre değerlendirmeleri dışında resmi bir araç kullanılmaz.",
+    "specialists": [
+      "Klinik psikolog",
+      "TF-BDT sertifikalı terapist"
+    ]
+  },
+  {
+    "num": 11,
+    "title": "Birlikte Ebeveyn-Çocuk Seansı",
+    "goal": "Çocuğun hikâyesinin ve ilerlemesinin bir kısmını ebeveyn huzurunda paylaşmak, aile bağını ve desteğini güçlendirmek.",
+    "materials": [
+      "Danışanın kendi notları ve cümle kartı",
+      "Mendil (ihtiyaç hâlinde, el altında)"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Anlaşma",
+        "text": [
+          "Ebeveyni davet etmeden önce çocuğun neyi paylaşmakta rahat olduğunu kontrol ediyor ve açık bir onay alıyorum."
+        ],
+        "dialog": [["T","Röya, bugün annen de bizimle olacak, bu konuda ne hissediyorsun?"],["K","İyi, onun da bilmesini istiyorum."],["T","Önce ikimiz konuşalım, sonra annen katılsın, olur mu?"],["K","Olur."],["T","Annenle hangi kısmı paylaşmak istersin?"],["K","Belki kartımdaki cümleyi — bunun benim suçum olmadığını."],["T","Bu çok güzel bir seçim oldu."],["K","Teşekkürler."],["T","Hazır olduğunda anneni odaya davet edeyim mi?"],["K","Evet, şimdi hazırım."],["T","(anne içeri girer) Hoş geldiniz — bugün Röya sizinle bir şey paylaşmak istiyor."],["K","Anne, sana bir şey söylemek istiyorum."],["T","Hazır olduğunda başlayabilirsin, Röya."],["K","Tamam... biraz gerginim, ama söyleyeceğim."]]
+      },
+      {
+        "name": "🔵 Birlikte seans",
+        "text": [
+          "Röya cümlesini ve ilerlemesinin bir kısmını paylaşıyor; terapist ebeveynin tepkisini destekliyor ve mesajı pekiştiriyor."
+        ],
+        "dialog": [["K","Anne, kazanın benim suçum olduğunu düşünüyordum."],["T","(anneye) Bu, Röya ile seanslarımızda birlikte üzerinde çalıştığımız bir konu."],["M","Ama şimdi biliyorum ki öyle değilmiş, ben sadece arkada oturan bir çocuktum."],["T","Bunu ondan duymak size nasıl hissettiriyor?"],["M","Bunu taşımış olması yüreğimi sızlatıyor, söylediğine çok sevindim."],["T","Röya, annenin bilmesini istediğin başka bir şey var mı?"],["K","Araba seslerine de artık biraz daha iyi katlanabiliyorum."],["T","Bu gerçek, ölçülebilir bir ilerleme — ikinizi de tebrik ederim."],["M","Seninle çok gurur duyuyorum, Röya."],["T","Öğrendiğin nefes egzersizini annene göstermek ister misin?"],["K","Evet, gösterebilirim."],["T","Hazır olduğunda başla."],["K","Tamam, bak anne — 4 saniye al, 4 saniye tut..."],["T","Bunu evde de birlikte pratik edebilirsiniz."],["M","İsterim, birlikte yaparız."],["T","Bu, bugün ikiniz için de çok anlamlı bir seans oldu."],["K","Açıkçası şu an biraz daha hafifim."],["T","Bunu duymak çok güzel."],["M","Bizi bu yolda yönlendirdiğiniz için teşekkür ederim."],["T","Bu işi ikiniz yaptınız, ben sadece yanınızdaydım."]]
+      },
+      {
+        "name": "🟣 Ailevi ritüel",
+        "text": [
+          "Ailenin evde sürdürebileceği küçük, ortak bir ritüel üzerinde anlaşarak kapatıyoruz."
+        ],
+        "dialog": [["T","Bugün aranızda çok güzel bir konuşma oldu."],["K","Evet, annem beni şimdi daha iyi anlıyor gibi hissediyorum."],["T","Bunun devam etmesi için evde küçük bir ritüel kurmak ister misiniz?"],["K","Belki her akşam beş dakika konuşuruz."],["T","Harika fikir, bu hafta bunu deneyin."],["K","Tamam, deneriz."],["T","Kendini nasıl hissediyorsun, Röya?"],["K","Hafif, annem yanımdayken kendimi daha güçlü hissediyorum."],["T","Bu, aranızda çok güzel bir bağ."],["K","Bugün için teşekkürler."]]
+      }
+    ],
+    "homework": "Bu hafta her akşam, soru yağmuruna tutmadan, ailece beş dakikalık 'günün nasıl geçti' ritüeline zaman ayırın.",
+    "about": "Bu seans ebeveyni doğrudan çalışmaya dahil eder — resmi bir araç kullanılmaz, odak ilişkiseldir: ilerlemeyi paylaşmak ve ailenin destek sistemini güçlendirmek.",
+    "specialists": [
+      "Klinik psikolog",
+      "TF-BDT sertifikalı terapist",
+      "Aile terapisti (birlikte oturum bileşeni için)"
+    ]
+  },
+  {
+    "num": 12,
+    "title": "Güvenlik Planı ve Kapanış",
+    "goal": "Program boyunca öğrenilen becerileri pekiştirmek, kaydedilen ilerlemeyi vurgulamak ve gelecek için somut bir güvenlik planı oluşturmak.",
+    "materials": [
+      "Güvenlik planı şablonu",
+      "Beceri özeti kartı"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Geriye bakış",
+        "text": [
+          "Bugünkü durumu en ilk değerlendirmeyle karşılaştırıyorum, değişimi danışanın kendi sözleriyle adlandırmasına izin veriyorum."
+        ],
+        "dialog": [["T","Röya, bu program kapsamındaki son seansımız — bu konuda ne hissediyorsun?"],["K","Biraz garip, ama kendimi hazır hissediyorum."],["T","Buraya ilk geldiğin günü hatırlıyor musun?"],["K","Evet, çok korkmuştum, konuşmak bile istemiyordum."],["T","Şimdiyle karşılaştırırsan, ne fark görüyorsun?"],["K","Şimdi daha sakinim, konuşabiliyorum."],["T","Bu, kat edilmiş büyük bir yol."],["K","Yardımınız için teşekkürler."],["T","Bu son hafta termometren genel olarak nasıldı?"],["K","Çoğu gün 2 ile 3 arasıydı."],["T","Bu, önceki 7 ya da 8 ile karşılaştırıldığında büyük bir fark."],["K","Evet, ben de bunu görüyorum."],["T","Bugün öğrendiklerini bir araya toplayacağız."],["K","Tamam, hazırım."]]
+      },
+      {
+        "name": "🔵 Alet kutusu",
+        "text": [
+          "Danışan, her tür zor anda hangi beceriye başvuracağına kendisi karar veriyor."
+        ],
+        "dialog": [["T","Bu program boyunca senin için ne değişti?"],["K","Bazı şeyler çok iyileşti, ama her şey tam çözülmedi."],["T","Senin için hâlâ zor olan ne var?"],["K","Birkaç şey, ama artık nasıl yaklaşacağımı biliyorum."],["T","Bu becerileri nasıl sürdüreceksin?"],["K","Tam emin değilim, hatırlamaya çalışacağım."],["T","Uyguladığımız her şeyden hangi beceri en çok yardımcı oldu?"],["K","Nefes egzersizi, kesinlikle."],["T","Araba kornası korkusu geri gelirse ne yapacaksın?"],["K","Önce nefes alırım, sonra belki karttaki cümleyi okurum."],["T","Bu çok sağlam bir plan."],["K","Teşekkürler, kendimi hazır hissediyorum."],["T","Zor bir an gelirse ve bu araçlar yetmezse ne yaparsın?"],["K","Anneme söylerim, ya da gerekirse yine size gelirim."],["T","Tam olarak öyle — bu kapı her zaman açık kalacak."],["K","Bunu bilmek beni daha güvende hissettiriyor."],["T","Bu aylar boyunca kendin için gerçek bir alet kutusu kurdun."],["K","Açıkçası bununla gurur duyuyorum."],["T","Bu kutuyu yanında götür, Röya."],["K","Götüreceğim, her şey için tekrar teşekkürler."]]
+      },
+      {
+        "name": "🟣 Geleceğe not",
+        "text": [
+          "Seans, yapılan işi onaylayan ve geleceğe kapıyı açık bırakan sıcak bir notla sona eriyor."
+        ],
+        "dialog": [["T","Bu program bitse de, bu araçlar sonsuza dek senindir."],["K","Onları hatırlayacağım, özellikle nefes egzersizini."],["T","Zorlanırsan kime başvurabilirsin?"],["K","Anneme, ya da gerekirse yine size."],["T","Tam olarak öyle, bu kapı her zaman açık."],["K","Teşekkürler, her şey için."],["T","Seninle çalışmak benim için çok değerliydi."],["K","Benim için de öyle, kendimi öncekinden farklı hissediyorum."],["T","Bu farkı yanında taşı, Röya."],["K","Taşıyacağım, tekrar teşekkürler."]]
+      }
+    ],
+    "homework": "Güvenlik planını görünür bir yerde tut (örneğin odanda) ve ihtiyaç duyduğunda ona başvur.",
+    "about": "Bu kapanış seansı bir değerlendirme değildir — pekiştirme ve geleceğe yönelik bir destek planı kurmadır.",
+    "specialists": [
+      "Klinik psikolog",
+      "TF-BDT terapisti",
+      "Sosyal hizmet uzmanı (koordinasyon için)"
+    ]
+  }
+];
+
+function renderSession(s){
+  let html = `<span class="m-tag">Seans ${s.num} / 12</span><h3 class="m-title">${s.title}</h3>`;
+  html += `<div class="m-block"><h5>🎯 Seansın amacı</h5><div class="m-goal">${s.goal}</div></div>`;
+  html += `<div class="m-block"><h5>🧰 Gerekli materyaller</h5><div class="m-materials">${s.materials.map(m=>`<span>${m}</span>`).join('')}</div></div>`;
+  html += `<div class="m-block"><h5>📋 Seansın akışı</h5>`;
+  s.phases.forEach(ph=>{
+    html += `<div class="m-phase"><div class="ph-name">${ph.name}</div>`;
+    (ph.text||[]).forEach(t=>{ html += `<p>${t}</p>`; });
+    if(ph.dialog && ph.dialog.length){
+      html += `<div class="m-dialog">`;
+      ph.dialog.forEach(d=>{
+        const who = d[0]==='T' ? 'Terapist' : (d[0]==='K' ? 'Danışan' : (d[0]==='M' ? 'Anne' : d[0]));
+        const cls = d[0]==='T' ? 't' : 'k';
+        html += `<div class="dl"><span class="dw ${cls}">${who}:</span><span class="dt">${d[1]}</span></div>`;
+      });
+      html += `</div>`;
+    }
+    html += `</div>`;
+  });
+  html += `</div>`;
+  html += `<div class="m-block"><h5>📝 Ev ödevi</h5><div class="m-homework">${s.homework}</div></div>`;
+  html += `<div class="m-nextprev">
+    <div class="m-navbtn ${s.num<=1?'disabled':''}" onclick="openSession(${s.num-1})">◂ Önceki seans</div>
+    <div class="m-navbtn ${s.num>=12?'disabled':''}" onclick="openSession(${s.num+1})">Sonraki seans ▸</div>
+  </div>`;
+  return html;
+}
+
+function openSession(n){
+  const s = SESSIONS.find(x=>x.num===n);
+  if(!s) return;
+  document.getElementById('modalContent').innerHTML = renderSession(s);
+  document.getElementById('modalOverlay').classList.add('active');
+  document.body.classList.add('modal-open');
+  document.getElementById('modalOverlay').scrollTop = 0;
+  document.querySelector('.modal-box').scrollTop = 0;
+}
+function closeSession(){
+  document.getElementById('modalOverlay').classList.remove('active');
+  document.body.classList.remove('modal-open');
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeSession(); });
+</script>
+<script src="../protect.js" defer></script>
+<script src="../engine.js"></script>
+
+<div class="modal-overlay" id="programModalOverlay" onclick="if(event.target===this)closeProgram()">
+  <div class="modal-box">
+    <div class="modal-close" onclick="closeProgram()">✕</div>
+    <div id="programModalContent"></div>
+  </div>
+</div>
+
+
+
+</body>
+</html>

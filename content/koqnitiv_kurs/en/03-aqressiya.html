@@ -1,0 +1,2867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#d9a85a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Module 3 · Aggression and CBT</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1:#0c211f; --bg-2:#1d423d;
+    --surface: rgba(217,168,90,0.055);
+    --surface-h: rgba(217,168,90,0.10);
+    --border: rgba(217,168,90,0.14);
+    --teal:#7ba098; --teal-soft: rgba(123,160,152,0.18);
+    --violet:#8a6a3a; --violet-soft: rgba(138,106,58,0.20);
+    --amber:#d9a85a; --amber-soft: rgba(217,168,90,0.18);
+    --flame:#d9a85a; --flame-soft: rgba(217,168,90,0.18);
+    --rose:#d9705a; --rose-soft: rgba(217,112,90,0.16);
+    --sky:#f0cd8e; --sky-soft:rgba(240,205,142,0.18);
+    --text-1:#f3eee1; --text-2:#c9c2ae; --text-3:#8a9a93;
+    --font-d:'Fraunces', serif;
+    --font-b:'Inter', system-ui, sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{-webkit-user-select:none;-moz-user-select:none;user-select:none;}
+  body{
+    font-family:var(--font-b);
+    background:
+      radial-gradient(1100px 750px at 12% -10%, rgba(251,146,60,0.16), transparent 60%),
+      radial-gradient(1000px 700px at 110% 15%, rgba(139,92,246,0.14), transparent 55%),
+      linear-gradient(180deg, var(--bg-1), var(--bg-2));
+    color:var(--text-1);
+    min-height:100vh;
+    line-height:1.65;
+  }
+  .blob{position:fixed;border-radius:50%;filter:blur(80px);opacity:.45;pointer-events:none;z-index:0;}
+  .blob-1{width:400px;height:400px;background:var(--flame-soft);top:-100px;left:-120px;}
+  .blob-2{width:360px;height:360px;background:var(--violet-soft);top:40%;right:-140px;}
+  .blob-3{width:320px;height:320px;background:var(--amber-soft);bottom:-80px;left:30%;}
+
+  .topbar{position:sticky; top:0; z-index:50; display:flex; align-items:center; justify-content:space-between; padding:16px 28px; background:rgba(11,18,36,0.75); backdrop-filter:blur(16px); border-bottom:1px solid var(--border);}
+  .topbar-brand{display:flex; align-items:center; gap:10px; text-decoration:none; flex-shrink:0;}
+  .topbar-brand img{width:34px; height:34px; border-radius:9px; object-fit:cover; border:1px solid rgba(255,255,255,0.15);}
+  .topbar-brand .tb-name{font-family:var(--font-d); font-weight:700; font-size:.78rem; color:var(--text-1); line-height:1.2; max-width:150px;}
+  .topbar-right{display:flex; align-items:center; gap:14px; flex-shrink:0;}
+  @media(max-width:640px){ .topbar-brand .tb-name{display:none;} .topbar a.back span{display:none;} }
+  .topbar a.back{display:inline-flex; align-items:center; gap:8px; color:var(--text-2); text-decoration:none; font-size:.9rem; font-weight:600; transition:color .2s;}
+  .topbar a.back:hover{color:var(--flame);}
+  .progress-pill{font-size:.78rem; color:var(--text-3); border:1px solid var(--border); padding:6px 14px; border-radius:999px; background:var(--surface);}
+
+  main{position:relative; z-index:2; max-width:880px; margin:0 auto; padding:0 24px 100px;}
+
+  .hero{padding:64px 0 40px; text-align:center;}
+  .hero-illus{display:flex; justify-content:center; margin-bottom:28px;}
+  .hero-illus svg{max-width:100%; height:auto;}
+  .tag{display:inline-block; font-size:.76rem; letter-spacing:.14em; text-transform:uppercase; color:var(--flame); background:var(--flame-soft); border:1px solid rgba(251,146,60,.35); padding:6px 16px; border-radius:999px; margin-bottom:22px; animation:fadeDown .7s ease both;}
+  h1{font-family:var(--font-d); font-weight:800; font-size:clamp(1.9rem,4.6vw,3rem); line-height:1.2; background:linear-gradient(90deg,#fff,#ffd8c2 45%, var(--flame)); -webkit-background-clip:text;background-clip:text;color:transparent; animation:fadeUp .8s ease both .1s;}
+  .hero p{color:var(--text-2); max-width:620px; margin:20px auto 0; animation:fadeUp .8s ease both .2s;}
+
+  section{margin-top:64px; animation:fadeUp .8s ease both; opacity:0;}
+  section.show{opacity:1;}
+  .sec-head{display:flex; align-items:center; gap:14px; margin-bottom:24px;}
+  .sec-num{font-family:var(--font-d); font-size:1.4rem; font-weight:800; color:var(--bg-1); background:linear-gradient(135deg,var(--flame),var(--violet)); width:44px;height:44px; border-radius:13px; display:flex;align-items:center;justify-content:center; flex-shrink:0;}
+  h2{font-family:var(--font-d); font-size:clamp(1.35rem,3vw,1.7rem); font-weight:700;}
+  .lead{color:var(--text-2); margin-bottom:22px;}
+
+  .card{background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:24px 26px; margin-bottom:18px; backdrop-filter:blur(10px);}
+  .card h3{font-size:1.05rem; margin-bottom:10px; color:var(--text-1); display:flex; align-items:center; gap:10px;}
+  .card p{color:var(--text-2); font-size:.95rem;}
+  .card p + p{margin-top:10px;}
+
+  .simple-box{border-left:3px solid var(--sky); background:var(--sky-soft); border-radius:0 14px 14px 0; padding:18px 22px; margin:18px 0; font-size:.94rem;}
+  .simple-box b{color:var(--sky);}
+  .sci-box{border-left:3px solid var(--violet); background:var(--violet-soft); border-radius:0 14px 14px 0; padding:18px 22px; margin:18px 0; font-size:.94rem;}
+  .sci-box b{color:var(--violet);}
+  .example{border-left:3px solid var(--amber); background:var(--amber-soft); border-radius:0 14px 14px 0; padding:16px 20px; margin:16px 0; font-size:.92rem;}
+  .example b{color:var(--amber);}
+
+  .dialog{background:rgba(255,255,255,.03); border:1px solid var(--border); border-radius:16px; padding:20px 22px; margin:18px 0; font-size:.92rem;}
+  .dialog .line{display:flex; gap:12px; margin-bottom:14px;}
+  .dialog .line:last-child{margin-bottom:0;}
+  .dialog .who{flex-shrink:0; width:78px; font-weight:700; font-size:.8rem; padding-top:2px;}
+  .dialog .who.t{color:var(--teal);}
+  .dialog .who.k{color:var(--flame);}
+  .dialog .txt{color:var(--text-2);}
+
+  .lens-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:16px; margin:26px 0;}
+  .lens-card{background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:20px 22px; transition:transform .3s, border-color .3s;}
+  .lens-card:hover{transform:translateY(-4px); border-color:rgba(251,146,60,.4);}
+  .lens-card .ico{font-size:1.6rem; margin-bottom:10px; display:block;}
+  .lens-card h4{font-size:.94rem; margin-bottom:8px; color:var(--flame);}
+  .lens-card p{font-size:.85rem; color:var(--text-2);}
+
+  .age-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; margin:26px 0;}
+  .age-card{border-radius:18px; padding:20px; border:1px solid var(--border);}
+  .age-card.child{background:var(--teal-soft);}
+  .age-card.teen{background:var(--violet-soft);}
+  .age-card.adult{background:var(--flame-soft);}
+  .age-card h4{font-size:1rem; margin-bottom:10px;}
+  .age-card ul{padding-left:18px; font-size:.85rem; color:var(--text-2);}
+  .age-card li{margin-bottom:6px;}
+
+  .cycle-wrap{display:flex; justify-content:center; margin:30px 0;}
+  .cycle-wrap svg{max-width:100%; height:auto;}
+
+  .thermo-wrap{display:flex; justify-content:center; margin:30px 0;}
+  .thermo{display:flex; align-items:flex-end; gap:8px;}
+  .thermo-bar{width:34px; border-radius:8px 8px 0 0; display:flex; align-items:flex-end; justify-content:center; color:#0c211f; font-weight:800; font-size:.72rem; padding-bottom:4px;}
+
+  .sta-flow{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:26px 0;}
+  .sta-box{border-radius:16px; padding:18px 16px; text-align:center; border:1px solid var(--border);}
+  .sta-box.s1{background:var(--rose-soft);}
+  .sta-box.s2{background:var(--sky-soft);}
+  .sta-box.s3{background:var(--teal-soft);}
+  .sta-box .ico2{font-size:1.7rem; display:block; margin-bottom:8px;}
+  .sta-box h4{font-size:.9rem; margin-bottom:6px;}
+  .sta-box p{font-size:.78rem; color:var(--text-2);}
+
+  .session-plan{margin:26px 0;}
+  .sess-row{display:grid; grid-template-columns:56px 1fr auto; gap:14px; align-items:center; padding:15px 12px; border-bottom:1px solid var(--border); cursor:pointer; border-radius:14px; transition:background .25s, transform .25s;}
+  .sess-row:hover{background:var(--surface); transform:translateX(4px);}
+  .sess-row:last-child{border-bottom:none;}
+  .sess-num{font-family:var(--font-d); font-weight:800; color:var(--flame); font-size:1rem; display:flex; align-items:center; justify-content:center; background:var(--flame-soft); border-radius:12px; height:40px;}
+  .sess-txt h4{font-size:.94rem; margin-bottom:3px;}
+  .sess-txt p{font-size:.83rem; color:var(--text-2);}
+  .sess-open{font-size:.76rem; color:var(--flame); font-weight:700; white-space:nowrap; display:flex; align-items:center; gap:5px;}
+
+  .modal-overlay{position:fixed; inset:0; z-index:200; background:rgba(6,9,20,0.72); backdrop-filter:blur(6px); display:flex; align-items:flex-end; justify-content:center; opacity:0; visibility:hidden; transition:opacity .3s;}
+  .modal-overlay.active{opacity:1; visibility:visible;}
+  @media(min-width:720px){ .modal-overlay{align-items:center;} }
+  .modal-box{width:100%; max-width:680px; max-height:88vh; overflow-y:auto; background:linear-gradient(180deg, #1d423d, #0c211f); border:1px solid var(--border); border-radius:26px 26px 0 0; padding:32px 26px 40px; position:relative; transform:translateY(40px); transition:transform .35s cubic-bezier(.2,.8,.2,1); -webkit-user-select:text; user-select:text;}
+  @media(min-width:720px){ .modal-box{border-radius:26px; transform:translateY(0) scale(.94);} }
+  .modal-overlay.active .modal-box{transform:translateY(0) scale(1);}
+  .modal-close{position:sticky; top:0; float:right; margin-left:12px; width:36px;height:36px; border-radius:50%; border:1px solid var(--border); background:rgba(255,255,255,.06); color:var(--text-1); font-size:1.1rem; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:5;}
+  .modal-close:hover{background:rgba(255,255,255,.14);}
+  .m-tag{display:inline-block; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--flame); background:var(--flame-soft); border:1px solid rgba(251,146,60,.35); padding:5px 13px; border-radius:999px; margin-bottom:14px;}
+  .m-title{font-family:var(--font-d); font-size:1.45rem; font-weight:800; margin-bottom:18px; line-height:1.3; clear:both;}
+  .m-block{margin-bottom:22px;}
+  .m-block h5{font-size:.82rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-3); margin-bottom:10px; display:flex; align-items:center; gap:8px;}
+  .m-goal{background:var(--sky-soft); border-left:3px solid var(--sky); border-radius:0 12px 12px 0; padding:14px 18px; font-size:.9rem; color:var(--text-1);}
+  .m-materials{display:flex; flex-wrap:wrap; gap:8px;}
+  .m-materials span{background:var(--surface); border:1px solid var(--border); padding:6px 13px; border-radius:999px; font-size:.8rem; color:var(--text-2);}
+  .m-phase{background:rgba(255,255,255,.03); border:1px solid var(--border); border-radius:16px; padding:16px 18px; margin-bottom:12px;}
+  .m-phase .ph-name{font-weight:700; font-size:.88rem; color:var(--flame); margin-bottom:8px; display:flex; align-items:center; gap:8px;}
+  .m-phase p{font-size:.87rem; color:var(--text-2); margin-bottom:8px;}
+  .m-phase p:last-child{margin-bottom:0;}
+  .m-dialog{background:rgba(0,0,0,.18); border-radius:12px; padding:12px 14px; margin-top:8px;}
+  .m-dialog .dl{display:flex; gap:10px; margin-bottom:9px; font-size:.86rem;}
+  .m-dialog .dl:last-child{margin-bottom:0;}
+  .m-dialog .dw{flex-shrink:0; width:64px; font-weight:700; font-size:.75rem; padding-top:1px;}
+  .m-dialog .dw.t{color:var(--teal);}
+  .m-dialog .dw.k{color:var(--flame);}
+  .m-dialog .dt{color:var(--text-2);}
+  .m-homework{background:var(--amber-soft); border-left:3px solid var(--amber); border-radius:0 12px 12px 0; padding:14px 18px; font-size:.87rem; color:var(--text-1);}
+  .m-nextprev{display:flex; justify-content:space-between; gap:12px; margin-top:26px; padding-top:20px; border-top:1px solid var(--border);}
+  .m-navbtn{flex:1; text-align:center; padding:10px 14px; border-radius:12px; background:var(--surface); border:1px solid var(--border); color:var(--text-2); font-size:.82rem; font-weight:600; cursor:pointer; transition:background .2s;}
+  .m-navbtn:hover{background:var(--surface-h); color:var(--text-1);}
+  .m-navbtn.disabled{opacity:.4; pointer-events:none;}
+  body.modal-open{overflow:hidden;}
+
+  .sensory-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin:26px 0;}
+  .sensory-card{text-align:center; padding:18px 14px; border-radius:16px; background:var(--surface); border:1px solid var(--border);}
+  .sensory-card .ico3{font-size:1.7rem; display:block; margin-bottom:8px;}
+  .sensory-card h4{font-size:.86rem; margin-bottom:6px;}
+  .sensory-card p{font-size:.78rem; color:var(--text-2);}
+
+  .worksheet{overflow-x:auto; margin:24px 0; border-radius:16px; border:1px solid var(--border);}
+  table{width:100%; border-collapse:collapse; font-size:.84rem; min-width:600px;}
+  thead th{background:rgba(255,255,255,.05); color:var(--flame); text-align:left; padding:12px 14px; font-size:.78rem; letter-spacing:.03em; text-transform:uppercase; border-bottom:1px solid var(--border);}
+  tbody td{padding:13px 14px; color:var(--text-2); border-bottom:1px solid rgba(255,255,255,.06); vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+
+  .parent-tips{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; margin:26px 0;}
+  .tip-card{background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:18px 20px;}
+  .tip-card h4{font-size:.9rem; margin-bottom:6px; color:var(--teal);}
+  .tip-card p{font-size:.83rem; color:var(--text-2);}
+
+  .quote{border-left:3px solid var(--violet); padding:18px 22px; margin:26px 0; font-family:var(--font-d); font-style:italic; font-size:1.05rem; color:var(--text-1); background:var(--violet-soft); border-radius:0 14px 14px 0;}
+  .quote span{display:block; margin-top:10px; font-family:var(--font-b); font-style:normal; font-size:.8rem; color:var(--text-3);}
+
+  .summary-box{background:linear-gradient(135deg, var(--flame-soft), var(--violet-soft)); border:1px solid rgba(251,146,60,.3); border-radius:20px; padding:28px 26px; margin-top:60px;}
+  .summary-box h3{font-family:var(--font-d); font-size:1.25rem; margin-bottom:14px;}
+  .summary-box ul{padding-left:20px; color:var(--text-2); font-size:.92rem;}
+  .summary-box li{margin-bottom:8px;}
+
+  .nav-bottom{display:flex; justify-content:space-between; align-items:center; gap:16px; margin-top:40px; flex-wrap:wrap;}
+  .nav-btn{display:inline-flex; align-items:center; gap:8px; padding:13px 22px; border-radius:14px; text-decoration:none; font-weight:600; font-size:.9rem; transition:transform .25s, box-shadow .25s;}
+  .nav-btn.home{background:var(--surface); border:1px solid var(--border); color:var(--text-1);}
+  .nav-btn.next{background:linear-gradient(135deg,var(--flame),var(--violet)); color:#0c211f;}
+  .nav-btn:hover{transform:translateY(-3px);}
+  .nav-btn.disabled{opacity:.5; pointer-events:none;}
+
+  footer{position:relative; z-index:2; text-align:center; padding:44px 24px 60px; border-top:1px solid var(--border); color:var(--text-3); font-size:.88rem; margin-top:40px;}
+  footer a{color:var(--teal); text-decoration:none; font-weight:600;}
+
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-14px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+
+  @media(max-width:640px){
+    .sta-flow{grid-template-columns:1fr;}
+    .dialog .who{width:60px; font-size:.72rem;}
+  }
+</style>
+</head>
+<body>
+
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<div class="topbar">
+  <a class="topbar-brand" href="index.html">
+    <img src="../logo.png" alt="AN Psychological Support and Rehabilitation Center logo">
+    <span class="tb-name">AN Psychological Support and Rehabilitation Center</span>
+  </a>
+  <div class="topbar-right">
+    <a class="back" href="index.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+      <span>Menu</span>
+    </a>
+    <span class="progress-pill">Module 3 / 20</span>
+  </div>
+</div>
+
+<main>
+
+    <div class="hero">
+    <div class="hero-illus">
+      <svg width="360" height="170" viewBox="0 0 360 170" fill="none">
+        <defs>
+          <linearGradient id="flameGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#d9705a"/>
+            <stop offset="55%" stop-color="#d9a85a"/>
+            <stop offset="100%" stop-color="#7ba098"/>
+          </linearGradient>
+        </defs>
+        <circle cx="180" cy="88" r="78" fill="none" stroke="#d9a85a" stroke-width="1.4" stroke-dasharray="3 7" opacity=".5"/>
+        <path d="M180 32c14 18 26 30 26 50a26 26 0 0 1-52 0c0-10 6-18 12-26-2 10 2 14 6 16-2-16 2-28 8-40z" fill="url(#flameGrad)" opacity=".92"/>
+        <g stroke="#7ba098" stroke-width="1.6" opacity=".55" stroke-linecap="round">
+          <path d="M120 60 Q100 88 112 118"/>
+          <path d="M240 60 Q260 88 248 118"/>
+        </g>
+        <g transform="translate(70,135)">
+          <circle r="18" fill="#7ba098" opacity=".85"/>
+          <path d="M-6 1c0-5 4-8 6-8s6 3 6 8c0 4-6 7-6 7s-6-3-6-7z" fill="#0c211f"/>
+        </g>
+        <g transform="translate(290,135)">
+          <circle r="18" fill="#8a6a3a" opacity=".85"/>
+          <path d="M-6-4a8 8 0 1 0 12 0" stroke="#f3eee1" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+    <span class="tag">Module 03 · Emotional Regulation</span>
+    <h1>Aggression and CBT</h1>
+    <p>"Is my child a bad kid?" I hear this question from nearly every family in the first session. My answer never changes — no. Below is the 10-session road map I've built over the years: viewed through psychological, sensory-integration, educational, and communicative lenses, each in its own place.</p>
+  </div>
+
+  <!-- 1. Scientific definition and plain explanation -->
+  <section>
+    <div class="sec-head"><div class="sec-num">1</div><h2>Scientific definition: the clinical model of aggressive behavior</h2></div>
+    <div class="sci-box">
+      <b>Clinical definition:</b> According to Dollard and Miller's "Frustration-Aggression" theory, aggression is behavior carrying intent to harm, arising in response to something blocking a goal. Clinically, a distinction is drawn between reactive (emotional, impulsive) and proactive (planned, instrumentally used) aggression. CBT intervention focuses on building emotion-regulation skills, <span class="prog-link" onclick="openProgram('koqnitiv-restrukturizasiya')">cognitive restructuring</span>, and social problem-solving skills.
+    </div>
+    <div class="simple-box">
+      <b>In plain terms:</b> I always compare aggression to a volcano. Pressure — tension, frustration, exhaustion — builds up slowly. If it doesn't "vent" in time, it comes out as an eruption. This, more often than not, isn't a sign of a "bad kid." It's simply the release valve for unregulated emotional pressure that's been building up.
+    </div>
+    <p class="lead">My goal has never been to punish aggression. It's to find the need underneath it, the unregulated emotion — and point toward a healthier way out. With a client named Elvin, that's exactly the question we started with: what was happening in his body right before he hit someone?</p>
+  </section>
+
+  <!-- 2. Scientific view: types -->
+  <section>
+    <div class="sec-head"><div class="sec-num">2</div><h2>Scientific view: types of aggression</h2></div>
+    <p class="lead">I can't build a program without knowing which type of aggression I'm working with. The clinical literature divides it into several forms.</p>
+    <div class="lens-grid">
+      <div class="lens-card"><span class="ico">💥</span><h4>Reactive aggression</h4><p>An impulsive, emotional outburst in response to an immediate provocation. Hitting back the instant someone pushes you, for example.</p></div>
+      <div class="lens-card"><span class="ico">🎯</span><h4>Proactive aggression</h4><p>Goal-directed and planned. Used instrumentally to obtain something — hitting someone to take their toy, for instance.</p></div>
+      <div class="lens-card"><span class="ico">🗣️</span><h4>Verbal aggression</h4><p>Attack through words: insults, threats, shouting.</p></div>
+      <div class="lens-card"><span class="ico">👊</span><h4>Physical aggression</h4><p>Expressed through bodily action — hitting, pushing, throwing objects.</p></div>
+      <div class="lens-card"><span class="ico">🕸️</span><h4>Relational aggression</h4><p>Social exclusion, spreading rumors, "kicking someone out of the friend group." I see this especially often in adolescents.</p></div>
+    </div>
+  </section>
+
+  <!-- 3. Multidisciplinary view -->
+  <section>
+    <div class="sec-head"><div class="sec-num">3</div><h2>What lies at the root of aggression? — A multidisciplinary view</h2></div>
+    <p class="lead">Aggression almost never arises from a single cause. I've seen this repeatedly across 18 years of practice — building the right program requires looking through several different specialist lenses.</p>
+    <div class="card"><h3>🧠 Psychological view</h3><p>A gap in emotion-regulation skill, the "Frustration-Aggression" theory — the likelihood of aggression rises whenever something blocks a desired goal. Learned behavior shouldn't be forgotten either: once a child has seen that aggression gets them what they want, the behavior starts reinforcing itself.</p></div>
+    <div class="card"><h3>✋ Occupational therapy / sensory integration view</h3><p>In some children, aggression is actually the result of "sensory overload" — too much sensory input from noise, light, crowding. Sometimes it's the reverse — "sensory seeking," a need for movement, for pressure. When the body can't regulate itself, a behavioral eruption follows.</p></div>
+    <div class="card"><h3>🗣️ Speech therapy / communication view</h3><p>Children with speech and language difficulties, unable to put their needs into words, show their frustration physically instead — hitting, biting. The equation "communication difficulty = aggression risk" holds especially true at a young age.</p></div>
+    <div class="card"><h3>🏫 Educational-psychology view</h3><p>Learning difficulties, a sense of academic failure, a task that's too hard (or, just as often, too easy), lack of proper structure in the classroom — all of these can increase aggressive behavior.</p></div>
+  </section>
+
+  <!-- 4. Age groups -->
+  <section>
+    <div class="sec-head"><div class="sec-num">4</div><h2>How it looks different across age groups</h2></div>
+    <p class="lead">The same unregulated emotion shows up wearing three different faces at three different ages.</p>
+    <div class="age-grid">
+      <div class="age-card child">
+        <h4>👶 Children (ages 3–10)</h4>
+        <ul>
+          <li>Hitting, biting, pushing, throwing objects</li>
+          <li>Screaming, lying on the floor crying (tantrums)</li>
+          <li>Conflicts around difficulty sharing</li>
+        </ul>
+      </div>
+      <div class="age-card teen">
+        <h4>🧑 Adolescents (ages 11–17)</h4>
+        <ul>
+          <li>Verbal attacks, insults, slamming doors</li>
+          <li>Defying rules, rebelliousness</li>
+          <li>Aggression through social media (cyberbullying)</li>
+        </ul>
+      </div>
+      <div class="age-card adult">
+        <h4>🧑‍🦱 Adults</h4>
+        <ul>
+          <li>Passive-aggressive behavior (sarcasm, stonewalling)</li>
+          <li>Anger outbursts, family/work conflicts</li>
+          <li>Signs of physical tension (headaches, muscle tightness)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Anger cycle -->
+  <section>
+    <div class="sec-head"><div class="sec-num">5</div><h2>The CBT cycle of anger</h2></div>
+    <p class="lead">Aggression isn't a one-moment eruption. It's the last link in a chain. Understanding that is the key to breaking it.</p>
+    <div class="cycle-wrap">
+      <svg width="360" height="200" viewBox="0 0 360 200">
+        <defs>
+          <linearGradient id="cg" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#fb923c"/><stop offset="100%" stop-color="#8b5cf6"/>
+          </linearGradient>
+        </defs>
+        <rect x="10" y="80" width="80" height="50" rx="12" fill="#fb923c" opacity=".9"/>
+        <text x="50" y="100" text-anchor="middle" font-size="11" font-weight="700" fill="#0c211f">Trigger</text>
+        <text x="50" y="115" text-anchor="middle" font-size="9" fill="#0c211f">(event)</text>
+
+        <rect x="100" y="20" width="80" height="50" rx="12" fill="#8b5cf6" opacity=".9"/>
+        <text x="140" y="40" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Thought</text>
+        <text x="140" y="55" text-anchor="middle" font-size="9" fill="#fff">"This is unfair"</text>
+
+        <rect x="190" y="80" width="80" height="50" rx="12" fill="#38bdf8" opacity=".9"/>
+        <text x="230" y="100" text-anchor="middle" font-size="11" font-weight="700" fill="#0c211f">Body reaction</text>
+        <text x="230" y="115" text-anchor="middle" font-size="9" fill="#0c211f">Heart rate ↑</text>
+
+        <rect x="100" y="140" width="80" height="50" rx="12" fill="#fb7185" opacity=".9"/>
+        <text x="140" y="160" text-anchor="middle" font-size="11" font-weight="700" fill="#0c211f">Behavior</text>
+        <text x="140" y="175" text-anchor="middle" font-size="9" fill="#0c211f">Shouting / hitting</text>
+
+        <path d="M90 100 Q95 60 100 45" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.6" marker-end="url(#ar2)"/>
+        <path d="M180 45 Q195 60 200 80" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.6" marker-end="url(#ar2)"/>
+        <path d="M220 130 Q190 150 180 155" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.6" marker-end="url(#ar2)"/>
+        <path d="M100 165 Q60 150 55 130" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.6" marker-end="url(#ar2)"/>
+        <defs><marker id="ar2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="rgba(255,255,255,.4)"/></marker></defs>
+      </svg>
+    </div>
+    <div class="example"><b>Intervention point:</b> I teach the client to "pause" at any point in this cycle. But the most effective one is the "body reaction" stage — the moment before behavior kicks in, when a pause is still possible.</div>
+  </section>
+
+  <!-- 6. Anger thermometer -->
+  <section>
+    <div class="sec-head"><div class="sec-num">6</div><h2>Workbook material: the Anger Thermometer</h2></div>
+    <p class="lead">A visual tool that teaches recognizing anger at an early stage — catching the signals before the "eruption." Just like we worked on with Elvin.</p>
+    <div class="thermo-wrap">
+      <div class="thermo">
+        <div class="thermo-bar" style="height:30px;background:#4ade80;">Calm</div>
+        <div class="thermo-bar" style="height:55px;background:#a3e635;">Uneasy</div>
+        <div class="thermo-bar" style="height:80px;background:#facc15;">Irritated</div>
+        <div class="thermo-bar" style="height:105px;background:#fb923c;">Angry</div>
+        <div class="thermo-bar" style="height:130px;background:#f87171;">Eruption</div>
+      </div>
+    </div>
+    <div class="example"><b>Assignment:</b> Have the client ask themselves at least once a day, "Where am I on the thermometer right now?" and log it in a notebook.</div>
+  </section>
+
+  <!-- 7. Stop-Think-Act -->
+  <section>
+    <div class="sec-head"><div class="sec-num">7</div><h2>Practical technique: "Stop – Think – Act"</h2></div>
+    <p class="lead">A simple, memorable three-step strategy. Used the moment an anger signal is felt — the first time I used it myself, I'd honestly made more of a promise to myself than to the client that keeping it this simple would actually work.</p>
+    <div class="sta-flow">
+      <div class="sta-box s1"><span class="ico2">🛑</span><h4>1. Stop</h4><p>Halt the action, take 3 deep breaths.</p></div>
+      <div class="sta-box s2"><span class="ico2">🤔</span><h4>2. Think</h4><p>"What am I feeling right now? Is there another way?"</p></div>
+      <div class="sta-box s3"><span class="ico2">✅</span><h4>3. Act</h4><p>Choose a calm, considered response — a word or an action.</p></div>
+    </div>
+  </section>
+
+  <!-- 8. Sensory regulation -->
+  <section>
+    <div class="sec-head"><div class="sec-num">8</div><h2>Occupational-therapy recommendation: sensory regulation tools</h2></div>
+    <p class="lead">For children with sensory needs, I usually recommend setting up a small "calm-down corner" at home — with tools like these:</p>
+    <div class="sensory-grid">
+      <div class="sensory-card"><span class="ico3">🧸</span><h4>Weighted blanket/pillow</h4><p>Deep pressure calms the body.</p></div>
+      <div class="sensory-card"><span class="ico3">🎧</span><h4>Noise-canceling headphones</h4><p>Reduces sensory overload.</p></div>
+      <div class="sensory-card"><span class="ico3">🤏</span><h4>Fidget tools</h4><p>Keeping the hands occupied redirects attention.</p></div>
+      <div class="sensory-card"><span class="ico3">🏃</span><h4>Movement break</h4><p>Jumping, wall push-ups (heavy work) discharge excess energy.</p></div>
+    </div>
+  </section>
+
+  <!-- 9. Session plan -->
+  <section>
+    <div class="sec-head"><div class="sec-num">9</div><h2>Session-by-session program (a 10-session model)</h2></div>
+    <p class="lead">10 sessions — this is the mid-range template I've used for years. For some clients it shortens to 7, for others it stretches to 14.</p>
+    <div class="session-plan">
+      <div class="sess-row" onclick="openSession(1)"><div class="sess-num">1</div><div class="sess-txt"><h4>Assessment and trust</h4><p>Determining the frequency, triggers, and context of the aggression.</p></div><div class="sess-open">Open session ▸</div></div>
+      <div class="sess-row" onclick="openSession(2)"><div class="sess-num">2</div><div class="sess-txt"><h4>Psychoeducation: what is anger?</h4><p>Explaining that anger is a normal emotion, but its form of expression is a choice.</p></div><div class="sess-open">Open session ▸</div></div>
+      <div class="sess-row" onclick="openSession(3)"><div class="sess-num">3</div><div class="sess-txt"><h4>Recognizing body signals</h4><p>The Anger Thermometer is introduced, early physical signals are taught.</p></div><div class="sess-open">Open session ▸</div></div>
+      <div class="sess-row" onclick="openSession(4)"><div class="sess-num">4</div><div class="sess-txt"><h4>Breathing and calming skills</h4><p><span class="prog-link" onclick="openProgram('qutu-nefesi')">Box breathing</span>, counting technique, introducing sensory tools.</p></div><div class="sess-open">Open session ▸</div></div>
+      <div class="sess-row" onclick="openSession(5)"><div class="sess-num">5</div><div class="sess-txt"><h4>Stop-Think-Act</h4><p>The technique is taught and practiced through role-play.</p></div><div class="sess-open">Open session ▸</div></div>
+      <div class="sess-row" onclick="openSession(6)"><div class="sess-num">6</div><div class="sess-txt"><h4>Cognitive restructuring</h4><p>Questioning trigger thoughts like "this is unfair."</p></div><div class="sess-open">Open session ▸</div></div>
+      <div class="sess-row" onclick="openSession(7)"><div class="sess-num">7</div><div class="sess-txt"><h4>Communication skills</h4><p>Expressing a need with "I" language (e.g. "I want this" vs. shouting).</p></div><div class="sess-open">Open session ▸</div></div>
+      <div class="sess-row" onclick="openSession(8)"><div class="sess-num">8</div><div class="sess-txt"><h4><span class="prog-link" onclick="openProgram('problem-hell')">Problem-solving skills</span></h4><p>Searching for alternative solutions in conflict situations.</p></div><div class="sess-open">Open session ▸</div></div>
+      <div class="sess-row" onclick="openSession(9)"><div class="sess-num">9</div><div class="sess-txt"><h4>Role-play and exposure</h4><p>Real-life scenarios acted out in a safe environment.</p></div><div class="sess-open">Open session ▸</div></div>
+      <div class="sess-row" onclick="openSession(10)"><div class="sess-num">10</div><div class="sess-txt"><h4>Closing and continuity plan</h4><p>Consolidating the skills learned, coordinating with parent/teacher.</p></div><div class="sess-open">Open session ▸</div></div>
+    </div>
+    <div class="example"><b>💡 Tip:</b> Click on any session to see the full script — opening, main body, real dialogue, homework.</div>
+  </section>
+
+  <!-- 10. Sample dialogue -->
+  <section>
+    <div class="sec-head"><div class="sec-num">10</div><h2>Sample dialogue (with a 10-year-old)</h2></div>
+    <div class="dialog">
+      <div class="line"><span class="who t">Therapist:</span><span class="txt">What did you feel when your classmate took your toy?</span></div>
+      <div class="line"><span class="who k">Child:</span><span class="txt">I got really mad, so I hit him.</span></div>
+      <div class="line"><span class="who t">Therapist:</span><span class="txt">I understand, getting mad is completely normal. What signals did you notice in your body right before you hit him? How was your heart?</span></div>
+      <div class="line"><span class="who k">Child:</span><span class="txt">My heart was pounding hard, my hands got hot.</span></div>
+      <div class="line"><span class="who t">Therapist:</span><span class="txt">Great observation! See, that's exactly the moment your "thermometer" is climbing toward red. Next time you notice those signals, how could we press the "Stop" button?</span></div>
+    </div>
+    <div class="example"><b>Note:</b> Work with Elvin began with exactly this question too — the body always gives a warning before the words do, we just have to learn to read it.</div>
+  </section>
+
+  <!-- 11. Parent/teacher guidance -->
+  <section>
+    <div class="sec-head"><div class="sec-num">11</div><h2>Guidance for parents and teachers</h2></div>
+    <div class="parent-tips">
+      <div class="tip-card"><h4>🚫 Don't answer aggression with aggression</h4><p>Responding to shouting with shouting reinforces the pattern. Keep your tone calm.</p></div>
+      <div class="tip-card"><h4>🏅 Praise calm behavior</h4><p>"You stayed calm this time, that was great" — positive reinforcement matters.</p></div>
+      <div class="tip-card"><h4>📐 Set clear, consistent rules</h4><p>Children are provoked less in a predictable environment.</p></div>
+      <div class="tip-card"><h4>🔍 Track triggers</h4><p>Keep a small log tracking which situations tend to lead to aggression.</p></div>
+    </div>
+    <div class="example"><b>Homework (for the parent):</b> This week, catch a moment your child stayed calm, and tell them the same day: "You handled yourself really well that time." One sentence is enough — but repeat it.</div>
+  </section>
+
+  <!-- Clinical case -->
+  <section>
+    <div class="sec-head"><div class="sec-num">➕</div><h2>What's behind the "problem child" label?</h2></div>
+    <p class="lead">When I first met Elvin, his teacher introduced him this way: "irritable, aggressive, punishment doesn't fix him." Six sessions later I realized that wasn't the right question at all — the right question was "why," not "how."</p>
+    <div class="card">
+      <h3>📋 Presentation</h3>
+      <p>Elvin was 11, and for four months had been getting into physical conflicts at school 2–3 times a week. There had been no such problem before. His parents were going through a divorce, and Elvin saw his father once a week. His teacher called him "manipulative," his parents said he was "seeking attention." Nobody had asked him: "what are you feeling?"</p>
+    </div>
+    <div class="card">
+      <h3>🔍 What we found</h3>
+      <p>As the behavior observation log filled in, it became clear the aggression wasn't random — it was almost always triggered by someone taking his things without asking, or a feeling of "unfairness." But underneath was something deeper: Elvin was linking his parents' separation to his own being a "bad boy." The anger, in fact, was a call for help.</p>
+    </div>
+    <div class="dialog">
+      <div class="line"><span class="who t">Therapist:</span><span class="txt">Elvin, right before you hit him that time, what did you feel in your body?</span></div>
+      <div class="line"><span class="who k">Client:</span><span class="txt">My chest got hot, my hands balled into fists, like I was about to explode.</span></div>
+      <div class="line"><span class="who t">Therapist:</span><span class="txt">What thought crossed your mind in that moment?</span></div>
+      <div class="line"><span class="who k">Client:</span><span class="txt">"Nobody respects me, everyone's against me."</span></div>
+      <div class="line"><span class="who t">Therapist:</span><span class="txt">Whether or not that thought was true, it felt very real to you in that moment. Now — between that thought and hitting him, could there have been another choice?</span></div>
+      <div class="line"><span class="who k">Client:</span><span class="txt">Maybe I could've gone and told the teacher something.</span></div>
+      <div class="line"><span class="who t">Therapist:</span><span class="txt">Great idea. That's exactly the "moment of choice" you're describing — that's what we're working to find, that gap between the heat in your chest and the punch that follows.</span></div>
+    </div>
+    <div class="example"><b>Key observation:</b> Elvin's aggression wasn't random — it was systematic, with concrete triggers. Punishment didn't change the pattern, because the pattern's root was emotional; the behavior was nothing more than a surface signal.</div>
+    <div class="card"><h3>🎯 How I apply this in session</h3><p>Elvin and I found the phrase "the gap before the punch" together — then in every session after that we worked on widening that exact gap. Recognizing the body signal is the first step, it comes before everything else.</p></div>
+  </section>
+
+  <!-- Case formulation -->
+  <section>
+    <div class="sec-head"><div class="sec-num">➕</div><h2>Case Formulation Worksheet</h2></div>
+    <p class="lead">In aggression work, the row I pay special attention to when filling out this form is "precipitating factors" — because families often link the parents' own conflict to the child's behavior without even realizing it.</p>
+    <div class="worksheet">
+      <table>
+        <thead><tr><th>Component</th><th>Elvin's example</th></tr></thead>
+        <tbody>
+          <tr><td><b>Presenting problem</b></td><td>Frequent physical conflict, low self-regulation</td></tr>
+          <tr><td><b>Precipitating factors (triggers)</b></td><td>Parental divorce, belongings taken without asking, a feeling of "unfairness"</td></tr>
+          <tr><td><b>Predisposing factors (roots)</b></td><td>Early exposure to family conflict, weak verbal expression of emotion</td></tr>
+          <tr><td><b>Perpetuating factors (why it doesn't stop)</b></td><td>Punishment-based responses, lack of emotional support, reinforcement of the "bad kid" label</td></tr>
+          <tr><td><b>Protective factors (strengths)</b></td><td>High intelligence, interest in sports, a character that builds rapport with a therapist quickly</td></tr>
+          <tr><td><b>Core belief</b></td><td>"I'm a bad boy, that's why my parents are separating"</td></tr>
+          <tr><td><b>Treatment goal</b></td><td>Emotional recognition, self-regulation skill, reframing the core belief</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card"><h3>🎯 How I apply this in session</h3><p>I discussed this table separately with the parents and separately with the child. Parents often go quiet when they read their own row — that's a useful silence, it opens them up to self-observation.</p></div>
+  </section>
+
+  <!-- Session protocol -->
+  <section>
+    <div class="sec-head"><div class="sec-num">➕</div><h2>Sample session protocol</h2></div>
+    <p class="lead">The protocol from Elvin's 5th session — the session where the "gap" concept was first applied.</p>
+    <div class="worksheet">
+      <table>
+        <thead><tr><th>Phase</th><th>Time</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>Reviewing the week</td><td>7 min</td><td>1 conflict incident (previous week had 3)</td></tr>
+          <tr><td>Homework review</td><td>8 min</td><td>Body-signal log — 4 entries, all describing "heat in the chest"</td></tr>
+          <tr><td>Agenda setting</td><td>3 min</td><td>Today: role-playing the "moment of choice"</td></tr>
+          <tr><td>Main work</td><td>22 min</td><td>Role-play: trigger scenario, stop signal, alternative response</td></tr>
+          <tr><td>Setting homework</td><td>5 min</td><td>Try the "stop-breathe-choose" sequence next week</td></tr>
+          <tr><td>Closing feedback</td><td>3 min</td><td>Client: "I was almost able to stop this time, not fully but almost"</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Assessment tools -->
+  <section>
+    <div class="sec-head"><div class="sec-num">➕</div><h2>CBT assessment tools and scales</h2></div>
+    <p class="lead">I don't work aggressive-behavior cases without standardized instruments — subjective impressions alone can be misleading, especially when the parent's and teacher's accounts differ.</p>
+    <div class="grid-3">
+      <div class="lens-card"><span class="ico">📊</span><h4>CBCL (Child Behavior Checklist)</h4><p>A standard, parent-completed instrument assessing behavioral and emotional problems across a broad spectrum.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>ECBI (Eyberg Child Behavior Inventory)</h4><p>Separately measures the frequency of behavior problems and the parent's level of concern.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>Conners-3</h4><p>A multi-informant assessment system covering behavior, attention, and aggression subscales.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>SDQ (Strengths and Difficulties Questionnaire)</h4><p>A brief screening tool measuring both difficulties and strengths.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>Overt Aggression Scale (OAS)</h4><p>An observation chart logging the severity and type (verbal, against objects, physical) of aggressive episodes.</p></div>
+    </div>
+    <div class="example"><b>Note:</b> For Elvin, both mother and father filled out the ECBI separately — the difference was telling: his father rated the episodes at home as less frequent. That gap itself became part of the treatment focus.</div>
+  </section>
+
+  <!-- Homework example -->
+  <section>
+    <div class="sec-head"><div class="sec-num">🏠</div><h2>Homework example</h2></div>
+    <p class="lead">This was the concrete assignment I gave Elvin.</p>
+    <div class="card">
+      <p>Every time you feel that heat in your chest, don't do anything at first — just stop. Then count to three, take a deep breath. Only after that, decide: what will I do? Track this in a notebook — how many times you were able to "stop," how many times you weren't. Failure is data too, just as valuable as success. I told Elvin: the goal isn't to be perfect, it's to widen the gap a little more each time.</p>
+    </div>
+  </section>
+
+
+<section>
+  <div class="sec-head"><div class="sec-num">12</div><h2>The escalation point of aggression</h2></div>
+  <div class="crisis-box">
+    <h4>⚠️ When urgent intervention is required</h4>
+    <p>While working on anger control, a therapist must always be able to tell these signs apart — they differ from ordinary therapeutic resistance and call for urgent intervention:</p>
+    <ul>
+      <li>A concrete, targeted threat — a clear answer to who, how, when ("plan + means + time");</li>
+      <li>Repeated or escalating episodes of cruelty to animals;</li>
+      <li>Living in an environment with access to weapons (a hunting rifle, sharp tools within easy reach);</li>
+      <li>Aggression turned inward — self-punishment, signs of self-harm.</li>
+    </ul>
+    <ol class="crisis-steps">
+      <li>Calmly and without judgment, ask directly whether there's been any thought of harming someone else or themselves.</li>
+      <li>If the plan+means+time triad is uncovered, arrange an urgent joint psychiatric referral with the parent immediately.</li>
+      <li>Have a concrete conversation with the parent about restricting access to weapons/sharp tools at home (means restriction) — don't delay this step until the end of the session.</li>
+      <li>If signs of comorbid Conduct Disorder appear, refer for a broader psychiatric evaluation.</li>
+      <li>Document every episode in writing, with date, identified factors, and steps taken.</li>
+    </ol>
+    <p><b>Note:</b> In reactive aggression, escalation usually happens within minutes — a therapist's ability to recognize this window is decisive for ending the session safely.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="sec-num">13</div><h2>Bibliography</h2></div>
+  <div class="biblio-box">
+    <h4>📚 Key sources referenced in this topic</h4>
+    <ul class="biblio-list">
+      <li><b>Goldstein, A. P., Glick, B., & Gibbs, J. C.</b> (1998). <i>Aggression Replacement Training.</i> Research Press.</li>
+      <li><b>Dodge, K. A., & Crick, N. R.</b> (1990). Social information-processing bases of aggressive behavior. <i>Personality and Social Psychology Bulletin, 16</i>(1), 8–22.</li>
+      <li><b>Buss, A. H., & Perry, M.</b> (1992). The aggression questionnaire. <i>Journal of Personality and Social Psychology, 63</i>(3), 452–459.</li>
+      <li><b>Greene, R. W.</b> (2014). <i>The Explosive Child</i> (5th ed.). Harper.</li>
+      <li><b>Kazdin, A. E.</b> (2005). <i>Parent Management Training.</i> Oxford University Press.</li>
+      <li><b>Posner, K., et al.</b> (2011). Columbia-Suicide Severity Rating Scale. <i>American Journal of Psychiatry, 168</i>(12), 1266–1277.</li>
+    </ul>
+  </div>
+</section>
+
+<div class="quote">
+    "Behavior is communication. Behind aggressive behavior there is always a need, or a missing skill."
+    <span>— Ross Greene, author of "The Explosive Child"</span>
+  </div>
+
+  <div class="summary-box">
+    <h3>📌 Module summary</h3>
+    <ul>
+      <li>Aggression is the unmanaged expression of built-up emotional pressure — not a "bad character."</li>
+      <li>Reactive, proactive, verbal, physical, and relational aggression each call for different intervention.</li>
+      <li>Root causes can be psychological, sensory, communicative, or educational — a multidisciplinary assessment matters.</li>
+      <li>The Anger Thermometer and "Stop-Think-Act" are the most effective practical tools.</li>
+      <li>Sensory regulation tools (weighted blankets, fidgets, movement breaks) can reduce the physical roots of aggression.</li>
+      <li>Parent/teacher collaboration is the key to making behavior change stick.</li>
+    </ul>
+  </div>
+
+
+  <div class="nav-bottom">
+    <a class="nav-btn home" href="index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+      Back to menu
+    </a>
+    <a class="nav-btn next" href="04-qayghi-qorxu.html">
+      Next module: Anxiety, Tension and Fear
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+
+</main>
+
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeSession()">
+  <div class="modal-box">
+    <div class="modal-close" onclick="closeSession()">✕</div>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Cognitive Behavioral Therapy Course · Module 3/20</p>
+  <p style="margin-top:8px;">By <a href="https://aze-ai.az" target="_blank" rel="noopener">securtiy_group</a></p>
+  <p style="margin-top:10px;font-size:.82rem;"><a href="../privacy.html">Privacy Policy</a> · <a href="../terms.html">Terms of Use</a></p>
+</footer>
+
+<script>
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target);} });
+},{threshold:0.1});
+document.querySelectorAll('section').forEach(s=>io.observe(s));
+
+window.addEventListener('mousemove', e=>{
+  const mx = (e.clientX/window.innerWidth - 0.5);
+  const my = (e.clientY/window.innerHeight - 0.5);
+  document.querySelectorAll('.blob').forEach((b,i)=>{
+    const speed = (i+1)*16;
+    b.style.transform = `translate(${mx*speed}px, ${my*speed}px)`;
+  });
+});
+</script>
+<script>
+const SESSIONS = [
+  {
+    "num": 1,
+    "title": "Assessment and Trust",
+    "goal": "Determine the frequency, triggers, and context of the aggression, and build a trusting connection with the client.",
+    "materials": [
+      "Behavior assessment questionnaire",
+      "Observation log template"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Opening",
+        "text": [
+          "In the first session, I frame the topic as 'understanding,' not 'punishing' — this lowers the client's defensiveness."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Kamran, welcome. This is our first meeting — we could start by introducing ourselves."
+          ],
+          [
+            "K",
+            "Thank you. Honestly, I wasn't quite sure what to expect coming here."
+          ],
+          [
+            "T",
+            "That's completely normal. What's brought you here, briefly?"
+          ],
+          [
+            "K",
+            "Over the last few months there have been moments I couldn't control myself — with my family, at work."
+          ],
+          [
+            "T",
+            "Thank you for sharing that. How long has this been going on?"
+          ],
+          [
+            "K",
+            "A few months, but the last few weeks have gotten worse."
+          ],
+          [
+            "T",
+            "Is this a hard thing to talk about for you?"
+          ],
+          [
+            "K",
+            "A little, honestly — there's some shame in it."
+          ],
+          [
+            "T",
+            "I understand that, a lot of people feel that way coming here for the first time."
+          ],
+          [
+            "K",
+            "Okay, that actually puts me a bit more at ease."
+          ],
+          [
+            "T",
+            "You won't be judged here, we're just going to look at this together."
+          ],
+          [
+            "K",
+            "Thank you, I needed to hear that."
+          ],
+          [
+            "T",
+            "Any questions before we start?"
+          ],
+          [
+            "K",
+            "No, I'm ready."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Main section — Mapping the triggers",
+        "text": [
+          "2–3 concrete incidents from the past week or two are analyzed in detail: who, where, when, what happened."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Do you remember when this difficulty first started?"
+          ],
+          [
+            "K",
+            "Not exactly, it seems like it built up gradually."
+          ],
+          [
+            "T",
+            "Kamran, how do you recall it?"
+          ],
+          [
+            "K",
+            "Maybe after a certain incident, I'm not fully sure."
+          ],
+          [
+            "T",
+            "How is this affecting daily life?"
+          ],
+          [
+            "K",
+            "A lot — my work, my relationships too."
+          ],
+          [
+            "T",
+            "Can you recall a specific incident that made you angry recently?"
+          ],
+          [
+            "K",
+            "Yes, at work a colleague took credit for something I'd done."
+          ],
+          [
+            "T",
+            "What went through your mind in that moment?"
+          ],
+          [
+            "K",
+            "'This is unfair, nobody here respects my work.'"
+          ],
+          [
+            "T",
+            "What did you feel in your body at that moment?"
+          ],
+          [
+            "K",
+            "My jaw clenched, my voice got loud on its own."
+          ],
+          [
+            "T",
+            "What did you do next?"
+          ],
+          [
+            "K",
+            "I snapped back at him in front of everyone, then I regretted it."
+          ],
+          [
+            "T",
+            "How were things between you two after that?"
+          ],
+          [
+            "K",
+            "A bit tense, I had to apologize afterward."
+          ],
+          [
+            "T",
+            "Was there another example over these two weeks?"
+          ],
+          [
+            "K",
+            "Yes, at home too, once, when my child wouldn't pick up the toys."
+          ],
+          [
+            "T",
+            "What was different about that one, compared to the work incident?"
+          ],
+          [
+            "K",
+            "I calmed down faster, honestly, but I still raised my voice."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Closing",
+        "text": [
+          "The session ends by giving the client a sense of hope and explaining why the program will be useful."
+        ],
+        "dialog": [
+          [
+            "T",
+            "How did this first meeting go for you?"
+          ],
+          [
+            "K",
+            "Easier than I expected, honestly."
+          ],
+          [
+            "T",
+            "I'm glad to hear that."
+          ],
+          [
+            "K",
+            "Will I come again next week?"
+          ],
+          [
+            "T",
+            "Yes, we'll have a 10-session road map together."
+          ],
+          [
+            "K",
+            "Good, that gives me a sense of structure."
+          ],
+          [
+            "T",
+            "If you'd like to think about this on the way home, you can jot down small notes."
+          ],
+          [
+            "K",
+            "I'll try."
+          ],
+          [
+            "T",
+            "I want to acknowledge you for taking this step."
+          ],
+          [
+            "K",
+            "Thank you."
+          ]
+        ]
+      }
+    ],
+    "homework": "This week, note down the moments you got angry (who, what, where) in a small notebook.",
+    "about": "No formal test is applied in this first session — the frequency, triggers, and context of the behavior are assessed through a structured conversation.",
+    "specialists": [
+      "Clinical psychologist",
+      "Child psychologist",
+      "CBT therapist"
+    ]
+  },
+  {
+    "num": 2,
+    "title": "Psychoeducation: What Is Anger?",
+    "goal": "Explain that anger is a normal, even useful emotion, but that how it's expressed is a choice.",
+    "materials": [
+      "Volcano-metaphor picture",
+      "Psychoeducation worksheet"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Opening",
+        "text": [
+          "The agenda is reviewed and a bridge is built to the previous session."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Kamran, how has it been since our last meeting?"
+          ],
+          [
+            "K",
+            "Normal, I got angry once or twice again, but less."
+          ],
+          [
+            "T",
+            "Thank you for noting that. Did any question come up about it?"
+          ],
+          [
+            "K",
+            "Sometimes I think anger itself is a bad thing, that I should get rid of it completely."
+          ],
+          [
+            "T",
+            "That's a very common belief. That's exactly what we're going to explore today."
+          ],
+          [
+            "K",
+            "Interesting, I'm listening."
+          ],
+          [
+            "T",
+            "How are you feeling today, fairly calm?"
+          ],
+          [
+            "K",
+            "Relatively, a bit tired after work."
+          ],
+          [
+            "T",
+            "How was sleep this week?"
+          ],
+          [
+            "K",
+            "Average, two rough nights."
+          ],
+          [
+            "T",
+            "Thanks for mentioning that, we'll keep it in mind."
+          ],
+          [
+            "K",
+            "Okay."
+          ],
+          [
+            "T",
+            "Anything you'd like to ask before we start?"
+          ],
+          [
+            "K",
+            "No, I'm ready."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Main section — The volcano metaphor",
+        "text": [
+          "It's explained that anger works like building pressure, but that an eruption isn't the only way out."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Does this explanation make sense to you?"
+          ],
+          [
+            "K",
+            "A little, but I still don't fully understand why I feel this way."
+          ],
+          [
+            "T",
+            "This doesn't mean you're 'weak,' your brain is just reacting in a certain way."
+          ],
+          [
+            "K",
+            "Knowing that actually gives me some relief."
+          ],
+          [
+            "T",
+            "Any questions about this?"
+          ],
+          [
+            "K",
+            "So when does this go away, do you know?"
+          ],
+          [
+            "T",
+            "Let's picture anger as a volcano — pressure builds up slowly, from tension, frustration, exhaustion."
+          ],
+          [
+            "K",
+            "That makes sense to me, honestly."
+          ],
+          [
+            "T",
+            "If the pressure isn't released in time, it comes out as an eruption. What builds your pressure the most?"
+          ],
+          [
+            "K",
+            "Feeling disrespected, mainly. Or things not going the way I expect."
+          ],
+          [
+            "T",
+            "Is an eruption the only way to release that pressure though?"
+          ],
+          [
+            "K",
+            "Thinking about it... not really, actually."
+          ],
+          [
+            "T",
+            "What would 'releasing the pressure early' look like for you?"
+          ],
+          [
+            "K",
+            "Maybe saying something the moment I notice I'm getting tense, instead of holding it in."
+          ],
+          [
+            "T",
+            "That's a really valuable insight. Anger itself isn't the problem here."
+          ],
+          [
+            "K",
+            "Right, it's what I do with it that matters."
+          ],
+          [
+            "T",
+            "Exactly. The emotion is normal — the form is the choice."
+          ],
+          [
+            "K",
+            "I hadn't thought of it as a choice before."
+          ],
+          [
+            "T",
+            "If you repeated this volcano metaphor in your own words?"
+          ],
+          [
+            "K",
+            "Pressure builds up, and if I don't release it in time, it erupts."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Closing",
+        "text": [
+          "It's emphasized that anger itself isn't 'bad' — only the form of expression is a choice."
+        ],
+        "dialog": [
+          [
+            "T",
+            "How would you summarize what you learned about anger today?"
+          ],
+          [
+            "K",
+            "Anger itself isn't bad, how I express it is what matters."
+          ],
+          [
+            "T",
+            "Exactly right."
+          ],
+          [
+            "K",
+            "Knowing that puts me a bit more at ease."
+          ],
+          [
+            "T",
+            "This week, could you think once about what your anger might be trying to tell you?"
+          ],
+          [
+            "K",
+            "I'll try."
+          ],
+          [
+            "T",
+            "How are you feeling as you leave?"
+          ],
+          [
+            "K",
+            "Calmer, honestly, I wasn't expecting that."
+          ],
+          [
+            "T",
+            "That's a really good start."
+          ],
+          [
+            "K",
+            "Thank you, see you next time."
+          ]
+        ]
+      }
+    ],
+    "homework": "This week, log each moment you get angry with a 'volcano' level (low/medium/high).",
+    "about": "This is a psychoeducation session — it explains that anger is a normal emotion, but that the form of its expression is a choice.",
+    "specialists": [
+      "Clinical psychologist",
+      "CBT therapist",
+      "Educational psychologist"
+    ]
+  },
+  {
+    "num": 3,
+    "title": "Recognizing Body Signals",
+    "goal": "Teach recognition of early physical signals (heart racing, feeling hot, clenched fists) using the Anger Thermometer.",
+    "materials": [
+      "Anger thermometer template"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Opening",
+        "text": [
+          "A simple opening, transitioning into the topic of the body."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Kamran, today we're going to look at how anger shows up in the body."
+          ],
+          [
+            "K",
+            "Interesting, honestly I've never thought about this before."
+          ],
+          [
+            "T",
+            "The last time you got upset, what did you feel in your body?"
+          ],
+          [
+            "K",
+            "My heart raced, my fists clenched almost on their own."
+          ],
+          [
+            "T",
+            "What else was there — breathing, jaw, shoulders?"
+          ],
+          [
+            "K",
+            "My jaw tightened, my breathing sped up a bit too."
+          ],
+          [
+            "T",
+            "These are early signals of anger — the body warns you before words do."
+          ],
+          [
+            "K",
+            "Knowing this seems like it'll be useful now."
+          ],
+          [
+            "T",
+            "Can you track these signals this week?"
+          ],
+          [
+            "K",
+            "I'll try, it actually sounds interesting."
+          ],
+          [
+            "T",
+            "Small notes are enough, it doesn't have to be perfect."
+          ],
+          [
+            "K",
+            "Okay, I'll give it a try."
+          ],
+          [
+            "T",
+            "Any question before we start?"
+          ],
+          [
+            "K",
+            "No, I'm ready."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Main section — Body scan",
+        "text": [
+          "The client is asked what they felt in their body during a past incident, walked through step by step."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Kamran, today we're going to look at how anger shows up in the body."
+          ],
+          [
+            "K",
+            "Interesting, honestly I've never thought about this before."
+          ],
+          [
+            "T",
+            "The last time you got upset, what did you feel in your body?"
+          ],
+          [
+            "K",
+            "My heart raced, my fists clenched almost on their own."
+          ],
+          [
+            "T",
+            "What else was there — breathing, jaw, shoulders?"
+          ],
+          [
+            "K",
+            "My jaw tightened, my breathing sped up a bit too."
+          ],
+          [
+            "T",
+            "These are early signals of anger — the body warns you before words do."
+          ],
+          [
+            "K",
+            "Knowing this seems like it'll be useful now."
+          ],
+          [
+            "T",
+            "Let's build an Anger Thermometer, connecting these signals to numbers."
+          ],
+          [
+            "K",
+            "Okay, how does this work?"
+          ],
+          [
+            "T",
+            "From 1 to 10, we note which body signal shows up at which level."
+          ],
+          [
+            "K",
+            "I see, at 3-4 my jaw tightens, I think."
+          ],
+          [
+            "T",
+            "What happens at 7-8, in your view?"
+          ],
+          [
+            "K",
+            "My fists clench fully, my voice gets loud."
+          ],
+          [
+            "T",
+            "This awareness is the single most important tool for pausing before an eruption."
+          ],
+          [
+            "K",
+            "Now I understand why you're teaching this first."
+          ],
+          [
+            "T",
+            "Can you track these signals this week?"
+          ],
+          [
+            "K",
+            "I'll try, it actually sounds interesting."
+          ],
+          [
+            "T",
+            "Small notes are enough, it doesn't have to be perfect."
+          ],
+          [
+            "K",
+            "Okay, I'll give it a try."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Closing",
+        "text": [
+          "The thermometer template is filled out and the homework is explained."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Do you remember the body signals we covered today?"
+          ],
+          [
+            "K",
+            "Heart racing, jaw tension, clenched fists — early warnings."
+          ],
+          [
+            "T",
+            "Exactly right. Can you track these this week?"
+          ],
+          [
+            "K",
+            "Yes, I'll note them in my notebook."
+          ],
+          [
+            "T",
+            "Small notes are enough."
+          ],
+          [
+            "K",
+            "Okay."
+          ],
+          [
+            "T",
+            "How did this awareness make you feel?"
+          ],
+          [
+            "K",
+            "A bit stronger, like there's something in my control now."
+          ],
+          [
+            "T",
+            "That's a very valuable observation."
+          ],
+          [
+            "K",
+            "Thank you, see you next time."
+          ]
+        ]
+      }
+    ],
+    "homework": "Check your 'thermometer' at least twice during the day and log the number.",
+    "about": "The Anger Thermometer is not a diagnostic test — it's a self-monitoring tool for recognizing early body signals.",
+    "specialists": [
+      "Clinical psychologist",
+      "Occupational therapist"
+    ]
+  },
+  {
+    "num": 4,
+    "title": "Breathing and Calming Skills",
+    "goal": "Teach rapid physical calming using box breathing, backward counting, and sensory tools.",
+    "materials": [
+      "Breathing card",
+      "Fidget tool (if available)"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Opening",
+        "text": [
+          "A playful-toned opening."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Kamran, did you track your body signals since last session?"
+          ],
+          [
+            "K",
+            "Yes, I noted it twice, it was useful."
+          ],
+          [
+            "T",
+            "That's a really good start. Did you feel today, are you fairly calm?"
+          ],
+          [
+            "K",
+            "Relatively, work was tiring today though."
+          ],
+          [
+            "T",
+            "Did you get angry at any point this week?"
+          ],
+          [
+            "K",
+            "Once, but it wasn't as intense as last time."
+          ],
+          [
+            "T",
+            "That's a real improvement in itself."
+          ],
+          [
+            "K",
+            "I think so too, honestly."
+          ],
+          [
+            "T",
+            "Today we're going to look at concrete tools for calming the body fast."
+          ],
+          [
+            "K",
+            "I need that, I don't always know what to do in the moment."
+          ],
+          [
+            "T",
+            "That's exactly the gap we're going to fill today."
+          ],
+          [
+            "K",
+            "Okay, I'm ready."
+          ],
+          [
+            "T",
+            "Any question before we start?"
+          ],
+          [
+            "K",
+            "No, let's begin."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Main section — Practice",
+        "text": [
+          "Box breathing and counting down from 10 are practiced together."
+        ],
+        "dialog": [
+          [
+            "T",
+            "How many times should this breathing technique be repeated?"
+          ],
+          [
+            "K",
+            "I don't know, a few times maybe."
+          ],
+          [
+            "T",
+            "Let's try it once more right now."
+          ],
+          [
+            "K",
+            "(takes a deep breath) That helped a little, not fully though."
+          ],
+          [
+            "T",
+            "Let's add backward counting now too — counting down from 10 together with the breath."
+          ],
+          [
+            "K",
+            "Okay, let's try."
+          ],
+          [
+            "T",
+            "10, breathe in... 9, breathe out..."
+          ],
+          [
+            "K",
+            "(counting) This is distracting me a bit, in a good way."
+          ],
+          [
+            "T",
+            "That's exactly the point — redirecting the brain to another task."
+          ],
+          [
+            "K",
+            "My body feels a bit calmer now."
+          ],
+          [
+            "T",
+            "Among sensory tools — cold water, squeezing something firm — which might work for you?"
+          ],
+          [
+            "K",
+            "Cold water on my face has always worked well for me."
+          ],
+          [
+            "T",
+            "Great, let's add that to your toolbox too."
+          ],
+          [
+            "K",
+            "Good idea."
+          ],
+          [
+            "T",
+            "Of these three tools — breathing, counting backward, cold water — which will you use most?"
+          ],
+          [
+            "K",
+            "Probably breathing and cold water, they're both simple."
+          ],
+          [
+            "T",
+            "This week, try one of them the moment you notice yourself getting angry."
+          ],
+          [
+            "K",
+            "I'll try, I promise."
+          ],
+          [
+            "T",
+            "We'll discuss the result next session."
+          ],
+          [
+            "K",
+            "Okay, I'll be ready."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Closing",
+        "text": [
+          "How to use sensory tools (fidget, weighted blanket) is demonstrated."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Which of today's tools felt most suited to you?"
+          ],
+          [
+            "K",
+            "Breathing and cold water, both seem simple."
+          ],
+          [
+            "T",
+            "Are you ready to try these this week?"
+          ],
+          [
+            "K",
+            "Yes, I'm ready."
+          ],
+          [
+            "T",
+            "You can share the result next session."
+          ],
+          [
+            "K",
+            "Okay, I will."
+          ],
+          [
+            "T",
+            "How are you feeling as you leave today?"
+          ],
+          [
+            "K",
+            "Stronger, I have real tools in hand now."
+          ],
+          [
+            "T",
+            "That's a really good step forward."
+          ],
+          [
+            "K",
+            "Thank you."
+          ]
+        ]
+      }
+    ],
+    "homework": "When your thermometer rises, try backward counting or the breathing technique, and write down the result.",
+    "about": "This is a practical training session teaching sensory regulation skills.",
+    "specialists": [
+      "Occupational therapist",
+      "Clinical psychologist",
+      "Sensory integration specialist"
+    ]
+  },
+  {
+    "num": 5,
+    "title": "Stop-Think-Act",
+    "goal": "Teach the 3-step strategy and practice applying it in real situations through role-play.",
+    "materials": [
+      "Stop-Think-Act card"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Opening",
+        "text": [
+          "Last week's breathing exercises are reviewed."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Kamran, today we're going to learn a three-step strategy. Do you feel ready?"
+          ],
+          [
+            "K",
+            "I'm ready, this is interesting."
+          ],
+          [
+            "T",
+            "Did you try the breathing tools last week?"
+          ],
+          [
+            "K",
+            "Yes, cold water especially worked well."
+          ],
+          [
+            "T",
+            "That was a really good choice."
+          ],
+          [
+            "K",
+            "I used it a few times, it helped."
+          ],
+          [
+            "T",
+            "How are you feeling today?"
+          ],
+          [
+            "K",
+            "Fairly relaxed, work was calm today."
+          ],
+          [
+            "T",
+            "We're also going to use role-play today, how do you feel about that?"
+          ],
+          [
+            "K",
+            "A bit strange, but I'm ready to try."
+          ],
+          [
+            "T",
+            "Role-play can feel strange at first, but it's very effective."
+          ],
+          [
+            "K",
+            "I trust you on that."
+          ],
+          [
+            "T",
+            "Any question before we start?"
+          ],
+          [
+            "K",
+            "No, let's begin."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Main section — Role-play",
+        "text": [
+          "The therapist creates a real-life scenario (e.g. a toy being taken) and the client applies the 3 steps."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Today I'll teach a three-step strategy — Stop, Think, Act."
+          ],
+          [
+            "K",
+            "Sounds simple, I'm listening."
+          ],
+          [
+            "T",
+            "Step one — Stop. The moment you feel the anger signal, you physically stop, you don't move."
+          ],
+          [
+            "K",
+            "You mean literally stop?"
+          ],
+          [
+            "T",
+            "Yes, one step back, or just freezing in place — not acting."
+          ],
+          [
+            "K",
+            "Got it, then what?"
+          ],
+          [
+            "T",
+            "Step two — Think. You ask yourself: what will this reaction actually get me?"
+          ],
+          [
+            "K",
+            "Interesting question, I don't usually think about that in the moment."
+          ],
+          [
+            "T",
+            "That's exactly why we're teaching it — to turn it into a habit."
+          ],
+          [
+            "K",
+            "What's the third step?"
+          ],
+          [
+            "T",
+            "Act. After thinking, you make the best choice — sometimes doing nothing, sometimes speaking calmly."
+          ],
+          [
+            "K",
+            "I'd like to try this in a real situation."
+          ],
+          [
+            "T",
+            "Let's role-play — I'll be your coworker at the office, you apply Stop-Think-Act."
+          ],
+          [
+            "K",
+            "Okay, I'm ready."
+          ],
+          [
+            "T",
+            "(in role) 'I had to fix your work again, how many times is this now?'"
+          ],
+          [
+            "K",
+            "(stops) ...I'm stopping now... thinking... 'Can we talk about this calmly, this is bothering me.'"
+          ],
+          [
+            "T",
+            "Excellent application! How did that feel to do?"
+          ],
+          [
+            "K",
+            "Stopping was hard, but I managed it."
+          ],
+          [
+            "T",
+            "This is a skill that takes practice, it won't be perfect the first time."
+          ],
+          [
+            "K",
+            "Okay, I'll try it in real life this week."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Closing",
+        "text": [
+          "The technique card is given to the client, with a recommendation to post it somewhere visible at home."
+        ],
+        "dialog": [
+          [
+            "T",
+            "If you summed up Stop-Think-Act in one sentence?"
+          ],
+          [
+            "K",
+            "Stop, ask yourself a question, then do the best thing."
+          ],
+          [
+            "T",
+            "Exactly right. Can you try this once this week?"
+          ],
+          [
+            "K",
+            "I'll try, I promise."
+          ],
+          [
+            "T",
+            "Small wins should be noted too."
+          ],
+          [
+            "K",
+            "Okay, I'll write down what happens."
+          ],
+          [
+            "T",
+            "How did today's role-play feel to you?"
+          ],
+          [
+            "K",
+            "Strange at first, useful after."
+          ],
+          [
+            "T",
+            "That's completely natural — a new skill always starts out feeling strange."
+          ],
+          [
+            "K",
+            "Thank you, see you next time."
+          ]
+        ]
+      }
+    ],
+    "homework": "Try to apply this technique in one real situation, and share the result next session.",
+    "about": "Stop-Think-Act is a behavioral strategy practiced through role-play.",
+    "specialists": [
+      "Clinical psychologist",
+      "CBT therapist",
+      "School psychologist"
+    ]
+  },
+  {
+    "num": 6,
+    "title": "Cognitive Restructuring",
+    "goal": "Recognize and question triggering thoughts like 'this is unfair.'",
+    "materials": [
+      "Thought record sheet"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Opening",
+        "text": [
+          "A question opens the transition into the topic."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Kamran, today we're going to look at how we can question our thoughts."
+          ],
+          [
+            "K",
+            "This is interesting to me, I've never questioned my own thoughts before."
+          ],
+          [
+            "T",
+            "Did you try Stop-Think-Act last week?"
+          ],
+          [
+            "K",
+            "Once, it wasn't complete, but it was different from my old pattern."
+          ],
+          [
+            "T",
+            "That's a great start."
+          ],
+          [
+            "K",
+            "Thank you, it was hard though."
+          ],
+          [
+            "T",
+            "How are you feeling today?"
+          ],
+          [
+            "K",
+            "Thoughtful, a bit anxious too."
+          ],
+          [
+            "T",
+            "Which thought bothered you the most this week?"
+          ],
+          [
+            "K",
+            "'This is unfair' comes up often."
+          ],
+          [
+            "T",
+            "That's exactly what we're going to explore together today."
+          ],
+          [
+            "K",
+            "Okay, this is interesting."
+          ],
+          [
+            "T",
+            "Any question before we start?"
+          ],
+          [
+            "K",
+            "No, I'm ready."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Main section — Questioning the thought",
+        "text": [
+          "The client's frequently recurring trigger thought is picked out and explored together."
+        ],
+        "dialog": [
+          [
+            "T",
+            "What evidence is there against this thought?"
+          ],
+          [
+            "K",
+            "I don't know, maybe there's some, I can't think of it right now."
+          ],
+          [
+            "T",
+            "How could we reshape this thought?"
+          ],
+          [
+            "K",
+            "It's hard, but maybe I can try."
+          ],
+          [
+            "T",
+            "How will you remember this new thought?"
+          ],
+          [
+            "K",
+            "Not sure exactly, I'll write it down somewhere so I don't forget."
+          ],
+          [
+            "T",
+            "Let's start with a concrete example — the last time you got angry, what thought was in your head?"
+          ],
+          [
+            "K",
+            "Something like 'this is unfair, they're doing this to me on purpose.'"
+          ],
+          [
+            "T",
+            "How much do you believe this thought, on a scale from 0 to 100?"
+          ],
+          [
+            "K",
+            "Something like 80, I believed it a lot in that moment."
+          ],
+          [
+            "T",
+            "Now, calmly, where does that number sit?"
+          ],
+          [
+            "K",
+            "Maybe 40, I'm doubting it a bit now."
+          ],
+          [
+            "T",
+            "Could there be another explanation for that person's behavior?"
+          ],
+          [
+            "K",
+            "Maybe... they're dealing with their own issues, it's not about me."
+          ],
+          [
+            "T",
+            "That's an interesting alternative."
+          ],
+          [
+            "K",
+            "Yes, I hadn't thought of that before."
+          ],
+          [
+            "T",
+            "What would you call this distortion — mind reading, or catastrophizing?"
+          ],
+          [
+            "K",
+            "It sounds like mind reading, I assumed I knew their intent."
+          ],
+          [
+            "T",
+            "Exactly right. Recognizing it is a big step in itself."
+          ],
+          [
+            "K",
+            "Thank you, this was really useful for me."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Closing",
+        "text": [
+          "A balanced thought is formulated together and written down."
+        ],
+        "dialog": [
+          [
+            "T",
+            "How did questioning your thoughts feel today?"
+          ],
+          [
+            "K",
+            "Hard at first, useful after."
+          ],
+          [
+            "T",
+            "Can you question a thought this way once this week?"
+          ],
+          [
+            "K",
+            "I'll try."
+          ],
+          [
+            "T",
+            "Writing it on paper can help."
+          ],
+          [
+            "K",
+            "Okay, I'll do that."
+          ],
+          [
+            "T",
+            "How are you feeling right now?"
+          ],
+          [
+            "K",
+            "I'm thinking more clearly, like I've come out of a fog."
+          ],
+          [
+            "T",
+            "That's a very powerful way to put it."
+          ],
+          [
+            "K",
+            "Thank you."
+          ]
+        ]
+      }
+    ],
+    "homework": "In a situation where you get angry, ask yourself 'is there another explanation?' and write it down.",
+    "about": "This is a cognitive restructuring session — trigger thoughts like 'this is unfair' are questioned.",
+    "specialists": [
+      "Clinical psychologist",
+      "CBT therapist"
+    ]
+  },
+  {
+    "num": 7,
+    "title": "Communication Skills",
+    "goal": "Teach expressing a need with 'I' language — making a verbal request instead of shouting or hitting.",
+    "materials": [
+      "'I' statements card"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Opening",
+        "text": [
+          "The result of the previous session is reviewed."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Kamran, today we're going to look at communication skills."
+          ],
+          [
+            "K",
+            "I need this topic, honestly, I struggle with it in my family."
+          ],
+          [
+            "T",
+            "Did you try questioning your thoughts last week?"
+          ],
+          [
+            "K",
+            "Yes, once, it was useful."
+          ],
+          [
+            "T",
+            "That builds a really good habit."
+          ],
+          [
+            "K",
+            "I hope so."
+          ],
+          [
+            "T",
+            "How are you feeling today?"
+          ],
+          [
+            "K",
+            "A bit uneasy, honestly, the family topic is sensitive for me."
+          ],
+          [
+            "T",
+            "I understand that, we'll go slowly."
+          ],
+          [
+            "K",
+            "Thank you."
+          ],
+          [
+            "T",
+            "Today we'll learn 'I' language — expressing your own feeling without accusing."
+          ],
+          [
+            "K",
+            "Interesting, I haven't thought of it that way before."
+          ],
+          [
+            "T",
+            "Any question before we start?"
+          ],
+          [
+            "K",
+            "No, let's begin."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Main section — 'I' language practice",
+        "text": [
+          "Practice turning accusatory 'you always...' language into 'I feel... because...' form."
+        ],
+        "dialog": [
+          [
+            "T",
+            "How would you say this sentence calmly?"
+          ],
+          [
+            "K",
+            "(tries, hesitantly) I don't know, it feels strange to say it this way."
+          ],
+          [
+            "T",
+            "How did saying it feel to you?"
+          ],
+          [
+            "K",
+            "A bit unusual, I'm not used to talking like this."
+          ],
+          [
+            "T",
+            "In 'I' language, how would this look instead of 'you made me angry'?"
+          ],
+          [
+            "K",
+            "Maybe... 'I feel angry in this situation, because...' something like that?"
+          ],
+          [
+            "T",
+            "Exactly right. Go ahead, finish the sentence."
+          ],
+          [
+            "K",
+            "'...because I feel like my opinion isn't being heard.'"
+          ],
+          [
+            "T",
+            "That's a really powerful sentence. Did you notice the difference?"
+          ],
+          [
+            "K",
+            "Yes, I'm not accusing, I'm just stating my own feeling."
+          ],
+          [
+            "T",
+            "How would you apply this in a work situation?"
+          ],
+          [
+            "K",
+            "Instead of telling my coworker 'you're always late,' maybe I'd say 'I think it's important that we start on time.'"
+          ],
+          [
+            "T",
+            "Great example. That doesn't put the other person on the defensive."
+          ],
+          [
+            "K",
+            "Now I see why my old style used to escalate conflict."
+          ],
+          [
+            "T",
+            "Could you try this formula once in a real situation this week?"
+          ],
+          [
+            "K",
+            "I'll try, even if it's hard."
+          ],
+          [
+            "T",
+            "A small success matters too."
+          ],
+          [
+            "K",
+            "Okay, that sounds reasonable to me."
+          ],
+          [
+            "T",
+            "You can share the result next session."
+          ],
+          [
+            "K",
+            "Okay, I will."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Closing",
+        "text": [
+          "3 example sentences are written and practiced together."
+        ],
+        "dialog": [
+          [
+            "T",
+            "If you summed up 'I' language in one sentence?"
+          ],
+          [
+            "K",
+            "Expressing my own feeling instead of accusing."
+          ],
+          [
+            "T",
+            "Exactly right. Will you try this this week?"
+          ],
+          [
+            "K",
+            "Yes, especially at work."
+          ],
+          [
+            "T",
+            "Even a small attempt is a big change."
+          ],
+          [
+            "K",
+            "Okay, I'll remember."
+          ],
+          [
+            "T",
+            "How are you feeling today?"
+          ],
+          [
+            "K",
+            "A bit open, like I'm learning a new language."
+          ],
+          [
+            "T",
+            "That's actually a fair way to think about it."
+          ],
+          [
+            "K",
+            "Thank you, see you next time."
+          ]
+        ]
+      }
+    ],
+    "homework": "Use 'I' language at least once this week and note the result.",
+    "about": "'I' language practice is communication-skills training; for clients with speech/expression difficulty, support from a speech therapist is especially helpful.",
+    "specialists": [
+      "Clinical psychologist",
+      "Speech and language therapist",
+      "CBT therapist"
+    ]
+  },
+  {
+    "num": 8,
+    "title": "Problem-Solving Skills",
+    "goal": "Teach searching for alternative solutions instead of aggression in conflict situations.",
+    "materials": [
+      "Problem-solving steps sheet"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Opening",
+        "text": [
+          "Opens with a simple check-in question."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Kamran, today we're going to look at problem-solving skills."
+          ],
+          [
+            "K",
+            "Good, I need this, I leave a lot of problems unresolved."
+          ],
+          [
+            "T",
+            "Did you try 'I' language last week?"
+          ],
+          [
+            "K",
+            "Once, at home, it actually worked."
+          ],
+          [
+            "T",
+            "That's a really good result."
+          ],
+          [
+            "K",
+            "I surprised myself, honestly."
+          ],
+          [
+            "T",
+            "How are you feeling today?"
+          ],
+          [
+            "K",
+            "Relatively confident, I have some tools now."
+          ],
+          [
+            "T",
+            "Today we're going to practice solving a concrete problem step by step."
+          ],
+          [
+            "K",
+            "Good, I actually have something concrete in mind."
+          ],
+          [
+            "T",
+            "Great, let's start with that."
+          ],
+          [
+            "K",
+            "Thank you."
+          ],
+          [
+            "T",
+            "Any question before we start?"
+          ],
+          [
+            "K",
+            "No, I'm ready."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Main section — Searching for alternatives",
+        "text": [
+          "3–4 possible solutions are brainstormed together over a real conflict."
+        ],
+        "dialog": [
+          [
+            "T",
+            "What steps would be needed to solve this problem?"
+          ],
+          [
+            "K",
+            "I don't know, it's hard to break it into steps."
+          ],
+          [
+            "T",
+            "How would you apply these steps in the real situation?"
+          ],
+          [
+            "K",
+            "I'll try, but I'm not fully sure I'll manage."
+          ],
+          [
+            "T",
+            "Let's start with a concrete problem — what's bothering you most right now?"
+          ],
+          [
+            "K",
+            "There's a project at work, my team isn't finishing on time."
+          ],
+          [
+            "T",
+            "How would we define the problem in one sentence?"
+          ],
+          [
+            "K",
+            "'The team isn't meeting deadlines, and it's stressing me out.'"
+          ],
+          [
+            "T",
+            "Now let's list possible solutions, without judging them — what comes to mind?"
+          ],
+          [
+            "K",
+            "I could talk to them, or tell my manager, or finish it myself."
+          ],
+          [
+            "T",
+            "Three options. What would the outcome of each be?"
+          ],
+          [
+            "K",
+            "Talking seems best, the others could increase conflict."
+          ],
+          [
+            "T",
+            "How would you apply that choice, step by step?"
+          ],
+          [
+            "K",
+            "First I'd pick a calm moment, then explain the problem using 'I' language."
+          ],
+          [
+            "T",
+            "That's a really structured approach."
+          ],
+          [
+            "K",
+            "I used to just explode before, this feels different now."
+          ],
+          [
+            "T",
+            "Could you apply these steps to another problem too?"
+          ],
+          [
+            "K",
+            "I think so, the logic is the same."
+          ],
+          [
+            "T",
+            "This is one of the most valuable skills — separating the problem from the emotion."
+          ],
+          [
+            "K",
+            "Thank you, this really cleared my thinking."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Closing",
+        "text": [
+          "The best alternative is chosen, and a plan is made for how to apply it next time."
+        ],
+        "dialog": [
+          [
+            "T",
+            "If we recall the problem-solving steps once more?"
+          ],
+          [
+            "K",
+            "Define the problem, list the options, choose the best one, apply it."
+          ],
+          [
+            "T",
+            "You remembered that perfectly."
+          ],
+          [
+            "K",
+            "Thank you."
+          ],
+          [
+            "T",
+            "Can you apply this to a real problem this week?"
+          ],
+          [
+            "K",
+            "I'll try, I already have a few ideas."
+          ],
+          [
+            "T",
+            "That's a really good start."
+          ],
+          [
+            "K",
+            "I feel less helpless now."
+          ],
+          [
+            "T",
+            "That's a valuable shift."
+          ],
+          [
+            "K",
+            "Thank you, see you next time."
+          ]
+        ]
+      }
+    ],
+    "homework": "When a conflict arises, ask yourself 'what other way is there?'",
+    "about": "This problem-solving skills session focuses on jointly searching for alternative solutions in conflict situations.",
+    "specialists": [
+      "Clinical psychologist",
+      "Educational psychologist"
+    ]
+  },
+  {
+    "num": 9,
+    "title": "Role-Play and Exposure",
+    "goal": "Apply all the learned skills (Stop-Think-Act, 'I' language, problem-solving) together in real-life scenarios.",
+    "materials": [
+      "Scenario cards"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Opening",
+        "text": [
+          "Today's session goal is explained."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Kamran, today we're going to apply everything we've learned together in real scenarios."
+          ],
+          [
+            "K",
+            "I'm a bit nervous, honestly."
+          ],
+          [
+            "T",
+            "That's normal, we'll do everything together."
+          ],
+          [
+            "K",
+            "Okay, that puts me at ease."
+          ],
+          [
+            "T",
+            "Did you try the problem-solving steps last week?"
+          ],
+          [
+            "K",
+            "Yes, I resolved a work issue this way."
+          ],
+          [
+            "T",
+            "That's an excellent result."
+          ],
+          [
+            "K",
+            "I'm proud of myself, honestly."
+          ],
+          [
+            "T",
+            "How are you feeling today?"
+          ],
+          [
+            "K",
+            "Ready, even if a bit tense."
+          ],
+          [
+            "T",
+            "Tension is normal, this is a demanding session."
+          ],
+          [
+            "K",
+            "I understand."
+          ],
+          [
+            "T",
+            "Any question before we start?"
+          ],
+          [
+            "K",
+            "No, let's begin."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Main section — Combined practice",
+        "text": [
+          "Several real-life scenarios are acted out, and the client applies all the skills in sequence."
+        ],
+        "dialog": [
+          [
+            "T",
+            "How did that scenario feel to you?"
+          ],
+          [
+            "K",
+            "Tense, if it were real it would probably be worse."
+          ],
+          [
+            "T",
+            "How will you apply this exercise in a real situation?"
+          ],
+          [
+            "K",
+            "I don't know, it could be hard, but I'll try."
+          ],
+          [
+            "T",
+            "Let's try one more scenario — this time from a family setting. Ready?"
+          ],
+          [
+            "K",
+            "I'm ready, I feel a bit more at ease than before now."
+          ],
+          [
+            "T",
+            "(in role) 'You're never any help at home, I have to do everything myself!'"
+          ],
+          [
+            "K",
+            "(stops, breathes) 'I understand this is exhausting you, let's split up who does what.'"
+          ],
+          [
+            "T",
+            "You just used three skills at once — stopping, breathing, 'I' language."
+          ],
+          [
+            "K",
+            "I didn't even notice, it came automatically."
+          ],
+          [
+            "T",
+            "That's a really good sign — a habit is starting to form."
+          ],
+          [
+            "K",
+            "So repeated practice is paying off."
+          ],
+          [
+            "T",
+            "Let's try one more scenario — this time you choose, which situation is hardest for you?"
+          ],
+          [
+            "K",
+            "In traffic, when someone cuts in front of me suddenly."
+          ],
+          [
+            "T",
+            "(acting it out) Okay, imagine this just happened."
+          ],
+          [
+            "K",
+            "(stops) This is a hard scenario, but... I'm taking a deep breath, remembering it's not worth it."
+          ],
+          [
+            "T",
+            "That situation requires a quick decision, you handled it well."
+          ],
+          [
+            "K",
+            "Thank you, that was the hardest scenario I've tried."
+          ],
+          [
+            "T",
+            "Practicing hard scenarios makes you more ready for real life."
+          ],
+          [
+            "K",
+            "I feel a bit more confident in myself now."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Closing",
+        "text": [
+          "Progress is acknowledged and the client is praised."
+        ],
+        "dialog": [
+          [
+            "T",
+            "You tried several hard scenarios today, how are you feeling?"
+          ],
+          [
+            "K",
+            "Tired, but my confidence in myself has grown."
+          ],
+          [
+            "T",
+            "That's a really good improvement."
+          ],
+          [
+            "K",
+            "Thank you."
+          ],
+          [
+            "T",
+            "Can you apply these skills in a real situation this week?"
+          ],
+          [
+            "K",
+            "I'll try, I already feel ready."
+          ],
+          [
+            "T",
+            "Note the small wins too, they all matter."
+          ],
+          [
+            "K",
+            "Okay, I will."
+          ],
+          [
+            "T",
+            "We're getting close to the end of this program, the work you've done deserves real credit."
+          ],
+          [
+            "K",
+            "Thank you, that means a lot to me."
+          ]
+        ]
+      }
+    ],
+    "homework": "Apply the skills you've learned in at least 2 real situations this week.",
+    "about": "This is the applied session where all previous skills (Stop-Think-Act, 'I' language, problem-solving) are integrated together.",
+    "specialists": [
+      "Clinical psychologist",
+      "CBT therapist"
+    ]
+  },
+  {
+    "num": 10,
+    "title": "Closing and Continuity Plan",
+    "goal": "Summarize all the skills learned, coordinate with parent/teacher, and build a support plan for the future.",
+    "materials": [
+      "Skills list template",
+      "Small achievement certificate"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Opening",
+        "text": [
+          "Progress is reviewed compared with the first session."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Kamran, what changed for you over the course of this program?"
+          ],
+          [
+            "K",
+            "Some things got better, but not everything was solved."
+          ],
+          [
+            "T",
+            "What's still hard for you?"
+          ],
+          [
+            "K",
+            "A few things, but now I know how to approach them."
+          ],
+          [
+            "T",
+            "How will you keep these skills going?"
+          ],
+          [
+            "K",
+            "I'm not sure exactly, I'll try to remember them."
+          ],
+          [
+            "T",
+            "This is our last session. How does that feel to you?"
+          ],
+          [
+            "K",
+            "A bit strange, but I feel ready."
+          ],
+          [
+            "T",
+            "Do you remember the day you first came here?"
+          ],
+          [
+            "K",
+            "Yes, I was really ashamed, it was hard just to talk."
+          ],
+          [
+            "T",
+            "Comparing that to now, what difference do you see?"
+          ],
+          [
+            "K",
+            "I'm calmer, I can control myself."
+          ],
+          [
+            "T",
+            "That's a long way to have come."
+          ],
+          [
+            "K",
+            "Thank you for your help."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Main section — Continuity plan",
+        "text": [
+          "The client builds their own 'toolbox' and identifies concrete steps for difficult moments."
+        ],
+        "dialog": [
+          [
+            "T",
+            "This program is ending, but the skills you've learned stay with you always."
+          ],
+          [
+            "K",
+            "I'll remember them, especially Stop-Think-Act."
+          ],
+          [
+            "T",
+            "Who can you turn to when things get difficult?"
+          ],
+          [
+            "K",
+            "My family, or you again if needed."
+          ],
+          [
+            "T",
+            "This door is always open."
+          ],
+          [
+            "K",
+            "Thank you, for everything."
+          ],
+          [
+            "T",
+            "Which skill from everything we practiced helped the most?"
+          ],
+          [
+            "K",
+            "Stop-Think-Act, definitely. I use it the most."
+          ],
+          [
+            "T",
+            "How will you connect this change with your family, your workplace?"
+          ],
+          [
+            "K",
+            "I've already talked to my family about some of it, they're supportive too."
+          ],
+          [
+            "T",
+            "That matters a lot — a support network makes this work easier."
+          ],
+          [
+            "K",
+            "True, it would've been much harder alone."
+          ],
+          [
+            "T",
+            "If tension comes back, what will you do first?"
+          ],
+          [
+            "K",
+            "I'll stop, breathe, then think."
+          ],
+          [
+            "T",
+            "That's a really solid plan."
+          ],
+          [
+            "K",
+            "Thank you, I feel ready."
+          ],
+          [
+            "T",
+            "If a hard moment comes and these tools aren't enough, what will you do?"
+          ],
+          [
+            "K",
+            "I'll reach out to you again if needed."
+          ],
+          [
+            "T",
+            "This door is always open. You've made huge progress over these months."
+          ],
+          [
+            "K",
+            "Thank you, I can honestly say this program changed my life."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Closing",
+        "text": [
+          "A short meeting with the parent/teacher is arranged so support continues at home/school."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Even though this program is ending, the skills you've learned stay with you."
+          ],
+          [
+            "K",
+            "I'll remember them, especially Stop-Think-Act."
+          ],
+          [
+            "T",
+            "Who can you turn to when things get difficult?"
+          ],
+          [
+            "K",
+            "My family, or you again if needed."
+          ],
+          [
+            "T",
+            "This door is always open."
+          ],
+          [
+            "K",
+            "Thank you, for everything."
+          ],
+          [
+            "T",
+            "Working with you has been very valuable to me."
+          ],
+          [
+            "K",
+            "For me too, I feel completely different than before."
+          ],
+          [
+            "T",
+            "Carry this change with you, Kamran."
+          ],
+          [
+            "K",
+            "I will, thank you again."
+          ]
+        ]
+      }
+    ],
+    "homework": "Keep the skills list somewhere visible and review it once a week.",
+    "about": "This closing session isn't an assessment — it's a summary and building a coordination plan with the parent/school.",
+    "specialists": [
+      "Clinical psychologist",
+      "School psychologist",
+      "Social worker"
+    ]
+  }
+];
+
+function renderSession(s){
+  let html = `<span class="m-tag">Session ${s.num} / 10</span><h3 class="m-title">${s.title}</h3>`;
+  html += `<div class="m-block"><h5>🎯 Session goal</h5><div class="m-goal">${s.goal}</div></div>`;
+  html += `<div class="m-block"><h5>🧰 Materials needed</h5><div class="m-materials">${s.materials.map(m=>`<span>${m}</span>`).join('')}</div></div>`;
+  html += `<div class="m-block"><h5>📋 Session flow</h5>`;
+  s.phases.forEach(ph=>{
+    html += `<div class="m-phase"><div class="ph-name">${ph.name}</div>`;
+    (ph.text||[]).forEach(t=>{ html += `<p>${t}</p>`; });
+    if(ph.dialog && ph.dialog.length){
+      html += `<div class="m-dialog">`;
+      ph.dialog.forEach(d=>{
+        const who = d[0]==='T' ? 'Therapist' : (d[0]==='K' ? 'Client' : d[0]);
+        const cls = d[0]==='T' ? 't' : 'k';
+        html += `<div class="dl"><span class="dw ${cls}">${who}:</span><span class="dt">${d[1]}</span></div>`;
+      });
+      html += `</div>`;
+    }
+    html += `</div>`;
+  });
+  html += `</div>`;
+  html += `<div class="m-block"><h5>📝 Homework</h5><div class="m-homework">${s.homework}</div></div>`;
+  html += `<div class="m-nextprev">
+    <div class="m-navbtn ${s.num<=1?'disabled':''}" onclick="openSession(${s.num-1})">◂ Previous session</div>
+    <div class="m-navbtn ${s.num>=10?'disabled':''}" onclick="openSession(${s.num+1})">Next session ▸</div>
+  </div>`;
+  return html;
+}
+
+function openSession(n){
+  const s = SESSIONS.find(x=>x.num===n);
+  if(!s) return;
+  document.getElementById('modalContent').innerHTML = renderSession(s);
+  document.getElementById('modalOverlay').classList.add('active');
+  document.body.classList.add('modal-open');
+  document.getElementById('modalOverlay').scrollTop = 0;
+  document.querySelector('.modal-box').scrollTop = 0;
+}
+function closeSession(){
+  document.getElementById('modalOverlay').classList.remove('active');
+  document.body.classList.remove('modal-open');
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeSession(); });
+</script>
+<script src="../protect.js" defer></script>
+<script src="../engine.js"></script>
+
+<div class="modal-overlay" id="programModalOverlay" onclick="if(event.target===this)closeProgram()">
+  <div class="modal-box">
+    <div class="modal-close" onclick="closeProgram()">✕</div>
+    <div id="programModalContent"></div>
+  </div>
+</div>
+
+
+
+</body>
+</html>

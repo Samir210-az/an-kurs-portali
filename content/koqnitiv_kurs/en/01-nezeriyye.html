@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#d9a85a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Module 1 · Cognitive Behavioral Therapy Theory</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1:#0c211f; --bg-2:#1d423d;
+    --surface: rgba(217,168,90,0.055);
+    --surface-h: rgba(217,168,90,0.10);
+    --border: rgba(217,168,90,0.14);
+    --teal:#7ba098; --teal-soft: rgba(123,160,152,0.18);
+    --violet:#8a6a3a; --violet-soft: rgba(138,106,58,0.20);
+    --amber:#d9a85a; --amber-soft: rgba(217,168,90,0.18);
+    --rose:#d9705a; --rose-soft: rgba(217,112,90,0.16);
+    --text-1:#f3eee1; --text-2:#c9c2ae; --text-3:#8a9a93;
+    --font-d:'Fraunces', serif;
+    --font-b:'Inter', system-ui, sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{-webkit-user-select:none;-moz-user-select:none;user-select:none;}
+  body{
+    font-family:var(--font-b);
+    background:
+      radial-gradient(1100px 750px at 12% -10%, rgba(139,92,246,0.18), transparent 60%),
+      radial-gradient(1000px 700px at 110% 15%, rgba(45,212,191,0.14), transparent 55%),
+      linear-gradient(180deg, var(--bg-1), var(--bg-2));
+    color:var(--text-1);
+    min-height:100vh;
+    line-height:1.65;
+  }
+  .blob{position:fixed;border-radius:50%;filter:blur(80px);opacity:.45;pointer-events:none;z-index:0;}
+  .blob-1{width:400px;height:400px;background:var(--violet-soft);top:-100px;left:-120px;}
+  .blob-2{width:360px;height:360px;background:var(--teal-soft);top:40%;right:-140px;}
+
+  /* Top bar */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px;
+    background:rgba(11,18,36,0.75);
+    backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--border);
+  }
+  .topbar-brand{display:flex; align-items:center; gap:10px; text-decoration:none; flex-shrink:0;}
+  .topbar-brand img{width:34px; height:34px; border-radius:9px; object-fit:cover; border:1px solid rgba(255,255,255,0.15);}
+  .topbar-brand .tb-name{font-family:var(--font-d); font-weight:700; font-size:.78rem; color:var(--text-1); line-height:1.2; max-width:150px;}
+  .topbar-right{display:flex; align-items:center; gap:14px; flex-shrink:0;}
+  @media(max-width:640px){ .topbar-brand .tb-name{display:none;} .topbar a.back span{display:none;} }
+  .topbar a.back{
+    display:inline-flex; align-items:center; gap:8px;
+    color:var(--text-2); text-decoration:none; font-size:.9rem; font-weight:600;
+    transition:color .2s;
+  }
+  .topbar a.back:hover{color:var(--teal);}
+  .progress-pill{
+    font-size:.78rem; color:var(--text-3);
+    border:1px solid var(--border); padding:6px 14px; border-radius:999px;
+    background:var(--surface);
+  }
+
+  main{position:relative; z-index:2; max-width:880px; margin:0 auto; padding:0 24px 100px;}
+
+  .hero{padding:64px 0 40px; text-align:center;}
+  .hero-illus{display:flex; justify-content:center; margin-bottom:28px;}
+  .hero-illus svg{max-width:100%; height:auto;}
+  .tag{
+    display:inline-block; font-size:.76rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--teal); background:var(--teal-soft); border:1px solid rgba(45,212,191,.35);
+    padding:6px 16px; border-radius:999px; margin-bottom:22px;
+    animation:fadeDown .7s ease both;
+  }
+  h1{
+    font-family:var(--font-d); font-weight:800; font-size:clamp(1.9rem,4.6vw,3rem); line-height:1.2;
+    background:linear-gradient(90deg,#fff,#cdd8ff 45%, var(--teal));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:fadeUp .8s ease both .1s;
+  }
+  .hero p{color:var(--text-2); max-width:600px; margin:20px auto 0; animation:fadeUp .8s ease both .2s;}
+
+  section{margin-top:64px; animation:fadeUp .8s ease both; opacity:0;}
+  section.show{opacity:1;}
+  .sec-head{display:flex; align-items:center; gap:14px; margin-bottom:24px;}
+  .sec-num{
+    font-family:var(--font-d); font-size:1.4rem; font-weight:800; color:var(--bg-1);
+    background:linear-gradient(135deg,var(--teal),var(--violet));
+    width:44px;height:44px; border-radius:13px; display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  h2{font-family:var(--font-d); font-size:clamp(1.35rem,3vw,1.7rem); font-weight:700;}
+  .lead{color:var(--text-2); margin-bottom:22px;}
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:18px;
+    padding:24px 26px; margin-bottom:18px; backdrop-filter:blur(10px);
+  }
+  .card h3{font-size:1.05rem; margin-bottom:10px; color:var(--text-1); display:flex; align-items:center; gap:10px;}
+  .card p{color:var(--text-2); font-size:.95rem;}
+  .card p + p{margin-top:10px;}
+
+  .example{
+    border-left:3px solid var(--amber);
+    background:var(--amber-soft);
+    border-radius:0 14px 14px 0;
+    padding:16px 20px;
+    margin:16px 0;
+    font-size:.92rem;
+  }
+  .example b{color:var(--amber);}
+
+  .dialog{
+    background:rgba(255,255,255,.03);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:20px 22px;
+    margin:18px 0;
+    font-size:.92rem;
+  }
+  .dialog .line{display:flex; gap:12px; margin-bottom:14px;}
+  .dialog .line:last-child{margin-bottom:0;}
+  .dialog .who{
+    flex-shrink:0; width:78px; font-weight:700; font-size:.8rem;
+    padding-top:2px;
+  }
+  .dialog .who.t{color:var(--teal);}
+  .dialog .who.k{color:var(--rose);}
+  .dialog .txt{color:var(--text-2);}
+
+  /* Timeline */
+  .timeline{position:relative; margin:30px 0 10px; padding-left:28px;}
+  .timeline::before{content:"";position:absolute; left:6px; top:6px; bottom:6px; width:2px; background:linear-gradient(var(--teal),var(--violet));}
+  .t-item{position:relative; margin-bottom:26px;}
+  .t-item::before{
+    content:""; position:absolute; left:-28px; top:4px; width:14px;height:14px; border-radius:50%;
+    background:var(--bg-2); border:2px solid var(--teal);
+  }
+  .t-item b{display:block; color:var(--teal); font-size:.82rem; letter-spacing:.04em; margin-bottom:4px;}
+  .t-item span{color:var(--text-2); font-size:.92rem;}
+
+  /* CBT Triangle SVG */
+  .triangle-wrap{display:flex; justify-content:center; margin:26px 0;}
+  .triangle-wrap svg{max-width:100%; height:auto;}
+  .tri-label{font-family:var(--font-b); font-weight:700; font-size:13px; fill:#0c211f;}
+  .tri-sub{font-size:10.5px; fill:rgba(11,18,36,.7);}
+
+  /* ABC flow */
+  .abc-flow{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:26px 0;}
+  .abc-box{
+    border-radius:16px; padding:18px 16px; text-align:center; position:relative;
+    border:1px solid var(--border);
+  }
+  .abc-box.a{background:var(--teal-soft);}
+  .abc-box.b{background:var(--violet-soft);}
+  .abc-box.c{background:var(--amber-soft);}
+  .abc-box .letter{font-family:var(--font-d); font-size:1.6rem; font-weight:800; display:block; margin-bottom:6px;}
+  .abc-box.a .letter{color:var(--teal);}
+  .abc-box.b .letter{color:var(--violet);}
+  .abc-box.c .letter{color:var(--amber);}
+  .abc-box h4{font-size:.86rem; margin-bottom:6px;}
+  .abc-box p{font-size:.8rem; color:var(--text-2);}
+  .abc-arrow{display:none;}
+  @media(min-width:640px){
+    .abc-flow{align-items:center;}
+  }
+
+  /* Distortion grid */
+  .dist-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; margin:26px 0;}
+  .dist-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:18px 20px;
+    transition:transform .3s, border-color .3s;
+  }
+  .dist-card:hover{transform:translateY(-4px); border-color:rgba(139,92,246,.4);}
+  .dist-card .name{font-weight:700; font-size:.92rem; color:var(--violet); margin-bottom:6px;}
+  .dist-card .ex{font-size:.84rem; color:var(--text-2); font-style:italic;}
+
+  /* Session structure steps */
+  .steps{counter-reset:step; margin:26px 0;}
+  .step{
+    display:flex; gap:16px; padding:16px 0; border-bottom:1px solid var(--border);
+  }
+  .step:last-child{border-bottom:none;}
+  .step::before{
+    counter-increment:step; content:counter(step);
+    flex-shrink:0; width:34px;height:34px; border-radius:10px;
+    background:var(--surface); border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-d); font-weight:700; color:var(--teal);
+  }
+  .step .stxt h4{font-size:.96rem; margin-bottom:4px;}
+  .step .stxt p{font-size:.86rem; color:var(--text-2);}
+
+  /* Worksheet table */
+  .worksheet{overflow-x:auto; margin:24px 0; border-radius:16px; border:1px solid var(--border);}
+  table{width:100%; border-collapse:collapse; font-size:.84rem; min-width:640px;}
+  thead th{
+    background:rgba(255,255,255,.05); color:var(--teal); text-align:left;
+    padding:12px 14px; font-size:.78rem; letter-spacing:.03em; text-transform:uppercase;
+    border-bottom:1px solid var(--border);
+  }
+  tbody td{padding:13px 14px; color:var(--text-2); border-bottom:1px solid rgba(255,255,255,.06); vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+
+  .quote{
+    border-left:3px solid var(--violet);
+    padding:18px 22px; margin:26px 0; font-family:var(--font-d); font-style:italic;
+    font-size:1.05rem; color:var(--text-1); background:var(--violet-soft); border-radius:0 14px 14px 0;
+  }
+  .quote span{display:block; margin-top:10px; font-family:var(--font-b); font-style:normal; font-size:.8rem; color:var(--text-3);}
+
+  .summary-box{
+    background:linear-gradient(135deg, var(--teal-soft), var(--violet-soft));
+    border:1px solid rgba(45,212,191,.3);
+    border-radius:20px; padding:28px 26px; margin-top:60px;
+  }
+  .summary-box h3{font-family:var(--font-d); font-size:1.25rem; margin-bottom:14px;}
+  .summary-box ul{padding-left:20px; color:var(--text-2); font-size:.92rem;}
+  .summary-box li{margin-bottom:8px;}
+
+  .nav-bottom{
+    display:flex; justify-content:space-between; align-items:center; gap:16px;
+    margin-top:40px; flex-wrap:wrap;
+  }
+  .nav-btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:13px 22px; border-radius:14px; text-decoration:none;
+    font-weight:600; font-size:.9rem; transition:transform .25s, box-shadow .25s;
+  }
+  .nav-btn.home{background:var(--surface); border:1px solid var(--border); color:var(--text-1);}
+  .nav-btn.next{background:linear-gradient(135deg,var(--teal),var(--violet)); color:#0c211f;}
+  .nav-btn:hover{transform:translateY(-3px);}
+  .nav-btn.disabled{opacity:.5; pointer-events:none;}
+
+  footer{
+    position:relative; z-index:2; text-align:center; padding:44px 24px 60px;
+    border-top:1px solid var(--border); color:var(--text-3); font-size:.88rem; margin-top:40px;
+  }
+  footer a{color:var(--teal); text-decoration:none; font-weight:600;}
+
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-14px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+
+  @media(max-width:640px){
+    .abc-flow{grid-template-columns:1fr;}
+    .dialog .who{width:60px; font-size:.72rem;}
+  }
+</style>
+</head>
+<body>
+
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<div class="topbar">
+  <a class="topbar-brand" href="index.html">
+    <img src="../logo.png" alt="AN Psychological Support and Rehabilitation Center logo">
+    <span class="tb-name">AN Psychological Support and Rehabilitation Center</span>
+  </a>
+  <div class="topbar-right">
+    <a class="back" href="index.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+      <span>Menu</span>
+    </a>
+    <span class="progress-pill">Module 1 / 20</span>
+  </div>
+</div>
+
+<main>
+
+  <div class="hero">
+    <div class="hero-illus">
+      <svg width="360" height="170" viewBox="0 0 360 170" fill="none">
+        <defs>
+          <linearGradient id="hg1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#d9a85a"/>
+            <stop offset="100%" stop-color="#7ba098"/>
+          </linearGradient>
+        </defs>
+        <circle cx="180" cy="85" r="80" fill="none" stroke="url(#hg1)" stroke-width="1.4" stroke-dasharray="3 7" opacity=".55"/>
+        <path d="M150 60c0-20 16-34 34-34 16 0 29 11 32 26 10 2 17 11 17 21 0 12-10 22-22 22h-58c-11 0-19-9-19-20 0-9 6-16 16-15z" fill="#1d423d" stroke="#d9a85a" stroke-width="2"/>
+        <circle cx="163" cy="52" r="3" fill="#d9a85a" opacity=".7"/>
+        <path d="M172 46a10 10 0 0 1 18 4" stroke="#f3eee1" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".6"/>
+        <g transform="translate(70,120)">
+          <circle r="22" fill="#7ba098" opacity=".85"/>
+          <path d="M-7 1c0-6 5-9 7-9s7 3 7 9c0 5-7 9-7 9s-7-4-7-9z" fill="#0c211f"/>
+        </g>
+        <g transform="translate(180,150)">
+          <circle r="22" fill="#8a6a3a" opacity=".85"/>
+          <path d="M-9 3l6-8 4 5 6-9" stroke="#f3eee1" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+        <g transform="translate(290,120)">
+          <circle r="22" fill="#d9a85a" opacity=".85"/>
+          <path d="M-8-6c0 8 4 10 8 13 4-3 8-5 8-13" stroke="#0c211f" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        </g>
+        <path d="M110 128 Q140 145 168 152" stroke="#d9a85a" stroke-width="1.6" fill="none" stroke-dasharray="3 5" opacity=".6"/>
+        <path d="M250 128 Q220 145 192 152" stroke="#d9a85a" stroke-width="1.6" fill="none" stroke-dasharray="3 5" opacity=".6"/>
+        <path d="M175 62 Q120 90 78 100" stroke="#7ba098" stroke-width="1.6" fill="none" stroke-dasharray="3 5" opacity=".5"/>
+        <path d="M195 62 Q250 90 288 100" stroke="#7ba098" stroke-width="1.6" fill="none" stroke-dasharray="3 5" opacity=".5"/>
+      </svg>
+    </div>
+    <span class="tag">Module 01 · Foundational Theory</span>
+    <h1>Cognitive Behavioral Therapy Theory</h1>
+    <p>I've been sitting behind this desk for eighteen years, and I still notice something new every time. This is one of my favorite modules to teach — because everything else builds on it. If this foundation isn't solid, the other nineteen modules end up floating in the air. Let's build it together. Whatever brought you here — a working clinician, a student still in training, or someone simply curious about the field — this module is for you.</p>
+  </div>
+
+  <!-- 1. What is CBT -->
+  <section>
+    <div class="sec-head"><div class="sec-num">1</div><h2>What is Cognitive Behavioral Therapy?</h2></div>
+    <p class="lead">Let me ask you something: why does the same event send two people down completely different paths? One cries, the other shrugs it off. That's exactly where CBT starts — it's not the event itself but what we tell ourselves about it that runs the show. It's also one of the most extensively researched, most rigorously tested approaches in all of therapy.</p>
+    <div class="card">
+      <h3>🎯 The core idea</h3>
+      <p>I explain it to my students the same way every time: event — filter — outcome. The filter is your thinking. Two people hear the exact same remark; one gets angry, the other laughs — because their filters are different. That's really all there is to it. And yet that's the key to the whole approach.</p>
+    </div>
+    <div class="example">
+      <b>Example:</b> Two colleagues of mine once got the same piece of criticism from our boss on the same day. One went home and cried that evening. The other said "fine, I'll fix it" and moved on. The difference wasn't in the event. It was in the internal dialogue running through their heads.
+    </div>
+    <div class="card"><h3>🎯 How I apply this in session</h3><p>In the very first session I usually tell that same story — why two people can react so differently to one thing. Once the client hears it, they take a step back from "there's something wrong with me."</p></div>
+    <div class="simple-box"><b>The misconception I run into most often:</b> The goal of CBT isn't to swap negative thoughts for positive ones. The goal is to examine how accurately a thought reflects reality and arrive at a more balanced conclusion. I stress this to every new student, because confusing CBT with "just think positive" is by far the most common mistake I see. I never tell a client "think something nice instead." I ask: how accurate is this thought? What evidence supports it, what evidence doesn't? Sometimes the outcome is more positive — sometimes it's just more realistic and more bearable. Those are two different things.</div>
+  </section>
+
+  <!-- 2. History -->
+  <section>
+    <div class="sec-head"><div class="sec-num">2</div><h2>Historical development</h2></div>
+    <p class="lead">CBT grew out of two parallel theoretical lines converging: Albert Ellis's Rational Emotive Therapy and Aaron Beck's Cognitive Therapy.</p>
+    <div class="timeline">
+      <div class="t-item"><b>1950s</b><span>When Albert Ellis said that it isn't events that upset people but the irrational beliefs they hold about them, plenty of people were skeptical. He called his approach Rational Emotive Therapy.</span></div>
+      <div class="t-item"><b>1960s</b><span>A few years later, while working with depressed patients, Aaron Beck noticed something curious: a rapid stream of negative thoughts running through his patients' minds, most of which they barely noticed. He called these "automatic thoughts" — a term still used today.</span></div>
+      <div class="t-item"><b>1970s–1980s</b><span>Beck turned this observation into a simple, teachable model. Years later that model would become the most extensively researched approach in all of psychotherapy.</span></div>
+      <div class="t-item"><b>1990s to today</b><span>From there CBT expanded well beyond depression — into OCD, panic, and populations ranging from young children to teenagers. The "third wave" approaches — ACT, DBT, mindfulness-based CBT — all grew out of this same root.</span></div>
+    </div>
+    <div class="card"><h3>🎯 How I apply this in session</h3><p>Honestly, I don't recite the history to clients. But I do remind my students constantly — this wasn't dreamed up overnight by one person. It survived decades of testing to get here.</p></div>
+  </section>
+
+  <!-- 3. Cognitive triangle -->
+  <section>
+    <div class="sec-head"><div class="sec-num">3</div><h2>The cognitive triangle: Thought – Emotion – Behavior</h2></div>
+    <p class="lead">This triangle hangs on my office wall, because I come back to it in nearly every session. Thought, emotion, behavior — all three are connected. Touch one, and the other two move too.</p>
+
+    <div class="triangle-wrap">
+      <svg width="380" height="360" viewBox="0 0 380 360">
+        <defs>
+          <linearGradient id="triGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#2dd4bf"/>
+            <stop offset="100%" stop-color="#8b5cf6"/>
+          </linearGradient>
+        </defs>
+        <polygon points="190,30 340,300 40,300" fill="none" stroke="url(#triGrad)" stroke-width="2.5" stroke-linejoin="round"/>
+        <circle cx="190" cy="30" r="46" fill="#2dd4bf"/>
+        <text x="190" y="26" text-anchor="middle" class="tri-label">Thought</text>
+        <text x="190" y="42" text-anchor="middle" class="tri-sub">"Nobody loves me"</text>
+
+        <circle cx="340" cy="300" r="46" fill="#8b5cf6"/>
+        <text x="340" y="296" text-anchor="middle" class="tri-label">Emotion</text>
+        <text x="340" y="312" text-anchor="middle" class="tri-sub">Sadness, loneliness</text>
+
+        <circle cx="40" cy="300" r="46" fill="#f59e0b"/>
+        <text x="40" y="296" text-anchor="middle" class="tri-label">Behavior</text>
+        <text x="40" y="312" text-anchor="middle" class="tri-sub">Withdrawal</text>
+
+        <path d="M 220 55 Q 280 150 310 260" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.6" stroke-dasharray="4 5" marker-end="url(#arrow)"/>
+        <path d="M 160 55 Q 100 150 70 260" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.6" stroke-dasharray="4 5" marker-end="url(#arrow)"/>
+        <path d="M 290 300 Q 190 340 90 300" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.6" stroke-dasharray="4 5" marker-end="url(#arrow)"/>
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 z" fill="rgba(255,255,255,.4)"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+
+    <div class="example">
+      <b>Clinical application:</b> When deciding where to start an intervention, I first look at where the client seems most "stuck." Sometimes I start by questioning the thought (<span class="prog-link" onclick="openProgram('koqnitiv-restrukturizasiya')">cognitive restructuring</span>), sometimes simply by shifting the behavior — for instance, having someone afraid to leave the house take one small step outside. Either one moves the whole triangle.
+    </div>
+    <div class="card"><h3>🎯 How I apply this in session</h3><p>I sketch this triangle on paper and put it in front of the client. Then I just ask: which corner do we start from today — thought or behavior? Often they answer that themselves.</p></div>
+  </section>
+
+  <!-- 4. ABC model -->
+  <section>
+    <div class="sec-head"><div class="sec-num">4</div><h2>The ABC Model (Albert Ellis)</h2></div>
+    <p class="lead">Ellis's model is simple but powerful: it isn't the Activating event (A) that upsets us — it's the Belief (B) we build around it. That belief is what produces the Consequence (C). That's the whole model.</p>
+
+    <div class="abc-flow">
+      <div class="abc-box a">
+        <span class="letter">A</span>
+        <h4>Activating Event</h4>
+        <p>Trigger: my manager walked past without a glance.</p>
+      </div>
+      <div class="abc-box b">
+        <span class="letter">B</span>
+        <h4>Belief</h4>
+        <p>Belief: "That means she's unhappy with me, she's going to let me go."</p>
+      </div>
+      <div class="abc-box c">
+        <span class="letter">C</span>
+        <h4>Consequence</h4>
+        <p>Consequence: a knot in the stomach, anxiety all day, avoiding work.</p>
+      </div>
+    </div>
+
+    <div class="dialog">
+      <div class="line"><span class="who t">Therapist:</span><span class="txt">Kamran, what exactly went through your mind the moment your manager walked by?</span></div>
+      <div class="line"><span class="who k">Client:</span><span class="txt">She didn't even look at me. That means she's not happy with my work.</span></div>
+      <div class="line"><span class="who t">Therapist:</span><span class="txt">What made you land on that — was there a specific piece of evidence?</span></div>
+      <div class="line"><span class="who k">Client:</span><span class="txt">Actually... nothing. She just walked past.</span></div>
+      <div class="line"><span class="who t">Therapist:</span><span class="txt">Could there be another explanation?</span></div>
+      <div class="line"><span class="who k">Client:</span><span class="txt">Maybe she was in a hurry. There was a morning meeting that day.</span></div>
+      <div class="line"><span class="who t">Therapist:</span><span class="txt">So at least two different readings of the same event are possible. See that? A different belief produces a completely different feeling.</span></div>
+    </div>
+    <div class="card"><h3>🎯 How I apply this in session</h3><p>Just like with Kamran — I never say "your thought is wrong." I ask questions, and he finds it himself. A belief you arrive at yourself sticks far better than one I hand you.</p></div>
+  </section>
+
+  <!-- 5. Levels of cognition -->
+  <section>
+    <div class="sec-head"><div class="sec-num">5</div><h2>Three levels of cognitive structure</h2></div>
+    <p class="lead">According to Beck, our thoughts are organized in three layers, from surface to depth. I call it "the three layers of the iceberg," because the surface layer is visible, while the deeper ones have to be uncovered.</p>
+    <div class="card">
+      <h3>1️⃣ Automatic thoughts</h3>
+      <p>These are the uninvited guests that show up in our minds on their own. Right before an exam, the thought "I'm not going to pass this" flashes through — we barely even register it, we just feel its effect. Children often struggle to put these thoughts into words, so I frequently have them draw instead, to give the thought a shape. In teenagers the process moves faster, since abstract thinking has already developed.</p>
+    </div>
+    <div class="card">
+      <h3>2️⃣ Intermediate beliefs (rules, assumptions)</h3>
+      <p>These are hidden rules in an "if... then..." form. For example: "If I'm not perfect, no one will love me." A person often has no idea they're carrying such a rule — yet it's exactly what's steering their behavior.</p>
+    </div>
+    <div class="card">
+      <h3>3️⃣ Core beliefs (schemas)</h3>
+      <p>This is the deepest layer. Beliefs like "I'm worthless" or "The world is dangerous." These usually date back to childhood, and they're the slowest to shift — though never impossible. I've seen that happen again and again over the years.</p>
+    </div>
+    <div class="dialog">
+      <div class="line"><span class="who t">Therapist:</span><span class="txt">Right before an exam, what exactly goes through your mind?</span></div>
+      <div class="line"><span class="who k">Client:</span><span class="txt">The thought "I won't be able to do this" comes up.</span></div>
+      <div class="line"><span class="who t">Therapist:</span><span class="txt">And what rule sits underneath that thought — in an "if... then..." form?</span></div>
+      <div class="line"><span class="who k">Client:</span><span class="txt">I guess... something like "if I'm not perfect, I've failed."</span></div>
+    </div>
+    <div class="card"><h3>🎯 How I apply this in session</h3><p>First we catch the automatic thought, then I ask — what rule is underneath it? Sometimes three or four questions later we land right on the core belief, and the client is surprised themselves.</p></div>
+  </section>
+
+  <!-- 6. Cognitive distortions -->
+  <section>
+    <div class="sec-head"><div class="sec-num">6</div><h2>Cognitive distortions</h2></div>
+    <p class="lead">These aren't learned overnight. I'll admit — even after all these years, I still catch a few of them in my own thinking sometimes. Recognizing them is one of the most fundamental skills in CBT.</p>
+    <div class="dist-grid">
+      <div class="dist-card"><div class="name">All-or-nothing thinking</div><div class="ex">"If I'm not perfect, then I'm a complete failure."</div></div>
+      <div class="dist-card"><div class="name">Overgeneralization</div><div class="ex">"I made a mistake once, so I always mess things up."</div></div>
+      <div class="dist-card"><div class="name">Catastrophizing</div><div class="ex">"My heart is racing — I must be having a heart attack!"</div></div>
+      <div class="dist-card"><div class="name">Mind reading</div><div class="ex">"He thinks I'm stupid."</div></div>
+      <div class="dist-card"><div class="name">Fortune telling</div><div class="ex">"This meeting is definitely going to go badly."</div></div>
+      <div class="dist-card"><div class="name">Emotional reasoning</div><div class="ex">"I feel like a failure, so I must actually be one."</div></div>
+      <div class="dist-card"><div class="name">"Should" statements</div><div class="ex">"I should never make mistakes."</div></div>
+      <div class="dist-card"><div class="name">Labeling</div><div class="ex">"I'm a total failure" (one action turned into an identity).</div></div>
+      <div class="dist-card"><div class="name">Mental filtering</div><div class="ex">Fixating on the one critical comment out of ten positive ones.</div></div>
+      <div class="dist-card"><div class="name">Personalization</div><div class="ex">"The meeting went badly because I was there."</div></div>
+    </div>
+    <div class="dialog">
+      <div class="line"><span class="who k">Client:</span><span class="txt">If they don't like the project, that means I can't do my job at all.</span></div>
+      <div class="line"><span class="who t">Therapist:</span><span class="txt">Which pattern does that sound like to you?</span></div>
+      <div class="line"><span class="who k">Client:</span><span class="txt">Probably... all-or-nothing thinking.</span></div>
+    </div>
+    <div class="card"><h3>🎯 How I apply this in session</h3><p>I don't have clients memorize this list. I just ask, when I hear their own sentence: "which pattern does that resemble?" What they find themselves sticks far deeper than a label I hand them.</p></div>
+  </section>
+
+  <!-- 7. Core principles -->
+  <section>
+    <div class="sec-head"><div class="sec-num">7</div><h2>Core principles of CBT</h2></div>
+    <div class="card"><h3>🤝 Collaborative empiricism</h3><p>I never tell a client "this thought of yours is wrong." We're both detectives — we lay the thought on the table as a hypothesis to be tested against evidence.</p></div>
+    <div class="card"><h3>🎯 Goal-directed and structured</h3><p>Every session has an agenda. An unstructured session is wasted time — I say that from experience.</p></div>
+    <div class="card"><h3>⏱️ Time-limited (short-term)</h3><p>Usually 8–20 sessions. Dragging on tends to be a problem in itself — CBT's strength lies precisely in fast, concrete results.</p></div>
+    <div class="card"><h3>❓ Socratic questioning</h3><p>I never hand over a ready-made answer. I ask: "What made you land on that?", "Could there be another explanation?", "In the worst case, what would happen, and how would you cope?" These questions open a path for the client to reach their own answer.</p></div>
+    <div class="card"><h3>📓 Homework and thought records</h3><p>Something learned in the room doesn't stick unless it's tried out at home. I end every session with one small, concrete assignment — not a big one, but a real one.</p></div>
+    <div class="card"><h3>🎯 How I apply this in session</h3><p>I don't list these five principles out loud to the client — I just demonstrate them through how I behave. They're the quiet backdrop running behind everything I do in session.</p></div>
+  </section>
+
+  <!-- 8. Session structure -->
+  <section>
+    <div class="sec-head"><div class="sec-num">8</div><h2>Structure of a typical CBT session</h2></div>
+    <div class="steps">
+      <div class="step"><div class="stxt"><h4>Mood check-in</h4><p>I ask on a 0-to-10 scale: how anxious have you been today? A simple question, but it tells you a lot.</p></div></div>
+      <div class="step"><div class="stxt"><h4>Bridge — connecting to the last session</h4><p>What stayed with you from last time? This question links each session to the last.</p></div></div>
+      <div class="step"><div class="stxt"><h4>Agenda setting</h4><p>What should we focus on today? We decide this together — I never set it unilaterally.</p></div></div>
+      <div class="step"><div class="stxt"><h4>Homework review</h4><p>Did you do it? If not, why not? This is one of the steps most often skipped — and one of the most important.</p></div></div>
+      <div class="step"><div class="stxt"><h4>Work on the main topic</h4><p>This is where a new technique is introduced, or an existing problem is worked through more deeply.</p></div></div>
+      <div class="step"><div class="stxt"><h4>Summary and feedback</h4><p>What was useful today? I need to hear this in the client's own words.</p></div></div>
+      <div class="step"><div class="stxt"><h4>New homework</h4><p>What should we try before next time? Small, concrete, measurable.</p></div></div>
+    </div>
+    <div class="card"><h3>🎯 How I apply this in session</h3><p>I don't run through these steps mechanically, but I never skip any of them either — especially reviewing the homework. That's exactly where a lot of therapists rush. I don't.</p></div>
+  </section>
+
+  <!-- 9. Practical worksheet -->
+  <section>
+    <div class="sec-head"><div class="sec-num">9</div><h2>Practical worksheet: Thought Record</h2></div>
+    <p class="lead">This worksheet never leaves my bag. It looks simple, but it's the tool I've used most for years — it teaches the client to track their own thinking in real situations.</p>
+    <div class="worksheet">
+      <table>
+        <thead>
+          <tr><th>Situation</th><th>Automatic thought</th><th>Emotion (0–100)</th><th>Evidence against</th><th>Balanced thought</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Texted a friend, got no reply</td>
+            <td>"She's angry with me, she doesn't want to be friends anymore"</td>
+            <td>Anxiety — 80</td>
+            <td>She's replied late before too, her workplace is busy</td>
+            <td>"She's probably just busy, this isn't necessarily about our friendship"</td>
+          </tr>
+          <tr>
+            <td>Classmates laughed while I was nearby</td>
+            <td>"They're laughing at me"</td>
+            <td>Shame — 75</td>
+            <td>They were looking at their phones, could've been about something else</td>
+            <td>"Their laughter might not be about me at all"</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="example"><b>Assignment (for the client):</b> This week, log at least 3 situations in this table format. We'll go through them together next session.</div>
+    <div class="card"><h3>🎯 How I apply this in session</h3><p>The first time, I fill this table out together with the client, right there in the room, so they're not lost when doing it alone at home. Handing someone a blank table is the mistake I see most often.</p></div>
+  </section>
+
+  <!-- 10. Clinical case -->
+  <section>
+    <div class="sec-head"><div class="sec-num">10</div><h2>Clinical case: Kamran's full story</h2></div>
+    <p class="lead">Kamran was 34, a mid-level manager at a tech company. When he first came to me, his complaint was "constant anxiety and trouble focusing at work." At first glance it looked like ordinary work stress. But as we dug in, it turned out to run much deeper.</p>
+    <div class="card">
+      <h3>📋 Presentation</h3>
+      <p>Kamran read every neutral action from his manager — not saying hello, walking past quickly — as "she's unhappy with me." This reading repeated several times a day, each time triggering hours of anxiety and avoidance at work. He'd been living like this for three months, his sleep was disrupted, and his performance had genuinely started slipping — his own fear was beginning to fulfill itself.</p>
+    </div>
+    <div class="card">
+      <h3>🔍 What we found</h3>
+      <p>Over six sessions it emerged that Kamran's core belief — "if I'm not perfect, I'll be rejected" — traced back to childhood, to a highly demanding father. Every ambiguous signal at work reactivated that old belief. His manager not saying hello functionally became, without his realizing it, "father's disapproving look."</p>
+    </div>
+    <div class="example"><b>Outcome:</b> After 12 sessions, Kamran developed the habit of asking himself, in the same kinds of situations, "is this backed by evidence, or is this an old pattern?" The anxiety didn't disappear entirely — I never promise that — but it dropped to a manageable level.</div>
+  </section>
+
+  <!-- 11. Case formulation -->
+  <section>
+    <div class="sec-head"><div class="sec-num">11</div><h2>Case Formulation Worksheet</h2></div>
+    <p class="lead">I fill this form out for every client, usually across the first 2–3 sessions. It's not just paperwork — it's the backbone of the treatment plan. Working without it is like traveling without a map.</p>
+    <div class="worksheet">
+      <table>
+        <thead><tr><th>Component</th><th>Kamran's example</th></tr></thead>
+        <tbody>
+          <tr><td><b>Presenting problem</b></td><td>Ongoing work-related anxiety, difficulty concentrating</td></tr>
+          <tr><td><b>Precipitating factors (triggers)</b></td><td>Manager's neutral behavior, new projects</td></tr>
+          <tr><td><b>Predisposing factors (roots)</b></td><td>Demanding parent, childhood experience of conditional love</td></tr>
+          <tr><td><b>Perpetuating factors (why it doesn't stop)</b></td><td>Avoidance behavior, constant reassurance-seeking</td></tr>
+          <tr><td><b>Protective factors (strengths)</b></td><td>High self-awareness, supportive family, strong work ethic</td></tr>
+          <tr><td><b>Core cognitive belief</b></td><td>"If I'm not perfect, I'll be rejected"</td></tr>
+          <tr><td><b>Treatment goal</b></td><td>Cognitive questioning skills, anxiety regulation</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card"><h3>🎯 How I apply this in session</h3><p>I fill this form out together with the client, not behind their back. When Kamran read his own "predisposing factors" line, he went quiet for a long moment — a powerful moment in the room.</p></div>
+  </section>
+
+  <!-- 12. Session protocol -->
+  <section>
+    <div class="sec-head"><div class="sec-num">12</div><h2>Sample session protocol</h2></div>
+    <p class="lead">Below is the actual protocol structure from Kamran's 4th session — this is the format I log after every session, both for my own records and as an example for supervision students.</p>
+    <div class="worksheet">
+      <table>
+        <thead><tr><th>Phase</th><th>Time</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>Mood check-in</td><td>5 min</td><td>Anxiety: 6/10 (previous session was 8/10)</td></tr>
+          <tr><td>Homework review</td><td>10 min</td><td>Thought Record — 4 situations logged, 3 fully completed</td></tr>
+          <tr><td>Agenda setting</td><td>3 min</td><td>Today: continuing work on manager-related automatic thoughts</td></tr>
+          <tr><td>Main work</td><td>25 min</td><td>Socratic questioning, deepening the "evidence against" column</td></tr>
+          <tr><td>New homework</td><td>5 min</td><td>Log 2 new situations this week in the same format</td></tr>
+          <tr><td>Closing feedback</td><td>2 min</td><td>Client: "Today I was able to question my own thought for the first time, without help"</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 13. Assessment tools -->
+  <section>
+    <div class="sec-head"><div class="sec-num">13</div><h2>CBT assessment tools and scales</h2></div>
+    <p class="lead">Before the first session, I generally use several standardized tools — a simple "how are you" question isn't enough, you need an objective starting point.</p>
+    <div class="grid-3">
+      <div class="lens-card"><span class="ico">📊</span><h4>Beck Depression Inventory (BDI-II)</h4><p>The most widely used self-report scale for measuring the severity of depressive symptoms.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>Beck Anxiety Inventory (BAI)</h4><p>Measures the physical and cognitive symptoms of anxiety separately.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>Automatic Thoughts Questionnaire (ATQ)</h4><p>Assesses the frequency of negative automatic thoughts.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>Dysfunctional Attitude Scale (DAS)</h4><p>A scale measuring deep, dysfunctional core beliefs.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>GAD-7</h4><p>A brief, fast screening tool for generalized anxiety disorder.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>PHQ-9</h4><p>A depression screening tool, used constantly in everyday practice.</p></div>
+    </div>
+    <div class="example"><b>Note:</b> These scales don't produce a diagnosis — they only measure severity and help track progress across treatment. I re-administer the BAI with Kamran every 4 sessions, so we can see progress in numbers too — sometimes a client sees progress on the page before they feel it themselves.</div>
+  </section>
+
+  <section>
+    <div class="sec-head"><div class="sec-num">🏠</div><h2>Homework (for you)</h2></div>
+    <p class="lead">Before we close this module, I want to ask something of you. Today or tomorrow, find a small situation that's been bothering you — nothing dramatic, an ordinary moment of tension is enough.</p>
+    <div class="card">
+      <p>Fill out a Thought Record for yourself. Write down the automatic thought, rate the emotion from 0 to 100, then ask yourself the same question I asked Kamran: "What made me land on this thought? Could there be another explanation?" If you don't try this exercise on yourself first, it'll be much harder to ask it of a client. I tell every one of my students this — yourself first, then the client.</p>
+    </div>
+  </section>
+
+
+<section>
+  <div class="sec-head"><div class="sec-num">14</div><h2>Where risk screening fits into the assessment phase</h2></div>
+  <div class="crisis-box">
+    <h4>⚠️ When urgent intervention is required</h4>
+    <p>While this module covers theoretical foundations, every CBT program's first session should include structured risk screening — this is the general framework that the topic-specific protocols in every later module build on.</p>
+    <ul>
+      <li>Any direct or indirect expression of self-harm or harm to others, from the client or a parent, at the first meeting;</li>
+      <li>A positive response on item 9 of the PHQ-9, item 9 of the GAD-7, or a similar item on any initial assessment tool;</li>
+      <li>A family history of psychiatric illness, suicide, or a current serious family crisis;</li>
+      <li>The clinician's own subjective sense of unease — a feeling that "something isn't right," even without a concrete statement to point to.</li>
+    </ul>
+    <ol class="crisis-steps">
+      <li>Apply structured risk screening as standard protocol within the first 2 sessions with every new client, regardless of presenting topic.</li>
+      <li>If screening is positive, draft a safety plan before moving forward with the treatment plan.</li>
+      <li>Always document findings in writing, with the date noted — this matters both clinically and legally.</li>
+      <li>When in doubt, don't hesitate to seek case consultation with a colleague — never decide alone.</li>
+    </ol>
+    <p><b>Note:</b> The topic-specific crisis protocols presented in each following module complement this general framework — they don't replace it.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="sec-num">15</div><h2>Bibliography</h2></div>
+  <div class="biblio-box">
+    <h4>📚 Key sources referenced in this topic</h4>
+    <ul class="biblio-list">
+      <li><b>Beck, J. S.</b> (2020). <i>Cognitive Behavior Therapy: Basics and Beyond</i> (3rd ed.). Guilford Press.</li>
+      <li><b>Beck, A. T., & Haigh, E. A. P.</b> (2014). Advances in cognitive theory and therapy: The generic cognitive model. <i>Annual Review of Clinical Psychology, 10</i>, 1–24.</li>
+      <li><b>Kazantzis, N., Dattilio, F. M., & Dobson, K. S.</b> (2017). <i>The Therapeutic Relationship in Cognitive-Behavioral Therapy.</i> Guilford Press.</li>
+      <li><b>Posner, K., et al.</b> (2011). The Columbia-Suicide Severity Rating Scale. <i>American Journal of Psychiatry, 168</i>(12), 1266–1277.</li>
+      <li><b>Kroenke, K., Spitzer, R. L., & Williams, J. B.</b> (2001). The PHQ-9. <i>Journal of General Internal Medicine, 16</i>(9), 606–613.</li>
+      <li><b>American Psychiatric Association.</b> (2022). <i>Diagnostic and Statistical Manual of Mental Disorders</i> (5th ed., text rev.).</li>
+    </ul>
+  </div>
+</section>
+
+<div class="quote">
+    "Men are disturbed not by things, but by the views which they take of things."
+    <span>— Epictetus, Stoic philosopher (one of the philosophical roots of CBT)</span>
+  </div>
+
+  <div class="summary-box">
+    <h3>📌 Module summary</h3>
+    <ul>
+      <li>CBT rests on the thought–emotion–behavior triangle, with all three interconnected.</li>
+      <li>Ellis's ABC model shows that it's the belief, not the event, that determines the emotional outcome.</li>
+      <li>Cognitive structure has three layers: automatic thoughts, intermediate beliefs, core beliefs (schemas).</li>
+      <li>Cognitive distortions — systematic errors in thinking — need to be recognized in both yourself and your client.</li>
+      <li>CBT is structured, goal-directed, collaborative, and time-limited — don't lose sight of that.</li>
+    </ul>
+  </div>
+
+  <div class="nav-bottom">
+    <a class="nav-btn home" href="index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+      Back to menu
+    </a>
+    <a class="nav-btn next" href="02-ptsd.html">
+      Next module: PTSD and CBT
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+
+</main>
+
+<footer>
+  <p>© 2026 Cognitive Behavioral Therapy Course · Module 1/20</p>
+  <p style="margin-top:8px;">By <a href="https://aze-ai.az" target="_blank" rel="noopener">securtiy_group</a></p>
+  <p style="margin-top:10px;font-size:.82rem;"><a href="../privacy.html">Privacy Policy</a> · <a href="../terms.html">Terms of Use</a></p>
+</footer>
+
+<script>
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target);} });
+},{threshold:0.1});
+document.querySelectorAll('section').forEach(s=>io.observe(s));
+
+window.addEventListener('mousemove', e=>{
+  const mx = (e.clientX/window.innerWidth - 0.5);
+  const my = (e.clientY/window.innerHeight - 0.5);
+  document.querySelectorAll('.blob').forEach((b,i)=>{
+    const speed = (i+1)*18;
+    b.style.transform = `translate(${mx*speed}px, ${my*speed}px)`;
+  });
+});
+</script>
+<script src="../protect.js" defer></script>
+<script src="../engine.js"></script>
+
+<div class="modal-overlay" id="programModalOverlay" onclick="if(event.target===this)closeProgram()">
+  <div class="modal-box">
+    <div class="modal-close" onclick="closeProgram()">✕</div>
+    <div id="programModalContent"></div>
+  </div>
+</div>
+
+
+
+</body>
+</html>

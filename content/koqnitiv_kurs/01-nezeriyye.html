@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#d9a85a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Modul 1 · Koqnitiv Terapiya Nəzəriyyəsi</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1:#0c211f; --bg-2:#1d423d;
+    --surface: rgba(217,168,90,0.055);
+    --surface-h: rgba(217,168,90,0.10);
+    --border: rgba(217,168,90,0.14);
+    --teal:#7ba098; --teal-soft: rgba(123,160,152,0.18);
+    --violet:#8a6a3a; --violet-soft: rgba(138,106,58,0.20);
+    --amber:#d9a85a; --amber-soft: rgba(217,168,90,0.18);
+    --rose:#d9705a; --rose-soft: rgba(217,112,90,0.16);
+    --text-1:#f3eee1; --text-2:#c9c2ae; --text-3:#8a9a93;
+    --font-d:'Fraunces', serif;
+    --font-b:'Inter', system-ui, sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{-webkit-user-select:none;-moz-user-select:none;user-select:none;}
+  body{
+    font-family:var(--font-b);
+    background:
+      radial-gradient(1100px 750px at 12% -10%, rgba(139,92,246,0.18), transparent 60%),
+      radial-gradient(1000px 700px at 110% 15%, rgba(45,212,191,0.14), transparent 55%),
+      linear-gradient(180deg, var(--bg-1), var(--bg-2));
+    color:var(--text-1);
+    min-height:100vh;
+    line-height:1.65;
+  }
+  .blob{position:fixed;border-radius:50%;filter:blur(80px);opacity:.45;pointer-events:none;z-index:0;}
+  .blob-1{width:400px;height:400px;background:var(--violet-soft);top:-100px;left:-120px;}
+  .blob-2{width:360px;height:360px;background:var(--teal-soft);top:40%;right:-140px;}
+
+  /* Top bar */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px;
+    background:rgba(11,18,36,0.75);
+    backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--border);
+  }
+  .topbar-brand{display:flex; align-items:center; gap:10px; text-decoration:none; flex-shrink:0;}
+  .topbar-brand img{width:34px; height:34px; border-radius:9px; object-fit:cover; border:1px solid rgba(255,255,255,0.15);}
+  .topbar-brand .tb-name{font-family:var(--font-d); font-weight:700; font-size:.78rem; color:var(--text-1); line-height:1.2; max-width:150px;}
+  .topbar-right{display:flex; align-items:center; gap:14px; flex-shrink:0;}
+  @media(max-width:640px){ .topbar-brand .tb-name{display:none;} .topbar a.back span{display:none;} }
+  .topbar a.back{
+    display:inline-flex; align-items:center; gap:8px;
+    color:var(--text-2); text-decoration:none; font-size:.9rem; font-weight:600;
+    transition:color .2s;
+  }
+  .topbar a.back:hover{color:var(--teal);}
+  .progress-pill{
+    font-size:.78rem; color:var(--text-3);
+    border:1px solid var(--border); padding:6px 14px; border-radius:999px;
+    background:var(--surface);
+  }
+
+  main{position:relative; z-index:2; max-width:880px; margin:0 auto; padding:0 24px 100px;}
+
+  .hero{padding:64px 0 40px; text-align:center;}
+  .hero-illus{display:flex; justify-content:center; margin-bottom:28px;}
+  .hero-illus svg{max-width:100%; height:auto;}
+  .tag{
+    display:inline-block; font-size:.76rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--teal); background:var(--teal-soft); border:1px solid rgba(45,212,191,.35);
+    padding:6px 16px; border-radius:999px; margin-bottom:22px;
+    animation:fadeDown .7s ease both;
+  }
+  h1{
+    font-family:var(--font-d); font-weight:800; font-size:clamp(1.9rem,4.6vw,3rem); line-height:1.2;
+    background:linear-gradient(90deg,#fff,#cdd8ff 45%, var(--teal));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:fadeUp .8s ease both .1s;
+  }
+  .hero p{color:var(--text-2); max-width:600px; margin:20px auto 0; animation:fadeUp .8s ease both .2s;}
+
+  section{margin-top:64px; animation:fadeUp .8s ease both; opacity:0;}
+  section.show{opacity:1;}
+  .sec-head{display:flex; align-items:center; gap:14px; margin-bottom:24px;}
+  .sec-num{
+    font-family:var(--font-d); font-size:1.4rem; font-weight:800; color:var(--bg-1);
+    background:linear-gradient(135deg,var(--teal),var(--violet));
+    width:44px;height:44px; border-radius:13px; display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  h2{font-family:var(--font-d); font-size:clamp(1.35rem,3vw,1.7rem); font-weight:700;}
+  .lead{color:var(--text-2); margin-bottom:22px;}
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:18px;
+    padding:24px 26px; margin-bottom:18px; backdrop-filter:blur(10px);
+  }
+  .card h3{font-size:1.05rem; margin-bottom:10px; color:var(--text-1); display:flex; align-items:center; gap:10px;}
+  .card p{color:var(--text-2); font-size:.95rem;}
+  .card p + p{margin-top:10px;}
+
+  .example{
+    border-left:3px solid var(--amber);
+    background:var(--amber-soft);
+    border-radius:0 14px 14px 0;
+    padding:16px 20px;
+    margin:16px 0;
+    font-size:.92rem;
+  }
+  .example b{color:var(--amber);}
+
+  .dialog{
+    background:rgba(255,255,255,.03);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:20px 22px;
+    margin:18px 0;
+    font-size:.92rem;
+  }
+  .dialog .line{display:flex; gap:12px; margin-bottom:14px;}
+  .dialog .line:last-child{margin-bottom:0;}
+  .dialog .who{
+    flex-shrink:0; width:78px; font-weight:700; font-size:.8rem;
+    padding-top:2px;
+  }
+  .dialog .who.t{color:var(--teal);}
+  .dialog .who.k{color:var(--rose);}
+  .dialog .txt{color:var(--text-2);}
+
+  /* Timeline */
+  .timeline{position:relative; margin:30px 0 10px; padding-left:28px;}
+  .timeline::before{content:"";position:absolute; left:6px; top:6px; bottom:6px; width:2px; background:linear-gradient(var(--teal),var(--violet));}
+  .t-item{position:relative; margin-bottom:26px;}
+  .t-item::before{
+    content:""; position:absolute; left:-28px; top:4px; width:14px;height:14px; border-radius:50%;
+    background:var(--bg-2); border:2px solid var(--teal);
+  }
+  .t-item b{display:block; color:var(--teal); font-size:.82rem; letter-spacing:.04em; margin-bottom:4px;}
+  .t-item span{color:var(--text-2); font-size:.92rem;}
+
+  /* CBT Triangle SVG */
+  .triangle-wrap{display:flex; justify-content:center; margin:26px 0;}
+  .triangle-wrap svg{max-width:100%; height:auto;}
+  .tri-label{font-family:var(--font-b); font-weight:700; font-size:13px; fill:#0c211f;}
+  .tri-sub{font-size:10.5px; fill:rgba(11,18,36,.7);}
+
+  /* ABC flow */
+  .abc-flow{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:26px 0;}
+  .abc-box{
+    border-radius:16px; padding:18px 16px; text-align:center; position:relative;
+    border:1px solid var(--border);
+  }
+  .abc-box.a{background:var(--teal-soft);}
+  .abc-box.b{background:var(--violet-soft);}
+  .abc-box.c{background:var(--amber-soft);}
+  .abc-box .letter{font-family:var(--font-d); font-size:1.6rem; font-weight:800; display:block; margin-bottom:6px;}
+  .abc-box.a .letter{color:var(--teal);}
+  .abc-box.b .letter{color:var(--violet);}
+  .abc-box.c .letter{color:var(--amber);}
+  .abc-box h4{font-size:.86rem; margin-bottom:6px;}
+  .abc-box p{font-size:.8rem; color:var(--text-2);}
+  .abc-arrow{display:none;}
+  @media(min-width:640px){
+    .abc-flow{align-items:center;}
+  }
+
+  /* Distortion grid */
+  .dist-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; margin:26px 0;}
+  .dist-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:18px 20px;
+    transition:transform .3s, border-color .3s;
+  }
+  .dist-card:hover{transform:translateY(-4px); border-color:rgba(139,92,246,.4);}
+  .dist-card .name{font-weight:700; font-size:.92rem; color:var(--violet); margin-bottom:6px;}
+  .dist-card .ex{font-size:.84rem; color:var(--text-2); font-style:italic;}
+
+  /* Session structure steps */
+  .steps{counter-reset:step; margin:26px 0;}
+  .step{
+    display:flex; gap:16px; padding:16px 0; border-bottom:1px solid var(--border);
+  }
+  .step:last-child{border-bottom:none;}
+  .step::before{
+    counter-increment:step; content:counter(step);
+    flex-shrink:0; width:34px;height:34px; border-radius:10px;
+    background:var(--surface); border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-d); font-weight:700; color:var(--teal);
+  }
+  .step .stxt h4{font-size:.96rem; margin-bottom:4px;}
+  .step .stxt p{font-size:.86rem; color:var(--text-2);}
+
+  /* Worksheet table */
+  .worksheet{overflow-x:auto; margin:24px 0; border-radius:16px; border:1px solid var(--border);}
+  table{width:100%; border-collapse:collapse; font-size:.84rem; min-width:640px;}
+  thead th{
+    background:rgba(255,255,255,.05); color:var(--teal); text-align:left;
+    padding:12px 14px; font-size:.78rem; letter-spacing:.03em; text-transform:uppercase;
+    border-bottom:1px solid var(--border);
+  }
+  tbody td{padding:13px 14px; color:var(--text-2); border-bottom:1px solid rgba(255,255,255,.06); vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+
+  .quote{
+    border-left:3px solid var(--violet);
+    padding:18px 22px; margin:26px 0; font-family:var(--font-d); font-style:italic;
+    font-size:1.05rem; color:var(--text-1); background:var(--violet-soft); border-radius:0 14px 14px 0;
+  }
+  .quote span{display:block; margin-top:10px; font-family:var(--font-b); font-style:normal; font-size:.8rem; color:var(--text-3);}
+
+  .summary-box{
+    background:linear-gradient(135deg, var(--teal-soft), var(--violet-soft));
+    border:1px solid rgba(45,212,191,.3);
+    border-radius:20px; padding:28px 26px; margin-top:60px;
+  }
+  .summary-box h3{font-family:var(--font-d); font-size:1.25rem; margin-bottom:14px;}
+  .summary-box ul{padding-left:20px; color:var(--text-2); font-size:.92rem;}
+  .summary-box li{margin-bottom:8px;}
+
+  .nav-bottom{
+    display:flex; justify-content:space-between; align-items:center; gap:16px;
+    margin-top:40px; flex-wrap:wrap;
+  }
+  .nav-btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:13px 22px; border-radius:14px; text-decoration:none;
+    font-weight:600; font-size:.9rem; transition:transform .25s, box-shadow .25s;
+  }
+  .nav-btn.home{background:var(--surface); border:1px solid var(--border); color:var(--text-1);}
+  .nav-btn.next{background:linear-gradient(135deg,var(--teal),var(--violet)); color:#0c211f;}
+  .nav-btn:hover{transform:translateY(-3px);}
+  .nav-btn.disabled{opacity:.5; pointer-events:none;}
+
+  footer{
+    position:relative; z-index:2; text-align:center; padding:44px 24px 60px;
+    border-top:1px solid var(--border); color:var(--text-3); font-size:.88rem; margin-top:40px;
+  }
+  footer a{color:var(--teal); text-decoration:none; font-weight:600;}
+
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-14px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+
+  @media(max-width:640px){
+    .abc-flow{grid-template-columns:1fr;}
+    .dialog .who{width:60px; font-size:.72rem;}
+  }
+</style>
+</head>
+<body>
+
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<div class="topbar">
+  <a class="topbar-brand" href="index.html">
+    <img src="logo.png" alt="AN Psixoloji Dəstək və Reabilitasiya Mərkəzi loqosu">
+    <span class="tb-name">AN Psixoloji Dəstək və Reabilitasiya Mərkəzi</span>
+  </a>
+  <div class="topbar-right">
+    <a class="back" href="index.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+      <span>Menyu</span>
+    </a>
+    <span class="progress-pill">Modul 1 / 20</span>
+  </div>
+</div>
+
+<main>
+
+  <div class="hero">
+    <div class="hero-illus">
+      <svg width="360" height="170" viewBox="0 0 360 170" fill="none">
+        <defs>
+          <linearGradient id="hg1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#d9a85a"/>
+            <stop offset="100%" stop-color="#7ba098"/>
+          </linearGradient>
+        </defs>
+        <circle cx="180" cy="85" r="80" fill="none" stroke="url(#hg1)" stroke-width="1.4" stroke-dasharray="3 7" opacity=".55"/>
+        <path d="M150 60c0-20 16-34 34-34 16 0 29 11 32 26 10 2 17 11 17 21 0 12-10 22-22 22h-58c-11 0-19-9-19-20 0-9 6-16 16-15z" fill="#1d423d" stroke="#d9a85a" stroke-width="2"/>
+        <circle cx="163" cy="52" r="3" fill="#d9a85a" opacity=".7"/>
+        <path d="M172 46a10 10 0 0 1 18 4" stroke="#f3eee1" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".6"/>
+        <g transform="translate(70,120)">
+          <circle r="22" fill="#7ba098" opacity=".85"/>
+          <path d="M-7 1c0-6 5-9 7-9s7 3 7 9c0 5-7 9-7 9s-7-4-7-9z" fill="#0c211f"/>
+        </g>
+        <g transform="translate(180,150)">
+          <circle r="22" fill="#8a6a3a" opacity=".85"/>
+          <path d="M-9 3l6-8 4 5 6-9" stroke="#f3eee1" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+        <g transform="translate(290,120)">
+          <circle r="22" fill="#d9a85a" opacity=".85"/>
+          <path d="M-8-6c0 8 4 10 8 13 4-3 8-5 8-13" stroke="#0c211f" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        </g>
+        <path d="M110 128 Q140 145 168 152" stroke="#d9a85a" stroke-width="1.6" fill="none" stroke-dasharray="3 5" opacity=".6"/>
+        <path d="M250 128 Q220 145 192 152" stroke="#d9a85a" stroke-width="1.6" fill="none" stroke-dasharray="3 5" opacity=".6"/>
+        <path d="M175 62 Q120 90 78 100" stroke="#7ba098" stroke-width="1.6" fill="none" stroke-dasharray="3 5" opacity=".5"/>
+        <path d="M195 62 Q250 90 288 100" stroke="#7ba098" stroke-width="1.6" fill="none" stroke-dasharray="3 5" opacity=".5"/>
+      </svg>
+    </div>
+    <span class="tag">Modul 01 · Təməl Nəzəriyyə</span>
+    <h1>Koqnitiv Terapiya Nəzəriyyəsi</h1>
+    <p>On səkkiz ildir bu masanın arxasında oturmuşam və hələ də hər dəfə təzə bir şey görürəm. Bu modul mənim ən çox sevdiyim modullardan biridir — çünki hər şey buradan başlayır. Əgər bu təməli möhkəm qoymasan, sonrakı 19 modul havada qalır. Gəl, birlikdə başlayaq. Kim olursan ol — praktikada işləyən terapevt, hələ təhsil alan tələbə, ya sadəcə mövzuya maraq duyan biri — bu modul sənin üçündür.</p>
+  </div>
+
+  <!-- 1. CBT nədir -->
+  <section>
+    <div class="sec-head"><div class="sec-num">1</div><h2>Koqnitiv Davranış Terapiyası nədir?</h2></div>
+    <p class="lead">Sənə sual verim: niyə eyni hadisə iki adamı tamam fərqli yerə aparır? Biri ağlayır, o biri çiyin çəkib keçir. CBT elə buradan başlayır — hadisənin özü deyil, onun haqqında düşündüyümüz şey bizi idarə edir. Bu, terapiyada ən çox tədqiq olunmuş, ən çox sınaqdan keçmiş yanaşmalardan biridir.</p>
+    <div class="card">
+      <h3>🎯 Əsas fikir</h3>
+      <p>Mən bunu tələbələrimə həmişə eyni cür izah edirəm: hadisə — filtr — nəticə. Filtr sənin düşüncəndir. İki adam eyni siqnalı eşidir, biri əsəbləşir, o biri gülür — çünki filtrləri fərqlidir. Bu qədər sadə. Amma bütün terapiyanın açarı elə budur.</p>
+    </div>
+    <div class="example">
+      <b>Nümunə:</b> Bir dəfə iş yerimdə iki həmkarım eyni gündə rəhbərdən eyni tənqidi eşitdi. Biri o axşam evə gedib ağladı, o biri "yaxşı, düzəldərəm" deyib keçdi. Fərq hadisədə deyildi. Fərq başlarında gedən daxili dialoqda idi.
+    </div>
+    <div class="card"><h3>🎯 Seansda bunu necə tətbiq edirəm?</h3><p>İlk seansda elə bu nümunəni danışıram — iki fərqli reaksiyanın niyə yarandığını. Klient bunu başa düşəndə "mən qəribəyəm" hissindən bir addım geri çəkilir.</p></div>
+    <div class="simple-box"><b>Ən çox rast gəldiyim yanlış anlama:</b> CBT-də əsas məqsəd düşüncələri müsbət düşüncələrlə əvəz etmək deyil. Məqsəd düşüncələrin reallığa nə qədər uyğun olduğunu araşdırmaq və daha balanslaşdırılmış nəticəyə gəlməkdir. Yeni başlayan tələbələrimə bunu hər dəfə xüsusi vurğulayıram — çünki "müsbət düşün" tövsiyəsi ilə CBT-ni qarışdırmaq ən tez-tez rast gəldiyim səhvdir. Mən klientə heç vaxt "bunun əvəzinə yaxşı bir şey düşün" demirəm. Sual verirəm: bu fikir nə qədər dəqiqdir? Hansı sübutlar var, hansı yoxdur? Nəticə bəzən müsbət çıxır, bəzən sadəcə daha realist və dözümlü olur — bu, fərqli şeydir.</div>
+  </section>
+
+  <!-- 2. Tarix -->
+  <section>
+    <div class="sec-head"><div class="sec-num">2</div><h2>Tarixi inkişaf</h2></div>
+    <p class="lead">CBT iki paralel nəzəri xəttin birləşməsindən yaranıb: Albert Ellisin Rasional-Emotiv Terapiyası və Aaron Beck-in Koqnitiv Terapiyası.</p>
+    <div class="timeline">
+      <div class="t-item"><b>1950-ci illər</b><span>Albert Ellis "insanları əsəbləşdirən hadisələr yox, onlar haqqında sahib olduqları irrasional inanclardır" deyəndə çoxları şübhə ilə yanaşdı. O buna Rasional-Emotiv Terapiya adını qoydu.</span></div>
+      <div class="t-item"><b>1960-cı illər</b><span>Bir neçə il sonra Aaron Beck depressiya xəstələri ilə işləyərkən qəribə bir şey gördü: xəstələrin başında sürətlə keçən, çox vaxt fərqinə varmadıqları mənfi fikir axını var idi. O bunu "avtomatik düşüncələr" adlandırdı — bu ifadə bu gün də işlədilir.</span></div>
+      <div class="t-item"><b>1970-1980-ci illər</b><span>Beck bu müşahidəni sadə, öyrədilə bilən bir modelə çevirdi. İllər sonra bu model dünyanın ən çox tədqiq olunan psixoterapiya yanaşmasına çevrildi.</span></div>
+      <div class="t-item"><b>1990-cı illərdən bu günə</b><span>Bundan sonra CBT sadəcə depressiyaya deyil, OKB-dən panikaya, uşaqlardan yeniyetmələrə qədər geniş bir sahəyə yayıldı. "Üçüncü dalğa" yanaşmalar — ACT, DBT, Mindfulness-based CBT — də elə buradan çıxdı.</span></div>
+    </div>
+    <div class="card"><h3>🎯 Seansda bunu necə tətbiq edirəm?</h3><p>Klientə tarixi danışmıram, açığı. Amma tələbələrimə həmişə xatırladıram — bu, kimsənin bir gecədə uydurduğu nəzəriyyə deyil, onilliklərlə sınaqdan keçib bura gəlib çıxıb.</p></div>
+  </section>
+
+  <!-- 3. Koqnitiv üçbucaq -->
+  <section>
+    <div class="sec-head"><div class="sec-num">3</div><h2>Koqnitiv üçbucaq: Düşüncə – Emosiya – Davranış</h2></div>
+    <p class="lead">Bu üçbucaq mənim ofisimin divarında asılıb, çünki demək olar hər seansda ona qayıdıram. Düşüncə, emosiya, davranış — üçü də bir-birinə bağlıdır. Birini toxunanda o biri ikisi də hərəkətə keçir.</p>
+
+    <div class="triangle-wrap">
+      <svg width="380" height="360" viewBox="0 0 380 360">
+        <defs>
+          <linearGradient id="triGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#2dd4bf"/>
+            <stop offset="100%" stop-color="#8b5cf6"/>
+          </linearGradient>
+        </defs>
+        <polygon points="190,30 340,300 40,300" fill="none" stroke="url(#triGrad)" stroke-width="2.5" stroke-linejoin="round"/>
+        <circle cx="190" cy="30" r="46" fill="#2dd4bf"/>
+        <text x="190" y="26" text-anchor="middle" class="tri-label">Düşüncə</text>
+        <text x="190" y="42" text-anchor="middle" class="tri-sub">"Heç kim məni sevmir"</text>
+
+        <circle cx="340" cy="300" r="46" fill="#8b5cf6"/>
+        <text x="340" y="296" text-anchor="middle" class="tri-label">Emosiya</text>
+        <text x="340" y="312" text-anchor="middle" class="tri-sub">Kədər, tənhalıq</text>
+
+        <circle cx="40" cy="300" r="46" fill="#f59e0b"/>
+        <text x="40" y="296" text-anchor="middle" class="tri-label">Davranış</text>
+        <text x="40" y="312" text-anchor="middle" class="tri-sub">Təcrid olma</text>
+
+        <path d="M 220 55 Q 280 150 310 260" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.6" stroke-dasharray="4 5" marker-end="url(#arrow)"/>
+        <path d="M 160 55 Q 100 150 70 260" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.6" stroke-dasharray="4 5" marker-end="url(#arrow)"/>
+        <path d="M 290 300 Q 190 340 90 300" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.6" stroke-dasharray="4 5" marker-end="url(#arrow)"/>
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 z" fill="rgba(255,255,255,.4)"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+
+    <div class="example">
+      <b>Klinik tətbiq:</b> Müdaxiləni haradan başladacağımı seçəndə əvvəlcə klientin harada "ilişib qaldığına" baxıram. Bəzən düşüncəni sorğulamaqla başlayıram (<span class="prog-link" onclick="openProgram('koqnitiv-restrukturizasiya')">koqnitiv restrukturizasiya</span>), bəzən sadəcə davranışı dəyişməklə — məsələn, evdən çıxmaqdan qorxan insana kiçik bir addım atdırmaqla. İkisi də eyni üçbucağa təsir edir.
+    </div>
+    <div class="card"><h3>🎯 Seansda bunu necə tətbiq edirəm?</h3><p>Kağıza bu üçbucağı çəkib klientin qarşısına qoyuram. Sonra sadəcə soruşuram: bu gün hansı küncdən başlayaq — düşüncədən, yoxsa davranışdan? Cavabı çox vaxt özü verir.</p></div>
+  </section>
+
+  <!-- 4. <span class="prog-link" onclick="openProgram('abc-modeli')">ABC modeli</span> -->
+  <section>
+    <div class="sec-head"><div class="sec-num">4</div><h2>ABC Modeli (Albert Ellis)</h2></div>
+    <p class="lead">Ellisin modeli sadədir, amma çox güclüdür: bizi əsəbləşdirən Hadisə (A) deyil, onun haqqında qurduğumuz İnanc (B). Məhz bu, Nəticəni (C) yaradır. Bu qədər.</p>
+
+    <div class="abc-flow">
+      <div class="abc-box a">
+        <span class="letter">A</span>
+        <h4>Activating Event</h4>
+        <p>Tetikləyici: rəhbərim yanımdan göz gəzdirmədən keçdi.</p>
+      </div>
+      <div class="abc-box b">
+        <span class="letter">B</span>
+        <h4>Belief</h4>
+        <p>İnanc: "Deməli məndən narazıdır, məni işdən çıxaracaq."</p>
+      </div>
+      <div class="abc-box c">
+        <span class="letter">C</span>
+        <h4>Consequence</h4>
+        <p>Nəticə: qarnında düyün, bütün gün narahatlıq, işdən yayınma.</p>
+      </div>
+    </div>
+
+    <div class="dialog">
+      <div class="line"><span class="who t">Terapevt:</span><span class="txt">Kamran, rəhbəriniz keçəndə tam olaraq başınızdan nə keçdi?</span></div>
+      <div class="line"><span class="who k">Klient:</span><span class="txt">Məni görmək belə istəmədi. Deməli işimdən razı deyil.</span></div>
+      <div class="line"><span class="who t">Terapevt:</span><span class="txt">Bu fikrə əsas verən nə idi — konkret bir dəlil?</span></div>
+      <div class="line"><span class="who k">Klient:</span><span class="txt">Əslində... heç nə. Sadəcə keçdi.</span></div>
+      <div class="line"><span class="who t">Terapevt:</span><span class="txt">Başqa izah ola bilərmi?</span></div>
+      <div class="line"><span class="who k">Klient:</span><span class="txt">Bəlkə tələsirdi. O gün səhər toplantısı var idi.</span></div>
+      <div class="line"><span class="who t">Terapevt:</span><span class="txt">Deməli eyni hadisəyə ən azı iki fərqli baxış mümkündür. Gördünüz? Yeni bir inanc necə fərqli bir hiss yaradır.</span></div>
+    </div>
+    <div class="card"><h3>🎯 Seansda bunu necə tətbiq edirəm?</h3><p>Kamranla etdiyim kimi — heç vaxt "sənin fikrin yanlışdır" demirəm. Sual verirəm, o özü tapır. Özü tapdığı fikir daha möhkəm yadda qalır, mənim ona verdiyim deyil.</p></div>
+  </section>
+
+  <!-- 5. Koqnitiv səviyyələr -->
+  <section>
+    <div class="sec-head"><div class="sec-num">5</div><h2>Koqnitiv strukturun üç səviyyəsi</h2></div>
+    <p class="lead">Beck-ə görə düşüncələrimiz üç qatda təşkil olunub — səthdən dərinliyə doğru. Mən buna "buzlağın üç qatı" deyirəm, çünki səthdəki hissə görünür, aşağıdakılar isə tapılmalıdır.</p>
+    <div class="card">
+      <h3>1️⃣ Avtomatik düşüncələr</h3>
+      <p>Bunlar başımızda özbaşına, dəvətsiz gələn qonaqlardır. Kimsə imtahana girməzdən qabaq "Bunu keçə bilməyəcəm" fikri keçib gedir — biz hətta onu tam eşitmirik, sadəcə nəticəsini hiss edirik. Uşaqlarda bu düşüncələri sözlə ifadə etmək çətindir, ona görə mən onlara çox vaxt rəsm çəkdirirəm ki, düşüncəni əşyalaşdırsınlar. Yeniyetmələrdə proses daha sürətli gedir, çünki abstrakt düşünmə artıq formalaşıb.</p>
+    </div>
+    <div class="card">
+      <h3>2️⃣ Aralıq inanclar (qaydalar, fərziyyələr)</h3>
+      <p>"Əgər... onda..." formasında gizli qaydalardır. Məsələn: "Əgər mükəmməl olmasam, məni sevməzlər." Adam çox vaxt bilmir ki, belə bir qaydanı daşıyır — amma davranışını məhz o idarə edir.</p>
+    </div>
+    <div class="card">
+      <h3>3️⃣ Əsas inanclar (sxemlər)</h3>
+      <p>Bura ən dərin qatdır. "Mən dəyərsizəm", "Dünya təhlükəlidir" kimi inanclar. Bunlar adətən uşaqlıqdan gəlir və dəyişməsi ən çox vaxt aparır — amma qeyri-mümkün deyil. Mən bunu illər ərzində dəfələrlə görmüşəm.</p>
+    </div>
+    <div class="dialog">
+      <div class="line"><span class="who t">Terapevt:</span><span class="txt">İmtahandan qabaq başından tam olaraq nə keçir?</span></div>
+      <div class="line"><span class="who k">Klient:</span><span class="txt">"Bacarmayacağam" düşüncəsi gəlir.</span></div>
+      <div class="line"><span class="who t">Terapevt:</span><span class="txt">Bəs bu fikrin altında hansı qayda dayanır — "əgər... onda..." formasında desək?</span></div>
+      <div class="line"><span class="who k">Klient:</span><span class="txt">Deyəsən... "əgər mükəmməl olmasam, uğursuzam" kimi bir şey.</span></div>
+    </div>
+    <div class="card"><h3>🎯 Seansda bunu necə tətbiq edirəm?</h3><p>Əvvəlcə avtomatik düşüncəni tuturuq, sonra soruşuram — bunun altında hansı qayda dayanır? Bəzən üç-dörd sualdan sonra elə əsas inanca çatırıq, klient özü də təəccüblənir.</p></div>
+  </section>
+
+  <!-- 6. Koqnitiv təhriflər -->
+  <section>
+    <div class="sec-head"><div class="sec-num">6</div><h2>Koqnitiv təhriflər (Cognitive Distortions)</h2></div>
+    <p class="lead">Bunları tanımaq bir gecədə öyrənilmir. Etiraf edim — mən özüm illər sonra hələ də öz düşüncəmdə bəzilərini tuturam. Onları tanımaq CBT-nin ən əsas bacarıqlarından biridir.</p>
+    <div class="dist-grid">
+      <div class="dist-card"><div class="name">Hamısı və ya heç nə düşüncəsi</div><div class="ex">"Əgər mükəmməl olmasam, deməli tam uğursuzam."</div></div>
+      <div class="dist-card"><div class="name">Həddindən artıq ümumiləşdirmə</div><div class="ex">"Bir dəfə səhv etdim, mən həmişə səhv edirəm."</div></div>
+      <div class="dist-card"><div class="name">Katastrofikləşdirmə</div><div class="ex">"Ürəyim bərk döyünür — infarkt keçirirəm!"</div></div>
+      <div class="dist-card"><div class="name">Fikir oxuma</div><div class="ex">"O, mənim axmaq olduğumu düşünür."</div></div>
+      <div class="dist-card"><div class="name">Falçılıq</div><div class="ex">"Bu iş görüşü mütləq pis keçəcək."</div></div>
+      <div class="dist-card"><div class="name">Emosional əsaslandırma</div><div class="ex">"Özümü uğursuz hiss edirəm, deməli, gerçəkdən uğursuzam."</div></div>
+      <div class="dist-card"><div class="name">"Lazımdır" ifadələri</div><div class="ex">"Mən heç vaxt səhv etməməliyəm."</div></div>
+      <div class="dist-card"><div class="name">Etiketləmə</div><div class="ex">"Mən tam bir uğursuzam" (bir hərəkət əvəzinə bütöv şəxsiyyətə etiket).</div></div>
+      <div class="dist-card"><div class="name">Filtrləmə (mənfini seçmə)</div><div class="ex">10 müsbət rəydən yalnız 1 mənfi tənqidə fokuslanmaq.</div></div>
+      <div class="dist-card"><div class="name">Şəxsiləşdirmə</div><div class="ex">"Toplantı pis keçdi, çünki mən orada idim."</div></div>
+    </div>
+    <div class="dialog">
+      <div class="line"><span class="who k">Klient:</span><span class="txt">Layihəni bəyənməsələr, deməli işimi ümumiyyətlə bacarmıram.</span></div>
+      <div class="line"><span class="who t">Terapevt:</span><span class="txt">Bu, hansı qəlibə bənzəyir sizcə?</span></div>
+      <div class="line"><span class="who k">Klient:</span><span class="txt">Yəqin... "hamısı və ya heç nə" düşüncəsi.</span></div>
+    </div>
+    <div class="card"><h3>🎯 Seansda bunu necə tətbiq edirəm?</h3><p>Bu siyahını klientə əzbərlətmirəm. Sadəcə öz cümləsini eşidəndə soruşuram: "bu hansı qəlibə oxşayır?" Özü tapanda daha dərin yadda qalır, mənim adlandırdığımdan.</p></div>
+  </section>
+
+  <!-- 7. Əsas prinsiplər -->
+  <section>
+    <div class="sec-head"><div class="sec-num">7</div><h2>CBT-nin əsas prinsipləri</h2></div>
+    <div class="card"><h3>🤝 Əməkdaşlıq empirizmi</h3><p>Mən klientə heç vaxt "bu düşüncən yanlışdır" demirəm. İkimiz də detektiv kimiyik — düşüncəni sübut yoxlanılası fərziyyə kimi masaya qoyuruq.</p></div>
+    <div class="card"><h3>🎯 Məqsədyönlü və struktur</h3><p>Hər seansın gündəliyi var. Struktursuz seans vaxt itkisidir — bunu təcrübəmdən deyirəm.</p></div>
+    <div class="card"><h3>⏱️ Zaman məhdud (qısamüddətli)</h3><p>Adətən 8–20 seans. Uzanması adətən problemdir — CBT-nin gücü məhz sürətli, konkret nəticədədir.</p></div>
+    <div class="card"><h3>❓ Sokratik sorğulama</h3><p>Mən heç vaxt hazır cavab vermirəm. Sual verirəm: "Bu fikrə əsas verən nə idi?", "Başqa izah ola bilərmi?", "Ən pis halda nə olar, buna necə dözərsən?" Bu suallar klientin özünün cavab tapmasına yol açır.</p></div>
+    <div class="card"><h3>📓 "Ev tapşırığı" və iş dəftərləri</h3><p>Otaqda öyrənilən bir şey evdə sınanmasa, yadda qalmır. Mən hər seansın sonunda konkret, kiçik bir tapşırıq verirəm — böyük yox, amma real.</p></div>
+    <div class="card"><h3>🎯 Seansda bunu necə tətbiq edirəm?</h3><p>Bu beş prinsipi klientə sadalamıram — sadəcə davranışımla göstərirəm. Onlar mənim seansdakı canlı arxa planımdır.</p></div>
+  </section>
+
+  <!-- 8. Seans strukturu -->
+  <section>
+    <div class="sec-head"><div class="sec-num">8</div><h2>Tipik CBT seansının strukturu</h2></div>
+    <div class="steps">
+      <div class="step"><div class="stxt"><h4>Əhval-ruhiyyə yoxlanışı</h4><p>0-dan 10-a şkala ilə soruşuram: bu gün narahatlığın neçədir? Sadə sual, amma çox şey deyir.</p></div></div>
+      <div class="step"><div class="stxt"><h4>Körpü — keçən seansla əlaqə</h4><p>Əvvəlki seansdan yadında nə qalıb? Bu sual seansları bir-birinə bağlayır.</p></div></div>
+      <div class="step"><div class="stxt"><h4>Gündəliyin razılaşdırılması</h4><p>Bu gün nəyə fokuslanaq? Birgə qərar veririk, mən təkbaşına təyin etmirəm.</p></div></div>
+      <div class="step"><div class="stxt"><h4>Ev tapşırığının nəzərdən keçirilməsi</h4><p>Etdinmi? Etmədinsə, niyə? Bu, tez-tez keçilən, amma ən vacib addımlardan biridir.</p></div></div>
+      <div class="step"><div class="stxt"><h4>Əsas mövzu üzərində iş</h4><p>Burada yeni bir texnika göstərilir, ya da köhnə problem daha dərin işlənir.</p></div></div>
+      <div class="step"><div class="stxt"><h4>Yekun və rəy</h4><p>Bu gün nə faydalı oldu? Bunu klientdən öz sözü ilə eşitmək lazımdır.</p></div></div>
+      <div class="step"><div class="stxt"><h4>Yeni ev tapşırığı</h4><p>Növbəti dəfəyə qədər nə sınayaq? Kiçik, konkret, ölçülə bilən.</p></div></div>
+    </div>
+    <div class="card"><h3>🎯 Seansda bunu necə tətbiq edirəm?</h3><p>Bu addımları mexaniki keçmirəm, amma heç birini də atlamıram — xüsusən ev tapşırığının yoxlanmasını. Elə burada çox terapevt tələsir, mən tələsmirəm.</p></div>
+  </section>
+
+  <!-- 9. Praktik iş vərəqi -->
+  <section>
+    <div class="sec-head"><div class="sec-num">9</div><h2>Praktik iş vərəqi: Fikirlərin Qeydiyyatı Cədvəli</h2></div>
+    <p class="lead">Bu cədvəl mənim çantamdan heç vaxt əskik olmur. Sadə görünür, amma illərdir ən çox işlətdiyim alətdir — klient real vəziyyətlərdə öz düşüncəsini izləməyi öyrənir.</p>
+    <div class="worksheet">
+      <table>
+        <thead>
+          <tr><th>Situasiya</th><th>Avtomatik düşüncə</th><th>Emosiya (0-100)</th><th>Sübut əleyhinə</th><th>Balanslaşdırılmış fikir</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Dostuma mesaj yazdım, cavab gəlmədi</td>
+            <td>"Mənə qəzəblənib, artıq dostluq etmək istəmir"</td>
+            <td>Narahatlıq — 80</td>
+            <td>Əvvəllər də gec cavab verib, iş yeri məşğuldur</td>
+            <td>"Yəqin məşğuldur, bu mütləq dostluqla bağlı deyil"</td>
+          </tr>
+          <tr>
+            <td>Sinif yoldaşları gülüşdü, mən yaxınlıqda idim</td>
+            <td>"Mənə gülürlər"</td>
+            <td>Utanc — 75</td>
+            <td>Telefonlarına baxırdılar, mövzu fərqli ola bilər</td>
+            <td>"Onların gülüşü mütləq mənimlə bağlı olmaya bilər"</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="example"><b>Tapşırıq (klient üçün):</b> Bu həftə ən azı 3 vəziyyəti bu cədvəl formatında qeyd edin. Növbəti seansda birlikdə təhlil edəcəyik.</div>
+    <div class="card"><h3>🎯 Seansda bunu necə tətbiq edirəm?</h3><p>Bu cədvəli ilk dəfə seansın özündə birlikdə doldururam ki, klient evdə tək qalanda çaşmasın. Boş cədvəl vermək — ən çox rast gəlinən səhvdir.</p></div>
+  </section>
+
+  <!-- 10. Klinik hadisə -->
+  <section>
+    <div class="sec-head"><div class="sec-num">10</div><h2>Klinik hadisə: Kamranın tam hekayəsi</h2></div>
+    <p class="lead">Kamran 34 yaşında, bir texnologiya şirkətində orta səviyyəli menecer idi. Yanıma gələndə şikayəti "davamlı narahatlıq və işdə diqqətimi cəmləyə bilməmək" idi. İlk baxışdan sadə bir iş stresi kimi görünürdü. Amma araşdırdıqca gördük ki, məsələ daha dərində idi.</p>
+    <div class="card">
+      <h3>📋 Təqdimat</h3>
+      <p>Kamran rəhbərinin hər neytral hərəkətini (salamlaşmamaq, tələsik keçmək) "məndən narazıdır" kimi oxuyurdu. Bu oxuma günə bir neçə dəfə təkrarlanır, hər dəfə saatlarla narahatlıq və işdən yayınma yaradırdı. O, üç aydır belə yaşayırdı, yuxusu pozulmuşdu, iş performansı həqiqətən aşağı düşməyə başlamışdı — öz qorxusu özünü doğrultmağa başlamışdı.</p>
+    </div>
+    <div class="card">
+      <h3>🔍 Nə tapdıq</h3>
+      <p>Altı seans ərzində üzə çıxdı ki, Kamranın əsas inancı — "əgər mükəmməl olmasam, məni rədd edərlər" — uşaqlıqdan gəlirdi, çox tələbkar bir atadan. İş yerindəki hər qeyri-müəyyən siqnal bu köhnə inancı aktivləşdirirdi. Rəhbərin salamlaşmaması onun üçün faktiki olaraq "atanın narazı baxışı" idi, fərqində olmadan.</p>
+    </div>
+    <div class="example"><b>Nəticə:</b> 12 seans sonra Kamran eyni situasiyalarda özünə "bu, sübutla dəstəklənirmi, yoxsa köhnə bir naxışdırmı?" sualını vermə vərdişini qazandı. Narahatlıq tam yox olmadı — heç vaxt vəd etmirəm bunu — amma idarə edilə bilən səviyyəyə düşdü.</div>
+  </section>
+
+  <!-- 11. Case formulation -->
+  <section>
+    <div class="sec-head"><div class="sec-num">11</div><h2>Terapevtik Qiymətləndirmə Forması</h2></div>
+    <p class="lead">Hər klient üçün bu formanı doldururam, adətən ilk 2-3 seans ərzində. Bu, sadəcə kağız işi deyil — müalicə planının özəyidir. Formasız işləmək, xəritəsiz səyahət etmək kimidir.</p>
+    <div class="worksheet">
+      <table>
+        <thead><tr><th>Komponent</th><th>Kamranın nümunəsi</th></tr></thead>
+        <tbody>
+          <tr><td><b>Təqdim olunan problem</b></td><td>Davamlı iş narahatlığı, diqqət çətinliyi</td></tr>
+          <tr><td><b>Presipitasiya edən amillər (nə tetikləyir)</b></td><td>Rəhbərin neytral davranışları, yeni layihələr</td></tr>
+          <tr><td><b>Predispozisiya edən amillər (kök)</b></td><td>Tələbkar valideyn, uşaqlıqda şərtli sevgi təcrübəsi</td></tr>
+          <tr><td><b>Davam etdirən amillər (niyə dayanmır)</b></td><td>Qaçınma davranışı, davamlı təsdiq axtarma</td></tr>
+          <tr><td><b>Qoruyucu amillər (güclü tərəflər)</b></td><td>Yüksək özünüdərketmə, dəstəkləyici ailə, iş etikası</td></tr>
+          <tr><td><b>Əsas koqnitiv inanc</b></td><td>"Əgər mükəmməl olmasam, məni rədd edərlər"</td></tr>
+          <tr><td><b>Müalicə hədəfi</b></td><td>Koqnitiv sorğulama bacarığı, narahatlıq tənzimləməsi</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card"><h3>🎯 Seansda bunu necə tətbiq edirəm?</h3><p>Bu formanı klientlə birlikdə doldururam, arxamda gizli saxlamıram. Kamran öz "predispozisiya" sətrini oxuyanda uzun müddət susdu — bu, çox güclü bir andı.</p></div>
+  </section>
+
+  <!-- 12. Seans protokolu -->
+  <section>
+    <div class="sec-head"><div class="sec-num">12</div><h2>Seans protokolu nümunəsi</h2></div>
+    <p class="lead">Aşağıda Kamranla 4-cü seansın real protokol strukturu var — bu formatı hər seans sonunda qeyd edirəm, həm öz izim üçün, həm supervizor tələbələrimə nümunə kimi göstərmək üçün.</p>
+    <div class="worksheet">
+      <table>
+        <thead><tr><th>Mərhələ</th><th>Vaxt</th><th>Qeyd</th></tr></thead>
+        <tbody>
+          <tr><td>Əhval-ruhiyyə yoxlanışı</td><td>5 dəq</td><td>Narahatlıq: 6/10 (əvvəlki seans 8/10 idi)</td></tr>
+          <tr><td>Ev tapşırığının nəzərdən keçirilməsi</td><td>10 dəq</td><td>Fikirlərin Qeydiyyatı Cədvəli — 4 vəziyyət qeyd edilib, 3-ü dolğun</td></tr>
+          <tr><td>Gündəliyin razılaşdırılması</td><td>3 dəq</td><td>Bu gün: rəhbərlə əlaqəli avtomatik düşüncələr üzərində davam</td></tr>
+          <tr><td>Əsas iş</td><td>25 dəq</td><td>Sokratik sorğulama, "sübut əleyhinə" sütununun dərinləşdirilməsi</td></tr>
+          <tr><td>Yeni ev tapşırığı</td><td>5 dəq</td><td>Bu həftə 2 yeni vəziyyəti eyni formatda qeyd etmək</td></tr>
+          <tr><td>Yekun rəy</td><td>2 dəq</td><td>Klient: "Bu gün ilk dəfə fikrimi sorğulaya bildim, kömək istəmədən"</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 13. Qiymətləndirmə testləri -->
+  <section>
+    <div class="sec-head"><div class="sec-num">13</div><h2>CBT qiymətləndirmə testi və şkalaları</h2></div>
+    <p class="lead">İlk seansdan əvvəl, adətən bir neçə standartlaşdırılmış alət istifadə edirəm — sadəcə "necəsən" sualı kifayət etmir, obyektiv bir başlanğıc nöqtəsi lazımdır.</p>
+    <div class="grid-3">
+      <div class="lens-card"><span class="ico">📊</span><h4>Beck Depression Inventory (BDI-II)</h4><p>Depressiya simptomlarının şiddətini ölçən, ən çox istifadə olunan özünüqiymətləndirmə şkalasıdır.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>Beck Anxiety Inventory (BAI)</h4><p>Narahatlığın fiziki və koqnitiv simptomlarını ayrı-ayrı ölçür.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>Automatic Thoughts Questionnaire (ATQ)</h4><p>Mənfi avtomatik düşüncələrin tezliyini qiymətləndirir.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>Dysfunctional Attitude Scale (DAS)</h4><p>Dərin, funksional olmayan əsas inancları ölçən şkaladır.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>GAD-7</h4><p>Ümumiləşmiş narahatlıq pozuntusunun qısa, sürətli qiymətləndirilməsi üçün.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>PHQ-9</h4><p>Depressiyanın ilkin baxış (screening) alətidir, praktikada çox tez-tez işlədilir.</p></div>
+    </div>
+    <div class="example"><b>Diqqət:</b> Bu şkalalar diaqnoz qoymur, sadəcə şiddəti ölçür və müalicə boyu irəliləyişi izləməyə kömək edir. Mən Kamranla hər 4 seansdan bir BAI-ni təkrarlayıram ki, rəqəmlərlə də irəliləyişi görək — bəzən klient özü hiss etmədiyi irəliləyişi rəqəmdə görür.</div>
+  </section>
+
+  <section>
+    <div class="sec-head"><div class="sec-num">🏠</div><h2>Ev tapşırığı (sizin üçün)</h2></div>
+    <p class="lead">Bu modulu bağlamazdan əvvəl bir şey istəyirəm səndən. Bu gün ya sabah, özünlə bağlı narahat olduğun kiçik bir vəziyyəti tap — böyük travma yox, adi bir gərginlik anı kifayətdir.</p>
+    <div class="card">
+      <p>Fikirlərin Qeydiyyatı Cədvəlini özün üçün doldur. Avtomatik düşüncəni yaz, emosiyanı 0-100 arası qiymətləndir, sonra özünə elə sualı ver ki, Kamrana verdim: "Bu fikrə əsas verən nə idi? Başqa izah ola bilərmi?" Əgər bu məşqi əvvəlcə özün üzərində sınamasan, klientdən tələb etmək çətinləşəcək. Mən bunu hər tələbəmə deyirəm — əvvəl özün, sonra klient.</p>
+    </div>
+  </section>
+
+  
+<section>
+  <div class="sec-head"><div class="sec-num">14</div><h2>Qiymətləndirmə mərhələsində risk skrininqinin yeri</h2></div>
+  <div class="crisis-box">
+    <h4>⚠️ Nə vaxt təcili müdaxilə lazımdır</h4>
+    <p>Bu modul nəzəri əsasları əhatə etsə də, hər CBT proqramının ilk seansında struktur risk skrininqi olmalıdır — bu, sonrakı bütün modullarda təkrarlanan mövzu-spesifik protokolların ümumi çərçivəsidir.</p>
+    <ul>
+      <li>İlk görüşdə klient və ya valideyn tərəfindən özünə/başqasına zərər ifadəsinin dolayı və ya birbaşa səslənməsi;</li>
+      <li>PHQ-9, GAD-7 kimi ilkin qiymətləndirmə alətlərinin 9-cu maddəsi və ya oxşar bənddə müsbət cavab;</li>
+      <li>Ailədə psixiatrik xəstəlik, intihar tarixçəsi və ya cari ciddi ailə böhranı;</li>
+      <li>Klinisistin subyektiv narahatlığı — "bir şey doğru getmir" hissi, hətta konkret ifadə olmasa belə.</li>
+    </ul>
+    <ol class="crisis-steps">
+      <li>Hər yeni klientlə ilk 2 seans ərzində struktur risk skrininqini standart protokol kimi tətbiq edin, mövzudan asılı olmayaraq.</li>
+      <li>Müsbət tapıntı olduqda, terapevtik plana keçmədən əvvəl təhlükəsizlik planını tərtib edin.</li>
+      <li>Nəticələri həmişə yazılı formada, tarix qeyd edərək sənədləşdirin — bu, həm klinik, həm hüquqi baxımdan vacibdir.</li>
+      <li>Şübhə yarandıqda həmkar məsləhətləşməsindən (case consultation) çəkinməyin — tək qərar verməyin.</li>
+    </ol>
+    <p><b>Qeyd:</b> Sonrakı hər modulda təqdim olunan mövzu-spesifik böhran protokolları bu ümumi çərçivəni tamamlayır, əvəz etmir.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="sec-num">15</div><h2>Biblioqrafiya</h2></div>
+  <div class="biblio-box">
+    <h4>📚 Mövzuda istinad olunan əsas mənbələr</h4>
+    <ul class="biblio-list">
+      <li><b>Beck, J. S.</b> (2020). <i>Cognitive Behavior Therapy: Basics and Beyond</i> (3rd ed.). Guilford Press.</li>
+      <li><b>Beck, A. T., & Haigh, E. A. P.</b> (2014). Advances in cognitive theory and therapy: The generic cognitive model. <i>Annual Review of Clinical Psychology, 10</i>, 1–24.</li>
+      <li><b>Kazantzis, N., Dattilio, F. M., & Dobson, K. S.</b> (2017). <i>The Therapeutic Relationship in Cognitive-Behavioral Therapy.</i> Guilford Press.</li>
+      <li><b>Posner, K., et al.</b> (2011). The Columbia-Suicide Severity Rating Scale. <i>American Journal of Psychiatry, 168</i>(12), 1266–1277.</li>
+      <li><b>Kroenke, K., Spitzer, R. L., & Williams, J. B.</b> (2001). The PHQ-9. <i>Journal of General Internal Medicine, 16</i>(9), 606–613.</li>
+      <li><b>American Psychiatric Association.</b> (2022). <i>Diagnostic and Statistical Manual of Mental Disorders</i> (5th ed., text rev.).</li>
+    </ul>
+  </div>
+</section>
+
+<div class="quote">
+    "İnsanları narahat edən hadisələr deyil, onlar haqqında sahib olduqları fikirlərdir."
+    <span>— Epiktet, Stoik filosof (CBT-nin fəlsəfi köklərindən biri)</span>
+  </div>
+
+  <div class="summary-box">
+    <h3>📌 Modulun xülasəsi</h3>
+    <ul>
+      <li>CBT düşüncə – emosiya – davranış üçbucağına əsaslanır, üçü də bir-birinə bağlıdır.</li>
+      <li>Ellisin ABC modeli göstərir ki, hadisə yox, inanc emosional nəticəni müəyyən edir.</li>
+      <li>Koqnitiv struktur üç qatdan ibarətdir: avtomatik düşüncələr, aralıq inanclar, əsas inanclar (sxemlər).</li>
+      <li>Koqnitiv təhriflər — düşüncədəki sistematik xətalar — həm sənin, həm klientin özündə tanınmalıdır.</li>
+      <li>CBT strukturlaşdırılmış, məqsədyönlü, əməkdaşlığa əsaslanan və zamanla məhdud bir yanaşmadır — bunu unutma.</li>
+    </ul>
+  </div>
+
+  <div class="nav-bottom">
+    <a class="nav-btn home" href="index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+      Menyuya qayıt
+    </a>
+    <a class="nav-btn next" href="02-ptsd.html">
+      Növbəti modul: PTSD və CBT
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+
+</main>
+
+<footer>
+  <p>© 2026 Koqnitiv Davranış Terapiyası Kursu · Modul 1/20</p>
+  <p style="margin-top:8px;">By <a href="https://aze-ai.az" target="_blank" rel="noopener">securtiy_group</a></p>
+  <p style="margin-top:10px;font-size:.82rem;"><a href="privacy.html">Məxfilik Siyasəti</a> · <a href="terms.html">İstifadə Şərtləri</a></p>
+</footer>
+
+<script>
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target);} });
+},{threshold:0.1});
+document.querySelectorAll('section').forEach(s=>io.observe(s));
+
+window.addEventListener('mousemove', e=>{
+  const mx = (e.clientX/window.innerWidth - 0.5);
+  const my = (e.clientY/window.innerHeight - 0.5);
+  document.querySelectorAll('.blob').forEach((b,i)=>{
+    const speed = (i+1)*18;
+    b.style.transform = `translate(${mx*speed}px, ${my*speed}px)`;
+  });
+});
+</script>
+<script src="protect.js" defer></script>
+<script src="engine.js"></script>
+
+<div class="modal-overlay" id="programModalOverlay" onclick="if(event.target===this)closeProgram()">
+  <div class="modal-box">
+    <div class="modal-close" onclick="closeProgram()">✕</div>
+    <div id="programModalContent"></div>
+  </div>
+</div>
+
+
+
+</body>
+</html>

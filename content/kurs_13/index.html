@@ -1,0 +1,363 @@
+﻿<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#d9a85a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Uşaq və Yeniyetmə Terapiya Proqramları Kursu</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1:#0c211f;
+    --bg-2:#1d423d;
+    --surface: rgba(217,168,90,0.055);
+    --surface-h: rgba(217,168,90,0.10);
+    --border: rgba(217,168,90,0.14);
+    --border-h: rgba(217,168,90,0.45);
+    --teal:#7ba098;
+    --teal-soft: rgba(123,160,152,0.18);
+    --violet:#8a6a3a;
+    --violet-soft: rgba(138,106,58,0.20);
+    --amber:#d9a85a;
+    --amber-soft: rgba(217,168,90,0.18);
+    --rose:#d9705a;
+    --text-1:#f3eee1;
+    --text-2:#c9c2ae;
+    --text-3:#8a9a93;
+    --cream-pill-bg: rgba(217,168,90,0.18);
+    --cream-pill-text: var(--teal);
+    --font-d:'Fraunces', Georgia, serif;
+    --font-b:'Inter', system-ui, sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{-webkit-user-select:none;-moz-user-select:none;user-select:none;}
+  body{
+    font-family:var(--font-b);
+    background:
+      radial-gradient(1200px 800px at 15% -10%, rgba(180,83,9,0.24), transparent 60%),
+      radial-gradient(1000px 700px at 110% 10%, rgba(234,179,8,0.18), transparent 55%),
+      radial-gradient(900px 700px at 50% 120%, rgba(245,158,11,0.14), transparent 55%),
+      linear-gradient(180deg, var(--bg-1), var(--bg-2));
+    color:var(--text-1);
+    min-height:100vh;
+    overflow-x:hidden;
+    position:relative;
+  }
+  .blob{position:fixed;border-radius:50%;filter:blur(70px);opacity:.5;pointer-events:none;z-index:0;will-change:transform;}
+  .blob-1{width:420px;height:420px;background:var(--violet-soft);top:-120px;left:-100px;}
+  .blob-2{width:380px;height:380px;background:var(--teal-soft);top:30%;right:-140px;}
+  .blob-3{width:340px;height:340px;background:var(--amber-soft);bottom:-100px;left:20%;}
+
+  header{position:relative;z-index:2;text-align:center;padding:70px 24px 50px;}
+  .brand-logo-wrap{display:flex; flex-direction:column; align-items:center; gap:12px; margin-bottom:28px; animation:fadeDown .8s ease both;}
+  .brand-logo-wrap img{width:64px; height:64px; border-radius:18px; object-fit:cover; box-shadow:0 10px 30px -8px rgba(234,179,8,0.45); border:1px solid rgba(255,214,150,0.18);}
+  .brand-logo-wrap .brand-text{font-family:var(--font-d); font-weight:700; font-size:1.02rem; color:var(--text-1); letter-spacing:.01em; line-height:1.3;}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);background:var(--teal-soft);border:1px solid rgba(234,179,8,0.35);padding:7px 16px;border-radius:999px;margin-bottom:26px;animation:fadeDown .8s ease both;}
+  .eyebrow::before{content:"◆";font-size:.6rem;}
+  h1{font-family:var(--font-d);font-weight:800;font-size:clamp(2.1rem, 5vw, 3.6rem);line-height:1.15;background:linear-gradient(90deg,#fff8ec, #f0dcb8 40%, var(--teal) 75%, var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent;animation:fadeUp .9s ease both .1s;}
+  h1 .kurs-word{display:inline-block;letter-spacing:.08em;font-size:1.08em;margin-top:6px;}
+  header p.sub{max-width:640px;margin:22px auto 0;color:var(--text-2);font-size:1.05rem;line-height:1.7;animation:fadeUp .9s ease both .25s;}
+  .stats{display:flex;justify-content:center;gap:40px;margin-top:42px;flex-wrap:wrap;animation:fadeUp .9s ease both .4s;}
+  .stat b{display:block;font-family:var(--font-d);font-size:1.9rem;background:linear-gradient(90deg,var(--teal),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .stat span{color:var(--text-3);font-size:.82rem;letter-spacing:.03em;}
+
+  main{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:20px 24px 100px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(270px, 1fr));gap:20px;}
+  .card{position:relative;display:flex;flex-direction:column;gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:24px 22px;text-decoration:none;color:var(--text-1);backdrop-filter:blur(14px);overflow:hidden;opacity:0;transform:translateY(28px);transition: transform .45s cubic-bezier(.2,.8,.2,1), border-color .35s, background .35s, box-shadow .35s;}
+  .card.show{animation:cardIn .7s cubic-bezier(.2,.8,.2,1) forwards;}
+  .card::before{content:"";position:absolute; inset:0;background:radial-gradient(220px 140px at var(--mx,50%) var(--my,0%), rgba(255,231,190,0.10), transparent 60%);opacity:0;transition:opacity .35s;pointer-events:none;}
+  .card:hover::before{opacity:1;}
+  .card:hover{transform:translateY(-6px);border-color:var(--border-h);background:var(--surface-h);box-shadow:0 20px 45px -20px rgba(234,179,8,0.35);}
+  .card .num{font-family:var(--font-d);font-size:.85rem;color:var(--text-3);letter-spacing:.08em;}
+  .card .ico{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;background:linear-gradient(135deg, var(--teal-soft), var(--violet-soft));border:1px solid var(--border);}
+  .card h3{font-size:1.06rem;font-weight:700;line-height:1.4;color:var(--text-1);}
+  .card .desc{font-size:.85rem;color:var(--text-2);line-height:1.55;flex:1;}
+  .card .go{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;font-weight:600;color:var(--teal);margin-top:4px;}
+  .card .go svg{transition:transform .3s;}
+  .card:hover .go svg{transform:translateX(4px);}
+  .badge-soon{position:absolute;top:14px;right:14px;font-size:.66rem;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);background:rgba(255,231,190,0.06);border:1px solid var(--border);padding:4px 9px;border-radius:999px;}
+  .card.locked{opacity:.55; pointer-events:none;}
+  .card.locked .ico{filter:grayscale(1);}
+
+  footer{position:relative;z-index:2;text-align:center;padding:50px 24px 60px;border-top:1px solid var(--border);color:var(--text-3);font-size:.9rem;}
+  footer a{color:var(--teal);text-decoration:none;font-weight:600;}
+  footer a:hover{text-decoration:underline;}
+  footer .ig{display:inline-flex;align-items:center;gap:6px;margin-left:6px;}
+
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-16px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes cardIn{to{opacity:1;transform:translateY(0);}}
+
+  @media (max-width:560px){
+    .stats{gap:26px;}
+    header{padding:64px 18px 34px;}
+  }
+
+  .lang-switch{position:fixed; top:16px; right:16px; z-index:50; display:flex; gap:6px; background:rgba(18,48,44,0.7); border:1px solid var(--border); border-radius:999px; padding:5px; backdrop-filter:blur(10px);}
+  .lang-switch a{padding:5px 11px; border-radius:999px; font-size:.72rem; font-weight:700; letter-spacing:.03em; text-decoration:none; color:var(--text-3);}
+  .lang-switch a.active{background:var(--amber); color:#2a1d09;}
+
+  .hero-illust{
+    position:relative;
+    width:min(440px, 82vw);
+    height:230px;
+    margin:34px auto 8px;
+    animation:fadeUp 1s ease both .32s;
+  }
+  .hero-illust svg{position:absolute; inset:0; width:100%; height:100%; overflow:visible;}
+  .hero-illust .layer{will-change:transform; transition:transform .1s linear;}
+
+</style>
+</head>
+<body>
+
+  <div class="lang-switch">
+    <a href="#" class="active">AZ</a>
+    <a href="en/index.html">EN</a>
+    <a href="ru/index.html">RU</a>
+    <a href="tr/index.html">TR</a>
+  </div>
+
+  <div class="blob blob-1" data-speed="0.04"></div>
+  <div class="blob blob-2" data-speed="0.07"></div>
+  <div class="blob blob-3" data-speed="0.05"></div>
+
+  <header>
+    <div class="brand-logo-wrap">
+      <img src="logo.png" alt="AN Psixoloji Dəstək və Reabilitasiya Mərkəzi loqosu">
+      <span class="brand-text">AN Psixoloji Dəstək və Reabilitasiya Mərkəzi</span>
+    </div>
+    <span class="eyebrow">Peşəkar İnkişaf Proqramı</span>
+    <h1>Uşaq və Yeniyetmə Terapiya<br><span class="kurs-word">PROQRAMLARI</span></h1>
+    <p class="sub">Aqressivlikdən kəkələməyə, oyun terapiyasından qrup modelinə qədər — klinik əsaslı, seans-seans strukturlaşdırılmış 13 tam terapiya proqramı.</p>
+
+    <div class="hero-illust" aria-hidden="true">
+      <svg viewBox="0 0 440 230" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="heroGradK13" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#eab308"/>
+            <stop offset="100%" stop-color="#7ba098"/>
+          </linearGradient>
+        </defs>
+        <g class="layer" data-speed="5" data-scroll-y="0.012">
+          <path d="M110 208 C110 150 150 150 168 168 L168 208 Z" fill="none" stroke="url(#heroGradK13)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+          <path d="M226 208 C226 150 186 150 168 168 L168 208 Z" fill="none" stroke="url(#heroGradK13)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+          <path d="M120 168 L158 168 M120 182 L158 182 M120 196 L158 196" stroke="var(--text-3)" stroke-width="1.1" opacity="0.55"/>
+          <path d="M178 168 L216 168 M178 182 L216 182 M178 196 L216 196" stroke="var(--text-3)" stroke-width="1.1" opacity="0.55"/>
+        </g>
+        <g class="layer" data-speed="12" data-scroll-y="0.024">
+          <rect x="268" y="140" width="46" height="46" rx="7" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.8" transform="rotate(-6 291 163)"/>
+          <rect x="316" y="112" width="42" height="42" rx="7" fill="var(--amber-soft)" stroke="var(--amber)" stroke-width="1.8" transform="rotate(5 337 133)"/>
+          <rect x="290" y="78" width="38" height="38" rx="7" fill="var(--violet-soft)" stroke="var(--violet)" stroke-width="1.8" transform="rotate(-4 309 97)"/>
+        </g>
+        <g class="layer" data-speed="20" data-scroll-y="0.04">
+          <path d="M70 90 L74 100 L84 102 L74 104 L70 114 L66 104 L56 102 L66 100 Z" fill="var(--amber)" opacity="0.9"/>
+          <path d="M370 70 L373 78 L381 80 L373 82 L370 90 L367 82 L359 80 L367 78 Z" fill="var(--teal)" opacity="0.85"/>
+          <circle cx="240" cy="55" r="3.4" fill="var(--violet)" opacity="0.8"/>
+          <circle cx="60" cy="150" r="2.6" fill="var(--teal)" opacity="0.75"/>
+          <circle cx="400" cy="150" r="2.6" fill="var(--amber)" opacity="0.75"/>
+        </g>
+      </svg>
+    </div>
+
+    
+    <div class="stats">
+      <div class="stat"><b>13</b><span>PROQRAM</span></div>
+      <div class="stat"><b>150+</b><span>SEANS</span></div>
+      <div class="stat"><b>5</b><span>MÜTƏXƏSSİS BAXIŞI</span></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="grid" id="grid"></div>
+  </main>
+
+  <footer>
+    <p>© 2026 Uşaq və Yeniyetmə Terapiya Proqramları Kursu — Bütün hüquqlar qorunur</p>
+    <p style="margin-top:8px;">By <a href="https://aze-ai.az" target="_blank" rel="noopener">securtiy_group</a>
+      </p>
+    <p style="margin-top:10px;font-size:.82rem;"><a href="privacy.html">Məxfilik Siyasəti</a> · <a href="terms.html">İstifadə Şərtləri</a></p>
+</footer>
+
+<script>
+const lessons = [
+  {
+    "n": "01",
+    "icon": "🔥",
+    "title": "Aqressiv Uşaqlar və Yeniyetmələrlə İş Proqramı",
+    "desc": "Aggression Replacement Training modelinə əsaslanan 16 seanslıq proqram uşağın qəzəbini tanımaqdan başlayır: tetikləyicilər xəritələnir, bədən siqnalları 'qəzəb termometri' ilə oxunur, 'Dayan-Düşün-Hərəkət et' texnikası, dərin nəfəs və özünə təlimat bacarıqları addım-addım öyrədilir. Perspektiv alma, sosial bacarıqlar və moral mühakimə seansları, ailə iştirakı və məktəbə keçid mərhələsi ilə tamamlanır, nəticə obyektiv şkala ilə ölçülür.",
+    "href": "01-aqressiv-usaqlarla-is.html",
+    "active": true
+  },
+  {
+    "n": "02",
+    "icon": "🗣️",
+    "title": "Kəkələmə Proqramı",
+    "desc": "Nitq axıcılığı pozuntusunun həm əsas (blok, təkrar, uzatma), həm ikincili davranışlarını (qaçınma, utanc) əhatə edən 45 seanslıq, kursun ən geniş proqramı. Diafraqmal nəfəs, yumşaq başlanğıc, yavaşladılmış nitq və yüngül artikulyator təmas kimi loqopedik texnikalar tədricən söz-cümlə-monoloq-real söhbət səviyyəsinə köçürülür, paralel olaraq uşağın özünəinamı və valideyn dəstəyi işlənir.",
+    "href": "02-kekeleme-proqrami.html",
+    "active": true
+  },
+  {
+    "n": "03",
+    "icon": "🌟",
+    "title": "Kids'Skills Proqramı",
+    "desc": "Ben Furman-ın 15 addımlı Kids'Skills metodu çətinliyi 'problem' kimi deyil, öyrənilə bilən bacarıq kimi çərçivələyir. Uşaq özü bacarığa ad qoyur, dəstəkçi personaj seçir, əvvəlki uğurlarını xatırlayır, köməkçilərini rəsmiləşdirir, bacarığı rol-oyunla məşq edir və nəhayət öyrəndiyini başqa uşağa ötürür — Həll-Yönümlü yanaşmanın tam oyunlaşdırılmış forması.",
+    "href": "03-kids-skills.html",
+    "active": true
+  },
+  {
+    "n": "04",
+    "icon": "🧭",
+    "title": "Uşaq və Yeniyetmələr üçün Həllə Yönəlmiş Qısamüddətli Terapiya",
+    "desc": "de Shazer və Insoo Kim Berg-in Həll-Yönümlü Qısamüddətli Terapiya modeli 8 seansda problemin təhlilinə deyil, arzu olunan gələcəyə fokuslanır. Möcüzə Sualı, İstisna Axtarma, Şkala Sualları, güclü tərəflərin aşkarlanması və kiçik addımların planlaşdırılması ilə uşaq öz daxili resurslarını kəşf edir, irəliləyişini özü qeyd edir və yekunda uğurunu bayram edir.",
+    "href": "04-cozum-odakli-terapiya.html",
+    "active": true
+  },
+  {
+    "n": "05",
+    "icon": "🎓",
+    "title": "Yeniyetmə Psixologiyası — Özgüvən, Özünəqapanma, İmtahan Stresi və Sosiallaşma",
+    "desc": "Erikson-un 'İdentitet və Rol Çaşqınlığı' mərhələsinə söykənən 12 seanslıq proqram. Özgüvən (özünü tanıma, mənfi öz-danışığın dəyişdirilməsi, uğur təcrübələrinin möhkəmləndirilməsi), özünəqapanma və sosial qıcıqlanma, imtahan stresi və sosiallaşma çətinlikləri ayrı alt-modullarda addım-addım işlənir ki, yeniyetmə öz kimliyini daha rahat, daha inamlı tapa bilsin.",
+    "href": "05-yeniyetme-psixologiyasi.html",
+    "active": true
+  },
+  {
+    "n": "06",
+    "icon": "👨‍👩‍👧‍👦",
+    "title": "Yeniyetmə və Ailə Münasibətləri",
+    "desc": "Bowen-in Ailə Sistemləri Nəzəriyyəsi əsasında qurulmuş 8 seanslıq proqram tanışlıq və ailə dinamikasının qiymətləndirilməsindən başlayır, muxtariyyət-bağlılıq balansına, effektiv kommunikasiyaya, sərhəd və qaydalara, konflikt həllinə keçir və etibarın bərpası ilə tamamlanır. Valideyn-yeniyetmə münaqişəsinin arxasındakı kommunikasiya nümunələri üzə çıxarılır, qarşılıqlı hörmət bərpa edilir.",
+    "href": "06-yeniyetme-aile-munasibetleri.html",
+    "active": true
+  },
+  {
+    "n": "07",
+    "icon": "📖",
+    "title": "Oyun və Nağıl Terapiyası",
+    "desc": "Bettelheim və Gilligan-ın nağıl terapiyası ənənəsinə söykənən 8 seans nağıl seçimindən başlayır, metafora vasitəsilə emosional ifadəyə, personajlarla özünütanımaya, qorxuların nağıl üzərindən emalına və problem-həlli nağıllarına keçir, sonda uşaq öz nağılını özü yaradır. Uşaq öz təcrübəsini birbaşa deyil, təhlükəsiz məsafədən ifadə edir — xüsusilə utancaq uşaqlar üçün faydalıdır.",
+    "href": "07-oyun-nagil-terapiyasi.html",
+    "active": true
+  },
+  {
+    "n": "08",
+    "icon": "🧩",
+    "title": "Koqnitiv Oyun Terapiyası",
+    "desc": "Knell-in Koqnitiv-Davranış Oyun Terapiyası modeli klassik KDT prinsiplərini — düşüncə-hiss-davranış üçbucağını — kiçik yaşlı uşağın anlaya biləcəyi oyun dilinə çevirir. 8 seansda kuklalar vasitəsilə avtomatik düşüncələr tanınır, 'detektiv oyunu' ilə balanslaşdırılır, kiçik davranış təcrübələri aparılır və 'Super Güc Sözləri' kartları ilə özünə təlimat bacarığı formalaşdırılır.",
+    "href": "08-koqnitiv-oyun-terapiyasi.html",
+    "active": true
+  },
+  {
+    "n": "09",
+    "icon": "🤝",
+    "title": "Filial Oyun Terapiyası",
+    "desc": "Guerney cütlüyünün Filial Terapiya modeli fərqli bir yol tutur: terapevt uşaqla deyil, valideynlə işləyir və onu 'birincil dəyişiklik agenti'nə çevirir. 8 seansda valideyn izləmə, təsviri şərh, empatik cavab vermə və sərhəd qoyma bacarıqlarını öyrənir, əvvəlcə nəzarətli seansda, sonra evdə müstəqil oyun seansları ilə tətbiq edir.",
+    "href": "09-filial-oyun-terapiyasi.html",
+    "active": true
+  },
+  {
+    "n": "10",
+    "icon": "🧸",
+    "title": "Uşaq Mərkəzli Oyun Terapiyası",
+    "desc": "Virginia Axline-ın klassik modeli uşağın öz-özünü sağaltma qabiliyyətinə dərin inanca əsaslanır. 8 seans boyu qəbuledici münasibət, sərbəstlik hissi, hisslərin əks etdirilməsi və uşağın öz qərarlarına, öz templə inkişafına hörmət mərkəzi yerdədir — qeyri-direktiv mühitdə uşağa öz yolu ilə irəliləmək imkanı yaradılır, terapevt sadəcə izləyir və müşayiət edir.",
+    "href": "10-usaq-merkezli-oyun-terapiyasi.html",
+    "active": true
+  },
+  {
+    "n": "11",
+    "icon": "🔷",
+    "title": "Autizmli Uşaqlarla Oyun Terapiyası",
+    "desc": "Greenspan və Wieder-in DIR/Floortime modeli 'uşağın ardınca getmək' prinsipinə əsaslanır. 8 seansda sensor-motor profilinin qiymətləndirilməsindən başlanır, terapevt uşağın inisiativini izləyir, ortaq diqqət və simvolik oyun inkişaf etdirilir, sosial hekayələr və növbə alma məşqləri ilə autizm spektrində olan uşağın funksional emosional inkişafına əlaqə-mərkəzli müdaxilə aparılır.",
+    "href": "11-autizmli-usaqlarla-oyun-terapiyasi.html",
+    "active": true
+  },
+  {
+    "n": "12",
+    "icon": "🃏",
+    "title": "Metafor Assosiativ Kartlar — Diaqnostik və Koreksiya Proqramı (MAK)",
+    "desc": "1975-ci ildən istifadə olunan Metafor Assosiativ Kartlar (MAK), Rorschach kimi layihəli testlərin müasir və çevik davamçısıdır. 8 seansda giriş və ilkin diaqnostikadan başlayaraq emosional vəziyyət, ailə münasibətləri və çətinliklər kartlar üzərindən araşdırılır, sonda resurs kartları ilə koreksiya aparılır — klient öz daxili dünyasını sözlə çətinlik çəksə belə, kart vasitəsilə ifadə edir.",
+    "href": "12-mak-kartlari.html",
+    "active": true
+  },
+  {
+    "n": "13",
+    "icon": "👥",
+    "title": "Uşaq və Yeniyetmələr üçün Qrup Terapiyası Proqramı",
+    "desc": "Irvin Yalom-un qrup psixoterapiya nəzəriyyəsinə əsaslanan 8 seans qrup qaydalarının formalaşdırılmasından başlayır, etibar qurma fəaliyyətləri, emosional ifadə, aktiv dinləmə və konflikt həlli qrup kontekstində işlənir, əməkdaşlıq fəaliyyətləri ilə davam edir. Universallıq və aidiyyət hissi vasitəsilə yeniyetmələr həm öz problemlərinin tək olmadığını görür, həm yeni sosial bacarıqlar qazanır.",
+    "href": "13-qrup-terapiyasi.html",
+    "active": true
+  }
+];
+
+const grid = document.getElementById('grid');
+lessons.forEach((l,i)=>{
+  const el = document.createElement(l.active ? 'a' : 'div');
+  el.className = 'card' + (l.active ? '' : ' locked');
+  if(l.active) el.href = l.href;
+  el.style.animationDelay = (i*0.045)+'s';
+  el.innerHTML = `
+    ${!l.active ? '<span class="badge-soon">Tezliklə</span>' : ''}
+    <span class="num">MÖVZU ${l.n}</span>
+    <div class="ico">${l.icon}</div>
+    <h3>${l.title}</h3>
+    <p class="desc">${l.desc}</p>
+    ${l.active ? `<span class="go">Mövzunu aç
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </span>` : ''}
+  `;
+  grid.appendChild(el);
+
+  el.addEventListener('mousemove', e=>{
+    const r = el.getBoundingClientRect();
+    el.style.setProperty('--mx', ((e.clientX-r.left)/r.width*100)+'%');
+    el.style.setProperty('--my', ((e.clientY-r.top)/r.height*100)+'%');
+  });
+});
+
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target);} });
+},{threshold:0.12});
+document.querySelectorAll('.card').forEach(c=>io.observe(c));
+
+let mx=0,my=0;
+window.addEventListener('mousemove', e=>{
+  mx = (e.clientX/window.innerWidth - 0.5);
+  my = (e.clientY/window.innerHeight - 0.5);
+  document.querySelectorAll('.blob').forEach(b=>{
+    const speed = parseFloat(b.dataset.speed)*100;
+    b.style.transform = `translate(${mx*speed}px, ${my*speed}px)`;
+  });
+});
+window.addEventListener('scroll', ()=>{
+  const y = window.scrollY;
+  document.querySelectorAll('.blob').forEach((b,i)=>{
+    b.style.transform += ` translateY(${y*0.05*(i+1)}px)`;
+  });
+});
+
+// Hero illustration parallax (layered, subtler than background blobs)
+const heroLayers = document.querySelectorAll('.hero-illust .layer');
+window.addEventListener('mousemove', e=>{
+  const hmx = (e.clientX/window.innerWidth - 0.5);
+  const hmy = (e.clientY/window.innerHeight - 0.5);
+  heroLayers.forEach(l=>{
+    const s = parseFloat(l.dataset.speed);
+    const sy = (parseFloat(l.dataset.scrollY)||0) * (window.scrollY||0);
+    l.style.transform = `translate(${hmx*s}px, ${hmy*s + sy}px)`;
+  });
+});
+window.addEventListener('scroll', ()=>{
+  const y = window.scrollY;
+  heroLayers.forEach(l=>{
+    const sy = parseFloat(l.dataset.scrollY)||0;
+    l.style.transform += ` translateY(${y*sy}px)`;
+  });
+}, {passive:true});
+
+</script>
+<script src="protect.js" defer></script>
+<script type="module" src="https://samir210-az.github.io/menyu/analytics.js"></script>
+</body>
+</html>

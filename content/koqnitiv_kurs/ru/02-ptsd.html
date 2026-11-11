@@ -1,0 +1,3414 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#d9a85a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Модуль 2 · Посттравматический стресс и КПТ</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1:#0c211f; --bg-2:#1d423d;
+    --surface: rgba(217,168,90,0.055);
+    --surface-h: rgba(217,168,90,0.10);
+    --border: rgba(217,168,90,0.14);
+    --teal:#7ba098; --teal-soft: rgba(123,160,152,0.18);
+    --violet:#8a6a3a; --violet-soft: rgba(138,106,58,0.20);
+    --amber:#d9a85a; --amber-soft: rgba(217,168,90,0.18);
+    --rose:#d9705a; --rose-soft: rgba(217,112,90,0.16);
+    --sky:#f0cd8e; --sky-soft:rgba(240,205,142,0.18);
+    --text-1:#f3eee1; --text-2:#c9c2ae; --text-3:#8a9a93;
+    --font-d:'Fraunces', serif;
+    --font-b:'Inter', system-ui, sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{-webkit-user-select:none;-moz-user-select:none;user-select:none;}
+  body{
+    font-family:var(--font-b);
+    background:
+      radial-gradient(1100px 750px at 12% -10%, rgba(139,92,246,0.18), transparent 60%),
+      radial-gradient(1000px 700px at 110% 15%, rgba(45,212,191,0.14), transparent 55%),
+      linear-gradient(180deg, var(--bg-1), var(--bg-2));
+    color:var(--text-1);
+    min-height:100vh;
+    line-height:1.65;
+  }
+  .blob{position:fixed;border-radius:50%;filter:blur(80px);opacity:.45;pointer-events:none;z-index:0;}
+  .blob-1{width:400px;height:400px;background:var(--violet-soft);top:-100px;left:-120px;}
+  .blob-2{width:360px;height:360px;background:var(--teal-soft);top:40%;right:-140px;}
+  .blob-3{width:320px;height:320px;background:var(--rose-soft);bottom:-80px;left:30%;}
+
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px;
+    background:rgba(11,18,36,0.75);
+    backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--border);
+  }
+  .topbar-brand{display:flex; align-items:center; gap:10px; text-decoration:none; flex-shrink:0;}
+  .topbar-brand img{width:34px; height:34px; border-radius:9px; object-fit:cover; border:1px solid rgba(255,255,255,0.15);}
+  .topbar-brand .tb-name{font-family:var(--font-d); font-weight:700; font-size:.78rem; color:var(--text-1); line-height:1.2; max-width:150px;}
+  .topbar-right{display:flex; align-items:center; gap:14px; flex-shrink:0;}
+  @media(max-width:640px){ .topbar-brand .tb-name{display:none;} .topbar a.back span{display:none;} }
+  .topbar a.back{
+    display:inline-flex; align-items:center; gap:8px;
+    color:var(--text-2); text-decoration:none; font-size:.9rem; font-weight:600;
+    transition:color .2s;
+  }
+  .topbar a.back:hover{color:var(--teal);}
+  .progress-pill{
+    font-size:.78rem; color:var(--text-3);
+    border:1px solid var(--border); padding:6px 14px; border-radius:999px;
+    background:var(--surface);
+  }
+
+  main{position:relative; z-index:2; max-width:880px; margin:0 auto; padding:0 24px 100px;}
+
+  .hero{padding:64px 0 40px; text-align:center;}
+  .hero-illus{display:flex; justify-content:center; margin-bottom:28px;}
+  .hero-illus svg{max-width:100%; height:auto;}
+  .tag{
+    display:inline-block; font-size:.76rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--rose); background:var(--rose-soft); border:1px solid rgba(251,113,133,.35);
+    padding:6px 16px; border-radius:999px; margin-bottom:22px;
+    animation:fadeDown .7s ease both;
+  }
+  h1{
+    font-family:var(--font-d); font-weight:800; font-size:clamp(1.9rem,4.6vw,3rem); line-height:1.2;
+    background:linear-gradient(90deg,#fff,#cdd8ff 45%, var(--rose));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:fadeUp .8s ease both .1s;
+  }
+  .hero p{color:var(--text-2); max-width:620px; margin:20px auto 0; animation:fadeUp .8s ease both .2s;}
+
+  section{margin-top:64px; animation:fadeUp .8s ease both; opacity:0;}
+  section.show{opacity:1;}
+  .sec-head{display:flex; align-items:center; gap:14px; margin-bottom:24px;}
+  .sec-num{
+    font-family:var(--font-d); font-size:1.4rem; font-weight:800; color:var(--bg-1);
+    background:linear-gradient(135deg,var(--rose),var(--violet));
+    width:44px;height:44px; border-radius:13px; display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  h2{font-family:var(--font-d); font-size:clamp(1.35rem,3vw,1.7rem); font-weight:700;}
+  .lead{color:var(--text-2); margin-bottom:22px;}
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:18px;
+    padding:24px 26px; margin-bottom:18px; backdrop-filter:blur(10px);
+  }
+  .card h3{font-size:1.05rem; margin-bottom:10px; color:var(--text-1); display:flex; align-items:center; gap:10px;}
+  .card p{color:var(--text-2); font-size:.95rem;}
+  .card p + p{margin-top:10px;}
+
+  .simple-box{
+    border-left:3px solid var(--sky);
+    background:var(--sky-soft);
+    border-radius:0 14px 14px 0;
+    padding:18px 22px;
+    margin:18px 0;
+    font-size:.94rem;
+  }
+  .simple-box b{color:var(--sky);}
+  .sci-box{
+    border-left:3px solid var(--violet);
+    background:var(--violet-soft);
+    border-radius:0 14px 14px 0;
+    padding:18px 22px;
+    margin:18px 0;
+    font-size:.94rem;
+  }
+  .sci-box b{color:var(--violet);}
+
+  .example{
+    border-left:3px solid var(--amber);
+    background:var(--amber-soft);
+    border-radius:0 14px 14px 0;
+    padding:16px 20px;
+    margin:16px 0;
+    font-size:.92rem;
+  }
+  .example b{color:var(--amber);}
+
+  .dialog{
+    background:rgba(255,255,255,.03);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:20px 22px;
+    margin:18px 0;
+    font-size:.92rem;
+  }
+  .dialog .line{display:flex; gap:12px; margin-bottom:14px;}
+  .dialog .line:last-child{margin-bottom:0;}
+  .dialog .who{flex-shrink:0; width:78px; font-weight:700; font-size:.8rem; padding-top:2px;}
+  .dialog .who.t{color:var(--teal);}
+  .dialog .who.k{color:var(--rose);}
+  .dialog .txt{color:var(--text-2);}
+
+  /* Symptom groups grid */
+  .symptom-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:16px; margin:26px 0;}
+  .symptom-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:20px 22px;
+    transition:transform .3s, border-color .3s;
+  }
+  .symptom-card:hover{transform:translateY(-4px); border-color:rgba(251,113,133,.4);}
+  .symptom-card .ico{font-size:1.6rem; margin-bottom:10px; display:block;}
+  .symptom-card h4{font-size:.98rem; margin-bottom:8px;}
+  .symptom-card p{font-size:.85rem; color:var(--text-2);}
+  .symptom-card .ex-line{font-size:.8rem; color:var(--text-3); font-style:italic; margin-top:8px;}
+
+  /* Age comparison */
+  .age-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; margin:26px 0;}
+  .age-card{border-radius:18px; padding:20px; border:1px solid var(--border);}
+  .age-card.child{background:var(--teal-soft);}
+  .age-card.teen{background:var(--violet-soft);}
+  .age-card.adult{background:var(--amber-soft);}
+  .age-card h4{font-size:1rem; margin-bottom:10px;}
+  .age-card ul{padding-left:18px; font-size:.85rem; color:var(--text-2);}
+  .age-card li{margin-bottom:6px;}
+
+  /* PRACTICE model */
+  .practice-list{margin:26px 0;}
+  .practice-item{
+    display:flex; gap:16px; padding:16px 0; border-bottom:1px solid var(--border); align-items:flex-start;
+  }
+  .practice-item:last-child{border-bottom:none;}
+  .practice-letter{
+    flex-shrink:0; width:40px;height:40px; border-radius:11px;
+    background:linear-gradient(135deg,var(--rose),var(--violet));
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-d); font-weight:800; color:#0c211f; font-size:1.1rem;
+  }
+  .practice-item h4{font-size:.96rem; margin-bottom:4px;}
+  .practice-item p{font-size:.86rem; color:var(--text-2);}
+
+  /* Session plan timeline */
+  .session-plan{margin:26px 0;}
+  .sess-row{
+    display:grid; grid-template-columns:56px 1fr auto; gap:14px; align-items:center;
+    padding:15px 12px; border-bottom:1px solid var(--border);
+    cursor:pointer; border-radius:14px; transition:background .25s, transform .25s;
+  }
+  .sess-row:hover{background:var(--surface); transform:translateX(4px);}
+  .sess-row:last-child{border-bottom:none;}
+  .sess-num{
+    font-family:var(--font-d); font-weight:800; color:var(--rose); font-size:1rem;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--rose-soft); border-radius:12px; height:40px;
+  }
+  .sess-txt h4{font-size:.94rem; margin-bottom:3px;}
+  .sess-txt p{font-size:.83rem; color:var(--text-2);}
+  .sess-open{font-size:.76rem; color:var(--rose); font-weight:700; white-space:nowrap; display:flex; align-items:center; gap:5px;}
+
+  /* Session modal */
+  .modal-overlay{position:fixed; inset:0; z-index:200; background:rgba(6,9,20,0.72); backdrop-filter:blur(6px); display:flex; align-items:flex-end; justify-content:center; opacity:0; visibility:hidden; transition:opacity .3s;}
+  .modal-overlay.active{opacity:1; visibility:visible;}
+  @media(min-width:720px){ .modal-overlay{align-items:center;} }
+  .modal-box{width:100%; max-width:680px; max-height:88vh; overflow-y:auto; background:linear-gradient(180deg, #1d423d, #0c211f); border:1px solid var(--border); border-radius:26px 26px 0 0; padding:32px 26px 40px; position:relative; transform:translateY(40px); transition:transform .35s cubic-bezier(.2,.8,.2,1); -webkit-user-select:text; user-select:text;}
+  @media(min-width:720px){ .modal-box{border-radius:26px; transform:translateY(0) scale(.94);} }
+  .modal-overlay.active .modal-box{transform:translateY(0) scale(1);}
+  .modal-close{position:sticky; top:0; float:right; margin-left:12px; width:36px;height:36px; border-radius:50%; border:1px solid var(--border); background:rgba(255,255,255,.06); color:var(--text-1); font-size:1.1rem; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:5;}
+  .modal-close:hover{background:rgba(255,255,255,.14);}
+  .m-tag{display:inline-block; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--rose); background:var(--rose-soft); border:1px solid rgba(251,113,133,.35); padding:5px 13px; border-radius:999px; margin-bottom:14px;}
+  .m-title{font-family:var(--font-d); font-size:1.45rem; font-weight:800; margin-bottom:18px; line-height:1.3; clear:both;}
+  .m-block{margin-bottom:22px;}
+  .m-block h5{font-size:.82rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-3); margin-bottom:10px; display:flex; align-items:center; gap:8px;}
+  .m-goal{background:var(--sky-soft); border-left:3px solid var(--sky); border-radius:0 12px 12px 0; padding:14px 18px; font-size:.9rem; color:var(--text-1);}
+  .m-materials{display:flex; flex-wrap:wrap; gap:8px;}
+  .m-materials span{background:var(--surface); border:1px solid var(--border); padding:6px 13px; border-radius:999px; font-size:.8rem; color:var(--text-2);}
+  .m-phase{background:rgba(255,255,255,.03); border:1px solid var(--border); border-radius:16px; padding:16px 18px; margin-bottom:12px;}
+  .m-phase .ph-name{font-weight:700; font-size:.88rem; color:var(--rose); margin-bottom:8px; display:flex; align-items:center; gap:8px;}
+  .m-phase p{font-size:.87rem; color:var(--text-2); margin-bottom:8px;}
+  .m-phase p:last-child{margin-bottom:0;}
+  .m-dialog{background:rgba(0,0,0,.18); border-radius:12px; padding:12px 14px; margin-top:8px;}
+  .m-dialog .dl{display:flex; gap:10px; margin-bottom:9px; font-size:.86rem;}
+  .m-dialog .dl:last-child{margin-bottom:0;}
+  .m-dialog .dw{flex-shrink:0; width:64px; font-weight:700; font-size:.75rem; padding-top:1px;}
+  .m-dialog .dw.t{color:var(--teal);}
+  .m-dialog .dw.k{color:var(--rose);}
+  .m-dialog .dt{color:var(--text-2);}
+  .m-homework{background:var(--amber-soft); border-left:3px solid var(--amber); border-radius:0 12px 12px 0; padding:14px 18px; font-size:.87rem; color:var(--text-1);}
+  .m-nextprev{display:flex; justify-content:space-between; gap:12px; margin-top:26px; padding-top:20px; border-top:1px solid var(--border);}
+  .m-navbtn{flex:1; text-align:center; padding:10px 14px; border-radius:12px; background:var(--surface); border:1px solid var(--border); color:var(--text-2); font-size:.82rem; font-weight:600; cursor:pointer; transition:background .2s;}
+  .m-navbtn:hover{background:var(--surface-h); color:var(--text-1);}
+  .m-navbtn.disabled{opacity:.4; pointer-events:none;}
+  body.modal-open{overflow:hidden;}
+
+  /* Fear thermometer */
+  .thermo-wrap{display:flex; justify-content:center; margin:30px 0;}
+  .thermo{display:flex; align-items:flex-end; gap:8px;}
+  .thermo-bar{width:34px; border-radius:8px 8px 0 0; display:flex; align-items:flex-end; justify-content:center; color:#0c211f; font-weight:800; font-size:.72rem; padding-bottom:4px;}
+
+  /* Breathing animation */
+  .breathe-wrap{display:flex; flex-direction:column; align-items:center; gap:16px; margin:30px 0;}
+  .breathe-circle{
+    width:140px;height:140px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, rgba(56,189,248,.55), rgba(139,92,246,.35));
+    border:1px solid rgba(56,189,248,.4);
+    display:flex;align-items:center;justify-content:center;
+    font-size:.85rem; font-weight:700; color:var(--text-1);
+    animation:breathe 8s ease-in-out infinite;
+  }
+  @keyframes breathe{
+    0%{transform:scale(0.75);}
+    35%{transform:scale(1.15);}
+    50%{transform:scale(1.15);}
+    85%{transform:scale(0.75);}
+    100%{transform:scale(0.75);}
+  }
+  .breathe-label{font-size:.82rem; color:var(--text-3);}
+
+  /* Grounding <span class="prog-link" onclick="openProgram('5-4-3-2-1')">5-4-3-2-1</span> */
+  .ground-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin:26px 0;}
+  .ground-card{
+    text-align:center; padding:18px 10px; border-radius:16px;
+    background:var(--surface); border:1px solid var(--border);
+  }
+  .ground-card .big{font-family:var(--font-d); font-size:1.8rem; font-weight:800; color:var(--sky); display:block;}
+  .ground-card p{font-size:.78rem; color:var(--text-2); margin-top:6px;}
+
+  .worksheet{overflow-x:auto; margin:24px 0; border-radius:16px; border:1px solid var(--border);}
+  table{width:100%; border-collapse:collapse; font-size:.84rem; min-width:600px;}
+  thead th{
+    background:rgba(255,255,255,.05); color:var(--rose); text-align:left;
+    padding:12px 14px; font-size:.78rem; letter-spacing:.03em; text-transform:uppercase;
+    border-bottom:1px solid var(--border);
+  }
+  tbody td{padding:13px 14px; color:var(--text-2); border-bottom:1px solid rgba(255,255,255,.06); vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+
+  .parent-tips{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; margin:26px 0;}
+  .tip-card{background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:18px 20px;}
+  .tip-card h4{font-size:.9rem; margin-bottom:6px; color:var(--teal);}
+  .tip-card p{font-size:.83rem; color:var(--text-2);}
+
+  .quote{
+    border-left:3px solid var(--violet);
+    padding:18px 22px; margin:26px 0; font-family:var(--font-d); font-style:italic;
+    font-size:1.05rem; color:var(--text-1); background:var(--violet-soft); border-radius:0 14px 14px 0;
+  }
+  .quote span{display:block; margin-top:10px; font-family:var(--font-b); font-style:normal; font-size:.8rem; color:var(--text-3);}
+
+  .summary-box{
+    background:linear-gradient(135deg, var(--rose-soft), var(--violet-soft));
+    border:1px solid rgba(251,113,133,.3);
+    border-radius:20px; padding:28px 26px; margin-top:60px;
+  }
+  .summary-box h3{font-family:var(--font-d); font-size:1.25rem; margin-bottom:14px;}
+  .summary-box ul{padding-left:20px; color:var(--text-2); font-size:.92rem;}
+  .summary-box li{margin-bottom:8px;}
+
+  .nav-bottom{display:flex; justify-content:space-between; align-items:center; gap:16px; margin-top:40px; flex-wrap:wrap;}
+  .nav-btn{display:inline-flex; align-items:center; gap:8px; padding:13px 22px; border-radius:14px; text-decoration:none; font-weight:600; font-size:.9rem; transition:transform .25s, box-shadow .25s;}
+  .nav-btn.home{background:var(--surface); border:1px solid var(--border); color:var(--text-1);}
+  .nav-btn.next{background:linear-gradient(135deg,var(--rose),var(--violet)); color:#0c211f;}
+  .nav-btn:hover{transform:translateY(-3px);}
+  .nav-btn.disabled{opacity:.5; pointer-events:none;}
+
+  footer{position:relative; z-index:2; text-align:center; padding:44px 24px 60px; border-top:1px solid var(--border); color:var(--text-3); font-size:.88rem; margin-top:40px;}
+  footer a{color:var(--teal); text-decoration:none; font-weight:600;}
+
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-14px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+
+  @media(max-width:640px){
+    .dialog .who{width:60px; font-size:.72rem;}
+  }
+</style>
+</head>
+<body>
+
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<div class="topbar">
+  <a class="topbar-brand" href="index.html">
+    <img src="../logo.png" alt="Логотип центра психологической поддержки и реабилитации AN">
+    <span class="tb-name">Центр психологической поддержки и реабилитации AN</span>
+  </a>
+  <div class="topbar-right">
+    <a class="back" href="index.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+      <span>Меню</span>
+    </a>
+    <span class="progress-pill">Модуль 2 / 20</span>
+  </div>
+</div>
+
+<main>
+
+    <div class="hero">
+    <div class="hero-illus">
+      <svg width="360" height="170" viewBox="0 0 360 170" fill="none">
+        <defs>
+          <radialGradient id="lightg" cx="50%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#f0cd8e" stop-opacity="0.55"/>
+            <stop offset="100%" stop-color="#f0cd8e" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="shieldg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#d9a85a"/>
+            <stop offset="100%" stop-color="#d9705a"/>
+          </linearGradient>
+        </defs>
+        <circle cx="180" cy="75" r="85" fill="url(#lightg)"/>
+        <path d="M180 20 L150 22 Q135 22 132 40 L128 80 Q128 118 180 148 Q232 118 232 80 L228 40 Q225 22 210 22 Z" fill="none" stroke="url(#shieldg)" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M180 20 L150 22 Q135 22 132 40 L128 80 Q128 118 180 148 Q232 118 232 80 L228 40 Q225 22 210 22 Z" fill="#1d423d" opacity=".55"/>
+        <path d="M158 78 l16 16 32-36" stroke="#f3eee1" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>
+        <g stroke="#f0cd8e" stroke-width="1.6" opacity=".55" stroke-linecap="round">
+          <path d="M180 8 L180 -4"/>
+          <path d="M120 30 L108 20"/>
+          <path d="M240 30 L252 20"/>
+          <path d="M105 75 L90 75"/>
+          <path d="M255 75 L270 75"/>
+        </g>
+      </svg>
+    </div>
+    <span class="tag">Модуль 02 · Работа с травмой</span>
+    <h1>Посттравматический стресс и КПТ</h1>
+    <p>В этот модуль я каждый раз вхожу немного иначе, если честно. Когда в кабинет входит травма, торопиться нельзя — ни в словах, ни в шаге. Ниже — маршрут из 12 сессий, выстроенный годами практики: реальные диалоги, материалы для рабочей тетради, темп, который меняется от маленького ребёнка до взрослого. Читайте, но не спешите — этот модуль сам учит не спешить.</p>
+  </div>
+
+  <!-- 1. Научное определение и простое объяснение -->
+  <section>
+    <div class="sec-head"><div class="sec-num">1</div><h2>Научное определение: посттравматическое стрессовое расстройство</h2></div>
+    <div class="sci-box">
+      <b>Клиническое определение:</b> Согласно DSM-5-TR, ПТСР характеризуется четырьмя группами симптомов: повторное переживание, избегание, негативные изменения в мышлении и настроении, выраженная гипервозбудимость. Они возникают после непосредственного переживания реальной угрозы смерти или серьёзной травмы, свидетельства такому событию, либо известия о том, что оно произошло с близким человеком, и сохраняются не менее месяца. TF-КПТ сегодня — протокол с самой прочной научной доказательной базой для детей и подростков.
+    </div>
+    <div class="simple-box">
+      <b>Если сказать простыми словами:</b> Представьте пожарную сигнализацию у себя дома. Теперь представьте, что она срабатывает, даже когда вы просто жарите тост, или даже увидев немного пара. Тело создало эту систему, чтобы защищать вас — но после травмы она переходит в режим "сверхбдительности" и продолжает реагировать на опасность, которая давно в прошлом, как будто это происходит прямо сейчас. Именно так я объясняю это клиенту.
+    </div>
+    <p class="lead">Я всегда вижу облегчение на лице человека, когда он слышит это впервые. Потому что это не слабость воли. Это защитный рефлекс, который сформировался, чтобы выжить, и просто ещё не научился отключаться — тело всё ещё продолжает старую битву.</p>
+  </section>
+
+  <!-- 2. Группы симптомов -->
+  <section>
+    <div class="sec-head"><div class="sec-num">2</div><h2>Клиническая классификация симптомов (DSM-5)</h2></div>
+    <p class="lead">При постановке диагноза я смотрю на четыре группы признаков, все они должны длиться более месяца и заметно нарушать повседневную жизнь. Ниже — не просто список, за каждым пунктом стоит конкретная клиническая картина.</p>
+    <div class="symptom-grid">
+      <div class="symptom-card">
+        <span class="ico">🔄</span>
+        <h4>1. Повторное переживание (интрузия)</h4>
+        <p>Событие непроизвольно "возвращается" — в виде флешбэков, кошмаров, внезапных тревожных воспоминаний.</p>
+        <div class="ex-line">Röya, 8 лет, после аварии каждый раз при звуке автомобильного сигнала снова "видела" тот момент. Будто время отматывалось назад.</div>
+      </div>
+      <div class="symptom-card">
+        <span class="ico">🚪</span>
+        <h4>2. Избегание</h4>
+        <p>Любым способом избегается место, человек, тема, которые напоминают о случившемся.</p>
+        <div class="ex-line">Подросток, переживший аварию, больше не хотел ездить по той дороге — даже пассажиром.</div>
+      </div>
+      <div class="symptom-card">
+        <span class="ico">☁️</span>
+        <h4>3. Негативные изменения в мышлении и настроении</h4>
+        <p>Формируются негативные убеждения о себе, других, мире. Сюда же относится эмоциональное онемение, отдаление от радости.</p>
+        <div class="ex-line">"Мир опасен." "Никому нельзя доверять." Эти фразы я слышу постоянно.</div>
+      </div>
+      <div class="symptom-card">
+        <span class="ico">⚡</span>
+        <h4>4. Выраженная гипервозбудимость</h4>
+        <p>Постоянное ожидание опасности, лёгкая пугливость, проблемы со сном, раздражительность, трудности с концентрацией.</p>
+        <div class="ex-line">Вздрагивание от малейшего звука. Тело словно никогда полностью не расслабляется.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Возрастные группы -->
+  <section>
+    <div class="sec-head"><div class="sec-num">3</div><h2>Разные проявления по возрастным группам</h2></div>
+    <p class="lead">Одна и та же травма у ребёнка, подростка, взрослого проявляется совершенно по-разному. Именно это я проверяю в первую очередь, выбирая программу — как возраст "одевает" симптом?</p>
+    <div class="age-grid">
+      <div class="age-card child">
+        <h4>👶 Дети (3-10 лет)</h4>
+        <ul>
+          <li>Повторное проигрывание травмы в игре</li>
+          <li>Регрессия (возврат к более раннему поведению, сосание пальца)</li>
+          <li>Тревога разлуки, проблемы со сном</li>
+          <li>Телесные жалобы (боль в животе, головная боль)</li>
+        </ul>
+      </div>
+      <div class="age-card teen">
+        <h4>🧑 Подростки (11-17 лет)</h4>
+        <ul>
+          <li>Рискованное поведение, агрессия</li>
+          <li>Социальная изоляция, избегание школы</li>
+          <li>Риск самоповреждения</li>
+          <li>Усиление стыда и чувства вины</li>
+        </ul>
+      </div>
+      <div class="age-card adult">
+        <h4>🧑‍🦱 Взрослые</h4>
+        <ul>
+          <li>Эмоциональное оцепенение, отдаление от отношений</li>
+          <li>Снижение работоспособности и повседневного функционирования</li>
+          <li>Нарушения сна, постоянное напряжение</li>
+          <li>Самокритика, снижение уверенности в себе</li>
+        </ul>
+      </div>
+    </div>
+    <p class="lead" style="margin-top:18px;">У маленьких детей реакция тела опережает слова. Поэтому я обязательно включаю сюда взгляд сенсорной интеграции — утяжелённое одеяло, движение через танец или тэппинг очень помогают. Глазами эрготерапевта: сначала должно успокоиться тело, только потом придут слова.</p>
+  </section>
+
+  <!-- 4. Модель TF-КПТ -->
+  <section>
+    <div class="sec-head"><div class="sec-num">4</div><h2>Модель TF-КПТ — компоненты PRACTICE</h2></div>
+    <p class="lead">Травма-фокусированная КПТ — самая изученная, доказательная модель лечения травмы в мире. Аббревиатура "PRACTICE" помогает удержать в памяти основные шаги — я и сам иногда планирую сессию, вспоминая это слово.</p>
+    <div class="practice-list">
+      <div class="practice-item"><div class="practice-letter">P</div><div><h4>Психообразование и родительские навыки</h4><p>Простым языком объясняю травму и её влияние, показываю родителю конкретные навыки поддержки.</p></div></div>
+      <div class="practice-item"><div class="practice-letter">R</div><div><h4>Навыки релаксации</h4><p>Дыхательные техники, <span class="prog-link" onclick="openProgram('ezele-bosaltma')">мышечное расслабление</span> — конкретные инструменты, успокаивающие тело.</p></div></div>
+      <div class="practice-item"><div class="practice-letter">A</div><div><h4>Регуляция эмоций (Affect)</h4><p>Распознавать чувство, называть его, учиться им управлять.</p></div></div>
+      <div class="practice-item"><div class="practice-letter">C</div><div><h4>Когнитивное совладание (Cognitive coping)</h4><p>Показать связь мысль-чувство-поведение, мягко подвергать сомнению бесполезные мысли.</p></div></div>
+      <div class="practice-item"><div class="practice-letter">T</div><div><h4>Травматический нарратив (Trauma narrative)</h4><p>Помочь шаг за шагом выразить словами произошедшее в безопасной обстановке. Это самый чувствительный этап.</p></div></div>
+      <div class="practice-item"><div class="practice-letter">I</div><div><h4>In-vivo экспозиция</h4><p>Выстраиваем постепенное соприкосновение с реальными, безопасными, но избегаемыми ситуациями.</p></div></div>
+      <div class="practice-item"><div class="practice-letter">C</div><div><h4>Совместные сессии родитель-ребёнок (Conjoint)</h4><p>Разделить историю ребёнка с родителем, укрепить семейную связь.</p></div></div>
+      <div class="practice-item"><div class="practice-letter">E</div><div><h4>Укрепление безопасности (Enhancing safety)</h4><p>Строим конкретный, письменный план безопасности на будущее.</p></div></div>
+    </div>
+  </section>
+
+  <!-- 5. Программа сессий -->
+  <section>
+    <div class="sec-head"><div class="sec-num">5</div><h2>Программа по сессиям (модель из 12 сессий)</h2></div>
+    <p class="lead">Структура ниже — средняя модель, которую я использую годами. Она может удлиняться или сокращаться в зависимости от индивидуальной потребности — ровно 12 сессий не закон, а отправная точка.</p>
+    <div class="session-plan">
+      <div class="sess-row" onclick="openSession(1)"><div class="sess-num">1</div><div class="sess-txt"><h4>Знакомство и оценка</h4><p>Установление доверительной связи, оценка симптомов, определение целей.</p></div><div class="sess-open">Открыть сессию ▸</div></div>
+      <div class="sess-row" onclick="openSession(2)"><div class="sess-num">2</div><div class="sess-txt"><h4>Психообразование</h4><p>Простое объяснение травмы и мозга — ответ на вопрос "почему я так себя чувствую".</p></div><div class="sess-open">Открыть сессию ▸</div></div>
+      <div class="sess-row" onclick="openSession(3)"><div class="sess-num">3</div><div class="sess-txt"><h4>Дыхательные и релаксационные навыки</h4><p>Изучаются и отрабатываются <span class="prog-link" onclick="openProgram('qutu-nefesi')">квадратное дыхание</span> и техники мышечного расслабления.</p></div><div class="sess-open">Открыть сессию ▸</div></div>
+      <div class="sess-row" onclick="openSession(4)"><div class="sess-num">4</div><div class="sess-txt"><h4>Распознавание эмоций</h4><p>Словарь чувств, измерение интенсивности эмоций с помощью "<span class="prog-link" onclick="openProgram('qorxu-termometri')">Термометра страха</span>".</p></div><div class="sess-open">Открыть сессию ▸</div></div>
+      <div class="sess-row" onclick="openSession(5)"><div class="sess-num">5</div><div class="sess-txt"><h4>Навыки когнитивного совладания</h4><p>Треугольник мысль-чувство-поведение, распознавание бесполезных мыслей.</p></div><div class="sess-open">Открыть сессию ▸</div></div>
+      <div class="sess-row" onclick="openSession(6)"><div class="sess-num">6</div><div class="sess-txt"><h4>Травматический нарратив — начало</h4><p>Начиная с самой "безопасной" части события, выраженной рисунком или словами.</p></div><div class="sess-open">Открыть сессию ▸</div></div>
+      <div class="sess-row" onclick="openSession(7)"><div class="sess-num">7</div><div class="sess-txt"><h4>Травматический нарратив — продолжение</h4><p>Постепенное приближение к самому трудному моменту истории, управление эмоциями.</p></div><div class="sess-open">Открыть сессию ▸</div></div>
+      <div class="sess-row" onclick="openSession(8)"><div class="sess-num">8</div><div class="sess-txt"><h4>Травматический нарратив — завершение</h4><p>Собрать историю воедино, выстроить новый смысл и перспективу.</p></div><div class="sess-open">Открыть сессию ▸</div></div>
+      <div class="sess-row" onclick="openSession(9)"><div class="sess-num">9</div><div class="sess-txt"><h4>Когнитивная обработка</h4><p>Проработка искажённых убеждений, связанных с травмой (например, самообвинение).</p></div><div class="sess-open">Открыть сессию ▸</div></div>
+      <div class="sess-row" onclick="openSession(10)"><div class="sess-num">10</div><div class="sess-txt"><h4>In-vivo экспозиция</h4><p>План постепенной встречи с избегаемыми, но реально безопасными ситуациями.</p></div><div class="sess-open">Открыть сессию ▸</div></div>
+      <div class="sess-row" onclick="openSession(11)"><div class="sess-num">11</div><div class="sess-txt"><h4>Совместная сессия родитель-ребёнок</h4><p>Разделение истории, укрепление семейной поддержки.</p></div><div class="sess-open">Открыть сессию ▸</div></div>
+      <div class="sess-row" onclick="openSession(12)"><div class="sess-num">12</div><div class="sess-txt"><h4>План безопасности и завершение</h4><p>Обобщение навыков на будущее, фиксация прогресса.</p></div><div class="sess-open">Открыть сессию ▸</div></div>
+    </div>
+    <div class="example"><b>💡 Совет:</b> Нажмите на любую сессию, чтобы увидеть полный сценарий — вступление, основную часть, реальный диалог, домашнее задание.</div>
+  </section>
+
+  <!-- 6. Пример диалога -->
+  <section>
+    <div class="sec-head"><div class="sec-num">6</div><h2>Пример диалога (с 8-летним ребёнком)</h2></div>
+    <div class="dialog">
+      <div class="line"><span class="who t">Терапевт:</span><span class="txt">Röya, у нас в мозге есть маленький "звонок опасности". Он нужен, чтобы нас защищать. Но иногда, после чего-то страшного, этот звонок становится слишком чувствительным и звонит даже тогда, когда это не нужно. Какой у тебя звонок?</span></div>
+      <div class="line"><span class="who k">Ребёнок:</span><span class="txt">Мой звонок звонит всё время! Даже когда я сплю.</span></div>
+      <div class="line"><span class="who t">Терапевт:</span><span class="txt">Понимаю, это, наверное, очень утомительно. Давай вместе научимся немного успокаивать этот звонок, хорошо?</span></div>
+      <div class="line"><span class="who k">Ребёнок:</span><span class="txt">Да, хочу, чтобы звонок был потише.</span></div>
+    </div>
+    <div class="example"><b>Обратите внимание:</b> В работе с ребёнком главные инструменты — метафора, игра, рисунок. Слово "ПТСР" я ребёнку никогда не произношу. Говорю образами, которые он может понять.</div>
+  </section>
+
+  <!-- 7. Дыхательный навык -->
+  <section>
+    <div class="sec-head"><div class="sec-num">7</div><h2>Материал для рабочей тетради: квадратное дыхание</h2></div>
+    <p class="lead">Это один из инструментов, который никогда не покидает мою сумку. Круг растёт — вдох, круг уменьшается — выдох. Так просто, но эффект совсем не простой.</p>
+    <div class="breathe-wrap">
+      <div class="breathe-circle">Вдох / выдох</div>
+      <div class="breathe-label">4 секунды вдох → 4 секунды задержка → 4 секунды выдох → 4 секунды задержка</div>
+    </div>
+  </section>
+
+  <!-- 8. Термометр страха -->
+  <section>
+    <div class="sec-head"><div class="sec-num">8</div><h2>Материал для рабочей тетради: Термометр страха</h2></div>
+    <p class="lead">Визуальный инструмент, который учит клиента, особенно ребёнка, выражать чувство числом. Выглядит просто. Но на этом маленьком числе строится большая часть сессий.</p>
+    <div class="thermo-wrap">
+      <div class="thermo">
+        <div class="thermo-bar" style="height:30px;background:#4ade80;">1-2</div>
+        <div class="thermo-bar" style="height:55px;background:#a3e635;">3-4</div>
+        <div class="thermo-bar" style="height:80px;background:#facc15;">5-6</div>
+        <div class="thermo-bar" style="height:105px;background:#fb923c;">7-8</div>
+        <div class="thermo-bar" style="height:130px;background:#f87171;">9-10</div>
+      </div>
+    </div>
+    <div class="example"><b>Как использовать:</b> "От 1 до 10, насколько сейчас страшно?" Звучит как простой вопрос. Но он показывает и мне, и клиенту, где именно сейчас находится эмоция.</div>
+  </section>
+
+  <!-- 9. Заземление -->
+  <section>
+    <div class="sec-head"><div class="sec-num">9</div><h2>Материал для рабочей тетради: техника заземления 5-4-3-2-1</h2></div>
+    <p class="lead">Это самая быстрая техника, которую я использую, чтобы вернуться "в настоящее" во время флешбэка или сильной тревоги. Она построена на пяти чувствах. Её даже не нужно заучивать — тело само вспоминает.</p>
+    <div class="ground-grid">
+      <div class="ground-card"><span class="big">5</span><p>То, что ты видишь</p></div>
+      <div class="ground-card"><span class="big">4</span><p>То, к чему прикасаешься</p></div>
+      <div class="ground-card"><span class="big">3</span><p>Звук, который слышишь</p></div>
+      <div class="ground-card"><span class="big">2</span><p>Запах, который чувствуешь</p></div>
+      <div class="ground-card"><span class="big">1</span><p>Вкус, который ощущаешь</p></div>
+    </div>
+  </section>
+
+  <!-- 10. Рекомендации родителям -->
+  <section>
+    <div class="sec-head"><div class="sec-num">10</div><h2>Рекомендации для родителей</h2></div>
+    <div class="parent-tips">
+      <div class="tip-card"><h4>🗣️ Не заставляйте говорить</h4><p>Ребёнок заговорит сам, когда будет готов. Дайте время, не засыпайте вопросами.</p></div>
+      <div class="tip-card"><h4>🛏️ Сохраняйте режим</h4><p>Стабильный сон, питание, повседневная активность — это делает больше, чем слова. Именно так до ребёнка доходит чувство безопасности.</p></div>
+      <div class="tip-card"><h4>💬 Принимайте чувства</h4><p>Вместо "не бойся" скажите "я понимаю, что тебе страшно, я рядом с тобой".</p></div>
+      <div class="tip-card"><h4>🚫 Не травмируйте повторно</h4><p>Избегайте расспросов о деталях события снова и снова.</p></div>
+      <div class="tip-card"><h4>🏫 Поддерживайте связь со школой</h4><p>Сообщите учителю о ситуации, чтобы ребёнка поддерживали и в школе. Это самая простая форма психопедагогической поддержки.</p></div>
+    </div>
+    <div class="example"><b>Домашнее задание (для родителя):</b> Каждый вечер на этой неделе проведите пять минут с ребёнком в разговоре "как прошёл день" — без шквала вопросов, просто слушайте. Запишите одну фразу: что сегодня было иначе?</div>
+  </section>
+
+  <!-- 11. Клинический случай -->
+  <section>
+    <div class="sec-head"><div class="sec-num">11</div><h2>Работа с Röya: что стоит за историей</h2></div>
+    <p class="lead">Иногда смотришь в глаза ребёнку и думаешь, что уже всё понял. С Röya у меня тоже сначала была такая мысль — потом я понял, что ошибался.</p>
+    <div class="card">
+      <h3>📋 Обращение</h3>
+      <p>Röya было 9 лет, мать привела её ко мне через три недели после автомобильной аварии. Сама она серьёзно не пострадала, но мать какое-то время теряла сознание, дверь машины была смята, они долго ждали помощи на обочине. Физически обе поправились. Но Röya уже не могла спать по ночам, замирала при каждом автомобильном сигнале, отдалилась от одноклассников в школе.</p>
+    </div>
+    <div class="card">
+      <h3>🔍 Что мы обнаружили</h3>
+      <p>В первые три сессии я не применял никакого формального теста — просто строил доверие через игру и рисунок. На четвёртой сессии Röya сама, без вопроса с моей стороны, начала говорить о машине. Это стало для меня ключевым моментом: когда ребёнок готов, он сам открывает дверь, стучать в неё не нужно.</p>
+    </div>
+    <div class="dialog">
+      <div class="line"><span class="who t">Терапевт:</span><span class="txt">Röya, хочешь сегодня рассказать мне о том дне, или ещё рано?</span></div>
+      <div class="line"><span class="who k">Клиент:</span><span class="txt">Не знаю... но каждый раз, когда слышу звук машины, сердце начинает очень сильно биться.</span></div>
+      <div class="line"><span class="who t">Терапевт:</span><span class="txt">Это очень понятная реакция. Твой мозг пытается сказать тебе "будь внимательна". Что ты обычно делаешь, когда приходит это чувство?</span></div>
+      <div class="line"><span class="who k">Клиент:</span><span class="txt">Закрываю уши, иногда отхожу от окна.</span></div>
+      <div class="line"><span class="who t">Терапевт:</span><span class="txt">Понимаю. Хочу тебе кое-что сказать — само по себе вспоминать тот день не опасно. Воспоминание тебя реально не ранит, оно просто заставляет чувствовать тревогу. Но каждый раз, когда ты от него убегаешь, твой мозг учится: "значит, это действительно опасно."</span></div>
+      <div class="line"><span class="who k">Клиент:</span><span class="txt">Значит, из-за того, что я убегаю, я становлюсь ещё более пугливой?</span></div>
+      <div class="line"><span class="who t">Терапевт:</span><span class="txt">Именно так. Здесь мы, маленькими шагами, будем учиться приближаться к этому воспоминанию — не торопясь, но и не убегая.</span></div>
+    </div>
+    <div class="example"><b>Основной принцип:</b> Само воспоминание травмы не опасно. Главный фактор, который поддерживает проблему, — систематическое избегание травматических воспоминаний. Я объясняю это каждой семье с первой сессии, потому что иначе родитель может, сам того не желая, усиливать избегание под видом защиты ребёнка.</div>
+    <div class="card"><h3>🎯 Как я применяю это на сессии</h3><p>Я никогда не говорил Röya "не бойся". Вместо этого мы вместе разбирали логику страха — почему он есть, чему он служит, когда он больше не нужен. Когда ребёнок это понимает, путь впереди выглядит уже не так пугающе.</p></div>
+  </section>
+
+  <!-- 12. Концептуализация случая -->
+  <section>
+    <div class="sec-head"><div class="sec-num">12</div><h2>Бланк концептуализации случая</h2></div>
+    <p class="lead">Поскольку я работаю с ребёнком, этот бланк я обычно заполняю вместе с родителем — а части, сформулированные собственными словами ребёнка, отмечаю отдельно. На бумаге это выглядит просто. На практике это скелет всего плана лечения.</p>
+    <div class="worksheet">
+      <table>
+        <thead><tr><th>Компонент</th><th>Пример Röya</th></tr></thead>
+        <tbody>
+          <tr><td><b>Заявленная проблема</b></td><td>Нарушение сна, гипервозбудимость, социальная изоляция</td></tr>
+          <tr><td><b>Провоцирующие факторы (что запускает)</b></td><td>Автомобильная авария (3 недели назад)</td></tr>
+          <tr><td><b>Предрасполагающие факторы (корни)</b></td><td>Чувствительный темперамент, история тревоги разлуки в прошлом</td></tr>
+          <tr><td><b>Поддерживающие факторы (почему не проходит)</b></td><td>Систематическое избегание (звук машины, окно, дорога), семья тоже усиливает избегание</td></tr>
+          <tr><td><b>Защитные факторы (сильные стороны)</b></td><td>Поддерживающая мать, хорошее словесное выражение, надёжная привязанность в прошлом</td></tr>
+          <tr><td><b>Базовое убеждение</b></td><td>"Мир внезапно опасен, я не могу себя защитить"</td></tr>
+          <tr><td><b>Цель лечения</b></td><td>Постепенная экспозиция, восстановление чувства безопасности, стабилизация сна</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card"><h3>🎯 Как я применяю это на сессии</h3><p>Строка "поддерживающие факторы" в этом бланке для меня самая важная — потому что лечение в основном начинается именно оттуда. У Röya это было избегание, у другого клиента может оказаться совсем другой паттерн.</p></div>
+  </section>
+
+  <!-- 13. Протокол сессии -->
+  <section>
+    <div class="sec-head"><div class="sec-num">13</div><h2>Пример протокола сессии</h2></div>
+    <p class="lead">Ниже — реальная структура протокола 7-й сессии с Röya (продолжение травматического нарратива). Этот формат я заполняю после каждой сессии, и для собственных записей, и на случай, если понадобится передать другому специалисту.</p>
+    <div class="worksheet">
+      <table>
+        <thead><tr><th>Этап</th><th>Время</th><th>Заметка</th></tr></thead>
+        <tbody>
+          <tr><td>Проверка настроения и термометра страха</td><td>5 мин</td><td>Термометр: 5/10 (на прошлой сессии было 7/10)</td></tr>
+          <tr><td>Разбор домашнего задания</td><td>8 мин</td><td>Ежедневный ритуал "как прошёл день" с мамой выполнен 4 из 5 дней</td></tr>
+          <tr><td>Согласование повестки</td><td>2 мин</td><td>Сегодня: продолжение травматического нарратива, приближение к трудному моменту</td></tr>
+          <tr><td>Основная работа</td><td>25 мин</td><td>Продолжение истории, постоянное отслеживание термометром страха, паузы при необходимости</td></tr>
+          <tr><td>Успокоение и завершение</td><td>7 мин</td><td>Возврат к спокойному состоянию обеспечен квадратным дыханием</td></tr>
+          <tr><td>Итоговая обратная связь</td><td>3 мин</td><td>Клиент: "На этот раз я меньше боялась, значит, мне становится лучше"</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 14. Шкалы оценки -->
+  <section>
+    <div class="sec-head"><div class="sec-num">14</div><h2>Диагностические инструменты и шкалы КПТ</h2></div>
+    <p class="lead">У детей и подростков с подозрением на ПТСР перед первой сессией я использую стандартизированные инструменты. Они не ставят диагноз, но переводят стартовую точку в цифры и позволяют отслеживать прогресс на протяжении лечения.</p>
+    <div class="grid-3">
+      <div class="lens-card"><span class="ico">📊</span><h4>CPSS-5 (Child PTSD Symptom Scale)</h4><p>Основной инструмент измерения тяжести симптомов ПТСР и их влияния на функционирование у детей 8-18 лет.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>UCLA PTSD Reaction Index</h4><p>Международный стандарт оценки травматического воздействия и симптомов в широком возрастном диапазоне.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>CRIES-8</h4><p>Короткая шкала для измерения симптомов повторного переживания и избегания, быстро применяется в клинике.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>IES-R (Impact of Event Scale)</h4><p>Оценивает влияние события у подростков и взрослых по трём измерениям (повторное переживание, избегание, возбудимость).</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>PCL-5</h4><p>Опросник самооценки симптомов ПТСР по критериям DSM-5, широко применяется у взрослых.</p></div>
+      <div class="lens-card"><span class="ico">📊</span><h4>TSCC (Trauma Symptom Checklist for Children)</h4><p>Расширенный инструмент, охватывающий широкую посттравматическую симптоматику, включая тревогу, депрессию, диссоциацию.</p></div>
+    </div>
+    <div class="example"><b>Обратите внимание:</b> С Röya я применял CPSS-5 и CRIES-8 вместе, повторяя каждые 4 сессии. Снижение цифр часто убеждает родителя сильнее, чем слова — фраза "смотри, было 7, теперь 5" рождает настоящую надежду.</div>
+  </section>
+
+  <!-- 15. Пример домашнего задания -->
+  <section>
+    <div class="sec-head"><div class="sec-num">🏠</div><h2>Пример домашнего задания</h2></div>
+    <p class="lead">Это было конкретное задание, которое я дал Röya, — оно может стать образцом и для вас.</p>
+    <div class="card">
+      <p>Каждый день, в любое время, вместо того чтобы замирать, услышав звук машины, сделай три глубоких вдоха и скажи себе вслух (или про себя): "Это происходит сейчас, а не в прошлом. Вспоминать воспоминание меня не ранит." Отметь это в тетради числом (уровень страха от 0 до 10). Цель не в том, чтобы страх мгновенно исчез — а в том, чтобы научиться оставаться с ним, не убегая. Я говорю это каждому своему клиенту: чудовище растёт, пока ты бежишь, и уменьшается, пока ты остаёшься.</p>
+    </div>
+  </section>
+
+
+<section>
+  <div class="sec-head"><div class="sec-num">15</div><h2>Признаки кризиса в посттравматический период</h2></div>
+  <div class="crisis-box">
+    <h4>⚠️ Когда требуется срочное вмешательство</h4>
+    <p>В рамках программы TF-КПТ, особенно при переходе к компоненту травматического нарратива, следующие признаки должны немедленно изменить направление сессии:</p>
+    <ul>
+      <li>Углубление диссоциативных эпизодов — потеря ребёнком контакта с реальностью на длительное время (более нескольких минут);</li>
+      <li>Наблюдаемое самоповреждающее поведение во время флешбэка (удары по себе, царапанье);</li>
+      <li>Высказывания вроде "не хочу больше жить", особенно при приближении к самой тяжёлой части травматического нарратива;</li>
+      <li>Текущая среда, несущая риск повторной травматизации (продолжающееся насилие, небезопасный дом).</li>
+    </ul>
+    <ol class="crisis-steps">
+      <li>Остановите компонент травматического нарратива, сначала стабилизируйте техниками заземления (5-4-3-2-1) и дыхания.</li>
+      <li>Если диссоциация затягивается или повторяется, спланируйте психиатрическую консультацию вместе с родителем.</li>
+      <li>При выявлении текущего риска безопасности (продолжающееся насилие) вступает в силу обязанность сообщить в соответствующий орган защиты прав детей.</li>
+      <li>При высказываниях о самоповреждении проведите структурированный опрос на основе Колумбийской шкалы риска, задокументируйте результат.</li>
+      <li>Прежде чем возобновлять работу, убедитесь, что клиент стабилизировался — поспешное возвращение к компоненту нарратива может дать обратный эффект.</li>
+    </ol>
+    <p><b>Примечание:</b> Этап "стабилизации" в модели PRACTICE TF-КПТ — обязательный переход; торопить неготового клиента к компоненту нарратива — клиническая ошибка.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="sec-num">16</div><h2>Библиография</h2></div>
+  <div class="biblio-box">
+    <h4>📚 Основные источники по теме</h4>
+    <ul class="biblio-list">
+      <li><b>Cohen, J. A., Mannarino, A. P., & Deblinger, E.</b> (2017). <i>Treating Trauma and Traumatic Grief in Children and Adolescents</i> (2nd ed.). Guilford Press.</li>
+      <li><b>Foa, E. B., et al.</b> (2018). The Child PTSD Symptom Scale (CPSS-5). <i>Journal of Clinical Child & Adolescent Psychology, 47</i>(1), 38–46.</li>
+      <li><b>van der Kolk, B.</b> (2014). <i>The Body Keeps the Score.</i> Viking.</li>
+      <li><b>Posner, K., et al.</b> (2011). The Columbia-Suicide Severity Rating Scale. <i>American Journal of Psychiatry, 168</i>(12), 1266–1277.</li>
+      <li><b>American Psychiatric Association.</b> (2022). <i>DSM-5-TR.</i></li>
+      <li><b>Kaminer, D., & Eagle, G.</b> (2010). <i>Traumatic Stress in South Africa.</i> Wits University Press.</li>
+    </ul>
+  </div>
+</section>
+
+<div class="quote">
+    "Травма — это не событие, а то, как тело продолжает на него реагировать."
+    <span>— Бессел ван дер Колк, автор книги "Тело помнит всё"</span>
+  </div>
+
+  <div class="summary-box">
+    <h3>📌 Резюме модуля</h3>
+    <ul>
+      <li>ПТСР — это чрезмерная чувствительность сигнальной системы опасности мозга после травмы. Это не слабость воли.</li>
+      <li>Есть четыре основные группы симптомов: повторное переживание, избегание, негативные изменения мышления/настроения, выраженная гипервозбудимость.</li>
+      <li>Проявления различаются по возрастным группам — программу нужно адаптировать соответственно.</li>
+      <li>TF-КПТ (модель PRACTICE) — самый доказательный подход к лечению травмы в мире.</li>
+      <li>Дыхательные техники, Термометр страха, навык заземления — инструменты под рукой на каждой сессии.</li>
+      <li>Работа с ребёнком без поддержки родителя остаётся незавершённой. Я вижу это годами.</li>
+    </ul>
+  </div>
+
+
+  <div class="nav-bottom">
+    <a class="nav-btn home" href="index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+      Вернуться в меню
+    </a>
+    <a class="nav-btn next" href="03-aqressiya.html">
+      Следующий модуль: Агрессия и КПТ
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+
+</main>
+
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeSession()">
+  <div class="modal-box">
+    <div class="modal-close" onclick="closeSession()">✕</div>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Курс когнитивно-поведенческой терапии · Модуль 2/20</p>
+  <p style="margin-top:8px;">By <a href="https://aze-ai.az" target="_blank" rel="noopener">securtiy_group</a></p>
+  <p style="margin-top:10px;font-size:.82rem;"><a href="../privacy.html">Политика конфиденциальности</a> · <a href="../terms.html">Условия использования</a></p>
+</footer>
+
+<script>
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target);} });
+},{threshold:0.1});
+document.querySelectorAll('section').forEach(s=>io.observe(s));
+
+window.addEventListener('mousemove', e=>{
+  const mx = (e.clientX/window.innerWidth - 0.5);
+  const my = (e.clientY/window.innerHeight - 0.5);
+  document.querySelectorAll('.blob').forEach((b,i)=>{
+    const speed = (i+1)*16;
+    b.style.transform = `translate(${mx*speed}px, ${my*speed}px)`;
+  });
+});
+</script>
+<script>
+const SESSIONS = [
+  {
+    "num": 1,
+    "title": "Знакомство и оценка",
+    "goal": "Построить первый мостик доверия с клиентом (ребёнком, подростком или взрослым), спокойно понять тяжесть симптомов и дать семье первый сигнал надежды.",
+    "materials": [
+      "Простая оценочная беседа",
+      "Цветная бумага и карандаши",
+      "Шаблон термометра страха"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Первое знакомство",
+        "text": [
+          "На первой сессии я не касаюсь деталей травмы. Цель проста — чтобы клиент почувствовал себя в этой комнате в безопасности."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Привет, Röya, я тот, с кем ты сегодня будешь разговаривать. В этой комнате можешь молчать сколько хочешь, никакого давления нет."
+          ],
+          [
+            "K",
+            "Привет... мама сказала мне, что вы хороший человек."
+          ],
+          [
+            "T",
+            "Правда? А что ты любишь делать, помимо школы?"
+          ],
+          [
+            "K",
+            "Люблю рисовать, ещё играть со своим котом."
+          ],
+          [
+            "T",
+            "Как зовут твоего кота?"
+          ],
+          [
+            "K",
+            "Серый. Потому что он совсем серый."
+          ],
+          [
+            "T",
+            "Отличное имя. Сегодня я просто хочу с тобой познакомиться, никуда не торопимся."
+          ],
+          [
+            "K",
+            "Хорошо... но что вы будете спрашивать?"
+          ],
+          [
+            "T",
+            "Если хочешь, тоже можешь задавать мне вопросы, а я тебе."
+          ],
+          [
+            "K",
+            "С сколькими детьми вы вот так разговаривали?"
+          ],
+          [
+            "T",
+            "Со многими. Каждый из них разный, и ты тоже разная."
+          ],
+          [
+            "K",
+            "Я сейчас не знаю, что сказать."
+          ],
+          [
+            "T",
+            "Тебе не обязательно ничего говорить. Достаточно того, что ты сегодня здесь."
+          ],
+          [
+            "K",
+            "Хорошо, тогда мне немного спокойнее."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Спокойная оценка",
+        "text": [
+          "Я отдельно разговариваю с родителем, чтобы понять частоту изменений сна, страха и поведения. При ребёнке этого не делаю."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Вы помните, когда впервые началась эта трудность?"
+          ],
+          [
+            "K",
+            "Началась через неделю после аварии, постепенно ухудшалась."
+          ],
+          [
+            "T",
+            "Что вы заметили насчёт её сна?"
+          ],
+          [
+            "K",
+            "Просыпается несколько раз за ночь, иногда с криком."
+          ],
+          [
+            "T",
+            "Какие изменения в поведении вы видите днём?"
+          ],
+          [
+            "K",
+            "Отдалилась от одноклассников, не играет как раньше."
+          ],
+          [
+            "T",
+            "Как она реагирует на звуки машин?"
+          ],
+          [
+            "K",
+            "Замирает, иногда закрывает уши руками."
+          ],
+          [
+            "T",
+            "Как это влияет на повседневную жизнь?"
+          ],
+          [
+            "K",
+            "Ей трудно ходить в школу, аппетит тоже снизился."
+          ],
+          [
+            "T",
+            "Как вы обсуждаете это в семье?"
+          ],
+          [
+            "K",
+            "Если честно, избегаем темы, боимся её расстроить."
+          ],
+          [
+            "T",
+            "Понимаю, многие родители так делают."
+          ],
+          [
+            "K",
+            "Так что нам делать?"
+          ],
+          [
+            "T",
+            "Сегодня мы посмотрим на это вместе, шаг за шагом."
+          ],
+          [
+            "K",
+            "Хорошо, нам правда нужна помощь."
+          ],
+          [
+            "T",
+            "У неё раньше было что-то подобное?"
+          ],
+          [
+            "K",
+            "Нет, ничего такого никогда не было."
+          ],
+          [
+            "T",
+            "Эта информация мне очень поможет, спасибо."
+          ],
+          [
+            "K",
+            "Спасибо, уже сам разговор с вами принёс облегчение."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Первый шаг",
+        "text": [
+          "Завершаю сессию на ноте надежды, простыми словами объясняю, сколько примерно займёт этот процесс."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Как прошёл для тебя сегодняшний день?"
+          ],
+          [
+            "K",
+            "Легче, чем я думала."
+          ],
+          [
+            "T",
+            "Мне приятно это слышать."
+          ],
+          [
+            "K",
+            "Я приду в следующий раз тоже?"
+          ],
+          [
+            "T",
+            "Да, мы будем встречаться каждую неделю какое-то время."
+          ],
+          [
+            "K",
+            "Хорошо, тогда ладно."
+          ],
+          [
+            "T",
+            "Когда придёшь домой, хочешь что-то рассказать маме об этом?"
+          ],
+          [
+            "K",
+            "Скажу, что вы не были страшным."
+          ],
+          [
+            "T",
+            "Это очень приятно слышать."
+          ],
+          [
+            "K",
+            "Спасибо."
+          ]
+        ]
+      }
+    ],
+    "homework": "Для родителя: на этой неделе ведите однострочную ежедневную запись о сне и настроении ребёнка — достаточно одного предложения.",
+    "about": "На этом первом этапе формальный тест не применяется — проводится структурированная оценочная беседа. Цель — клиническим суждением понять тяжесть и частоту симптомов.",
+    "specialists": [
+      "Клинический психолог",
+      "Сертифицированный TF-КПТ терапевт",
+      "Детский и подростковый психолог"
+    ]
+  },
+  {
+    "num": 2,
+    "title": "Психообразование — почему я так себя чувствую?",
+    "goal": "Не пугая, объяснить клиенту травму и работу мозга, дать ощущение 'со мной всё в порядке'.",
+    "materials": [
+      "Простая картинка для метафоры сигнализации",
+      "Рабочий лист психообразования"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Мостик",
+        "text": [
+          "Открываю сессию, связываясь с тем, что обсуждалось в прошлый раз, проверяю, как прошла неделя."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Röya, как было дома после нашей прошлой встречи?"
+          ],
+          [
+            "K",
+            "Довольно обычно, пару раз играла с котом."
+          ],
+          [
+            "T",
+            "После нашего разговора у тебя появился какой-то вопрос?"
+          ],
+          [
+            "K",
+            "Не знаю... иногда думаю, почему я всё ещё боюсь."
+          ],
+          [
+            "T",
+            "Это очень хороший вопрос, и именно на него мы сегодня и посмотрим."
+          ],
+          [
+            "K",
+            "Хорошо, это интересно."
+          ],
+          [
+            "T",
+            "Как ты себя чувствуешь прямо сейчас, довольно спокойно?"
+          ],
+          [
+            "K",
+            "Немного нервничаю, но ничего."
+          ],
+          [
+            "T",
+            "Нервничать — это нормально, пройдёт."
+          ],
+          [
+            "K",
+            "Надеюсь."
+          ],
+          [
+            "T",
+            "Как был сон на этой неделе?"
+          ],
+          [
+            "K",
+            "Две ночи плохо спала, остальное было обычно."
+          ],
+          [
+            "T",
+            "Спасибо, что рассказала, мы это учтём."
+          ],
+          [
+            "K",
+            "Хорошо."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Метафора сигнализации",
+        "text": [
+          "Объясняю через метафору пожарной сигнализации, почему мозг так реагирует — и что эта реакция защитная, а не сломанная."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Тебе понятно это объяснение?"
+          ],
+          [
+            "K",
+            "Немного, но я всё ещё до конца не понимаю, почему я так себя чувствую."
+          ],
+          [
+            "T",
+            "Это не значит, что ты 'слабая', твой мозг просто определённым образом реагирует."
+          ],
+          [
+            "K",
+            "От того, что я это знаю, мне правда немного легче."
+          ],
+          [
+            "T",
+            "Есть вопрос по этому поводу?"
+          ],
+          [
+            "K",
+            "А когда это пройдёт, вы знаете?"
+          ],
+          [
+            "T",
+            "Точно сказать трудно, но обычно с практикой это проходит быстрее."
+          ],
+          [
+            "K",
+            "Хорошо, это обнадёживающий ответ."
+          ],
+          [
+            "T",
+            "Давай нарисуем этот звонок на бумаге — как он выглядит, по-твоему?"
+          ],
+          [
+            "K",
+            "Может, как красный свет, очень яркий."
+          ],
+          [
+            "T",
+            "Когда этот звонок звонит чаще всего, по-твоему?"
+          ],
+          [
+            "K",
+            "Когда слышу звук машины, или когда смотрю в окно."
+          ],
+          [
+            "T",
+            "Что происходит в твоём теле, когда звонок звонит?"
+          ],
+          [
+            "K",
+            "Сердце ускоряется, дыхание меняется."
+          ],
+          [
+            "T",
+            "Знать это — значит распознавать звонок, это большой шаг."
+          ],
+          [
+            "K",
+            "Сейчас я немного лучше понимаю себя."
+          ],
+          [
+            "T",
+            "В момент, когда ты замечаешь, что звонок звонит, что ты можешь сделать?"
+          ],
+          [
+            "K",
+            "Могу подышать, или сказать себе, что это пройдёт."
+          ],
+          [
+            "T",
+            "Именно так, это твой первый инструмент."
+          ],
+          [
+            "K",
+            "Спасибо, знать это помогает."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Своими словами",
+        "text": [
+          "Прошу клиента своими словами обобщить то, что мы прошли, чтобы проверить понимание и закрепить его."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Как бы ты своими словами объяснила, чему сегодня научилась?"
+          ],
+          [
+            "K",
+            "В моём мозге есть звонок, иногда он звонит, хотя не нужно."
+          ],
+          [
+            "T",
+            "Совершенно верно. Помнить это тебе поможет."
+          ],
+          [
+            "K",
+            "Могу я это тоже рассказать маме?"
+          ],
+          [
+            "T",
+            "Конечно, это было бы очень хорошо."
+          ],
+          [
+            "K",
+            "Хорошо, расскажу ей."
+          ],
+          [
+            "T",
+            "Как ты себя чувствуешь, уходя сегодня?"
+          ],
+          [
+            "K",
+            "Немного легче, если честно."
+          ],
+          [
+            "T",
+            "Это прекрасно слышать."
+          ],
+          [
+            "K",
+            "Спасибо, до встречи."
+          ]
+        ]
+      }
+    ],
+    "homework": "Нарисуй дома свой звонок сигнализации и, если хочешь, покажи маме и объясни, что это значит.",
+    "about": "Формальный инструмент здесь не применяется — эта сессия целиком построена на метафоре и рисунке, адаптированных к уровню развития ребёнка.",
+    "specialists": [
+      "Клинический психолог",
+      "Сертифицированный TF-КПТ терапевт"
+    ]
+  },
+  {
+    "num": 3,
+    "title": "Дыхательные и релаксационные навыки",
+    "goal": "Научить конкретному инструменту, который тело может использовать, чтобы физически успокоиться, когда срабатывает сигнальная система.",
+    "materials": [
+      "Схема квадратного дыхания",
+      "Сценарий прогрессивной мышечной релаксации"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Сегодняшняя цель",
+        "text": [
+          "Задаю рамку сегодняшней работы и коротко проверяю состояние тела перед началом."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Röya, сегодня мы будем учиться успокаивать твоё тело. Готова?"
+          ],
+          [
+            "K",
+            "Готова, но не знаю, как это будет."
+          ],
+          [
+            "T",
+            "Мы просто поиграем с дыханием, это не сложно."
+          ],
+          [
+            "K",
+            "Хорошо, я люблю дыхательные игры."
+          ],
+          [
+            "T",
+            "Когда на этой неделе ты чувствовала себя наиболее напряжённой?"
+          ],
+          [
+            "K",
+            "Ночью, перед сном, сердце сильно билось."
+          ],
+          [
+            "T",
+            "Что ещё ты заметила в теле в этот момент?"
+          ],
+          [
+            "K",
+            "Руки немного холодели."
+          ],
+          [
+            "T",
+            "Это очень полезно знать, сейчас научу тебя инструменту для этого."
+          ],
+          [
+            "K",
+            "Хорошо, покажите."
+          ],
+          [
+            "T",
+            "Сначала сядь удобно, опусти плечи."
+          ],
+          [
+            "K",
+            "Вот так?"
+          ],
+          [
+            "T",
+            "Именно так. Теперь начнём."
+          ],
+          [
+            "K",
+            "Хорошо, готова."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Практика квадратного дыхания",
+        "text": [
+          "Практикуем квадратное дыхание вместе, прослеживая дыханием стороны воображаемого квадрата."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Сколько раз нужно повторять эту дыхательную технику?"
+          ],
+          [
+            "K",
+            "Не знаю, может быть несколько раз."
+          ],
+          [
+            "T",
+            "Давай попробуем ещё раз прямо сейчас."
+          ],
+          [
+            "K",
+            "(делает глубокий вдох) Немного помогло, не полностью."
+          ],
+          [
+            "T",
+            "Сделаем круг вместе — вдох на 4."
+          ],
+          [
+            "K",
+            "(вдыхает) Хорошо."
+          ],
+          [
+            "T",
+            "Теперь задержи на 4."
+          ],
+          [
+            "K",
+            "Эта часть для меня немного сложная."
+          ],
+          [
+            "T",
+            "Это нормально, с практикой станет легче."
+          ],
+          [
+            "K",
+            "Хорошо, продолжим."
+          ],
+          [
+            "T",
+            "Теперь выдох на 4."
+          ],
+          [
+            "K",
+            "(выдыхает) Так было легче."
+          ],
+          [
+            "T",
+            "Снова задержи, на пустом вдохе, на 4."
+          ],
+          [
+            "K",
+            "Кажется, сейчас получается."
+          ],
+          [
+            "T",
+            "Что сейчас чувствуется по-другому в теле, по сравнению с раньше?"
+          ],
+          [
+            "K",
+            "Плечи немного опустились."
+          ],
+          [
+            "T",
+            "Можешь делать это и дома на этой неделе?"
+          ],
+          [
+            "K",
+            "Да, попробую особенно перед сном."
+          ],
+          [
+            "T",
+            "Отлично, это станет одним из твоих самых сильных инструментов."
+          ],
+          [
+            "K",
+            "Спасибо, что научили меня этому."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Расслабление тела",
+        "text": [
+          "Завершаем, ещё раз проверяя состояние тела и договариваясь, когда она будет практиковать это дома."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Как сейчас чувствует себя твоё тело?"
+          ],
+          [
+            "K",
+            "Легче, будто плечи немного опустились."
+          ],
+          [
+            "T",
+            "Уже само по себе заметить это — большой шаг."
+          ],
+          [
+            "K",
+            "Могу я делать это и дома?"
+          ],
+          [
+            "T",
+            "Да, особенно попробуй перед сном."
+          ],
+          [
+            "K",
+            "Хорошо, попробую сегодня вечером."
+          ],
+          [
+            "T",
+            "Можешь делать столько раз, сколько нужно, ограничений нет."
+          ],
+          [
+            "K",
+            "Запомню это."
+          ],
+          [
+            "T",
+            "Ты сегодня очень хорошо поработала."
+          ],
+          [
+            "K",
+            "Спасибо."
+          ]
+        ]
+      }
+    ],
+    "homework": "Практикуй квадратное дыхание дома каждый вечер перед сном и отмечай в тетради, сколько кругов сделала.",
+    "about": "Эта сессия сосредоточена исключительно на выработке навыка — оценочный инструмент не используется, акцент на физическом освоении техники.",
+    "specialists": [
+      "Клинический психолог",
+      "Эрготерапевт (для сенсорной регуляции)"
+    ]
+  },
+  {
+    "num": 4,
+    "title": "Распознавание эмоций",
+    "goal": "Построить словарь чувств и научить клиента оценивать интенсивность эмоции с помощью термометра страха.",
+    "materials": [
+      "Карточки со словарём чувств",
+      "Схема термометра страха"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Сегодняшнее настроение",
+        "text": [
+          "Проверяю сегодняшнее настроение и коротко разбираю дыхательное домашнее задание за прошлую неделю."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Röya, какое у тебя сегодня настроение?"
+          ],
+          [
+            "K",
+            "Смешанное, не знаю точно, как назвать."
+          ],
+          [
+            "T",
+            "Смешанные чувства — это нормально, можно испытывать сразу несколько."
+          ],
+          [
+            "K",
+            "Хорошо, давайте разберёмся."
+          ],
+          [
+            "T",
+            "Пробовала дыхательное упражнение на этой неделе?"
+          ],
+          [
+            "K",
+            "Да, дважды, немного помогло."
+          ],
+          [
+            "T",
+            "Мне приятно это слышать."
+          ],
+          [
+            "K",
+            "Правда, иногда забываю."
+          ],
+          [
+            "T",
+            "Это нормально, постепенно станет привычкой."
+          ],
+          [
+            "K",
+            "Надеюсь."
+          ],
+          [
+            "T",
+            "Сегодня будем говорить о чувствах, готова?"
+          ],
+          [
+            "K",
+            "Готова, мне это интересно."
+          ],
+          [
+            "T",
+            "Отлично, тогда начнём."
+          ],
+          [
+            "K",
+            "Хорошо."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Язык тела",
+        "text": [
+          "Исследуем, где каждая эмоция проявляется физически, используя контур тела, который ребёнок раскрашивает."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Как бы ты назвала это чувство?"
+          ],
+          [
+            "K",
+            "Не знаю точно, смешанное, может грусть и страх вместе."
+          ],
+          [
+            "T",
+            "Где в теле ты это чувствуешь?"
+          ],
+          [
+            "K",
+            "В груди, как будто сжимает."
+          ],
+          [
+            "T",
+            "Где в теле ты чувствуешь страх?"
+          ],
+          [
+            "K",
+            "В животе, иногда руки тоже холодеют."
+          ],
+          [
+            "T",
+            "А где радость, у тебя?"
+          ],
+          [
+            "K",
+            "В груди, как лёгкое чувство."
+          ],
+          [
+            "T",
+            "Давай нарисуем контур тела и отметим каждое чувство цветом."
+          ],
+          [
+            "K",
+            "Хорошо, я люблю рисовать."
+          ],
+          [
+            "T",
+            "Какой цвет ты бы дала страху?"
+          ],
+          [
+            "K",
+            "Серый, как пасмурный день."
+          ],
+          [
+            "T",
+            "А радости?"
+          ],
+          [
+            "K",
+            "Жёлтый, как солнце."
+          ],
+          [
+            "T",
+            "Это очень полезный способ — распознавать чувство до того, как оно станет слишком большим."
+          ],
+          [
+            "K",
+            "Никогда не думала об этом цветами раньше."
+          ],
+          [
+            "T",
+            "Можешь показать, где живёт злость?"
+          ],
+          [
+            "K",
+            "Вот тут, в руках, как тугое чувство."
+          ],
+          [
+            "T",
+            "Это очень ценная информация о себе."
+          ],
+          [
+            "K",
+            "Мне понравилось это упражнение."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Практика термометра",
+        "text": [
+          "Ставим числовую оценку текущему чувству с помощью термометра, завершаем на рефлексивной ноте."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Если бы ты сейчас дала этому чувству число, какое было бы?"
+          ],
+          [
+            "K",
+            "Может 3, это меньше, чем было."
+          ],
+          [
+            "T",
+            "Заметила, что помогло это снизить?"
+          ],
+          [
+            "K",
+            "Подышала немного, это помогло."
+          ],
+          [
+            "T",
+            "Это очень хорошее наблюдение."
+          ],
+          [
+            "K",
+            "Спасибо, что научили меня этому."
+          ],
+          [
+            "T",
+            "Можешь каждый день на этой неделе оценивать чувство числом."
+          ],
+          [
+            "K",
+            "Запишу в тетрадь."
+          ],
+          [
+            "T",
+            "Отличная идея, посмотрим вместе в следующий раз."
+          ],
+          [
+            "K",
+            "Хорошо, до встречи."
+          ]
+        ]
+      }
+    ],
+    "homework": "Каждый день выбирай одно чувство и оценивай его интенсивность от 0 до 10 в тетради, вместе с тем, что ты делала в этот момент.",
+    "about": "Формальный инструмент не используется — сам термометр страха служит повторяемым, простым инструментом отслеживания на протяжении сессий.",
+    "specialists": [
+      "Клинический психолог",
+      "Логопед (для младших детей с ограниченным словарём)"
+    ]
+  },
+  {
+    "num": 5,
+    "title": "Навыки когнитивного совладания",
+    "goal": "Познакомить с треугольником мысль-чувство-поведение и начать выявлять бесполезные мысли, связанные с триггерами травмы.",
+    "materials": [
+      "Рабочий лист треугольника мысль-чувство-поведение",
+      "Цветные карандаши"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Введение",
+        "text": [
+          "Открываем сессию проверкой состояния и разбором записи термометра за прошлую неделю, прежде чем перейти к сегодняшней теме."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Röya, сегодня мы посмотрим на связь между мыслями и чувствами."
+          ],
+          [
+            "K",
+            "Звучит сложно."
+          ],
+          [
+            "T",
+            "Начнём с простого примера, не переживай."
+          ],
+          [
+            "K",
+            "Хорошо, слушаю."
+          ],
+          [
+            "T",
+            "Делала упражнение с термометром на прошлой неделе?"
+          ],
+          [
+            "K",
+            "Да, записала три дня."
+          ],
+          [
+            "T",
+            "Замечательно, разберём это чуть позже."
+          ],
+          [
+            "K",
+            "Хорошо."
+          ],
+          [
+            "T",
+            "Как ты себя чувствуешь прямо сейчас, в этот момент?"
+          ],
+          [
+            "K",
+            "Спокойно, но немного устала."
+          ],
+          [
+            "T",
+            "Есть вопрос перед тем, как начнём?"
+          ],
+          [
+            "K",
+            "Нет, сейчас нет."
+          ],
+          [
+            "T",
+            "Тогда давай начнём, устройся поудобнее."
+          ],
+          [
+            "K",
+            "Я готова."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Заполнение треугольника",
+        "text": [
+          "На примере недавнего утра, когда она боялась идти в школу, выстраиваем мысль, чувство и вызванное ими поведение."
+        ],
+        "dialog": [
+          [
+            "T",
+            "На этой неделе было утро, когда ты боялась идти в школу, помнишь?"
+          ],
+          [
+            "K",
+            "Да, в понедельник."
+          ],
+          [
+            "T",
+            "Какая мысль пришла первой в то утро?"
+          ],
+          [
+            "K",
+            "Я подумала, что может снова случиться что-то плохое."
+          ],
+          [
+            "T",
+            "Когда пришла эта мысль, что ты почувствовала в теле?"
+          ],
+          [
+            "K",
+            "Живот заболел, сердце заколотилось."
+          ],
+          [
+            "T",
+            "А потом что ты сделала?"
+          ],
+          [
+            "K",
+            "Сказала маме, что заболела, не хотела идти."
+          ],
+          [
+            "T",
+            "Значит, мысль — страх — избегание, одно вело к другому."
+          ],
+          [
+            "K",
+            "Да, именно так и было."
+          ],
+          [
+            "T",
+            "Давай немного проверим эту мысль — насколько вероятно, что действительно случится что-то плохое?"
+          ],
+          [
+            "K",
+            "Не знаю... может быть, не очень."
+          ],
+          [
+            "T",
+            "Что было в последний раз, когда ты правда пошла в школу?"
+          ],
+          [
+            "K",
+            "Ничего, был обычный день."
+          ],
+          [
+            "T",
+            "Значит, и в тот раз страх не сбылся."
+          ],
+          [
+            "K",
+            "Точно, я забыла об этом."
+          ],
+          [
+            "T",
+            "Если превратить это в одно предложение — более сбалансированную мысль — как бы это звучало?"
+          ],
+          [
+            "K",
+            "Может... 'сегодня может быть обычным днём, как раньше'."
+          ],
+          [
+            "T",
+            "Это очень хорошее предложение получилось."
+          ],
+          [
+            "K",
+            "Спасибо, сейчас мне немного спокойнее."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Сбалансированная мысль",
+        "text": [
+          "Резюмируем треугольник и договариваемся об одном небольшом способе попрактиковать этот навык на предстоящей неделе."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Помнишь треугольник, о котором мы сегодня говорили?"
+          ],
+          [
+            "K",
+            "Мысль, чувство, поведение — все связаны между собой."
+          ],
+          [
+            "T",
+            "Совершенно верно. Сможешь попробовать это один раз на этой неделе?"
+          ],
+          [
+            "K",
+            "Попробую, обещаю."
+          ],
+          [
+            "T",
+            "Если будет трудно, запиши в тетрадь, посмотрим вместе."
+          ],
+          [
+            "K",
+            "Хорошо, запишу."
+          ],
+          [
+            "T",
+            "Как ты себя сейчас чувствуешь?"
+          ],
+          [
+            "K",
+            "Легче, теперь я могу поймать свою мысль."
+          ],
+          [
+            "T",
+            "Это большой шаг вперёд."
+          ],
+          [
+            "K",
+            "Спасибо, до следующей встречи."
+          ]
+        ]
+      }
+    ],
+    "homework": "На этой неделе, когда почувствуешь страх перед школой, запиши мысль, чувство и то, что ты сделала — принеси тетрадь в следующий раз.",
+    "about": "Формальный инструмент не используется — рабочий лист треугольника сам служит рабочим инструментом для этой и следующей сессии.",
+    "specialists": [
+      "Клинический психолог",
+      "Сертифицированный TF-КПТ терапевт"
+    ]
+  },
+  {
+    "num": 6,
+    "title": "Травматический нарратив — начало",
+    "goal": "Начать травматический нарратив с самой безопасной, нейтральной точки, установив, что процесс может идти в темпе клиента.",
+    "materials": [
+      "Пустая тетрадь для нарратива",
+      "Термометр страха"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Подготовка",
+        "text": [
+          "Обозначаю сегодняшнюю работу как немного отличающуюся и напоминаю, что темп полностью в её руках."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Röya, сегодня мы начнём кое-что немного другое — чувствуешь себя готовой?"
+          ],
+          [
+            "K",
+            "Не совсем уверена, немного нервничаю."
+          ],
+          [
+            "T",
+            "Это совершенно нормально, мы никуда не спешим."
+          ],
+          [
+            "K",
+            "Хорошо, от этого мне немного легче."
+          ],
+          [
+            "T",
+            "Ты можешь сказать 'стоп' в любой момент, когда захочешь, помни об этом."
+          ],
+          [
+            "K",
+            "Хорошо, запомню."
+          ],
+          [
+            "T",
+            "Какой у тебя сейчас термометр страха, перед началом?"
+          ],
+          [
+            "K",
+            "Что-то вроде 5."
+          ],
+          [
+            "T",
+            "Отметим это, потом сравним."
+          ],
+          [
+            "K",
+            "Хорошо."
+          ],
+          [
+            "T",
+            "Давай сначала немного подышим, если хочешь."
+          ],
+          [
+            "K",
+            "Да, это поможет."
+          ],
+          [
+            "T",
+            "Дай знать, когда будешь готова."
+          ],
+          [
+            "K",
+            "Я готова сейчас."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Начало истории",
+        "text": [
+          "Начинаем с самой безопасной, обычной части воспоминания — утра до того, как что-либо произошло, — пока не переходя к трудной части."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Давай начнём историю с самого лёгкого момента — как началось то утро?"
+          ],
+          [
+            "K",
+            "Было обычное утро, мы собирались в школу."
+          ],
+          [
+            "T",
+            "Что на тебе было надето, помнишь?"
+          ],
+          [
+            "K",
+            "Моя жёлтая футболка, она моя любимая."
+          ],
+          [
+            "T",
+            "Что вы ели на завтрак?"
+          ],
+          [
+            "K",
+            "Мама приготовила мне омлет."
+          ],
+          [
+            "T",
+            "Что ты почувствовала, садясь потом в машину?"
+          ],
+          [
+            "K",
+            "Ничего особенного, было как обычный день."
+          ],
+          [
+            "T",
+            "Каково было рассказывать эту часть?"
+          ],
+          [
+            "K",
+            "Легко, я совсем не боялась."
+          ],
+          [
+            "T",
+            "Хорошо, именно с этого мы и начинаем — к следующей части пока не переходим."
+          ],
+          [
+            "K",
+            "Хорошо, мне так подходит."
+          ],
+          [
+            "T",
+            "О чём вы говорили с мамой по дороге?"
+          ],
+          [
+            "K",
+            "О школьном проекте."
+          ],
+          [
+            "T",
+            "Проверим твой термометр, пока говорим об этой части — сколько сейчас?"
+          ],
+          [
+            "K",
+            "Около 2, очень низко."
+          ],
+          [
+            "T",
+            "Это прекрасное начало, к следующей части мы не спешим."
+          ],
+          [
+            "K",
+            "Спасибо, не думала, что будет так легко."
+          ],
+          [
+            "T",
+            "В следующий раз пойдём немного дальше, когда ты будешь готова."
+          ],
+          [
+            "K",
+            "Хорошо, думаю, буду готова."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Спокойное завершение",
+        "text": [
+          "Завершаем сессию, сравнивая термометр с началом и признавая мужество, потребовавшееся, чтобы начать."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Какой у тебя сейчас термометр страха?"
+          ],
+          [
+            "K",
+            "4, немного снизился."
+          ],
+          [
+            "T",
+            "Я горжусь тобой за то, что ты это сделала."
+          ],
+          [
+            "K",
+            "Честно, я сама себе удивилась."
+          ],
+          [
+            "T",
+            "Дойти сегодня до этого момента уже требует смелости."
+          ],
+          [
+            "K",
+            "Спасибо."
+          ],
+          [
+            "T",
+            "Когда придёшь домой, будь к себе мягче, это был трудный день."
+          ],
+          [
+            "K",
+            "Хорошо, постараюсь."
+          ],
+          [
+            "T",
+            "В следующий раз продолжим, не торопясь."
+          ],
+          [
+            "K",
+            "Немного жду этого, если честно."
+          ]
+        ]
+      }
+    ],
+    "homework": "Если на этой неделе появятся мысли об этом, запиши заметку — разберём вместе в следующий раз. Не нужно двигаться дальше самостоятельно.",
+    "about": "Это первая сессия нарратива — приближаемся только к самой безопасной, нейтральной части воспоминания; трудное ядро намеренно оставлено для следующих сессий.",
+    "specialists": [
+      "Клинический психолог",
+      "Сертифицированный TF-КПТ терапевт"
+    ]
+  },
+  {
+    "num": 7,
+    "title": "Травматический нарратив — продолжение",
+    "goal": "Постепенно приближаться к более трудной части воспоминания, удерживая дистресс управляемым за счёт темпа и мониторинга.",
+    "materials": [
+      "Тетрадь для нарратива (продолжение)",
+      "Термометр страха"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Начинаем снова",
+        "text": [
+          "Восстанавливаем связь с работой прошлой сессии и проверяем текущий дистресс перед продолжением."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Röya, в прошлый раз мы говорили о начале истории, помнишь?"
+          ],
+          [
+            "K",
+            "Да, помню, было немного трудно."
+          ],
+          [
+            "T",
+            "Думала об этом на этой неделе?"
+          ],
+          [
+            "K",
+            "Пару раз, но не позволяла этому себя захватить."
+          ],
+          [
+            "T",
+            "Это очень хороший баланс."
+          ],
+          [
+            "K",
+            "Спасибо."
+          ],
+          [
+            "T",
+            "Проверим сегодня твой термометр — сколько сейчас?"
+          ],
+          [
+            "K",
+            "Где-то между 4 и 5."
+          ],
+          [
+            "T",
+            "Хорошо, будем за этим следить."
+          ],
+          [
+            "K",
+            "Хорошо."
+          ],
+          [
+            "T",
+            "Сегодня мы продолжим историю, готова?"
+          ],
+          [
+            "K",
+            "Думаю, готова, немного нервничаю."
+          ],
+          [
+            "T",
+            "Нервничать — нормально, пойдём шаг за шагом вместе."
+          ],
+          [
+            "K",
+            "Хорошо, начнём."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Приближение к трудному моменту",
+        "text": [
+          "Осторожно переходим к более трудной части воспоминания, делая паузы для регуляции каждый раз, когда термометр поднимается."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Хочешь продолжить с того места, на котором остановились в прошлый раз?"
+          ],
+          [
+            "K",
+            "Да, помню, где мы остановились."
+          ],
+          [
+            "T",
+            "Помнишь, что случилось сразу после того, как смялась дверь машины?"
+          ],
+          [
+            "K",
+            "Мама какое-то время не разговаривала, я очень испугалась."
+          ],
+          [
+            "T",
+            "Что ты почувствовала в теле в этот момент?"
+          ],
+          [
+            "K",
+            "Всё тело будто заморозилось."
+          ],
+          [
+            "T",
+            "Сейчас, вспоминая это, куда поднялся термометр?"
+          ],
+          [
+            "K",
+            "Стало 7."
+          ],
+          [
+            "T",
+            "Хорошо, давай немного остановимся, подышим вместе."
+          ],
+          [
+            "K",
+            "Хорошо, это помогает."
+          ],
+          [
+            "T",
+            "Тебе сейчас лучше?"
+          ],
+          [
+            "K",
+            "Да, снова опустилось до 5."
+          ],
+          [
+            "T",
+            "Хочешь продолжить, или на сегодня достаточно?"
+          ],
+          [
+            "K",
+            "Думаю, могу продолжить ещё немного."
+          ],
+          [
+            "T",
+            "Потом кто-то пришёл на помощь, помнишь?"
+          ],
+          [
+            "K",
+            "Да, остановился мужчина, позвонил куда-то."
+          ],
+          [
+            "T",
+            "Что ты почувствовала, когда пришла помощь?"
+          ],
+          [
+            "K",
+            "Немного успокоилась, но всё ещё боялась."
+          ],
+          [
+            "T",
+            "Это очень важная деталь — помощь пришла, вы не остались одни."
+          ],
+          [
+            "K",
+            "Правда, я немного об этом забыла."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Завершение",
+        "text": [
+          "Завершаем, признавая трудность проделанной работы, и стабилизируемся перед окончанием."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Ты сегодня рассказала очень важную часть."
+          ],
+          [
+            "K",
+            "Да, было трудно, но я справилась."
+          ],
+          [
+            "T",
+            "Какой у тебя сейчас термометр?"
+          ],
+          [
+            "K",
+            "Около 4, я успокоилась."
+          ],
+          [
+            "T",
+            "Это отличный прогресс."
+          ],
+          [
+            "K",
+            "Спасибо за вашу помощь."
+          ],
+          [
+            "T",
+            "Если дома подумаешь об этом, запиши, разберём вместе."
+          ],
+          [
+            "K",
+            "Хорошо, сделаю."
+          ],
+          [
+            "T",
+            "В следующий раз мы завершим историю."
+          ],
+          [
+            "K",
+            "Хорошо, буду готова."
+          ]
+        ]
+      }
+    ],
+    "homework": "Если появятся мысли или чувства о сегодняшней сессии, запиши их — разберём вместе в следующий раз.",
+    "about": "Эта сессия постепенно приближается к самой трудной точке воспоминания, термометр используется как постоянная проверка дистресса для задания темпа.",
+    "specialists": [
+      "Клинический психолог",
+      "Сертифицированный TF-КПТ терапевт"
+    ]
+  },
+  {
+    "num": 8,
+    "title": "Травматический нарратив — завершение",
+    "goal": "Завершить нарратив как единое целое и начать выстраивать из него новый смысл и перспективу.",
+    "materials": [
+      "Завершённая тетрадь нарратива",
+      "Термометр страха"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Взгляд на всю историю",
+        "text": [
+          "Проверяем неделю и готовимся сегодня полностью завершить нарратив."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Röya, сегодня мы полностью завершим историю, готова?"
+          ],
+          [
+            "K",
+            "Думаю, да, снова немного нервничаю."
+          ],
+          [
+            "T",
+            "Ты уже прошла такой путь, не забывай об этом."
+          ],
+          [
+            "K",
+            "Правда, сейчас это ощущается легче, чем раньше."
+          ],
+          [
+            "T",
+            "Как ты в целом себя чувствовала на этой неделе?"
+          ],
+          [
+            "K",
+            "Лучше, по ночам тоже спала немного спокойнее."
+          ],
+          [
+            "T",
+            "Это очень приятно слышать."
+          ],
+          [
+            "K",
+            "Спасибо."
+          ],
+          [
+            "T",
+            "Проверим термометр перед началом."
+          ],
+          [
+            "K",
+            "Сейчас что-то около 4."
+          ],
+          [
+            "T",
+            "Хорошо, это ниже, чем было, тоже хороший знак."
+          ],
+          [
+            "K",
+            "Да, я сама это заметила."
+          ],
+          [
+            "T",
+            "Начнём, когда будешь готова."
+          ],
+          [
+            "K",
+            "Я готова."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Новая перспектива",
+        "text": [
+          "Завершаем оставшуюся часть истории и вместе находим в ней новый смысл."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Давай сегодня закончим оставшуюся часть истории, до момента, когда вы добрались до больницы."
+          ],
+          [
+            "K",
+            "Хорошо, помню, врач нас осмотрел."
+          ],
+          [
+            "T",
+            "О чём ты подумала в тот момент, в больнице?"
+          ],
+          [
+            "K",
+            "Подумала, что теперь мы в безопасности."
+          ],
+          [
+            "T",
+            "Это очень важная мысль — опасность закончилась."
+          ],
+          [
+            "K",
+            "Да, сейчас я это лучше понимаю."
+          ],
+          [
+            "T",
+            "Что ты почувствовала, добравшись домой?"
+          ],
+          [
+            "K",
+            "Устала, но была рада, что мы обе живы."
+          ],
+          [
+            "T",
+            "Если сейчас посмотреть на всю историю от начала до конца, какая часть для тебя самая важная?"
+          ],
+          [
+            "K",
+            "Наверное, часть, где пришла помощь."
+          ],
+          [
+            "T",
+            "Почему ты так думаешь?"
+          ],
+          [
+            "K",
+            "Потому что мы не были одни, кто-то нам помог."
+          ],
+          [
+            "T",
+            "Это очень красивый смысл, извлечённый из этой истории."
+          ],
+          [
+            "K",
+            "Да, я раньше об этом так не думала."
+          ],
+          [
+            "T",
+            "Какой сейчас термометр, когда рассказываешь всю историю?"
+          ],
+          [
+            "K",
+            "3, намного ниже, чем было."
+          ],
+          [
+            "T",
+            "Это большая перемена, заметила её?"
+          ],
+          [
+            "K",
+            "Да, теперь это уже не так тяжело."
+          ],
+          [
+            "T",
+            "Теперь ты можешь нести эту историю с собой, не боясь её."
+          ],
+          [
+            "K",
+            "Спасибо, чувствую себя легко."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Полное прочтение",
+        "text": [
+          "Отмечаем завершение нарратива как настоящее достижение и в последний раз проверяем термометр."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Ты сегодня полностью закончила историю, это большой шаг."
+          ],
+          [
+            "K",
+            "Да, не верится, что я справилась."
+          ],
+          [
+            "T",
+            "Ты справилась сама — я была просто рядом."
+          ],
+          [
+            "K",
+            "Спасибо за вашу помощь."
+          ],
+          [
+            "T",
+            "Какой у тебя термометр сейчас, когда всё закончено?"
+          ],
+          [
+            "K",
+            "3, остаётся стабильным."
+          ],
+          [
+            "T",
+            "Это прекрасный результат."
+          ],
+          [
+            "K",
+            "Я тоже так думаю."
+          ],
+          [
+            "T",
+            "На следующей сессии перейдём к другим темам, не связанным с этой историей."
+          ],
+          [
+            "K",
+            "Хорошо, это тоже интересно."
+          ]
+        ]
+      }
+    ],
+    "homework": "Если хочешь, прочитай маме на этой неделе свою законченную историю и заметь, каково это — поделиться ею.",
+    "about": "Эта сессия завершает травматический нарратив и смещает фокус на создание смысла — собственное понимание клиентом того, что теперь представляет собой этот опыт.",
+    "specialists": [
+      "Клинический психолог",
+      "Сертифицированный TF-КПТ терапевт"
+    ]
+  },
+  {
+    "num": 9,
+    "title": "Когнитивная обработка",
+    "goal": "Выявить и мягко подвергнуть сомнению искажённые убеждения, связанные с травмой, особенно самообвинение.",
+    "materials": [
+      "Рабочий лист проверки мыслей",
+      "Ручка и тетрадь"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Тяжёлая мысль",
+        "text": [
+          "Открываем сессию, называя частое искажение после травмы — самообвинение — и проверяя, применимо ли оно здесь."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Röya, сегодня мы посмотрим на некоторые твои мысли о себе."
+          ],
+          [
+            "K",
+            "Какие мысли?"
+          ],
+          [
+            "T",
+            "Например, были моменты, когда ты винила себя за случившееся?"
+          ],
+          [
+            "K",
+            "Иногда думаю, что если бы я сделала что-то иначе, может, этого бы не случилось."
+          ],
+          [
+            "T",
+            "Я часто слышу эту мысль, ты не одна такая."
+          ],
+          [
+            "K",
+            "Правда?"
+          ],
+          [
+            "T",
+            "Да, многие дети так думают, но обычно это неправда."
+          ],
+          [
+            "K",
+            "Не знаю, иногда всё же верю в это."
+          ],
+          [
+            "T",
+            "Хочешь сегодня проверить эту мысль вместе?"
+          ],
+          [
+            "K",
+            "Да, хочу."
+          ],
+          [
+            "T",
+            "Сколько раз на этой неделе приходила эта мысль?"
+          ],
+          [
+            "K",
+            "Несколько раз, особенно по ночам."
+          ],
+          [
+            "T",
+            "Спасибо, что рассказала, это нам сегодня поможет."
+          ],
+          [
+            "K",
+            "Хорошо."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Проверка вопросами",
+        "text": [
+          "Используем сократический диалог, чтобы проверить убеждение в самообвинении на фоне реальных фактов ситуации."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Ты сказала, что иногда винишь себя. Что именно ты думаешь?"
+          ],
+          [
+            "K",
+            "Может, если бы я была внимательнее, аварии бы не было."
+          ],
+          [
+            "T",
+            "В тот день машину вела ты?"
+          ],
+          [
+            "K",
+            "Нет, конечно нет, я сидела сзади."
+          ],
+          [
+            "T",
+            "Значит, решение было не в твоих руках."
+          ],
+          [
+            "K",
+            "Это правда, но всё равно иногда так думаю."
+          ],
+          [
+            "T",
+            "Это чувство понятно, но давай посмотрим на факты — сколько тебе было лет тогда?"
+          ],
+          [
+            "K",
+            "Мне было 8."
+          ],
+          [
+            "T",
+            "Может ли 8-летний ребёнок предотвратить автомобильную аварию?"
+          ],
+          [
+            "K",
+            "Нет, не думаю."
+          ],
+          [
+            "T",
+            "А кто принимал решения на дороге — скорость, направление?"
+          ],
+          [
+            "K",
+            "Взрослые, водители."
+          ],
+          [
+            "T",
+            "Значит, это не было тем, что находилось под твоим контролем."
+          ],
+          [
+            "K",
+            "Да... сейчас это выглядит немного иначе."
+          ],
+          [
+            "T",
+            "Если бы твоя лучшая подруга сказала тебе то же самое о себе, что бы ты ей ответила?"
+          ],
+          [
+            "K",
+            "Сказала бы, что это не её вина."
+          ],
+          [
+            "T",
+            "А почему ты не говоришь то же самое себе?"
+          ],
+          [
+            "K",
+            "Не знаю, может, я к себе строже."
+          ],
+          [
+            "T",
+            "Это очень ценное осознание сегодня."
+          ],
+          [
+            "K",
+            "Да, сейчас мне немного легче."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Новая мысль",
+        "text": [
+          "Превращаем сегодняшнее осознание в короткую фразу, которую она сможет держать в голове в течение недели."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Что ты сегодня научилась говорить себе?"
+          ],
+          [
+            "K",
+            "Это не моя вина, я была ребёнком."
+          ],
+          [
+            "T",
+            "Сможешь повторять себе эту фразу на этой неделе?"
+          ],
+          [
+            "K",
+            "Попробую, запишу на листке."
+          ],
+          [
+            "T",
+            "Отличная идея, повесь там, где будешь видеть."
+          ],
+          [
+            "K",
+            "Хорошо, повешу у себя в комнате."
+          ],
+          [
+            "T",
+            "Как ты себя чувствуешь, уходя сегодня?"
+          ],
+          [
+            "K",
+            "Легче, честно, не ожидала этого."
+          ],
+          [
+            "T",
+            "Это была твоя собственная работа, я только задавала вопросы."
+          ],
+          [
+            "K",
+            "Спасибо, снова."
+          ]
+        ]
+      }
+    ],
+    "homework": "Напиши свою новую фразу — 'это не моя вина' — там, где будешь видеть её каждый день, и замечай, когда приходит старая мысль.",
+    "about": "Формальный инструмент не используется — когнитивная обработка здесь проводится через сократический диалог, направленный на конкретное выявленное убеждение самообвинения.",
+    "specialists": [
+      "Клинический психолог",
+      "Сертифицированный TF-КПТ терапевт"
+    ]
+  },
+  {
+    "num": 10,
+    "title": "In-vivo экспозиция",
+    "goal": "Построить постепенный план встречи с избегаемыми, но реально безопасными ситуациями, начиная с самого лёгкого шага.",
+    "materials": [
+      "Список избегаемых ситуаций",
+      "Шаблон лестницы экспозиции"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Избегаемые вещи",
+        "text": [
+          "Вместе определяем ситуации, которые всё ещё избегаются, готовясь построить постепенную лестницу."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Röya, сегодня хочу вместе посмотреть на то, что ты избегаешь."
+          ],
+          [
+            "K",
+            "Хорошо, например, звук машины."
+          ],
+          [
+            "T",
+            "Что ещё можешь вспомнить?"
+          ],
+          [
+            "K",
+            "Иногда избегаю сидеть у окна."
+          ],
+          [
+            "T",
+            "Запишем это, потом расставим по порядку."
+          ],
+          [
+            "K",
+            "Хорошо."
+          ],
+          [
+            "T",
+            "Записывала на этой неделе фразу, которую говоришь себе?"
+          ],
+          [
+            "K",
+            "Да, прочитала её себе дважды."
+          ],
+          [
+            "T",
+            "Каково было её читать?"
+          ],
+          [
+            "K",
+            "Почувствовала себя немного сильнее."
+          ],
+          [
+            "T",
+            "Это очень хороший знак."
+          ],
+          [
+            "K",
+            "Спасибо."
+          ],
+          [
+            "T",
+            "Сегодня начнём с маленьких шагов, не торопясь."
+          ],
+          [
+            "K",
+            "Хорошо, готова."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Построение лестницы",
+        "text": [
+          "Располагаем избегаемые ситуации от самой лёгкой до самой трудной, присваивая каждой номер по термометру страха."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Давай расставим эти ситуации по порядку, от самой лёгкой до самой трудной."
+          ],
+          [
+            "K",
+            "Хорошо, сидеть у окна кажется самым лёгким."
+          ],
+          [
+            "T",
+            "Какое число по термометру ты бы дала этому?"
+          ],
+          [
+            "K",
+            "Может, 3."
+          ],
+          [
+            "T",
+            "А где в этом порядке звук машины?"
+          ],
+          [
+            "K",
+            "Это труднее, может 7."
+          ],
+          [
+            "T",
+            "Что находится между этими двумя?"
+          ],
+          [
+            "K",
+            "Может, короткая поездка на машине с мамой."
+          ],
+          [
+            "T",
+            "Хорошо, поставим это примерно на 5."
+          ],
+          [
+            "K",
+            "Мне этот порядок кажется логичным."
+          ],
+          [
+            "T",
+            "Начнём с самого лёгкого шага и будем постепенно двигаться выше."
+          ],
+          [
+            "K",
+            "Мне нравится, что без спешки."
+          ],
+          [
+            "T",
+            "Есть ли в этом списке что-то, к чему ты ещё не готова?"
+          ],
+          [
+            "K",
+            "Звук машины, пока нет."
+          ],
+          [
+            "T",
+            "Это совершенно нормально, мы не будем этого касаться, пока ты не будешь готова."
+          ],
+          [
+            "K",
+            "Спасибо, что не заставляете."
+          ],
+          [
+            "T",
+            "Эта лестница твоя, пойдём в твоём темпе."
+          ],
+          [
+            "K",
+            "Мне это нравится."
+          ],
+          [
+            "T",
+            "Какой шаг хочешь попробовать на этой неделе?"
+          ],
+          [
+            "K",
+            "Шаг с окном, думаю, справлюсь."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Конкретизация",
+        "text": [
+          "Договариваемся об одном конкретном небольшом шаге для практики на этой неделе и о том, как она будет его отслеживать."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Выберем самый лёгкий шаг на эту неделю — что это будет?"
+          ],
+          [
+            "K",
+            "Может, посидеть у окна пять минут."
+          ],
+          [
+            "T",
+            "Отличный выбор, сколько раз попробуешь?"
+          ],
+          [
+            "K",
+            "Буду пробовать раз в день."
+          ],
+          [
+            "T",
+            "Если станет трудно, можешь остановиться, обязательства нет."
+          ],
+          [
+            "K",
+            "Хорошо, теперь я это знаю."
+          ],
+          [
+            "T",
+            "Запиши результат в тетрадь, разберём вместе в следующий раз."
+          ],
+          [
+            "K",
+            "Хорошо, запишу."
+          ],
+          [
+            "T",
+            "Ты сегодня сделала смелый шаг, молодец."
+          ],
+          [
+            "K",
+            "Спасибо, я тоже собой горжусь."
+          ]
+        ]
+      }
+    ],
+    "homework": "Практикуй сидение у окна по пять минут раз в день на этой неделе и отмечай число термометра страха до и после каждой попытки.",
+    "about": "Эта сессия выстраивает иерархию экспозиции, которая будет направлять дальнейшую in-vivo работу — формальный инструмент, помимо собственных оценок термометра клиента, не используется.",
+    "specialists": [
+      "Клинический психолог",
+      "Сертифицированный TF-КПТ терапевт"
+    ]
+  },
+  {
+    "num": 11,
+    "title": "Совместная сессия родитель-ребёнок",
+    "goal": "Разделить часть истории и прогресса ребёнка в присутствии родителя, укрепить семейную связь и поддержку.",
+    "materials": [
+      "Собственные записи клиента и карточка с фразой",
+      "Салфетки (на всякий случай, под рукой)"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Согласие",
+        "text": [
+          "Прежде чем пригласить родителя, проверяю, чем ребёнку комфортно поделиться, и получаю явное согласие."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Röya, сегодня к нам присоединится твоя мама, как ты к этому относишься?"
+          ],
+          [
+            "K",
+            "Хорошо, хочу, чтобы она тоже знала."
+          ],
+          [
+            "T",
+            "Сначала поговорим вдвоём, потом пригласим маму, подходит?"
+          ],
+          [
+            "K",
+            "Подходит."
+          ],
+          [
+            "T",
+            "Какой частью хочешь поделиться с мамой?"
+          ],
+          [
+            "K",
+            "Может, той фразой с карточки — что это не моя вина."
+          ],
+          [
+            "T",
+            "Это прекрасный выбор."
+          ],
+          [
+            "K",
+            "Спасибо."
+          ],
+          [
+            "T",
+            "Когда будешь готова, пригласить маму в комнату?"
+          ],
+          [
+            "K",
+            "Да, готова сейчас."
+          ],
+          [
+            "T",
+            "(мама входит) Рады видеть — сегодня Röya хочет с вами кое-чем поделиться."
+          ],
+          [
+            "K",
+            "Мама, я хочу тебе кое-что сказать."
+          ],
+          [
+            "T",
+            "Начинай, когда будешь готова, Röya."
+          ],
+          [
+            "K",
+            "Хорошо... немного нервничаю, но скажу."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Совместная сессия",
+        "text": [
+          "Röya делится своей фразой и частью своего прогресса; терапевт поддерживает реакцию родителя и закрепляет послание."
+        ],
+        "dialog": [
+          [
+            "K",
+            "Мама, я думала, что авария — моя вина."
+          ],
+          [
+            "T",
+            "(матери) Это то, над чем мы с Röya вместе работали на наших сессиях."
+          ],
+          [
+            "M",
+            "Но теперь я знаю, что это неправда, я была просто ребёнком, сидевшим сзади."
+          ],
+          [
+            "T",
+            "Как вам, услышать это от неё?"
+          ],
+          [
+            "M",
+            "У меня сердце сжимается, что она это несла, я так рада, что она это сказала."
+          ],
+          [
+            "T",
+            "Röya, есть что-то ещё, что ты хочешь, чтобы мама знала?"
+          ],
+          [
+            "K",
+            "Со звуками машин мне тоже стало немного легче теперь."
+          ],
+          [
+            "T",
+            "Это реальный, измеримый прогресс — поздравляю вас обеих."
+          ],
+          [
+            "M",
+            "Я так тобой горжусь, Röya."
+          ],
+          [
+            "T",
+            "Хочешь показать маме дыхательное упражнение, которому научилась?"
+          ],
+          [
+            "K",
+            "Да, могу показать."
+          ],
+          [
+            "T",
+            "Начинай, когда будешь готова."
+          ],
+          [
+            "K",
+            "Хорошо, смотри, мама — вдох на 4, задержка на 4..."
+          ],
+          [
+            "T",
+            "Это вы можете практиковать вместе и дома."
+          ],
+          [
+            "M",
+            "Хочу этого, будем делать вместе."
+          ],
+          [
+            "T",
+            "Это была очень значимая сессия для вас обеих сегодня."
+          ],
+          [
+            "K",
+            "Честно, сейчас мне немного легче."
+          ],
+          [
+            "T",
+            "Это прекрасно слышать."
+          ],
+          [
+            "M",
+            "Спасибо, что провели нас через это."
+          ],
+          [
+            "T",
+            "Эту работу проделали вы обе — я была просто рядом."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Семейный ритуал",
+        "text": [
+          "Завершаем, договариваясь о небольшом общем ритуале, который семья сможет поддерживать дома."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Сегодня между вами получился прекрасный разговор."
+          ],
+          [
+            "K",
+            "Да, чувствую, что мама теперь понимает меня лучше."
+          ],
+          [
+            "T",
+            "Хотите завести дома небольшой ритуал, чтобы это продолжалось?"
+          ],
+          [
+            "K",
+            "Может, разговаривать по пять минут каждый вечер."
+          ],
+          [
+            "T",
+            "Отличная идея, попробуйте это на этой неделе."
+          ],
+          [
+            "K",
+            "Хорошо, попробуем."
+          ],
+          [
+            "T",
+            "Как ты себя чувствуешь, Röya?"
+          ],
+          [
+            "K",
+            "Легко, когда мама рядом, я чувствую себя сильнее."
+          ],
+          [
+            "T",
+            "Это очень красивая связь между вами."
+          ],
+          [
+            "K",
+            "Спасибо за сегодня."
+          ]
+        ]
+      }
+    ],
+    "homework": "Выделяйте пять минут каждый вечер на этой неделе для ритуала 'как прошёл день', всей семьёй, без шквала вопросов.",
+    "about": "Эта сессия напрямую вовлекает родителя в работу — формальный инструмент не используется, акцент на отношениях: разделении прогресса и укреплении системы семейной поддержки.",
+    "specialists": [
+      "Клинический психолог",
+      "Сертифицированный TF-КПТ терапевт",
+      "Семейный терапевт (для совместного компонента)"
+    ]
+  },
+  {
+    "num": 12,
+    "title": "План безопасности и завершение",
+    "goal": "Закрепить навыки, полученные за программу, отметить достигнутый прогресс и построить конкретный план безопасности на будущее.",
+    "materials": [
+      "Шаблон плана безопасности",
+      "Карточка с итогом навыков"
+    ],
+    "phases": [
+      {
+        "name": "🟢 Взгляд назад",
+        "text": [
+          "Сравниваю сегодняшнее состояние с самой первой оценкой, позволяя клиенту самой назвать перемену."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Röya, это наша последняя сессия в рамках этой программы — как ты к этому относишься?"
+          ],
+          [
+            "K",
+            "Немного странно, но чувствую себя готовой."
+          ],
+          [
+            "T",
+            "Помнишь день, когда ты впервые сюда пришла?"
+          ],
+          [
+            "K",
+            "Да, я тогда очень боялась, даже говорить не хотела."
+          ],
+          [
+            "T",
+            "Сравнивая с тем, что ты видишь сейчас, в чём разница?"
+          ],
+          [
+            "K",
+            "Сейчас я спокойнее, могу разговаривать."
+          ],
+          [
+            "T",
+            "Это большой путь, который ты прошла."
+          ],
+          [
+            "K",
+            "Спасибо за вашу помощь."
+          ],
+          [
+            "T",
+            "Каким был твой термометр за эту последнюю неделю в целом?"
+          ],
+          [
+            "K",
+            "В основном между 2 и 3 большинство дней."
+          ],
+          [
+            "T",
+            "Это огромная разница по сравнению с прежними 7 или 8."
+          ],
+          [
+            "K",
+            "Да, я тоже это вижу."
+          ],
+          [
+            "T",
+            "Сегодня мы соберём всё, чему ты научилась, в одном месте."
+          ],
+          [
+            "K",
+            "Хорошо, готова."
+          ]
+        ]
+      },
+      {
+        "name": "🔵 Ящик инструментов",
+        "text": [
+          "Клиент сама решает, к какому навыку обратится в каждом виде трудного момента."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Что изменилось для тебя за всю программу?"
+          ],
+          [
+            "K",
+            "Кое-что стало намного лучше, но не всё полностью решено."
+          ],
+          [
+            "T",
+            "Что для тебя всё ещё трудно?"
+          ],
+          [
+            "K",
+            "Несколько вещей, но теперь я знаю, как к ним подходить."
+          ],
+          [
+            "T",
+            "Как ты будешь поддерживать эти навыки дальше?"
+          ],
+          [
+            "K",
+            "Не совсем уверена, постараюсь их помнить."
+          ],
+          [
+            "T",
+            "Какой навык из всего, что мы практиковали, помог больше всего?"
+          ],
+          [
+            "K",
+            "Дыхательный, точно."
+          ],
+          [
+            "T",
+            "А что ты сделаешь, если вернётся страх звука машины?"
+          ],
+          [
+            "K",
+            "Сначала подышу, потом, может, прочитаю карточку с фразой."
+          ],
+          [
+            "T",
+            "Это очень надёжный план."
+          ],
+          [
+            "K",
+            "Спасибо, чувствую себя готовой."
+          ],
+          [
+            "T",
+            "Если наступит трудный момент, и этих инструментов не хватит, что ты сделаешь?"
+          ],
+          [
+            "K",
+            "Скажу маме, или вернусь к вам, если понадобится."
+          ],
+          [
+            "T",
+            "Именно так — эта дверь всегда будет открыта."
+          ],
+          [
+            "K",
+            "Знать это делает меня спокойнее."
+          ],
+          [
+            "T",
+            "За эти месяцы ты построила для себя настоящий ящик инструментов."
+          ],
+          [
+            "K",
+            "Я этим горжусь, честно."
+          ],
+          [
+            "T",
+            "Возьми этот ящик с собой, Röya."
+          ],
+          [
+            "K",
+            "Возьму, спасибо ещё раз за всё."
+          ]
+        ]
+      },
+      {
+        "name": "🟣 Заметка на будущее",
+        "text": [
+          "Сессия завершается теплотой, подтверждая проделанную работу и оставляя дверь открытой на будущее."
+        ],
+        "dialog": [
+          [
+            "T",
+            "Хотя эта программа заканчивается, эти инструменты навсегда остаются твоими."
+          ],
+          [
+            "K",
+            "Запомню их, особенно дыхательный."
+          ],
+          [
+            "T",
+            "К кому ты можешь обратиться, если станет трудно?"
+          ],
+          [
+            "K",
+            "К маме, или снова к вам, если понадобится."
+          ],
+          [
+            "T",
+            "Именно так, эта дверь всегда открыта."
+          ],
+          [
+            "K",
+            "Спасибо, за всё."
+          ],
+          [
+            "T",
+            "Работать с тобой значило для меня очень много."
+          ],
+          [
+            "K",
+            "Для меня тоже, чувствую себя иначе, чем раньше."
+          ],
+          [
+            "T",
+            "Неси эту перемену с собой, Röya."
+          ],
+          [
+            "K",
+            "Понесу, спасибо ещё раз."
+          ]
+        ]
+      }
+    ],
+    "homework": "Держи план безопасности на видном месте (например, в своей комнате) и обращайся к нему, когда нужно.",
+    "about": "Эта завершающая сессия — не оценка, а закрепление и построение плана поддержки на будущее.",
+    "specialists": [
+      "Клинический психолог",
+      "TF-КПТ терапевт",
+      "Социальный работник (для координации)"
+    ]
+  }
+];
+
+function renderSession(s){
+  let html = `<span class="m-tag">Сессия ${s.num} / 12</span><h3 class="m-title">${s.title}</h3>`;
+  html += `<div class="m-block"><h5>🎯 Цель сессии</h5><div class="m-goal">${s.goal}</div></div>`;
+  html += `<div class="m-block"><h5>🧰 Необходимые материалы</h5><div class="m-materials">${s.materials.map(m=>`<span>${m}</span>`).join('')}</div></div>`;
+  html += `<div class="m-block"><h5>📋 Ход сессии</h5>`;
+  s.phases.forEach(ph=>{
+    html += `<div class="m-phase"><div class="ph-name">${ph.name}</div>`;
+    (ph.text||[]).forEach(t=>{ html += `<p>${t}</p>`; });
+    if(ph.dialog && ph.dialog.length){
+      html += `<div class="m-dialog">`;
+      ph.dialog.forEach(d=>{
+        const who = d[0]==='T' ? 'Терапевт' : (d[0]==='K' ? 'Клиент' : (d[0]==='M' ? 'Мать' : d[0]));
+        const cls = d[0]==='T' ? 't' : 'k';
+        html += `<div class="dl"><span class="dw ${cls}">${who}:</span><span class="dt">${d[1]}</span></div>`;
+      });
+      html += `</div>`;
+    }
+    html += `</div>`;
+  });
+  html += `</div>`;
+  html += `<div class="m-block"><h5>📝 Домашнее задание</h5><div class="m-homework">${s.homework}</div></div>`;
+  html += `<div class="m-nextprev">
+    <div class="m-navbtn ${s.num<=1?'disabled':''}" onclick="openSession(${s.num-1})">◂ Предыдущая сессия</div>
+    <div class="m-navbtn ${s.num>=12?'disabled':''}" onclick="openSession(${s.num+1})">Следующая сессия ▸</div>
+  </div>`;
+  return html;
+}
+
+function openSession(n){
+  const s = SESSIONS.find(x=>x.num===n);
+  if(!s) return;
+  document.getElementById('modalContent').innerHTML = renderSession(s);
+  document.getElementById('modalOverlay').classList.add('active');
+  document.body.classList.add('modal-open');
+  document.getElementById('modalOverlay').scrollTop = 0;
+  document.querySelector('.modal-box').scrollTop = 0;
+}
+function closeSession(){
+  document.getElementById('modalOverlay').classList.remove('active');
+  document.body.classList.remove('modal-open');
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeSession(); });
+</script>
+<script src="../protect.js" defer></script>
+<script src="../engine.js"></script>
+
+<div class="modal-overlay" id="programModalOverlay" onclick="if(event.target===this)closeProgram()">
+  <div class="modal-box">
+    <div class="modal-close" onclick="closeProgram()">✕</div>
+    <div id="programModalContent"></div>
+  </div>
+</div>
+
+
+
+</body>
+</html>
