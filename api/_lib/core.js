@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const fs = require('fs');
 const path = require('path');
 const db = require('./db');
 
@@ -88,9 +89,11 @@ function slugOf(course) {
   return contentSlugs().find((s) => new RegExp('/' + s + '(/|$)').test(url)) || null;
 }
 
-function courseHref(course) {
+function courseHref(course, lang) {
   const slug = slugOf(course);
-  return slug ? `/kurs/${slug}/` : (course && course.url) || '';
+  if (!slug) return (course && course.url) || '';
+  const sub = LANGS.includes(lang) && fs.existsSync(path.join(CONTENT_DIR, slug, lang, 'index.html')) ? lang + '/' : '';
+  return `/kurs/${slug}/${sub}`;
 }
 
 let coursesCache = null;
@@ -130,7 +133,7 @@ async function customerCourses(customer, lang) {
     .filter((id) => courses[id])
     .map((id) => {
       const c = localize(id, courses[id], lang);
-      return { name: c.name, slug: slugOf(courses[id]), href: courseHref(courses[id]) };
+      return { name: c.name, slug: slugOf(courses[id]), href: courseHref(courses[id], lang) };
     });
 }
 

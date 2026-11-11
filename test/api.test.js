@@ -112,6 +112,18 @@ test('kurs siyahısı dilə görə tərcümə olunur, bilinməyən dil AZ qalır
   await require('../api/_lib/core').getCourses(true);
 });
 
+test('giriş edən müştərinin kurs linki seçilmiş dilin səhifəsinə aparır', async () => {
+  const az = await login({ acceptTerms: true });
+  assert.equal(az.body.courses[0].href, '/kurs/kurs_13/');
+  const r = await call('login', { method: 'POST', query: { lang: 'tr' }, body: { phone: '+994 50 111 22 33', password: 'parol123', device: DEVICE, acceptTerms: true } });
+  assert.equal(r.body.courses[0].href, '/kurs/kurs_13/tr/');
+  const s = await call('session', { cookie: r.cookie, query: { lang: 'ru' } });
+  assert.equal(s.body.courses[0].href, '/kurs/kurs_13/ru/');
+  const c = store.customers['994501112233'];
+  delete c.termsAccepted; delete c.termsAcceptedAt; c.devices = [];
+  for (const k of Object.keys(store.sessions || {})) delete store.sessions[k];
+});
+
 test('sessiyasız məzmun verilmir', async () => {
   const r = await call('content', { query: { slug: 'kurs_13', p: 'index.html' }, url: '/kurs/kurs_13/index.html' });
   assert.equal(r.status, 302);

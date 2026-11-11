@@ -21,6 +21,7 @@ function watermark(phone) {
 }
 
 const LOGOUT_LABEL = { en: 'Log out', ru: 'Выйти', tr: 'Çıkış' };
+const PORTAL_HOME = { en: '/en/', ru: '/ru/', tr: '/tr/' };
 const PILL = 'display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border-radius:999px;' +
   'background:rgba(12,33,31,0.92);border:1px solid rgba(217,168,90,0.45);color:#f3eee1;' +
   'font:600 13px/1 Inter,system-ui,sans-serif;text-decoration:none;cursor:pointer;';
@@ -30,7 +31,7 @@ const PILL = 'display:inline-flex;align-items:center;min-height:40px;padding:0 1
 function portalBar(rel) {
   const label = LOGOUT_LABEL[rel.split('/')[0]] || 'Çıxış';
   return `<div style="position:fixed;left:10px;bottom:10px;z-index:9999;display:flex;gap:6px;">` +
-    `<a href="/" style="${PILL}">← Portal</a>` +
+    `<a href="${PORTAL_HOME[rel.split('/')[0]] || '/'}" style="${PILL}">← Portal</a>` +
     `<button type="button" id="anLogoutBtn" style="${PILL}">${label}</button></div>` +
     `<script>document.getElementById('anLogoutBtn').addEventListener('click',function(){` +
     `this.disabled=true;Promise.all([fetch('/api/session',{method:'DELETE'}),` +
