@@ -29,6 +29,14 @@ module.exports = async (req, res) => {
   let rel = [].concat(req.query.p || []).join('/');
   if (!core.contentSlugs().includes(slug)) return res.status(404).send('Tapılmadı');
 
+  // Səhifələrdəki nisbi linklər qovluq ünvanının "/" ilə bitməsinə söykənir.
+  const asked = String(req.url || '').split('?')[0];
+  if (rel === '' && asked.startsWith('/kurs/') && !asked.endsWith('/')) {
+    res.statusCode = 302;
+    res.setHeader('Location', `/kurs/${slug}/`);
+    return res.end();
+  }
+
   try {
     const sess = await core.getSession(req);
     const courses = sess ? await core.customerCourses(sess.customer) : [];
@@ -38,13 +46,6 @@ module.exports = async (req, res) => {
       return res.end();
     }
 
-    // Səhifələrdəki nisbi linklər qovluq ünvanının "/" ilə bitməsinə söykənir.
-    const asked = String(req.url || '').split('?')[0];
-    if (rel === '' && asked.startsWith('/kurs/') && !asked.endsWith('/')) {
-      res.statusCode = 302;
-      res.setHeader('Location', `/kurs/${slug}/`);
-      return res.end();
-    }
     if (rel === '' || rel.endsWith('/')) rel += 'index.html';
     const base = path.join(core.CONTENT_DIR, slug);
     const file = path.normalize(path.join(base, rel));
