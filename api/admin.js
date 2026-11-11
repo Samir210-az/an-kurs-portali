@@ -1,9 +1,12 @@
 const core = require('./_lib/core');
 const { db } = core;
 
-// ADMIN_PIN_HASH təyin olunmayıbsa köhnə portalda işlənən PIN-in SHA-256 hash-i qüvvədədir.
+// PIN mənbəyi: ADMIN_PIN_HASH (SHA-256), yoxdursa ADMIN_PIN (düz mətn, Vercel-də Sensitive).
+// Heç biri təyin olunmayıbsa köhnə portalda işlənən PIN-in hash-i qüvvədədir.
 const PIN_HASH = process.env.ADMIN_PIN_HASH ||
-  'a0e517d37e8d21b24dc3b8aed38954353019618e2b2552b44bb55dddb52a7b15';
+  (process.env.ADMIN_PIN
+    ? require('crypto').createHash('sha256').update(process.env.ADMIN_PIN).digest('hex')
+    : 'a0e517d37e8d21b24dc3b8aed38954353019618e2b2552b44bb55dddb52a7b15');
 
 function publicCustomer(c) {
   return {

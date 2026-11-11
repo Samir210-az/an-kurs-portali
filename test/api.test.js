@@ -231,3 +231,29 @@ test('FIREBASE_DB_SECRET sorğulara auth parametri əlavə edir', async () => {
     delete process.env.FIREBASE_DB_SECRET;
   }
 });
+
+test('ADMIN_PIN düz mətn dəyişəni PIN-i təyin edir', async () => {
+  const saved = process.env.ADMIN_PIN_HASH;
+  delete process.env.ADMIN_PIN_HASH;
+  process.env.ADMIN_PIN = 'yeni-pin-123';
+  const key = require.resolve('../api/admin');
+  const cached = require.cache[key];
+  delete require.cache[key];
+  try {
+    const fresh = require('../api/admin');
+    const out = { status: 200, body: undefined };
+    const res = {
+      setHeader() {}, getHeader() {}, status(c) { out.status = c; return res; },
+      json(v) { out.body = v; return res; }, send(v) { out.body = v; return res; }, end() { return res; },
+    };
+    const mk = (pin) => ({ method: 'POST', url: '/api/admin', headers: { host: 'kurs.test', origin: 'https://kurs.test', cookie: '' }, body: { action: 'login', pin }, socket: { remoteAddress: '9.9.9.9' } });
+    await fresh(mk('sinaq-pin'), res);
+    assert.notEqual(out.status, 200);
+    await fresh(mk('yeni-pin-123'), res);
+    assert.equal(out.status, 200);
+  } finally {
+    delete process.env.ADMIN_PIN;
+    process.env.ADMIN_PIN_HASH = saved;
+    require.cache[key] = cached;
+  }
+});

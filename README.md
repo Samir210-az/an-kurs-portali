@@ -23,7 +23,9 @@ Kursun bazadakı linkində (`courses/<id>/url`) repo adı keçməlidir, məsəl�
 | Ad | Nə üçündür |
 | --- | --- |
 | `FIREBASE_SERVICE_ACCOUNT` | Service account JSON-u. Baza rules bağlanandan sonra məcburidir |
+| `FIREBASE_DB_SECRET` | Service account əvəzinə database secret; ikisi də varsa secret işlənir |
 | `ADMIN_PIN_HASH` | Admin PIN-in SHA-256 hash-i |
+| `ADMIN_PIN` | Admin PIN düz mətn kimi (Vercel-də Sensitive); ADMIN_PIN_HASH yoxdursa işlənir |
 | `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` | Yeni qeydiyyat bildirişi |
 
 ## Kursu yeniləmək
