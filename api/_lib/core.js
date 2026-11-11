@@ -92,7 +92,7 @@ function slugOf(course) {
 function courseHref(course, lang) {
   const slug = slugOf(course);
   if (!slug) return (course && course.url) || '';
-  const sub = LANGS.includes(lang) && fs.existsSync(path.join(CONTENT_DIR, slug, lang, 'index.html')) ? lang + '/' : '';
+  const sub = LANGS.includes(lang) && fs.existsSync(path.join(CONTENT_DIR, slug, lang, 'index.html')) ? lang + '/index.html' : '';
   return `/kurs/${slug}/${sub}`;
 }
 

@@ -116,9 +116,9 @@ test('giriş edən müştərinin kurs linki seçilmiş dilin səhifəsinə apar�
   const az = await login({ acceptTerms: true });
   assert.equal(az.body.courses[0].href, '/kurs/kurs_13/');
   const r = await call('login', { method: 'POST', query: { lang: 'tr' }, body: { phone: '+994 50 111 22 33', password: 'parol123', device: DEVICE, acceptTerms: true } });
-  assert.equal(r.body.courses[0].href, '/kurs/kurs_13/tr/');
+  assert.equal(r.body.courses[0].href, '/kurs/kurs_13/tr/index.html');
   const s = await call('session', { cookie: r.cookie, query: { lang: 'ru' } });
-  assert.equal(s.body.courses[0].href, '/kurs/kurs_13/ru/');
+  assert.equal(s.body.courses[0].href, '/kurs/kurs_13/ru/index.html');
   const c = store.customers['994501112233'];
   delete c.termsAccepted; delete c.termsAcceptedAt; c.devices = [];
   for (const k of Object.keys(store.sessions || {})) delete store.sessions[k];

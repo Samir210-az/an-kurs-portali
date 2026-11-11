@@ -17,6 +17,10 @@
       "destination": "/api/content?slug=:slug"
     },
     {
+      "source": "/kurs/:slug/:lang(en|ru|tr)/",
+      "destination": "/api/content?slug=:slug&p=:lang/"
+    },
+    {
       "source": "/kurs/:slug/:p*",
       "destination": "/api/content?slug=:slug&p=:p*"
     }
