@@ -63,7 +63,7 @@ module.exports = async (req, res) => {
     const courses = sess ? await core.customerCourses(sess.customer) : [];
     if (!admin && !courses.some((c) => c.slug === slug)) {
       res.statusCode = 302;
-      res.setHeader('Location', '/?giris=1#giris');
+      res.setHeader('Location', (PORTAL_HOME[rel.split('/')[0]] || '/') + '?giris=1#giris');
       return res.end();
     }
 
