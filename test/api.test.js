@@ -206,3 +206,15 @@ test('qeydiyyat gözləyənlərə düşür', async () => {
   assert.equal(r.status, 200);
   assert.equal(Object.values(store.pendingRegistrations)[0].courseName, 'Kurs 13');
 });
+
+test('EN/RU/TR səhifələri Firebase-siz və AZ səhifə ilə sinxrondur', () => {
+  const fs = require('fs');
+  const path = require('path');
+  const { execFileSync } = require('child_process');
+  const pub = path.join(__dirname, '..', 'public');
+  const before = ['en', 'ru', 'tr'].map(l => fs.readFileSync(path.join(pub, l, 'index.html'), 'utf8'));
+  before.forEach(h => assert.ok(!/firebase|an-psixoloji-33442/i.test(h)));
+  execFileSync(process.execPath, [path.join(__dirname, '..', 'scripts', 'build-lang-pages.mjs')], { stdio: 'ignore' });
+  const after = ['en', 'ru', 'tr'].map(l => fs.readFileSync(path.join(pub, l, 'index.html'), 'utf8'));
+  assert.deepStrictEqual(after, before, 'public/index.html dəyişib: node scripts/build-lang-pages.mjs işlədin');
+});
