@@ -96,6 +96,17 @@ const actions = {
     return {};
   },
 
+  async resetPassword(input) {
+    const phone = core.normalizePhone(input.phone);
+    if (!phone || !(await db.get('customers/' + phone))) return { error: 'invalid' };
+    const alphabet = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let password = '';
+    for (let i = 0; i < 10; i++) password += alphabet[require('crypto').randomInt(alphabet.length)];
+    await db.update('customers/' + phone, { passwordHash: core.sha256(password) });
+    await dropSessions(phone);
+    return { password };
+  },
+
   async removeCustomer(input) {
     const phone = core.normalizePhone(input.phone);
     if (!phone) return { error: 'invalid' };

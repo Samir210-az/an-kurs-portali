@@ -194,10 +194,19 @@ test('admin: PIN-siz əməliyyat yoxdur, PIN ilə işləyir', async () => {
 
   r = await call('login', { method: 'POST', body: { phone: '0509998877', password: 'abcdef1', device: DEVICE, acceptTerms: true } });
   const custCookie = r.cookie;
-  r = await call('admin', { method: 'POST', cookie, body: { action: 'removeCustomer', phone: '0509998877' } });
-  assert.equal(store.customers['0509998877'], undefined);
+  r = await call('admin', { method: 'POST', cookie, body: { action: 'resetPassword', phone: '0509998877' } });
+  assert.equal(r.status, 200);
+  assert.match(r.body.password, /^[A-Za-z0-9]{10}$/);
+  assert.equal(store.customers['0509998877'].passwordHash, sha(r.body.password));
   r = await call('session', { cookie: custCookie });
   assert.equal(r.body.loggedIn, false);
+  r = await call('login', { method: 'POST', body: { phone: '0509998877', password: 'abcdef1', device: DEVICE, acceptTerms: true } });
+  assert.equal(r.status, 401);
+  r = await call('admin', { method: 'POST', cookie, body: { action: 'resetPassword', phone: '0500000000' } });
+  assert.equal(r.status, 400);
+
+  r = await call('admin', { method: 'POST', cookie, body: { action: 'removeCustomer', phone: '0509998877' } });
+  assert.equal(store.customers['0509998877'], undefined);
 
   r = await call('admin', { method: 'POST', cookie, body: { action: 'constructor' } });
   assert.equal(r.status, 400);

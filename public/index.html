@@ -911,6 +911,15 @@ window.adminResetDevices = async function(phone){
   if(window.DB.customers[phone]) window.DB.customers[phone].deviceCount = 0;
   renderAdminCustomers();
 };
+window.adminResetPassword = async function(phone){
+  const c = window.DB.customers[phone];
+  if(!confirm(`"${c ? c.name : phone}" üçün yeni parol yaradılsın? Köhnə parol və açıq sessiyalar ləğv olunacaq.`)) return;
+  const r = await adminApi('resetPassword', { phone });
+  if(!r.ok) return;
+  const text = `Telefon: ${c ? (c.phone || phone) : phone}\nParol: ${r.data.password}`;
+  try { await navigator.clipboard.writeText(text); } catch(e) {}
+  alert(`Yeni parol yaradıldı.\n\n${text}\n\nMəlumat kopyalanıb, müştəriyə WhatsApp ilə göndərin. Bu parol bir daha göstərilməyəcək.`);
+};
 window.adminRemoveCustomer = async function(phone){
   const c = window.DB.customers[phone];
   if(!confirm(`"${c ? c.name : phone}" müştərisini silmək istəyirsiniz?`)) return;
@@ -979,6 +988,7 @@ function renderAdminCustomers(){
       <td data-label="Cihazlar">${deviceCount}/${MAX_DEVICES}</td>
       <td data-label="">
         <button class="btn-outline-sm" style="margin-bottom:0.3rem" onclick="window.adminResetDevices('${phone}')">Cihazları sıfırla</button>
+        <button class="btn-outline-sm" style="margin-bottom:0.3rem" onclick="window.adminResetPassword('${phone}')">Yeni parol</button>
         <button class="btn-danger-sm" onclick="window.adminRemoveCustomer('${phone}')">Sil</button>
       </td></tr>`;
   }).join('') : '<tr><td colspan="4" class="empty-row empty-row-cell">Hələ müştəri yoxdur</td></tr>';
