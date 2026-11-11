@@ -208,6 +208,17 @@ test('admin: PIN-siz əməliyyat yoxdur, PIN ilə işləyir', async () => {
   r = await call('admin', { method: 'POST', cookie, body: { action: 'removeCustomer', phone: '0509998877' } });
   assert.equal(store.customers['0509998877'], undefined);
 
+  r = await call('session', { cookie });
+  assert.equal(r.body.loggedIn, true);
+  assert.equal(r.body.admin, true);
+  assert.ok(r.body.courses.length >= 1);
+
+  const adminOut = await call('admin', { method: 'POST', body: { action: 'login', pin: 'sinaq-pin' } });
+  r = await call('session', { method: 'DELETE', cookie: adminOut.cookie });
+  assert.equal(r.status, 200);
+  r = await call('session', { cookie: adminOut.cookie });
+  assert.equal(r.body.loggedIn, false);
+
   r = await call('admin', { method: 'POST', cookie, body: { action: 'constructor' } });
   assert.equal(r.status, 400);
 });
