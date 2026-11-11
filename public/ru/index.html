@@ -272,6 +272,11 @@
   }
   @keyframes nameGlow{ 0%,100%{ text-shadow:0 0 2px rgba(217,112,90,0.3); } 50%{ text-shadow:0 0 10px rgba(217,112,90,0.9); } }
   .flex-between{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.8rem; }
+  .pending-banner{ display:none; width:100%; text-align:left; margin-bottom:1rem; padding:0.85rem 1rem; border-radius:12px; border:1px solid rgba(217,168,90,0.55); background:rgba(217,168,90,0.12); color:var(--gold-light); font:inherit; font-weight:600; cursor:pointer; }
+  .pending-banner.show{ display:block; }
+  .admin-card.flash{ animation:cardFlash 1.4s ease; }
+  @keyframes cardFlash{ 0%,60%{ box-shadow:0 0 0 2px rgba(217,168,90,0.7); } 100%{ box-shadow:none; } }
+  @media (prefers-reduced-motion:reduce){ .admin-card.flash{ animation:none; } }
   .pending-row{ padding:0.9rem; border:1px solid rgba(217,168,90,0.18); border-radius:12px; margin-bottom:0.7rem; background:rgba(255,255,255,0.02); }
   .pending-row .meta{ font-size:0.8rem; color:var(--cream-dim); margin:0.2rem 0 0.6rem; }
 
@@ -394,12 +399,14 @@
       <button class="btn-outline-sm" onclick="adminLogout()">Çıxış</button>
     </div>
 
+    <button type="button" class="pending-banner" id="pendingBanner" onclick="window.showPending()"></button>
+
     <div class="admin-card" id="alertsCard" style="display:none">
       <h4>🔔 Təhlükəsizlik Xəbərdarlıqları</h4>
       <div id="alertsList"></div>
     </div>
 
-    <div class="admin-card">
+    <div class="admin-card" id="pendingCard">
       <h4>⏳ Gözləyən qeydiyyatlar</h4>
       <p class="hint">Müştəri WhatsApp ilə ödənişi təsdiqlədikdən sonra "Aktivləşdir" düyməsinə basın.</p>
       <div id="pendingList"><div class="empty-row">Gözləyən qeydiyyat yoxdur</div></div>
@@ -947,7 +954,18 @@ function renderPending(){
       <button class="btn-sm" onclick="window.adminActivate('${id}')">Aktivləşdir</button>
       <button class="btn-outline-sm" onclick="window.adminDismissPending('${id}')">Sil</button>
     </div>`).join('') : '<div class="empty-row">Gözləyən qeydiyyat yoxdur</div>';
+  const banner = document.getElementById('pendingBanner');
+  banner.textContent = '🔔 ' + entries.length + ' yeni müraciət gözləyir — baxmaq üçün toxunun';
+  banner.classList.toggle('show', entries.length > 0);
 }
+
+window.showPending = function(){
+  const card = document.getElementById('pendingCard');
+  card.scrollIntoView({ behavior:'smooth', block:'start' });
+  card.classList.remove('flash');
+  void card.offsetWidth;
+  card.classList.add('flash');
+};
 
 function renderAdminCustomers(){
   const body = document.getElementById('adminCustomersBody');
