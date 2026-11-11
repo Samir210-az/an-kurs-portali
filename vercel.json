@@ -1,4 +1,7 @@
 {
+  "regions": [
+    "fra1"
+  ],
   "functions": {
     "api/content.js": {
       "includeFiles": "content/**"
