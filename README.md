@@ -12,6 +12,7 @@ kursa icazəsini yoxlayır.
 - `api/` — server funksiyaları: `login`, `session`, `register`, `courses`, `admin`, `content`
 - `content/<slug>/` — kurs səhifələri; yalnız `/kurs/<slug>/...` ünvanından, icazə yoxlanandan sonra verilir
 - `scripts/import-course.mjs` — kurs reposunu `content/` altına köçürür
+- `scripts/build-lang-pages.mjs` + `scripts/i18n.mjs` — `public/index.html`-dən EN/RU/TR səhifələrini yaradır (AZ dəyişəndə yenidən işlədin: `node scripts/build-lang-pages.mjs`)
 - `test/` — `node --test`
 
 Kursun bazadakı linkində (`courses/<id>/url`) repo adı keçməlidir, məsələn
