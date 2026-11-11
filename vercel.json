@@ -9,6 +9,14 @@
   },
   "rewrites": [
     {
+      "source": "/kurs/:slug",
+      "destination": "/api/content?slug=:slug"
+    },
+    {
+      "source": "/kurs/:slug/",
+      "destination": "/api/content?slug=:slug"
+    },
+    {
       "source": "/kurs/:slug/:p*",
       "destination": "/api/content?slug=:slug&p=:p*"
     }
