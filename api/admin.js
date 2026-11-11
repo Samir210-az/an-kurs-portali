@@ -22,14 +22,22 @@ async function dropSessions(phone) {
   if (Object.keys(patch).length) await db.update('sessions', patch);
 }
 
+// Admin panelindəki "Aç" düyməsi üçün: kursun portal daxilindəki ünvanı.
+async function courseList(force) {
+  const courses = await core.getCourses(force);
+  const links = {};
+  for (const [id, c] of Object.entries(courses)) links[id] = core.courseHref(c);
+  return { courses, links };
+}
+
 const actions = {
   async load() {
-    const [courses, customers, pending, alerts] = await Promise.all([
-      core.getCourses(true), db.get('customers'), db.get('pendingRegistrations'), db.get('securityAlerts'),
+    const [list0, customers, pending, alerts] = await Promise.all([
+      courseList(true), db.get('customers'), db.get('pendingRegistrations'), db.get('securityAlerts'),
     ]);
     const list = {};
     for (const [phone, c] of Object.entries(customers || {})) list[phone] = publicCustomer(c || {});
-    return { courses, customers: list, pending: pending || {}, alerts: alerts || {} };
+    return { ...list0, customers: list, pending: pending || {}, alerts: alerts || {} };
   },
 
   async saveCourse(input) {
@@ -49,13 +57,13 @@ const actions = {
     } else {
       await db.push('courses', { ...fields, createdAt: Date.now() });
     }
-    return { courses: await core.getCourses(true) };
+    return courseList(true);
   },
 
   async removeCourse(input) {
     if (!core.isKey(input.id)) return { error: 'invalid' };
     await db.remove('courses/' + input.id);
-    return { courses: await core.getCourses(true) };
+    return courseList(true);
   },
 
   async createCustomer(input) {

@@ -38,9 +38,11 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const sess = await core.getSession(req);
+    // Admin bütün kursları aça bilir; müştəri yalnız icazəsi olanları.
+    const admin = await core.isAdmin(req);
+    const sess = admin ? null : await core.getSession(req);
     const courses = sess ? await core.customerCourses(sess.customer) : [];
-    if (!courses.some((c) => c.slug === slug)) {
+    if (!admin && !courses.some((c) => c.slug === slug)) {
       res.statusCode = 302;
       res.setHeader('Location', '/?giris=1#giris');
       return res.end();
@@ -61,7 +63,7 @@ module.exports = async (req, res) => {
     if (type.startsWith('text/html')) {
       const html = data.toString('utf8');
       const i = html.lastIndexOf('</body>');
-      const mark = watermark(sess.phone);
+      const mark = watermark(admin ? 'admin' : sess.phone);
       data = Buffer.from(i === -1 ? html + mark : html.slice(0, i) + mark + html.slice(i));
     }
     res.setHeader('Content-Type', type);

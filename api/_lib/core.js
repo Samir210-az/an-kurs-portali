@@ -1,5 +1,4 @@
 const crypto = require('crypto');
-const fs = require('fs');
 const path = require('path');
 const db = require('./db');
 
@@ -78,24 +77,20 @@ async function recordFail(key) {
     : { count: rec.count + 1, first: rec.first });
 }
 
-let slugCache = null;
-function contentSlugs() {
-  if (!slugCache) {
-    try {
-      slugCache = fs.readdirSync(CONTENT_DIR, { withFileTypes: true })
-        .filter((d) => d.isDirectory()).map((d) => d.name);
-    } catch (e) {
-      slugCache = [];
-    }
-  }
-  return slugCache;
-}
+// Məzmun qovluqlarının adları. Siyahı fayldan oxunur, çünki content/ yalnız
+// api/content.js funksiyasına qoşulur; digər funksiyalar qovluğu görmür.
+const contentSlugs = () => require('./slugs.json');
 
 // Kursun bazadakı linkində repo adı keçir (.../kurs_13/); portaldakı məzmun
 // qovluğu həmin adla tapılır.
 function slugOf(course) {
   const url = (course && course.url) || '';
   return contentSlugs().find((s) => new RegExp('/' + s + '(/|$)').test(url)) || null;
+}
+
+function courseHref(course) {
+  const slug = slugOf(course);
+  return slug ? `/kurs/${slug}/` : (course && course.url) || '';
 }
 
 let coursesCache = null;
@@ -121,10 +116,7 @@ async function customerCourses(customer) {
   return (customer.allowedCourses || [])
     .map((id) => courses[id])
     .filter(Boolean)
-    .map((c) => {
-      const slug = slugOf(c);
-      return { name: c.name, slug, href: slug ? `/kurs/${slug}/` : c.url };
-    });
+    .map((c) => ({ name: c.name, slug: slugOf(c), href: courseHref(c) }));
 }
 
 async function isAdmin(req) {
@@ -137,6 +129,6 @@ async function isAdmin(req) {
 module.exports = {
   db, SESSION_COOKIE, ADMIN_COOKIE, SESSION_TTL, ADMIN_TTL, MAX_DEVICES, CONTENT_DIR,
   sha256, newToken, normalizePhone, isKey, sameHash, setCookie, readCookie, sameOrigin, body,
-  clientKey, tooManyFails, recordFail, contentSlugs, slugOf, getCourses, getSession,
+  clientKey, tooManyFails, recordFail, contentSlugs, slugOf, courseHref, getCourses, getSession,
   customerCourses, isAdmin,
 };

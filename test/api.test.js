@@ -83,6 +83,11 @@ async function call(name, { method = 'GET', body, cookie, query = {}, url = '/',
 const DEVICE = 'fp_abc123';
 const login = (extra) => call('login', { method: 'POST', body: { phone: '+994 50 111 22 33', password: 'parol123', device: DEVICE, ...extra } });
 
+test('slug siyahısı content/ qovluğu ilə üst-üstə düşür', () => {
+  const dirs = require('fs').readdirSync(require('path').join(__dirname, '..', 'content')).sort();
+  assert.deepEqual(require('../api/_lib/slugs.json'), dirs);
+});
+
 test('açıq kurs siyahısında link yoxdur', async () => {
   const r = await call('courses');
   assert.equal(r.body.courses.length, 2);
@@ -172,6 +177,10 @@ test('admin: PIN-siz əməliyyat yoxdur, PIN ilə işləyir', async () => {
   assert.equal(r.status, 200);
   assert.ok(!JSON.stringify(r.body).includes('passwordHash'));
   const cookie = r.cookie;
+
+  assert.equal(r.body.links.c13, '/kurs/kurs_13/');
+  r = await call('content', { cookie, query: { slug: 'koqnitiv_kurs', p: 'index.html' }, url: '/' });
+  assert.equal(r.status, 200);
 
   r = await call('admin', { method: 'POST', cookie, body: { action: 'createCustomer', name: 'Yeni', phone: '050 999 88 77', password: 'abcdef1', courses: ['ckq'] } });
   assert.equal(r.status, 200);

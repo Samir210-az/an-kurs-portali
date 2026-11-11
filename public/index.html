@@ -534,7 +534,7 @@ async function api(path, options){
   return { ok: res.ok, status: res.status, data };
 }
 
-window.DB = { courses:{}, customers:{}, pending:{}, alerts:{} };
+window.DB = { courses:{}, links:{}, customers:{}, pending:{}, alerts:{} };
 
 function normalizePhone(p){
   return (p||'').replace(/\D/g,'');
@@ -763,6 +763,7 @@ async function adminApi(action, payload){
 
 function applyAdminData(data){
   window.DB.courses = data.courses || {};
+  window.DB.links = data.links || {};
   window.DB.customers = data.customers || {};
   window.DB.pending = data.pending || {};
   window.DB.alerts = data.alerts || {};
@@ -812,6 +813,7 @@ window.adminAddCourse = async function(){
   editingCourseId = null;
   document.getElementById('courseFormBtn').textContent = '+ Əlavə et';
   window.DB.courses = r.data.courses || {};
+  window.DB.links = r.data.links || {};
   renderCourseGrid(); renderCoursePicker(); renderAdminCourses(); renderAdminCustomers();
   document.getElementById('courseName').value=''; document.getElementById('courseUrl').value='';
   document.getElementById('courseDesc').value=''; document.getElementById('courseStats').value='';
@@ -835,6 +837,7 @@ window.adminRemoveCourse = async function(id){
   const r = await adminApi('removeCourse', { id });
   if(!r.ok) return;
   window.DB.courses = r.data.courses || {};
+  window.DB.links = r.data.links || {};
   renderCourseGrid(); renderCoursePicker(); renderAdminCourses(); renderAdminCustomers();
 };
 
@@ -922,7 +925,7 @@ function renderAdminCourses(){
   body.innerHTML = entries.length ? entries.map(([id,c])=>`
     <tr><td data-label="Ad">${escapeHtml(c.name)}</td><td data-label="Təsvir" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(c.description||'')}</td>
     <td data-label="" style="white-space:nowrap">
-      <a href="${escapeHtml(c.url)}" target="_blank" rel="noopener" class="btn-outline-sm" style="text-decoration:none;display:inline-block;margin-right:0.4rem;margin-bottom:0.3rem">Aç ↗</a>
+      <a href="${escapeHtml(window.DB.links[id] || c.url)}" target="_blank" rel="noopener" class="btn-outline-sm" style="text-decoration:none;display:inline-block;margin-right:0.4rem;margin-bottom:0.3rem">Aç ↗</a>
       <button class="btn-outline-sm" style="margin-right:0.4rem;margin-bottom:0.3rem" onclick="window.adminEditCourse('${id}')">Redaktə</button>
       <button class="btn-danger-sm" onclick="window.adminRemoveCourse('${id}')">Sil</button>
     </td></tr>`).join('')

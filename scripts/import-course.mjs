@@ -59,6 +59,12 @@ async function walk(from, to) {
 }
 
 await walk(src, dest);
+const listFile = path.join('api', '_lib', 'slugs.json');
+const slugs = JSON.parse(await readFile(listFile, 'utf8'));
+if (!slugs.includes(slug)) {
+  await writeFile(listFile, JSON.stringify([...slugs, slug].sort(), null, 2) + '\n');
+}
+
 console.log(`${slug}: ${html} HTML səhifə köçürüldü`);
 if (problems.length) {
   console.error('Təmizlənməmiş qalıq var:\n  ' + problems.join('\n  '));
