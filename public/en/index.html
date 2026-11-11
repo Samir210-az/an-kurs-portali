@@ -396,7 +396,9 @@ async function api(path, options){
   const init = options && options.body
     ? { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(options.body) }
     : (options || {});
-  const res = await fetch('/api/' + path, init);
+  const lang = document.documentElement.lang;
+  const url = '/api/' + path + (lang && lang !== 'az' ? '?lang=' + encodeURIComponent(lang) : '');
+  const res = await fetch(url, init);
   let data = {};
   try{ data = await res.json(); }catch(e){}
   return { ok: res.ok, status: res.status, data };
@@ -437,7 +439,7 @@ function renderCourseGrid(){
       <p>${escapeHtml(c.description||'')}</p>
       <div class="course-stats">${(c.stats||[]).map(s=>`<span class="stat-chip">${escapeHtml(s)}</span>`).join('')}</div>
       ${c.price ? `<div class="course-price">${escapeHtml(c.price)}</div>` : ''}
-      <button class="btn-whatsapp" onclick="selectCourseForRegistration('${id}')">📝 Bu kursa qeydiyyat</button>
+      <button class="btn-whatsapp" onclick="selectCourseForRegistration('${id}')">📝 Register for this course</button>
     </div>`).join('') : '<div class="chip-empty">No courses yet</div>';
 
   const cards = document.querySelectorAll('.course-card');

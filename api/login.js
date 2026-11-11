@@ -40,7 +40,7 @@ module.exports = async (req, res) => {
     if (!cust.termsAccepted) { patch.termsAccepted = true; patch.termsAcceptedAt = Date.now(); }
     await db.update('customers/' + phone, patch);
 
-    const courses = await core.customerCourses(cust);
+    const courses = await core.customerCourses(cust, core.langOf(req));
     if (!courses.length) return res.status(403).json({ error: 'nocourses' });
 
     const token = core.newToken();

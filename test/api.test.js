@@ -96,6 +96,22 @@ test('açıq kurs siyahısında link yoxdur', async () => {
   assert.ok(!JSON.stringify(r.body).includes('github.io'));
 });
 
+test('kurs siyahısı dilə görə tərcümə olunur, bilinməyən dil AZ qalır', async () => {
+  const id = '-P-ds6F0meXtLO-Ow7At';
+  store.courses[id] = { name: 'CBT Kursu (Koqnitiv Davranış Terapiyası)', url: 'https://x.test/' };
+  await require('../api/_lib/core').getCourses(true);
+  const tr = await call('courses', { query: { lang: 'tr' } });
+  assert.equal(tr.body.courses.find((c) => c.id === id).name, 'BDT Kursu (Bilişsel Davranışçı Terapi)');
+  const ru = await call('courses', { query: { lang: 'ru' } });
+  assert.match(ru.body.courses.find((c) => c.id === id).audience, /психолог/);
+  const xx = await call('courses', { query: { lang: 'xx' } });
+  assert.equal(xx.body.courses.find((c) => c.id === id).name, 'CBT Kursu (Koqnitiv Davranış Terapiyası)');
+  const tr2 = await call('courses', { query: { lang: 'tr' } });
+  assert.equal(tr2.body.courses.find((c) => c.id === 'c13').name, 'Kurs 13');
+  delete store.courses[id];
+  await require('../api/_lib/core').getCourses(true);
+});
+
 test('sessiyasız məzmun verilmir', async () => {
   const r = await call('content', { query: { slug: 'kurs_13', p: 'index.html' }, url: '/kurs/kurs_13/index.html' });
   assert.equal(r.status, 302);

@@ -1,0 +1,62 @@
+{
+  "-P-ds6F0meXtLO-Ow7At": {
+    "en": {
+      "name": "CBT Course (Cognitive Behavioral Therapy)",
+      "description": "A 20-module program covering both the theoretical foundation of Cognitive Behavioral Therapy and real session experience — 18 modules are session-based practice, and 2 are theoretical and technical reference.",
+      "stats": ["20 modules", "186 sessions", "3 age groups"],
+      "audience": "For psychologists and psychotherapists"
+    },
+    "ru": {
+      "name": "Курс КПТ (когнитивно-поведенческая терапия)",
+      "description": "Программа из 20 модулей, охватывающая как теоретическую базу когнитивно-поведенческой терапии, так и опыт реальных сессий: 18 модулей построены на практике сессий, 2 — теоретический и технический справочник.",
+      "stats": ["20 модулей", "186 сессий", "3 возрастные группы"],
+      "audience": "Для психологов и психотерапевтов"
+    },
+    "tr": {
+      "name": "BDT Kursu (Bilişsel Davranışçı Terapi)",
+      "description": "Bilişsel Davranışçı Terapinin hem kuramsal temelini hem de gerçek seans deneyimini kapsayan 20 modüllü program — 18 modül seans temelli uygulama, 2 modül ise kuramsal ve teknik başvuru niteliğindedir.",
+      "stats": ["20 modül", "186 seans", "3 yaş grubu"],
+      "audience": "Psikologlar ve psikoterapistler için"
+    }
+  },
+  "-P-dsSFgG9iyqh6ZtrjX": {
+    "en": {
+      "name": "Child and Adolescent Psychology Course",
+      "description": "A 15-module program for professionals working with children and adolescents — bringing together the perspectives of the psychologist, occupational therapist, speech therapist, special educator and sensory integration specialist.",
+      "stats": ["15 modules", "176 sessions", "5 specialist perspectives"],
+      "audience": "For psychologists, occupational therapists, speech therapists and special educators"
+    },
+    "ru": {
+      "name": "Курс психологии детей и подростков",
+      "description": "Программа из 15 модулей для специалистов, работающих с детьми и подростками: объединены взгляды психолога, эрготерапевта, логопеда, психопедагога и специалиста по сенсорной интеграции.",
+      "stats": ["15 модулей", "176 сессий", "5 взглядов специалистов"],
+      "audience": "Для психологов, эрготерапевтов, логопедов и психопедагогов"
+    },
+    "tr": {
+      "name": "Çocuk ve Ergen Psikolojisi Kursu",
+      "description": "Çocuk ve ergenlerle çalışan uzmanlar için tasarlanmış 15 modüllü program — psikolog, ergoterapist, dil ve konuşma terapisti, psikopedagog ve duyu bütünleme uzmanının bakış açıları bir araya getirilmiştir.",
+      "stats": ["15 modül", "176 seans", "5 uzman bakışı"],
+      "audience": "Psikologlar, ergoterapistler, dil ve konuşma terapistleri ve psikopedagoglar için"
+    }
+  },
+  "-P-dsrV1G-ls12hAJMsG": {
+    "en": {
+      "name": "Child and Adolescent Therapy Programs Course",
+      "description": "A 13-program course built around individual therapy planning — reflecting the combined experience of the psychologist, occupational therapist, speech therapist, special educator and sensory integration specialist.",
+      "stats": ["13 programs", "160 sessions", "4 languages"],
+      "audience": "For specialists who do individual therapy planning"
+    },
+    "ru": {
+      "name": "Курс терапевтических программ для детей и подростков",
+      "description": "Курс из 13 программ, построенный на индивидуальном планировании терапии: отражает совместный опыт психолога, эрготерапевта, логопеда, психопедагога и специалиста по сенсорной интеграции.",
+      "stats": ["13 программ", "160 сессий", "на 4 языках"],
+      "audience": "Для специалистов, занимающихся индивидуальным планированием терапии"
+    },
+    "tr": {
+      "name": "Çocuk ve Ergen Terapi Programları Kursu",
+      "description": "Bireysel terapi planlaması üzerine kurulu 13 programlık kurs — psikolog, ergoterapist, dil ve konuşma terapisti, psikopedagog ve duyu bütünleme uzmanının ortak deneyimini yansıtır.",
+      "stats": ["13 program", "160 seans", "4 dilde"],
+      "audience": "Bireysel terapi planlaması yapan uzmanlar için"
+    }
+  }
+}

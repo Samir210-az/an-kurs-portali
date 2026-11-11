@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
         loggedIn: true,
         name: 'Admin',
         admin: true,
-        courses: await core.customerCourses({ allowedCourses: Object.keys(all) }),
+        courses: await core.customerCourses({ allowedCourses: Object.keys(all) }, core.langOf(req)),
       });
     }
     const sess = await core.getSession(req);
@@ -28,7 +28,7 @@ module.exports = async (req, res) => {
     res.status(200).json({
       loggedIn: true,
       name: sess.customer.name || '',
-      courses: await core.customerCourses(sess.customer),
+      courses: await core.customerCourses(sess.customer, core.langOf(req)),
     });
   } catch (e) {
     console.error(e);

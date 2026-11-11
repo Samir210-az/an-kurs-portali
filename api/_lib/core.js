@@ -111,12 +111,27 @@ async function getSession(req) {
   return { token, phone: normalizePhone(sess.phone), customer };
 }
 
-async function customerCourses(customer) {
+const LANGS = ['en', 'ru', 'tr'];
+const courseI18n = require('./course-i18n.json');
+
+function langOf(req) {
+  const l = String((req && req.query && req.query.lang) || '').toLowerCase();
+  return LANGS.includes(l) ? l : 'az';
+}
+
+function localize(id, course, lang) {
+  const t = courseI18n[id] && courseI18n[id][lang];
+  return t ? { ...course, ...t } : course;
+}
+
+async function customerCourses(customer, lang) {
   const courses = await getCourses();
   return (customer.allowedCourses || [])
-    .map((id) => courses[id])
-    .filter(Boolean)
-    .map((c) => ({ name: c.name, slug: slugOf(c), href: courseHref(c) }));
+    .filter((id) => courses[id])
+    .map((id) => {
+      const c = localize(id, courses[id], lang);
+      return { name: c.name, slug: slugOf(courses[id]), href: courseHref(courses[id]) };
+    });
 }
 
 async function isAdmin(req) {
@@ -130,5 +145,5 @@ module.exports = {
   db, SESSION_COOKIE, ADMIN_COOKIE, SESSION_TTL, ADMIN_TTL, MAX_DEVICES, CONTENT_DIR,
   sha256, newToken, normalizePhone, isKey, sameHash, setCookie, readCookie, sameOrigin, body,
   clientKey, tooManyFails, recordFail, contentSlugs, slugOf, courseHref, getCourses, getSession,
-  customerCourses, isAdmin,
+  customerCourses, isAdmin, langOf, localize,
 };
