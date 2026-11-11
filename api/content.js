@@ -26,14 +26,14 @@ module.exports = async (req, res) => {
   if (req.method !== 'GET' && req.method !== 'HEAD') return res.status(405).end();
 
   const slug = String(req.query.slug || '');
-  let rel = [].concat(req.query.p || []).join('/');
+  const rel = [].concat(req.query.p || []).join('/');
   if (!core.contentSlugs().includes(slug)) return res.status(404).send('Tapılmadı');
 
-  // Səhifələrdəki nisbi linklər qovluq ünvanının "/" ilə bitməsinə söykənir.
-  const asked = String(req.url || '').split('?')[0];
-  if (rel === '' && asked.startsWith('/kurs/') && !asked.endsWith('/')) {
+  // Kursun əsas ünvanı açıq fayl adına yönləndirilir ki, səhifədəki nisbi
+  // linklər ünvanın "/" ilə bitib-bitməməsindən asılı olmasın.
+  if (rel === '' || rel.endsWith('/')) {
     res.statusCode = 302;
-    res.setHeader('Location', `/kurs/${slug}/`);
+    res.setHeader('Location', `/kurs/${slug}/${rel}index.html`);
     return res.end();
   }
 
@@ -46,7 +46,6 @@ module.exports = async (req, res) => {
       return res.end();
     }
 
-    if (rel === '' || rel.endsWith('/')) rel += 'index.html';
     const base = path.join(core.CONTENT_DIR, slug);
     const file = path.normalize(path.join(base, rel));
     const type = TYPES[path.extname(file).toLowerCase()];

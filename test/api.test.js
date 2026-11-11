@@ -115,11 +115,11 @@ test('giriş: şərtlər, sessiya, yalnız icazəli kurs', async () => {
   r = await call('session', { cookie });
   assert.equal(r.body.loggedIn, true);
 
-  r = await call('content', { cookie, query: { slug: 'kurs_13', p: '' }, url: '/kurs/kurs_13' });
+  r = await call('content', { cookie, query: { slug: 'kurs_13' }, url: '/kurs/kurs_13' });
   assert.equal(r.status, 302);
-  assert.equal(r.headers.location, '/kurs/kurs_13/');
+  assert.equal(r.headers.location, '/kurs/kurs_13/index.html');
 
-  r = await call('content', { cookie, query: { slug: 'kurs_13', p: '' }, url: '/kurs/kurs_13/' });
+  r = await call('content', { cookie, query: { slug: 'kurs_13', p: 'index.html' }, url: '/kurs/kurs_13/index.html' });
   assert.equal(r.status, 200);
   assert.match(r.body.toString(), /© 994501112233<\/div><\/body>/);
 
