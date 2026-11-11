@@ -41,7 +41,7 @@ self.addEventListener('fetch', (event) => {
 
   // Giriş tələb edən kurs səhifələri və API cavabları cihazda saxlanılmır.
   const { pathname } = new URL(req.url);
-  if (pathname.startsWith('/api/') || pathname.startsWith('/kurs/')) return;
+  if (pathname.startsWith('/api/') || pathname.startsWith('/kurs/') || pathname.startsWith('/admin')) return;
 
   const isHTML = req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html');
 

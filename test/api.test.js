@@ -218,6 +218,19 @@ test('qeydiyyat gözləyənlərə düşür', async () => {
   assert.equal(Object.values(store.pendingRegistrations)[0].courseName, 'Kurs 13');
 });
 
+test('admin ayrı səhifədədir: ictimai səhifələrdə admin kodu yoxdur', () => {
+  const fs = require('fs');
+  const path = require('path');
+  const admin = fs.readFileSync(path.join(__dirname, '..', 'public', 'admin', 'index.html'), 'utf8');
+  assert.match(admin, /noindex/);
+  assert.match(admin, /resetPassword/);
+  for (const page of ['index.html', 'en/index.html', 'ru/index.html', 'tr/index.html']) {
+    const html = fs.readFileSync(path.join(__dirname, '..', 'public', page), 'utf8');
+    assert.ok(!/adminWrap|adminGate|removeCustomer|createCustomer|resetPassword/.test(html), page);
+    assert.ok(html.includes("location.href = '/admin/'"), page);
+  }
+});
+
 test('EN/RU/TR səhifələri Firebase-siz və AZ səhifə ilə sinxrondur', () => {
   const fs = require('fs');
   const path = require('path');

@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0c211f">
+<title>Admin — Kurs Portalı</title>
+<link rel="icon" href="../logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c211f; --bg-2:#153431; --card:#12302c;
+    --gold:#d9a85a; --gold-light:#f0cd8e;
+    --cream:#f3eee1; --cream-dim:#c9c2ae; --sage:#7ba098; --danger:#d9705a;
+    --line:rgba(217,168,90,0.18);
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ -webkit-text-size-adjust:100%; }
+  body{ background:radial-gradient(1200px 600px at 50% -10%, var(--bg-2), var(--bg)); color:var(--cream); font-family:'Inter',sans-serif; min-height:100vh; }
+  [hidden]{ display:none !important; }
+  button{ font:inherit; }
+  input[type=text], input[type=url], input[type=tel], input[type=password], input[type=search]{
+    width:100%; padding:0.75rem 0.9rem; border-radius:10px; border:1px solid rgba(217,168,90,0.3);
+    background:rgba(255,255,255,0.05); color:var(--cream); font:inherit; font-size:0.92rem; margin-bottom:0.7rem;
+  }
+  input:focus{ outline:none; border-color:var(--gold); }
+  :focus-visible{ outline:2px solid var(--gold-light); outline-offset:2px; }
+
+  .btn{ padding:0.55rem 1.1rem; border-radius:999px; border:none; cursor:pointer; font-size:0.85rem; font-weight:600; background:linear-gradient(120deg,var(--gold),var(--gold-light)); color:#2a1d09; }
+  .btn-ghost{ padding:0.5rem 0.95rem; border-radius:999px; border:1px solid rgba(217,168,90,0.4); background:transparent; color:var(--gold-light); font-size:0.82rem; cursor:pointer; text-decoration:none; display:inline-block; }
+  .btn-danger{ padding:0.5rem 0.95rem; border-radius:999px; border:none; cursor:pointer; font-size:0.82rem; background:linear-gradient(120deg,var(--danger),#e08d78); color:#2a0e09; }
+
+  /* giriş */
+  #gate{ min-height:100vh; display:flex; align-items:center; justify-content:center; padding:1.2rem; }
+  .gate-card{ width:min(360px,100%); background:var(--card); border:1px solid rgba(217,168,90,0.25); border-radius:20px; padding:2.2rem 1.8rem; text-align:center; }
+  .gate-card h1{ font-family:'Fraunces',serif; font-weight:500; font-size:1.3rem; color:var(--gold-light); margin-bottom:1.2rem; }
+  .gate-card .btn{ width:100%; padding:0.8rem; }
+  .err{ color:#ffb199; font-size:0.82rem; min-height:1.2rem; margin-bottom:0.5rem; }
+  .gate-card .back{ margin-top:1rem; display:block; color:var(--cream-dim); font-size:0.8rem; }
+
+  /* çərçivə */
+  .app{ max-width:1100px; margin:0 auto; padding:1rem 1rem 4rem; }
+  .topbar{ display:flex; align-items:center; justify-content:space-between; gap:0.8rem; flex-wrap:wrap; padding:0.4rem 0 1rem; }
+  .topbar h1{ font-family:'Fraunces',serif; font-weight:500; font-size:1.4rem; color:var(--gold-light); }
+  .topbar .actions{ display:flex; gap:0.5rem; flex-wrap:wrap; }
+
+  .tabs{ display:flex; gap:0.4rem; overflow-x:auto; padding-bottom:0.2rem; margin-bottom:1.2rem; border-bottom:1px solid var(--line); scrollbar-width:none; }
+  .tabs::-webkit-scrollbar{ display:none; }
+  .tab{ flex:0 0 auto; display:flex; align-items:center; gap:0.45rem; padding:0.75rem 1rem; background:none; border:none; border-bottom:2px solid transparent; color:var(--cream-dim); cursor:pointer; font-size:0.92rem; font-weight:500; white-space:nowrap; }
+  .tab.active{ color:var(--gold-light); border-bottom-color:var(--gold); }
+  .count{ min-width:1.35rem; padding:0.05rem 0.45rem; border-radius:999px; font-size:0.72rem; font-weight:700; text-align:center; background:rgba(123,160,152,0.25); color:var(--sage); }
+  .count.hot{ background:var(--danger); color:#2a0e09; }
+
+  .panel{ display:none; }
+  .panel.active{ display:block; }
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:1.4rem; margin-bottom:1.2rem; }
+  .card h2{ font-family:'Fraunces',serif; font-weight:500; font-size:1.1rem; margin-bottom:0.9rem; }
+  .hint{ font-size:0.8rem; color:var(--cream-dim); margin:-0.4rem 0 1rem; }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:0.7rem; }
+  .toolbar{ display:flex; gap:0.7rem; align-items:flex-start; margin-bottom:1rem; flex-wrap:wrap; }
+  .toolbar input{ flex:1 1 220px; margin-bottom:0; }
+  .checks{ display:flex; flex-wrap:wrap; gap:0.5rem; margin:0.3rem 0 1rem; }
+  .chip{ display:flex; align-items:center; gap:0.45rem; padding:0.45rem 0.75rem; border-radius:9px; border:1px solid rgba(217,168,90,0.25); background:rgba(255,255,255,0.03); font-size:0.84rem; cursor:pointer; }
+  .chip input{ accent-color:var(--gold); width:16px; height:16px; }
+  .badge{ display:inline-block; padding:0.18rem 0.6rem; border-radius:999px; font-size:0.72rem; margin:0.1rem 0.1rem 0.1rem 0; background:rgba(123,160,152,0.2); color:var(--sage); border:1px solid rgba(123,160,152,0.35); }
+  .badge.high{ background:rgba(217,112,90,0.22); color:#ffb199; border-color:rgba(217,112,90,0.5); }
+  .empty{ color:var(--cream-dim); font-size:0.88rem; font-style:italic; padding:0.6rem 0; }
+
+  .item{ display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1.6fr) auto; gap:0.9rem; align-items:center; padding:0.95rem 0; border-top:1px solid var(--line); }
+  .item:first-child{ border-top:none; }
+  .item .name{ font-weight:600; }
+  .item .sub{ font-size:0.78rem; color:var(--cream-dim); margin-top:0.15rem; overflow-wrap:anywhere; }
+  .item .btns{ display:flex; gap:0.4rem; flex-wrap:wrap; justify-content:flex-end; }
+  .item.flash{ animation:flash 1.6s ease; }
+  @keyframes flash{ 0%,60%{ background:rgba(217,168,90,0.16); } 100%{ background:transparent; } }
+
+  @media (max-width:720px){
+    .app{ padding:0.7rem 0.8rem 4rem; }
+    .row2{ grid-template-columns:1fr; gap:0; }
+    .item{ grid-template-columns:1fr; gap:0.55rem; }
+    .item .btns{ justify-content:flex-start; }
+    .card{ padding:1.1rem; }
+  }
+  @media (prefers-reduced-motion:reduce){ .item.flash{ animation:none; } }
+</style>
+</head>
+<body>
+
+<div id="gate" hidden>
+  <form class="gate-card" id="gateForm" autocomplete="off">
+    <h1>Admin girişi</h1>
+    <label for="pin" style="position:absolute;left:-9999px">Admin PIN</label>
+    <input type="password" id="pin" placeholder="Admin PIN" inputmode="text" autocomplete="off">
+    <div class="err" id="gateErr" role="alert"></div>
+    <button class="btn" type="submit">Daxil ol</button>
+    <a class="back" href="/">← Sayta qayıt</a>
+  </form>
+</div>
+
+<div class="app" id="app" hidden>
+  <div class="topbar">
+    <h1>Admin panel</h1>
+    <div class="actions">
+      <button class="btn-ghost" data-act="refresh" id="refreshBtn">Yenilə</button>
+      <a class="btn-ghost" href="/">Sayt</a>
+      <button class="btn-ghost" data-act="logout">Çıxış</button>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab active" role="tab" data-act="tab" data-tab="pending">Müraciətlər <span class="count" id="cPending">0</span></button>
+    <button class="tab" role="tab" data-act="tab" data-tab="customers">Müştərilər <span class="count" id="cCustomers">0</span></button>
+    <button class="tab" role="tab" data-act="tab" data-tab="courses">Kurslar <span class="count" id="cCourses">0</span></button>
+    <button class="tab" role="tab" data-act="tab" data-tab="alerts">Xəbərdarlıqlar <span class="count" id="cAlerts">0</span></button>
+  </div>
+
+  <section class="panel active" id="panel-pending">
+    <div class="card">
+      <h2>Gözləyən müraciətlər</h2>
+      <p class="hint">Müştəri ödənişi təsdiqlədikdən sonra "Aktivləşdir" düyməsinə basın. Müştərilər bölməsində forma hazır dolu açılacaq.</p>
+      <div id="pendingList"></div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-customers">
+    <div class="toolbar">
+      <input type="search" id="custSearch" placeholder="Ad və ya telefonla axtar" aria-label="Müştəri axtarışı">
+      <button class="btn" data-act="toggle-new">+ Yeni müştəri</button>
+    </div>
+
+    <div class="card" id="newCustomer" hidden>
+      <h2>Yeni müştəri</h2>
+      <div class="row2">
+        <input type="text" id="custName" placeholder="Ad Soyad" autocomplete="off">
+        <input type="tel" id="custPhone" placeholder="Telefon nömrəsi" autocomplete="off">
+      </div>
+      <div class="row2">
+        <input type="text" id="custPass" placeholder="Parol (ən azı 6 simvol)" autocomplete="off">
+        <div><button type="button" class="btn-ghost" style="width:100%;padding:0.75rem" data-act="gen-pass">Təsadüfi parol</button></div>
+      </div>
+      <div class="checks" id="courseChecks"></div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+        <button class="btn" data-act="create-customer">Müştəri yarat</button>
+        <button class="btn-ghost" data-act="toggle-new">Bağla</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div id="customerList"></div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-courses">
+    <div class="card">
+      <h2 id="courseFormTitle">Kurs əlavə et</h2>
+      <div class="row2">
+        <input type="text" id="courseName" placeholder="Kurs adı">
+        <input type="url" id="courseUrl" placeholder="Kurs linki (URL)">
+      </div>
+      <input type="text" id="courseDesc" placeholder="Qısa təsvir">
+      <input type="text" id="courseStats" placeholder="Statistika (vergüllə: 100 proqram, 50 seans)">
+      <div class="row2">
+        <input type="text" id="coursePrice" placeholder="Qiymət (məs: 250 AZN)">
+        <input type="text" id="courseAudience" placeholder="Kimə aiddir">
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+        <button class="btn" id="courseSaveBtn" data-act="save-course">+ Əlavə et</button>
+        <button class="btn-ghost" id="courseCancelBtn" data-act="cancel-course" hidden>Ləğv et</button>
+      </div>
+    </div>
+    <div class="card">
+      <div id="courseList"></div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-alerts">
+    <div class="card">
+      <h2>Təhlükəsizlik xəbərdarlıqları</h2>
+      <div id="alertList"></div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var $ = function(id){ return document.getElementById(id); };
+  var MAX_DEVICES = 2;
+  var state = { courses:{}, links:{}, customers:{}, pending:{}, alerts:{} };
+  var editingCourse = null;
+  var activatingReg = null;
+  var lastPendingCount = null;
+  var checksKey = '';
+  var timer = null;
+
+  function esc(s){
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function(m){
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[m];
+    });
+  }
+  function digits(p){ return String(p || '').replace(/\D/g, ''); }
+  function fmtDate(ts){ return ts ? new Date(ts).toLocaleString('az-AZ') : ''; }
+
+  async function api(action, payload){
+    var res = await fetch('/api/admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(Object.assign({ action: action }, payload || {}))
+    });
+    var data = {};
+    try { data = await res.json(); } catch(e) {}
+    return { ok: res.ok, status: res.status, data: data };
+  }
+
+  /* ---------- giriş / çıxış ---------- */
+  function showGate(msg){
+    stopTimer();
+    $('app').hidden = true;
+    $('gate').hidden = false;
+    $('gateErr').textContent = msg || '';
+    $('pin').focus();
+  }
+  function showApp(data){
+    $('gate').hidden = true;
+    $('app').hidden = false;
+    apply(data);
+    startTimer();
+  }
+
+  $('gateForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    var pin = $('pin').value.trim();
+    if(!pin){ $('gateErr').textContent = 'PIN daxil edin'; return; }
+    $('gateErr').textContent = '';
+    var r;
+    try { r = await api('login', { pin: pin }); }
+    catch(err){ $('gateErr').textContent = 'Xəta baş verdi, yenidən cəhd edin'; return; }
+    if(r.status === 429){ $('gateErr').textContent = 'Çox sayda uğursuz cəhd oldu. 15 dəqiqə sonra yenidən yoxlayın.'; return; }
+    if(!r.ok){ $('gateErr').textContent = 'PIN yanlışdır'; return; }
+    $('pin').value = '';
+    showApp(r.data);
+  });
+
+  async function guarded(action, payload){
+    var r = await api(action, payload);
+    if(r.status === 401){ showGate('Sessiya bitib. Yenidən daxil olun.'); }
+    return r;
+  }
+
+  /* ---------- məlumat ---------- */
+  function apply(data){
+    state.courses = data.courses || {};
+    state.links = data.links || {};
+    state.customers = data.customers || {};
+    state.pending = data.pending || {};
+    state.alerts = data.alerts || {};
+    renderAll();
+  }
+
+  function pendingEntries(){
+    return Object.entries(state.pending).filter(function(e){ return e[1] && e[1].status === 'gozleyir'; })
+      .sort(function(a, b){ return (b[1].createdAt || 0) - (a[1].createdAt || 0); });
+  }
+
+  async function refresh(manual){
+    if(document.hidden && !manual) return;
+    var r = await api('load');
+    if(r.status === 401){ showGate(manual ? 'Sessiya bitib. Yenidən daxil olun.' : ''); return; }
+    if(r.ok) apply(r.data);
+  }
+  function startTimer(){ stopTimer(); timer = setInterval(function(){ refresh(false); }, 45000); }
+  function stopTimer(){ if(timer){ clearInterval(timer); timer = null; } }
+  document.addEventListener('visibilitychange', function(){ if(!document.hidden && !$('app').hidden) refresh(false); });
+
+  /* ---------- render ---------- */
+  function renderAll(){
+    renderCounts(); renderPending(); renderCustomers(); renderCourses(); renderAlerts(); renderChecks();
+  }
+
+  function renderCounts(){
+    var p = pendingEntries().length;
+    var a = Object.keys(state.alerts).length;
+    $('cPending').textContent = p;
+    $('cPending').classList.toggle('hot', p > 0);
+    $('cCustomers').textContent = Object.keys(state.customers).length;
+    $('cCourses').textContent = Object.keys(state.courses).length;
+    $('cAlerts').textContent = a;
+    $('cAlerts').classList.toggle('hot', a > 0);
+    document.title = (p + a > 0 ? '(' + (p + a) + ') ' : '') + 'Admin — Kurs Portalı';
+  }
+
+  function renderPending(){
+    var list = pendingEntries();
+    var wrap = $('pendingList');
+    if(!list.length){ wrap.innerHTML = '<div class="empty">Gözləyən müraciət yoxdur</div>'; lastPendingCount = 0; return; }
+    wrap.innerHTML = list.map(function(e){
+      var id = e[0], r = e[1];
+      return '<div class="item" style="grid-template-columns:minmax(0,1.4fr) minmax(0,1.4fr) auto">' +
+        '<div><div class="name">' + esc(r.name) + '</div><div class="sub">' + esc(r.phone) + '</div></div>' +
+        '<div><div class="sub" style="margin:0">' + esc(r.courseName) + '</div><div class="sub">' + esc(fmtDate(r.createdAt)) + '</div></div>' +
+        '<div class="btns"><button class="btn" data-act="activate" data-id="' + esc(id) + '">Aktivləşdir</button>' +
+        '<button class="btn-ghost" data-act="dismiss-pending" data-id="' + esc(id) + '">Sil</button></div></div>';
+    }).join('');
+    if(lastPendingCount !== null && list.length > lastPendingCount){
+      var first = wrap.querySelector('.item');
+      if(first) first.classList.add('flash');
+    }
+    lastPendingCount = list.length;
+  }
+
+  function renderCustomers(){
+    var q = $('custSearch').value.trim().toLowerCase();
+    var qd = digits(q);
+    var entries = Object.entries(state.customers).filter(function(e){
+      var c = e[1];
+      if(!q) return true;
+      return String(c.name || '').toLowerCase().indexOf(q) !== -1 || (qd && digits(c.phone || e[0]).indexOf(qd) !== -1);
+    });
+    var wrap = $('customerList');
+    if(!entries.length){
+      wrap.innerHTML = '<div class="empty">' + (q ? 'Axtarışa uyğun müştəri tapılmadı' : 'Hələ müştəri yoxdur') + '</div>';
+      return;
+    }
+    wrap.innerHTML = entries.map(function(e){
+      var phone = e[0], c = e[1];
+      var badges = (c.allowedCourses || []).map(function(cid){
+        var course = state.courses[cid];
+        return '<span class="badge">' + esc(course ? course.name : '—') + '</span>';
+      }).join('') || '<span class="sub">kurs yoxdur</span>';
+      return '<div class="item">' +
+        '<div><div class="name">' + esc(c.name) + '</div><div class="sub">' + esc(c.phone || phone) + ' · cihaz ' + (c.deviceCount || 0) + '/' + MAX_DEVICES + '</div></div>' +
+        '<div>' + badges + '</div>' +
+        '<div class="btns">' +
+          '<button class="btn-ghost" data-act="reset-pass" data-id="' + esc(phone) + '">Yeni parol</button>' +
+          '<button class="btn-ghost" data-act="reset-devices" data-id="' + esc(phone) + '">Cihazları sıfırla</button>' +
+          '<button class="btn-danger" data-act="remove-customer" data-id="' + esc(phone) + '">Sil</button>' +
+        '</div></div>';
+    }).join('');
+  }
+
+  function renderCourses(){
+    var entries = Object.entries(state.courses);
+    var wrap = $('courseList');
+    if(!entries.length){ wrap.innerHTML = '<div class="empty">Hələ kurs yoxdur</div>'; return; }
+    wrap.innerHTML = entries.map(function(e){
+      var id = e[0], c = e[1];
+      var href = state.links[id] || c.url || '#';
+      return '<div class="item">' +
+        '<div><div class="name">' + esc(c.name) + '</div><div class="sub">' + esc(c.price ? c.price + ' AZN' : '') + '</div></div>' +
+        '<div class="sub" style="margin:0">' + esc(c.description || '') + '</div>' +
+        '<div class="btns"><a class="btn-ghost" href="' + esc(href) + '" target="_blank" rel="noopener">Aç ↗</a>' +
+        '<button class="btn-ghost" data-act="edit-course" data-id="' + esc(id) + '">Redaktə</button>' +
+        '<button class="btn-danger" data-act="remove-course" data-id="' + esc(id) + '">Sil</button></div></div>';
+    }).join('');
+  }
+
+  function renderAlerts(){
+    var entries = Object.entries(state.alerts);
+    var wrap = $('alertList');
+    if(!entries.length){ wrap.innerHTML = '<div class="empty">Xəbərdarlıq yoxdur</div>'; return; }
+    var labels = { cihaz_limiti: 'Cihaz limiti aşıldı' };
+    wrap.innerHTML = entries.reverse().map(function(e){
+      var id = e[0], a = e[1];
+      return '<div class="item" style="grid-template-columns:minmax(0,1fr) auto">' +
+        '<div><span class="badge high">' + esc(labels[a.type] || a.type) + '</span> <strong>' + esc(a.customerName) + '</strong> (' + esc(a.phone) + ')' +
+        '<div class="sub">' + esc(fmtDate(a.ts)) + ' — ' + esc(a.detail || '') + '</div></div>' +
+        '<div class="btns"><button class="btn-ghost" data-act="dismiss-alert" data-id="' + esc(id) + '">Bağla</button></div></div>';
+    }).join('');
+  }
+
+  function renderChecks(){
+    var entries = Object.entries(state.courses);
+    var key = entries.map(function(e){ return e[0] + ':' + e[1].name; }).join('|');
+    if(key === checksKey) return;
+    checksKey = key;
+    var checked = {};
+    document.querySelectorAll('.course-chk:checked').forEach(function(c){ checked[c.value] = true; });
+    $('courseChecks').innerHTML = entries.length ? entries.map(function(e){
+      return '<label class="chip"><input type="checkbox" class="course-chk" value="' + esc(e[0]) + '"' + (checked[e[0]] ? ' checked' : '') + '> ' + esc(e[1].name) + '</label>';
+    }).join('') : '<div class="empty">Əvvəlcə kurs əlavə edin</div>';
+  }
+
+  /* ---------- tablar ---------- */
+  function switchTab(name){
+    document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('active', t.dataset.tab === name); });
+    document.querySelectorAll('.panel').forEach(function(p){ p.classList.toggle('active', p.id === 'panel-' + name); });
+  }
+
+  /* ---------- müştəri formu ---------- */
+  function genPassword(){
+    var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+    var rnd = crypto.getRandomValues(new Uint32Array(10));
+    var pass = '';
+    for(var i = 0; i < 10; i++) pass += chars[rnd[i] % chars.length];
+    $('custPass').value = pass;
+  }
+  function setNewCustomer(open){
+    $('newCustomer').hidden = !open;
+    if(open) $('custName').focus();
+  }
+  function clearCustomerForm(){
+    $('custName').value = ''; $('custPhone').value = ''; $('custPass').value = '';
+    document.querySelectorAll('.course-chk').forEach(function(c){ c.checked = false; });
+    activatingReg = null;
+  }
+  async function copyText(text){
+    try { await navigator.clipboard.writeText(text); return true; } catch(e) { return false; }
+  }
+
+  async function createCustomer(){
+    var name = $('custName').value.trim();
+    var phone = $('custPhone').value.trim();
+    var password = $('custPass').value.trim();
+    var courses = Array.prototype.map.call(document.querySelectorAll('.course-chk:checked'), function(c){ return c.value; });
+    if(!name || !phone || !password){ alert('Ad, telefon və parol vacibdir'); return; }
+    if(password.length < 6){ alert('Parol ən azı 6 simvol olmalıdır'); return; }
+    if(!courses.length){ alert('Ən azı bir kurs seçin. Müştəri yalnız seçdiyiniz kurslara giriş əldə edəcək.'); return; }
+    if(digits(phone).length < 9){ alert('Telefon nömrəsini düzgün daxil edin'); return; }
+    var r = await guarded('createCustomer', { name: name, phone: phone, password: password, courses: courses, regId: activatingReg });
+    if(r.data && r.data.error === 'exists'){ alert('Bu telefon nömrəsi ilə müştəri artıq mövcuddur'); return; }
+    if(!r.ok){ if(r.status !== 401) alert('Müştəri yaradılmadı, yenidən cəhd edin'); return; }
+    var text = 'Telefon: ' + phone + '\nParol: ' + password;
+    var copied = await copyText(text);
+    if(activatingReg) delete state.pending[activatingReg];
+    state.customers[r.data.phone] = r.data.customer;
+    clearCustomerForm();
+    setNewCustomer(false);
+    renderAll();
+    alert('Müştəri yaradıldı.\n\n' + text + '\n\n' + (copied ? 'Məlumat kopyalanıb. ' : '') + 'Müştəriyə WhatsApp ilə göndərin.');
+  }
+
+  /* ---------- kurs formu ---------- */
+  function resetCourseForm(){
+    editingCourse = null;
+    ['courseName','courseUrl','courseDesc','courseStats','coursePrice','courseAudience'].forEach(function(id){ $(id).value = ''; });
+    $('courseSaveBtn').textContent = '+ Əlavə et';
+    $('courseFormTitle').textContent = 'Kurs əlavə et';
+    $('courseCancelBtn').hidden = true;
+  }
+  async function saveCourse(){
+    var name = $('courseName').value.trim();
+    var url = $('courseUrl').value.trim();
+    if(!name || !url){ alert('Ad və link vacibdir'); return; }
+    var payload = {
+      id: editingCourse, name: name, url: url,
+      description: $('courseDesc').value.trim(),
+      stats: $('courseStats').value.split(',').map(function(s){ return s.trim(); }).filter(Boolean),
+      price: $('coursePrice').value.trim(),
+      audience: $('courseAudience').value.trim()
+    };
+    var r = await guarded('saveCourse', payload);
+    if(!r.ok){ if(r.status !== 401) alert('Kurs yadda saxlanmadı. Linkin https:// ilə başladığını yoxlayın.'); return; }
+    state.courses = r.data.courses || {};
+    state.links = r.data.links || {};
+    resetCourseForm();
+    renderAll();
+  }
+
+  /* ---------- klik idarəsi ---------- */
+  document.addEventListener('click', async function(e){
+    var el = e.target.closest('[data-act]');
+    if(!el) return;
+    var act = el.dataset.act, id = el.dataset.id;
+    var c;
+
+    if(act === 'tab'){ switchTab(el.dataset.tab); return; }
+    if(act === 'refresh'){ el.disabled = true; await refresh(true); el.disabled = false; return; }
+    if(act === 'logout'){ api('logout').catch(function(){}); state = { courses:{}, links:{}, customers:{}, pending:{}, alerts:{} }; lastPendingCount = null; showGate(''); return; }
+    if(act === 'toggle-new'){ setNewCustomer($('newCustomer').hidden); return; }
+    if(act === 'gen-pass'){ genPassword(); return; }
+    if(act === 'create-customer'){ createCustomer(); return; }
+    if(act === 'save-course'){ saveCourse(); return; }
+    if(act === 'cancel-course'){ resetCourseForm(); return; }
+
+    if(act === 'activate'){
+      var reg = state.pending[id];
+      if(!reg) return;
+      activatingReg = id;
+      switchTab('customers');
+      setNewCustomer(true);
+      $('custName').value = reg.name || '';
+      $('custPhone').value = reg.phone || '';
+      genPassword();
+      document.querySelectorAll('.course-chk').forEach(function(chk){ chk.checked = reg.courseId === 'ALL' || chk.value === reg.courseId; });
+      $('newCustomer').scrollIntoView({ behavior:'smooth', block:'start' });
+      return;
+    }
+    if(act === 'dismiss-pending'){
+      if(!confirm('Bu müraciəti silmək istəyirsiniz?')) return;
+      var r1 = await guarded('dismissPending', { id: id });
+      if(r1.ok){ delete state.pending[id]; renderAll(); }
+      return;
+    }
+    if(act === 'reset-devices'){
+      if(!confirm('Bu müştərinin cihaz siyahısını sıfırlamaq istəyirsiniz? (yeni telefon aldıqda istifadə edin)')) return;
+      var r2 = await guarded('resetDevices', { phone: id });
+      if(r2.ok && state.customers[id]){ state.customers[id].deviceCount = 0; renderCustomers(); }
+      return;
+    }
+    if(act === 'reset-pass'){
+      c = state.customers[id];
+      if(!confirm('"' + (c ? c.name : id) + '" üçün yeni parol yaradılsın? Köhnə parol və açıq sessiyalar ləğv olunacaq.')) return;
+      var r3 = await guarded('resetPassword', { phone: id });
+      if(!r3.ok){ if(r3.status !== 401) alert('Parol yenilənmədi, yenidən cəhd edin'); return; }
+      var text = 'Telefon: ' + (c && c.phone ? c.phone : id) + '\nParol: ' + r3.data.password;
+      var copied = await copyText(text);
+      alert('Yeni parol yaradıldı.\n\n' + text + '\n\n' + (copied ? 'Məlumat kopyalanıb. ' : '') + 'Müştəriyə WhatsApp ilə göndərin. Bu parol bir daha göstərilməyəcək.');
+      return;
+    }
+    if(act === 'remove-customer'){
+      c = state.customers[id];
+      if(!confirm('"' + (c ? c.name : id) + '" müştərisini silmək istəyirsiniz?')) return;
+      var r4 = await guarded('removeCustomer', { phone: id });
+      if(r4.ok){ delete state.customers[id]; renderAll(); }
+      return;
+    }
+    if(act === 'edit-course'){
+      c = state.courses[id];
+      if(!c) return;
+      editingCourse = id;
+      $('courseName').value = c.name || '';
+      $('courseUrl').value = c.url || '';
+      $('courseDesc').value = c.description || '';
+      $('courseStats').value = (c.stats || []).join(', ');
+      $('coursePrice').value = c.price || '';
+      $('courseAudience').value = c.audience || '';
+      $('courseSaveBtn').textContent = 'Yenilə';
+      $('courseFormTitle').textContent = 'Kursu redaktə et';
+      $('courseCancelBtn').hidden = false;
+      $('courseName').scrollIntoView({ behavior:'smooth', block:'center' });
+      return;
+    }
+    if(act === 'remove-course'){
+      if(!confirm('Bu kursu silmək istədiyinizə əminsiniz? Bu kursu almış müştərilərin girişi itəcək.')) return;
+      var r5 = await guarded('removeCourse', { id: id });
+      if(r5.ok){ state.courses = r5.data.courses || {}; state.links = r5.data.links || {}; renderAll(); }
+      return;
+    }
+    if(act === 'dismiss-alert'){
+      var r6 = await guarded('dismissAlert', { id: id });
+      if(r6.ok){ delete state.alerts[id]; renderAll(); }
+      return;
+    }
+  });
+
+  $('custSearch').addEventListener('input', renderCustomers);
+
+  /* ---------- başlanğıc ---------- */
+  (async function(){
+    try {
+      var r = await api('load');
+      if(r.ok) showApp(r.data); else showGate('');
+    } catch(e) { showGate('Xəta baş verdi, səhifəni yeniləyin'); }
+  })();
+})();
+</script>
+</body>
+</html>

@@ -64,12 +64,6 @@
     filter:drop-shadow(0 6px 24px rgba(217,168,90,0.35)); animation:float 6s ease-in-out infinite;
   }
   @keyframes float{ 0%,100%{transform:translateY(0px);} 50%{transform:translateY(-10px);} }
-  .alert-dot{
-    position:absolute; top:2%; right:2%; width:16px; height:16px; border-radius:50%;
-    background:var(--danger); box-shadow:0 0 10px 2px rgba(217,112,90,0.7);
-    display:none; animation:pulseDot 1.6s ease-in-out infinite;
-  }
-  @keyframes pulseDot{ 0%,100%{ transform:scale(1); opacity:1;} 50%{ transform:scale(1.3); opacity:0.7;} }
 
   .eyebrow{
     font-family:'Inter',sans-serif; letter-spacing:0.32em; text-transform:uppercase; font-size:0.72rem;
@@ -156,11 +150,11 @@
     width:min(460px, 100%); background:rgba(18,48,44,0.55); border:1px solid rgba(217,168,90,0.18);
     border-radius:22px; padding:2.6rem 2.2rem; backdrop-filter:blur(8px); text-align:center;
   }
-  .login-card input, .login-card select, .admin-card input, .admin-card select, .admin-card textarea{
+  .login-card input, .login-card select{
     width:100%; padding:0.85rem 1rem; border-radius:12px; border:1px solid rgba(217,168,90,0.25);
     background:rgba(255,255,255,0.05); color:var(--cream); font-size:0.95rem; margin-bottom:1rem; font-family:'Inter',sans-serif;
   }
-  .login-card input:focus, .login-card select:focus, .admin-card input:focus, .admin-card select:focus, .admin-card textarea:focus{ outline:none; border-color:var(--gold); }
+  .login-card input:focus, .login-card select:focus{ outline:none; border-color:var(--gold); }
   .btn-login{
     width:100%; padding:0.85rem; border-radius:999px; border:none; cursor:pointer;
     background:linear-gradient(120deg,var(--gold),var(--gold-light)); color:#2a1d09; font-weight:600;
@@ -191,11 +185,6 @@
   .mode-switch button{ flex:1; padding:0.6rem; border-radius:999px; border:none; background:transparent; color:var(--cream-dim); font-size:0.85rem; font-weight:600; cursor:pointer; transition:all .2s ease; }
   .mode-switch button.active{ background:linear-gradient(120deg,var(--gold),var(--gold-light)); color:#2a1d09; }
 
-  #adminGate{
-    position:fixed; inset:0; z-index:100; display:none; align-items:center; justify-content:center;
-    background:rgba(6,16,15,0.88); backdrop-filter:blur(4px);
-  }
-
   #termsGate{
     position:fixed; inset:0; z-index:150; display:none; align-items:center; justify-content:center;
     background:rgba(6,16,15,0.92); backdrop-filter:blur(5px); padding:18px;
@@ -214,71 +203,10 @@
   .terms-check a{ color:var(--gold-light); }
   #termsAcceptBtn{ margin-top:14px; width:100%; }
   #termsAcceptBtn:disabled{ opacity:.45; cursor:not-allowed; }
-  .gate-card{ background:var(--card); border:1px solid rgba(217,168,90,0.25); border-radius:20px; padding:2.4rem 2rem; width:min(340px,88vw); text-align:center; }
-  .gate-card h3{ font-family:'Fraunces',serif; font-size:1.2rem; margin-bottom:1.2rem; color:var(--gold-light); }
-  .admin-wrap{ width:100%; max-width:820px; text-align:left; }
-  .admin-card{ background:var(--card); border:1px solid rgba(217,168,90,0.15); border-radius:16px; padding:1.8rem; margin-bottom:1.5rem; }
-  .admin-card h4{ font-family:'Fraunces',serif; font-weight:500; font-size:1.1rem; margin-bottom:1rem; color:var(--cream); }
-  .admin-card p.hint{ font-size:0.8rem; color:var(--cream-dim); margin:-0.5rem 0 1rem; }
-  .row2{ display:flex; gap:0.9rem; flex-wrap:wrap; }
-  .row2 > div{ flex:1; min-width:170px; }
-  .btn-sm{
-    padding:0.5rem 1rem; border-radius:999px; border:none; cursor:pointer; font-size:0.82rem; font-weight:600;
-    background:linear-gradient(120deg,var(--gold),var(--gold-light)); color:#2a1d09;
-  }
   .btn-outline-sm{
     padding:0.45rem 0.9rem; border-radius:999px; border:1px solid rgba(217,168,90,0.35); background:transparent;
     color:var(--gold-light); font-size:0.8rem; cursor:pointer;
   }
-  .btn-danger-sm{
-    padding:0.4rem 0.85rem; border-radius:999px; border:none; cursor:pointer; font-size:0.78rem;
-    background:linear-gradient(120deg,var(--danger),#e08d78); color:#2a0e09;
-  }
-  table{ width:100%; max-width:100%; border-collapse:collapse; margin-top:0.8rem; table-layout:fixed; }
-  th,td{ text-align:left; padding:0.55rem 0.4rem; font-size:0.8rem; border-bottom:1px solid rgba(217,168,90,0.1); word-break:break-word; }
-  th{ color:var(--cream-dim); font-weight:500; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.05em; }
-
-  @media (max-width: 680px){
-    .admin-card table{ table-layout:auto; }
-    .admin-card table thead{ display:none; }
-    .admin-card table, .admin-card table tbody, .admin-card table tr, .admin-card table td{ display:block; width:100%; }
-    .admin-card table tr{
-      background:rgba(255,255,255,0.03); border:1px solid rgba(217,168,90,0.15);
-      border-radius:12px; padding:0.7rem 0.85rem; margin-bottom:0.7rem;
-    }
-    .admin-card table td{
-      border:none; padding:0.3rem 0; white-space:normal !important;
-      overflow:visible !important; text-overflow:clip !important; max-width:none !important;
-    }
-    .admin-card table td[data-label]::before{
-      content:attr(data-label); display:block; font-size:0.66rem; text-transform:uppercase;
-      letter-spacing:0.04em; color:var(--gold); margin-bottom:0.2rem;
-    }
-    .admin-card table td[data-label=""]::before{ content:none; margin-bottom:0; }
-    .admin-card table td.empty-row-cell{ text-align:center; }
-    .admin-card{ padding:1.2rem; }
-    .admin-wrap{ max-width:100%; }
-  }
-  .badge{ display:inline-block; padding:0.18rem 0.55rem; border-radius:999px; font-size:0.7rem; margin:0.08rem; background:rgba(123,160,152,0.2); color:var(--sage); border:1px solid rgba(123,160,152,0.35); }
-  .badge-high{ background:rgba(217,112,90,0.22); color:#ffb199; border:1px solid rgba(217,112,90,0.5); }
-  .badge-mid{ background:rgba(217,168,90,0.18); color:var(--gold-light); border:1px solid rgba(217,168,90,0.4); }
-  .checks{ display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem; }
-  .chip-check{ display:flex; align-items:center; gap:0.4rem; padding:0.4rem 0.7rem; border-radius:9px; border:1px solid rgba(217,168,90,0.25); background:rgba(255,255,255,0.03); font-size:0.82rem; }
-  .empty-row{ color:var(--cream-dim); font-size:0.82rem; font-style:italic; }
-  .name-alert{ color:#ff9b82; font-weight:700; animation:nameGlow 1.6s ease-in-out infinite; }
-  .alert-count{
-    display:inline-block; background:var(--danger); color:#2a0e09; font-size:0.68rem; font-weight:700;
-    padding:0.05rem 0.4rem; border-radius:999px; margin-left:0.2rem;
-  }
-  @keyframes nameGlow{ 0%,100%{ text-shadow:0 0 2px rgba(217,112,90,0.3); } 50%{ text-shadow:0 0 10px rgba(217,112,90,0.9); } }
-  .flex-between{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.8rem; }
-  .pending-banner{ display:none; width:100%; text-align:left; margin-bottom:1rem; padding:0.85rem 1rem; border-radius:12px; border:1px solid rgba(217,168,90,0.55); background:rgba(217,168,90,0.12); color:var(--gold-light); font:inherit; font-weight:600; cursor:pointer; }
-  .pending-banner.show{ display:block; }
-  .admin-card.flash{ animation:cardFlash 1.4s ease; }
-  @keyframes cardFlash{ 0%,60%{ box-shadow:0 0 0 2px rgba(217,168,90,0.7); } 100%{ box-shadow:none; } }
-  @media (prefers-reduced-motion:reduce){ .admin-card.flash{ animation:none; } }
-  .pending-row{ padding:0.9rem; border:1px solid rgba(217,168,90,0.18); border-radius:12px; margin-bottom:0.7rem; background:rgba(255,255,255,0.02); }
-  .pending-row .meta{ font-size:0.8rem; color:var(--cream-dim); margin:0.2rem 0 0.6rem; }
 
   footer{ position:relative; z-index:2; text-align:center; padding:3rem 1.5rem 3.4rem; border-top:1px solid rgba(217,168,90,0.12); font-size:0.85rem; color:var(--cream-dim); }
   footer a{ color:var(--gold-light); text-decoration:none; font-weight:500; }
@@ -311,7 +239,6 @@
   <div class="logo-wrap" id="logoWrap">
     <div class="glow-ring"></div>
     <img class="logo-img" src="../logo.png" alt="AN Psychological Support and Rehabilitation Center logo">
-    <div class="alert-dot" id="alertDot"></div>
   </div>
 
   <h1>Professional support<br>for growth and development</h1>
@@ -393,76 +320,12 @@
 
   </div>
 
-  <div class="admin-wrap" id="adminWrap" style="display:none">
-    <div class="flex-between" style="margin-bottom:1rem">
-      <h2 style="font-family:'Fraunces',serif;font-size:1.5rem;color:var(--gold-light)">Admin Panel</h2>
-      <button class="btn-outline-sm" onclick="adminLogout()">Çıxış</button>
-    </div>
-
-    <button type="button" class="pending-banner" id="pendingBanner" onclick="window.showPending()"></button>
-
-    <div class="admin-card" id="alertsCard" style="display:none">
-      <h4>🔔 Təhlükəsizlik Xəbərdarlıqları</h4>
-      <div id="alertsList"></div>
-    </div>
-
-    <div class="admin-card" id="pendingCard">
-      <h4>⏳ Gözləyən qeydiyyatlar</h4>
-      <p class="hint">Müştəri WhatsApp ilə ödənişi təsdiqlədikdən sonra "Aktivləşdir" düyməsinə basın.</p>
-      <div id="pendingList"><div class="empty-row">Gözləyən qeydiyyat yoxdur</div></div>
-    </div>
-
-    <div class="admin-card">
-      <h4>📚 Kurs əlavə et</h4>
-      <div class="row2">
-        <div><input type="text" id="courseName" placeholder="Kurs adı"></div>
-        <div><input type="url" id="courseUrl" placeholder="Kurs linki (URL)"></div>
-      </div>
-      <input type="text" id="courseDesc" placeholder="Qısa təsvir (məs: 15 klinik modul, seans skriptləri)">
-      <input type="text" id="courseStats" placeholder="Statistika (vergüllə: 100 proqram, 50 seans)">
-      <div class="row2">
-        <div><input type="text" id="coursePrice" placeholder="Qiymət (məs: 250 AZN)"></div>
-        <div><input type="text" id="courseAudience" placeholder="Kimə aiddir (məs: Psixoloqlar üçün)"></div>
-      </div>
-      <button class="btn-sm" id="courseFormBtn" onclick="adminAddCourse()">+ Əlavə et</button>
-      <table><thead><tr><th>Ad</th><th>Təsvir</th><th></th></tr></thead><tbody id="adminCoursesBody"></tbody></table>
-    </div>
-
-    <div class="admin-card">
-      <h4>👤 Yeni müştəri</h4>
-      <div class="row2">
-        <div><input type="text" id="custName" placeholder="Full name"></div>
-        <div><input type="tel" id="custPhone" placeholder="Telefon nömrəsi"></div>
-      </div>
-      <div class="row2">
-        <div><input type="text" id="custPass" placeholder="Parol (ən azı 6 simvol)"></div>
-        <div><button type="button" class="btn-outline-sm" style="height:100%;width:100%" onclick="generatePassword()">🎲 Təsadüfi parol</button></div>
-      </div>
-      <div class="checks" id="courseChecksAdmin"></div>
-      <button class="btn-sm" onclick="adminCreateCustomer()">Müştəri yarat</button>
-    </div>
-
-    <div class="admin-card">
-      <h4>📋 Müştərilər</h4>
-      <table><thead><tr><th>Müştəri</th><th>Kurslar</th><th>Cihazlar</th><th></th></tr></thead><tbody id="adminCustomersBody"></tbody></table>
-    </div>
-  </div>
 </section>
 
 <footer>
   By <a href="https://aze-ai.az" target="_blank" rel="noopener">securtiy_group</a> — AN Psychological Support and Rehabilitation Center
   <div style="margin-top:10px;font-size:.82rem;"><a href="../privacy.html">Privacy Policy</a> · <a href="../terms.html">Terms of Use</a></div>
 </footer>
-
-<div id="adminGate">
-  <div class="gate-card">
-    <h3>🔒 Admin Girişi</h3>
-    <input type="password" id="adminPin" placeholder="Admin PIN" style="width:100%;padding:0.8rem;border-radius:10px;border:1px solid rgba(217,168,90,0.3);background:rgba(255,255,255,0.05);color:var(--cream);margin-bottom:0.8rem">
-    <div class="err" id="gateErr"></div>
-    <button class="btn-login" id="adminGateBtn" onclick="tryAdminLogin()">Daxil ol</button>
-    <div style="margin-top:1rem"><button class="btn-outline-sm" onclick="closeGate()">Bağla</button></div>
-  </div>
-</div>
 
 <div id="termsGate">
   <div class="terms-card">
@@ -506,7 +369,7 @@
   const bgGradient = document.querySelector('.bg-gradient');
   window.addEventListener('scroll', ()=>{ bgGradient.style.transform = `translateY(${window.scrollY*0.15}px)`; });
 
-  // gizli admin trigger: 3 saniyə ərzində loqoya 5 klik
+  // gizli admin girişi: 3 saniyə ərzində loqoya 5 klik
   let clickTimes = [];
   logoWrap.addEventListener('click', ()=>{
     const now = Date.now();
@@ -514,10 +377,9 @@
     clickTimes = clickTimes.filter(t => now - t < 3000);
     if(clickTimes.length >= 5){
       clickTimes = [];
-      document.getElementById('adminGate').style.display='flex';
+      location.href = '/admin/';
     }
   });
-  window.closeGate = function(){ document.getElementById('adminGate').style.display='none'; };
 
   window.switchTab = function(mode){
     document.getElementById('tabRegister').classList.toggle('active', mode==='register');
@@ -529,7 +391,6 @@
 
 <script type="module">
 const WHATSAPP_NUMBER = '994552107111';
-const MAX_DEVICES = 2;
 
 async function api(path, options){
   const init = options && options.body
@@ -541,7 +402,7 @@ async function api(path, options){
   return { ok: res.ok, status: res.status, data };
 }
 
-window.DB = { courses:{}, links:{}, customers:{}, pending:{}, alerts:{} };
+window.DB = { courses:{} };
 
 function normalizePhone(p){
   return (p||'').replace(/\D/g,'');
@@ -758,259 +619,6 @@ window.customerLogout = function(){
   document.getElementById('password').value='';
 };
 
-/* ---------- admin (PIN serverdə yoxlanılır) ---------- */
-async function adminApi(action, payload){
-  const r = await api('admin', { body: { action, ...payload } });
-  if(r.status === 401 && action !== 'login'){
-    alert('Admin sessiyası bitib. Yenidən daxil olun.');
-    window.adminLogout();
-  }
-  return r;
-}
-
-function applyAdminData(data){
-  window.DB.courses = data.courses || {};
-  window.DB.links = data.links || {};
-  window.DB.customers = data.customers || {};
-  window.DB.pending = data.pending || {};
-  window.DB.alerts = data.alerts || {};
-  renderCourseGrid();
-  renderCoursePicker();
-  renderAdminCourses();
-  renderAdminCustomers();
-  renderPending();
-  renderAlerts();
-}
-
-window.tryAdminLogin = async function(){
-  const pin = document.getElementById('adminPin').value.trim();
-  const gateErr = document.getElementById('gateErr');
-  gateErr.textContent = '';
-  if(!pin){ gateErr.textContent = 'PIN daxil edin'; return; }
-  let r;
-  try{ r = await adminApi('login', { pin }); }
-  catch(e){ gateErr.textContent = 'Something went wrong, please try again'; return; }
-  if(r.status === 429){ gateErr.textContent = 'Too many failed attempts. Try again in 15 minutes.'; return; }
-  if(!r.ok){ gateErr.textContent = 'PIN yanlışdır'; return; }
-  document.getElementById('adminPin').value = '';
-  document.getElementById('adminGate').style.display = 'none';
-  document.getElementById('publicCard').style.display='none';
-  document.getElementById('adminWrap').style.display='block';
-  applyAdminData(r.data);
-};
-
-window.adminLogout = function(){
-  api('admin', { body: { action:'logout' } }).catch(()=>{});
-  document.getElementById('adminWrap').style.display='none';
-  document.getElementById('publicCard').style.display='block';
-  loadCourses();
-};
-
-let editingCourseId = null;
-window.adminAddCourse = async function(){
-  const name = document.getElementById('courseName').value.trim();
-  const url = document.getElementById('courseUrl').value.trim();
-  const description = document.getElementById('courseDesc').value.trim();
-  const stats = document.getElementById('courseStats').value.split(',').map(s=>s.trim()).filter(Boolean);
-  const price = document.getElementById('coursePrice').value.trim();
-  const audience = document.getElementById('courseAudience').value.trim();
-  if(!name || !url){ alert('Ad və link vacibdir'); return; }
-  const r = await adminApi('saveCourse', { id: editingCourseId, name, url, description, stats, price, audience });
-  if(!r.ok){ if(r.status !== 401) alert('Kurs yadda saxlanmadı. Linkin https:// ilə başladığını yoxlayın.'); return; }
-  editingCourseId = null;
-  document.getElementById('courseFormBtn').textContent = '+ Əlavə et';
-  window.DB.courses = r.data.courses || {};
-  window.DB.links = r.data.links || {};
-  renderCourseGrid(); renderCoursePicker(); renderAdminCourses(); renderAdminCustomers();
-  document.getElementById('courseName').value=''; document.getElementById('courseUrl').value='';
-  document.getElementById('courseDesc').value=''; document.getElementById('courseStats').value='';
-  document.getElementById('coursePrice').value=''; document.getElementById('courseAudience').value='';
-};
-window.adminEditCourse = function(id){
-  const c = window.DB.courses[id];
-  if(!c) return;
-  editingCourseId = id;
-  document.getElementById('courseName').value = c.name || '';
-  document.getElementById('courseUrl').value = c.url || '';
-  document.getElementById('courseDesc').value = c.description || '';
-  document.getElementById('courseStats').value = (c.stats||[]).join(', ');
-  document.getElementById('coursePrice').value = c.price || '';
-  document.getElementById('courseAudience').value = c.audience || '';
-  document.getElementById('courseFormBtn').textContent = '💾 Yenilə';
-  document.getElementById('courseName').scrollIntoView({behavior:'smooth', block:'center'});
-};
-window.adminRemoveCourse = async function(id){
-  if(!confirm('Bu kursu silmək istədiyinizə əminsiniz? Bu kursu almış müştərilərin girişi itəcək.')) return;
-  const r = await adminApi('removeCourse', { id });
-  if(!r.ok) return;
-  window.DB.courses = r.data.courses || {};
-  window.DB.links = r.data.links || {};
-  renderCourseGrid(); renderCoursePicker(); renderAdminCourses(); renderAdminCustomers();
-};
-
-window.generatePassword = function(){
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
-  const rnd = crypto.getRandomValues(new Uint32Array(8));
-  let pass = '';
-  for(let i=0;i<8;i++) pass += chars[rnd[i] % chars.length];
-  document.getElementById('custPass').value = pass;
-};
-
-let activatingRegId = null;
-window.adminActivate = function(regId){
-  const reg = window.DB.pending[regId];
-  if(!reg) return;
-  activatingRegId = regId;
-  document.getElementById('custName').value = reg.name;
-  document.getElementById('custPhone').value = reg.phone;
-  generatePassword();
-  document.querySelectorAll('.course-chk-admin').forEach(chk=>{
-    chk.checked = (reg.courseId === 'ALL') || (chk.value === reg.courseId);
-  });
-  document.getElementById('custName').scrollIntoView({behavior:'smooth', block:'center'});
-};
-window.adminDismissPending = async function(regId){
-  if(!confirm('Bu sorğunu silmək istəyirsiniz?')) return;
-  const r = await adminApi('dismissPending', { id: regId });
-  if(!r.ok) return;
-  delete window.DB.pending[regId];
-  renderPending();
-};
-
-window.adminCreateCustomer = async function(){
-  const name = document.getElementById('custName').value.trim();
-  const phoneRaw = document.getElementById('custPhone').value.trim();
-  const password = document.getElementById('custPass').value.trim();
-  const checked = [...document.querySelectorAll('.course-chk-admin:checked')].map(c=>c.value);
-  if(!name || !phoneRaw || !password){ alert('Ad, telefon və parol vacibdir'); return; }
-  if(password.length < 6){ alert('Parol ən azı 6 simvol olmalıdır'); return; }
-  if(!checked.length){ alert('Ən azı bir kurs seçin — müştəri YALNIZ seçdiyiniz kurs(lar)a giriş əldə edəcək'); return; }
-  if(normalizePhone(phoneRaw).length < 9){ alert('Enter a valid phone number'); return; }
-
-  const r = await adminApi('createCustomer', { name, phone: phoneRaw, password, courses: checked, regId: activatingRegId });
-  if(r.data.error === 'exists'){ alert('Bu telefon nömrəsi ilə müştəri artıq mövcuddur'); return; }
-  if(!r.ok){ if(r.status !== 401) alert('Müştəri yaradılmadı, yenidən cəhd edin'); return; }
-
-  if(activatingRegId){
-    delete window.DB.pending[activatingRegId];
-    activatingRegId = null;
-  }
-  window.DB.customers[r.data.phone] = r.data.customer;
-  renderAdminCustomers();
-  renderPending();
-
-  alert(`Müştəri yaradıldı.\n\nTelefon: ${phoneRaw}\nParol: ${password}\n\nBu parolu müştəriyə WhatsApp ilə göndərin.`);
-  document.getElementById('custName').value=''; document.getElementById('custPhone').value=''; document.getElementById('custPass').value='';
-  document.querySelectorAll('.course-chk-admin').forEach(chk=>chk.checked=false);
-};
-
-window.adminResetDevices = async function(phone){
-  if(!confirm('Bu müştərinin cihaz siyahısını sıfırlamaq istəyirsiniz? (yeni telefon aldıqda istifadə edin)')) return;
-  const r = await adminApi('resetDevices', { phone });
-  if(!r.ok) return;
-  if(window.DB.customers[phone]) window.DB.customers[phone].deviceCount = 0;
-  renderAdminCustomers();
-};
-window.adminResetPassword = async function(phone){
-  const c = window.DB.customers[phone];
-  if(!confirm(`"${c ? c.name : phone}" üçün yeni parol yaradılsın? Köhnə parol və açıq sessiyalar ləğv olunacaq.`)) return;
-  const r = await adminApi('resetPassword', { phone });
-  if(!r.ok) return;
-  const text = `Telefon: ${c ? (c.phone || phone) : phone}\nParol: ${r.data.password}`;
-  try { await navigator.clipboard.writeText(text); } catch(e) {}
-  alert(`Yeni parol yaradıldı.\n\n${text}\n\nMəlumat kopyalanıb, müştəriyə WhatsApp ilə göndərin. Bu parol bir daha göstərilməyəcək.`);
-};
-window.adminRemoveCustomer = async function(phone){
-  const c = window.DB.customers[phone];
-  if(!confirm(`"${c ? c.name : phone}" müştərisini silmək istəyirsiniz?`)) return;
-  const r = await adminApi('removeCustomer', { phone });
-  if(!r.ok) return;
-  delete window.DB.customers[phone];
-  renderAdminCustomers();
-};
-window.adminDismissAlert = async function(id){
-  const r = await adminApi('dismissAlert', { id });
-  if(!r.ok) return;
-  delete window.DB.alerts[id];
-  renderAlerts();
-};
-
-function renderAdminCourses(){
-  const body = document.getElementById('adminCoursesBody');
-  const entries = Object.entries(window.DB.courses);
-  body.innerHTML = entries.length ? entries.map(([id,c])=>`
-    <tr><td data-label="Ad">${escapeHtml(c.name)}</td><td data-label="Təsvir" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(c.description||'')}</td>
-    <td data-label="" style="white-space:nowrap">
-      <a href="${escapeHtml(window.DB.links[id] || c.url)}" target="_blank" rel="noopener" class="btn-outline-sm" style="text-decoration:none;display:inline-block;margin-right:0.4rem;margin-bottom:0.3rem">Aç ↗</a>
-      <button class="btn-outline-sm" style="margin-right:0.4rem;margin-bottom:0.3rem" onclick="window.adminEditCourse('${id}')">Redaktə</button>
-      <button class="btn-danger-sm" onclick="window.adminRemoveCourse('${id}')">Sil</button>
-    </td></tr>`).join('')
-    : '<tr><td colspan="3" class="empty-row empty-row-cell">Hələ kurs yoxdur</td></tr>';
-
-  const checks = document.getElementById('courseChecksAdmin');
-  checks.innerHTML = entries.length ? entries.map(([id,c])=>`
-    <label class="chip-check"><input type="checkbox" value="${id}" class="course-chk-admin"> ${escapeHtml(c.name)}</label>`).join('')
-    : '<div class="empty-row">Əvvəlcə kurs əlavə edin</div>';
-}
-
-function renderPending(){
-  const wrap = document.getElementById('pendingList');
-  const entries = Object.entries(window.DB.pending).filter(([,r]) => r && r.status === 'gozleyir');
-  wrap.innerHTML = entries.length ? entries.map(([id,r])=>`
-    <div class="pending-row">
-      <strong>${escapeHtml(r.name)}</strong> — ${escapeHtml(r.phone)}
-      <div class="meta">İstəyi: ${escapeHtml(r.courseName)} · ${new Date(r.createdAt).toLocaleString('az-AZ')}</div>
-      <button class="btn-sm" onclick="window.adminActivate('${id}')">Aktivləşdir</button>
-      <button class="btn-outline-sm" onclick="window.adminDismissPending('${id}')">Sil</button>
-    </div>`).join('') : '<div class="empty-row">Gözləyən qeydiyyat yoxdur</div>';
-  const banner = document.getElementById('pendingBanner');
-  banner.textContent = '🔔 ' + entries.length + ' yeni müraciət gözləyir — baxmaq üçün toxunun';
-  banner.classList.toggle('show', entries.length > 0);
-}
-
-window.showPending = function(){
-  const card = document.getElementById('pendingCard');
-  card.scrollIntoView({ behavior:'smooth', block:'start' });
-  card.classList.remove('flash');
-  void card.offsetWidth;
-  card.classList.add('flash');
-};
-
-function renderAdminCustomers(){
-  const body = document.getElementById('adminCustomersBody');
-  const entries = Object.entries(window.DB.customers);
-  body.innerHTML = entries.length ? entries.map(([phone,c])=>{
-    const names = (c.allowedCourses||[]).map(cid=>window.DB.courses[cid]?.name||'—').map(n=>`<span class="badge">${escapeHtml(n)}</span>`).join(' ');
-    const deviceCount = c.deviceCount || 0;
-    return `<tr>
-      <td data-label="Müştəri">${escapeHtml(c.name)}<br><span style="color:var(--cream-dim);font-size:0.72rem">${escapeHtml(c.phone||phone)}</span></td>
-      <td data-label="Kurslar">${names||'<span class="empty-row">yoxdur</span>'}</td>
-      <td data-label="Cihazlar">${deviceCount}/${MAX_DEVICES}</td>
-      <td data-label="">
-        <button class="btn-outline-sm" style="margin-bottom:0.3rem" onclick="window.adminResetDevices('${phone}')">Cihazları sıfırla</button>
-        <button class="btn-outline-sm" style="margin-bottom:0.3rem" onclick="window.adminResetPassword('${phone}')">Yeni parol</button>
-        <button class="btn-danger-sm" onclick="window.adminRemoveCustomer('${phone}')">Sil</button>
-      </td></tr>`;
-  }).join('') : '<tr><td colspan="4" class="empty-row empty-row-cell">Hələ müştəri yoxdur</td></tr>';
-}
-
-function renderAlerts(){
-  const card = document.getElementById('alertsCard');
-  const list = document.getElementById('alertsList');
-  const dot = document.getElementById('alertDot');
-  const entries = Object.entries(window.DB.alerts);
-  dot.style.display = entries.length ? 'block' : 'none';
-  if(!entries.length){ card.style.display='none'; return; }
-  card.style.display='block';
-  const labelMap = { cihaz_limiti:'Cihaz limiti aşıldı' };
-  list.innerHTML = entries.reverse().map(([id,a])=>`
-    <div style="padding:0.7rem 0;border-bottom:1px solid rgba(217,168,90,0.1)">
-      <span class="badge badge-high">${labelMap[a.type]||a.type}</span>
-      <strong>${escapeHtml(a.customerName)}</strong> (${escapeHtml(a.phone)}) — ${new Date(a.ts).toLocaleString('az-AZ')}
-      <div style="font-size:0.76rem;color:var(--cream-dim);margin-top:0.3rem">${escapeHtml(a.detail||'')}</div>
-      <button class="btn-outline-sm" style="margin-top:0.5rem" onclick="window.adminDismissAlert('${id}')">Bağla</button>
-    </div>`).join('');
-}
 </script>
 
 <script>
