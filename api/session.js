@@ -1,0 +1,25 @@
+const core = require('./_lib/core');
+
+// GET — açıq sessiyanın kursları; DELETE — çıxış.
+module.exports = async (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  try {
+    if (req.method === 'DELETE') {
+      if (!core.sameOrigin(req)) return res.status(403).json({ error: 'origin' });
+      const token = core.readCookie(req, core.SESSION_COOKIE);
+      if (token && /^[0-9a-f]{64}$/.test(token)) await core.db.remove('sessions/' + token);
+      core.setCookie(res, core.SESSION_COOKIE, '', 0);
+      return res.status(200).json({ ok: true });
+    }
+    const sess = await core.getSession(req);
+    if (!sess) return res.status(200).json({ loggedIn: false });
+    res.status(200).json({
+      loggedIn: true,
+      name: sess.customer.name || '',
+      courses: await core.customerCourses(sess.customer),
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'server' });
+  }
+};

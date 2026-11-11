@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'an-kurs-portali-v1';
+const CACHE_VERSION = 'an-kurs-portali-v2';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 
 const STATIC_ASSETS = [
@@ -38,6 +38,10 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
+
+  // Giriş tələb edən kurs səhifələri və API cavabları cihazda saxlanılmır.
+  const { pathname } = new URL(req.url);
+  if (pathname.startsWith('/api/') || pathname.startsWith('/kurs/')) return;
 
   const isHTML = req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html');
 

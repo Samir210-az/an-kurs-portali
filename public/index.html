@@ -521,46 +521,21 @@
 </script>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-import { getDatabase, ref, get, set, update, push, remove, onValue } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
-
-/* ===== ANPSIXOLOJI223 — ayrıca Firebase layihəsi (an-psixoloji-33442-dən asılı deyil) ===== */
-/* Bu blok /mnt/user-data/... deyil, Firebase Console-dan "anpsixoloji223" layihəsinin
-   Project Settings -> General -> Your apps -> Web app config-i ilə əvəz olunmalıdır. */
-const firebaseConfig = {
-  apiKey: "AIzaSyAO4jvk3LCVmaAFuki2EZgplGnv76b-CXg",
-  authDomain: "kurs-portali.firebaseapp.com",
-  databaseURL: "https://kurs-portali-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "kurs-portali",
-  storageBucket: "kurs-portali.firebasestorage.app",
-  messagingSenderId: "121404574157",
-  appId: "1:121404574157:web:587c8d9d9eea50cc6b5c84"
-};
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-
 const WHATSAPP_NUMBER = '994552107111';
 const MAX_DEVICES = 2;
 
-function notifyTelegram(text){
-  const token = '8936900898:AAG4_jlATIsIPe4fbk8U5iOJAKK08hQtK_o';
-  const chatId = '1315001188';
-  fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: chatId, text })
-  }).catch(() => {});
+async function api(path, options){
+  const init = options && options.body
+    ? { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(options.body) }
+    : (options || {});
+  const res = await fetch('/api/' + path, init);
+  let data = {};
+  try{ data = await res.json(); }catch(e){}
+  return { ok: res.ok, status: res.status, data };
 }
-
-// SHA-256("AL2026EA") — plaintext PIN mənbə koduna yazılmayıb, yalnız hash-i saxlanılır
-const ADMIN_PIN_HASH = 'a0e517d37e8d21b24dc3b8aed38954353019618e2b2552b44bb55dddb52a7b15';
 
 window.DB = { courses:{}, customers:{}, pending:{}, alerts:{} };
 
-async function sha256(text){
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-}
 function normalizePhone(p){
   return (p||'').replace(/\D/g,'');
 }
@@ -575,12 +550,14 @@ function escapeHtml(s){
 }
 
 /* ---------- ictimai kurs siyahısı ---------- */
-onValue(ref(db,'courses'), snap=>{
-  window.DB.courses = snap.val() || {};
+async function loadCourses(){
+  const r = await api('courses');
+  if(!r.ok) return;
+  window.DB.courses = Object.fromEntries(r.data.courses.map(c => [c.id, c]));
   renderCourseGrid();
   renderCoursePicker();
-  if(document.getElementById('adminWrap').style.display !== 'none'){ renderAdminCourses(); }
-});
+}
+loadCourses();
 
 function renderCourseGrid(){
   const grid = document.getElementById('courseGrid');
@@ -632,25 +609,18 @@ window.submitRegistration = async function(){
   document.getElementById('regSpinner').style.display='block';
   btn.disabled = true;
 
-  let courseName, courseLines;
-  if(courseId === 'ALL'){
-    courseName = 'Bütün kurslar (paket)';
-    courseLines = Object.values(window.DB.courses).map(c => `${c.name} — ${c.url}`).join('\n');
-  } else {
-    const c = window.DB.courses[courseId];
-    courseName = c ? c.name : 'Naməlum kurs';
-    courseLines = c ? `${c.name} — ${c.url}` : '';
-  }
-
   try{
-    await push(ref(db,'pendingRegistrations'), {
-      name, phone, courseId, courseName, status:'gozleyir', createdAt: Date.now()
-    });
-    notifyTelegram(`🎓 Yeni qeydiyyat — AN Kurs Portalı\nAd: ${name}\nTelefon: ${phone}\nKurs: ${courseName}\nLink: https://samir210-az.github.io/an-kurs-portali/`);
-    const text = `Salam! Kurs qeydiyyatı:\nAd: ${name}\nTelefon: ${phone}\nKurs: ${courseName}\n${courseLines}`;
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
-    okEl.textContent = 'Qeydiyyat qeydə alındı. WhatsApp açılır — mesajı göndərməyi unutmayın.';
-    document.getElementById('regName').value=''; document.getElementById('regPhone').value=''; document.getElementById('regCourse').value='';
+    const r = await api('register', { body: { name, phone, courseId } });
+    if(r.status === 429){
+      errEl.textContent = 'Çox sayda sorğu göndərildi. Bir az sonra yenidən cəhd edin.';
+    } else if(!r.ok){
+      errEl.textContent = 'Xəta baş verdi, yenidən cəhd edin';
+    } else {
+      const text = `Salam! Kurs qeydiyyatı:\nAd: ${name}\nTelefon: ${phone}\nKurs: ${r.data.courseName}`;
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
+      okEl.textContent = 'Qeydiyyat qeydə alındı. WhatsApp açılır — mesajı göndərməyi unutmayın.';
+      document.getElementById('regName').value=''; document.getElementById('regPhone').value=''; document.getElementById('regCourse').value='';
+    }
   }catch(e){
     console.error(e);
     errEl.textContent = 'Xəta baş verdi, yenidən cəhd edin';
@@ -663,6 +633,17 @@ window.submitRegistration = async function(){
 
 /* ---------- müştəri girişi ---------- */
 let pendingLogin = null;
+
+const LOGIN_ERRORS = {
+  credentials: 'Telefon nömrəsi və ya parol yanlışdır',
+  devices: 'Bu hesab artıq 2 cihazda (telefon + kompüter) aktivdir. Yeni cihaz üçün admin ilə əlaqə saxlayın.',
+  nocourses: 'Hesabınıza hələ kurs təyin olunmayıb. Admin ilə əlaqə saxlayın.',
+  locked: 'Çox sayda uğursuz cəhd oldu. 15 dəqiqə sonra yenidən yoxlayın.'
+};
+
+function sendLogin(phone, password, acceptTerms){
+  return api('login', { body: { phone, password, device: simpleFingerprint(), acceptTerms: !!acceptTerms } });
+}
 
 window.doLogin = async function(){
   const phone = normalizePhone(document.getElementById('username').value.trim());
@@ -677,90 +658,38 @@ window.doLogin = async function(){
   btn.disabled = true;
 
   try{
-    const snap = await get(ref(db,'customers/'+phone));
-    const cust = snap.val();
-    if(!cust){ errEl.textContent = 'İstifadəçi tapılmadı, admin ilə əlaqə saxlayın'; resetBtn(); return; }
-
-    const hash = await sha256(password);
-    if(hash !== cust.passwordHash){ errEl.textContent = 'Telefon nömrəsi və ya parol yanlışdır'; resetBtn(); return; }
-
-    const device = simpleFingerprint();
-    const devices = Array.isArray(cust.devices) ? cust.devices.slice() : [];
-    const known = devices.find(d => d.fp === device);
-
-    if(!known){
-      if(devices.length >= MAX_DEVICES){
-        await push(ref(db,'securityAlerts'), {
-          customerName: cust.name, phone, type:'cihaz_limiti',
-          detail: `${devices.length} cihaz artıq qeydiyyatdadır, yeni cihazdan giriş cəhdi rədd edildi`, ts: Date.now()
-        });
-        errEl.textContent = 'Bu hesab artıq 2 cihazda (telefon + kompüter) aktivdir. Yeni cihaz üçün admin ilə əlaqə saxlayın.';
-        resetBtn();
-        return;
-      }
-      devices.push({ fp: device, addedAt: Date.now() });
-      await update(ref(db,'customers/'+phone), { devices });
-      cust.devices = devices;
-    }
-
-    await update(ref(db,'customers/'+phone), { lastLogin: Date.now() });
-
-    if(!cust.termsAccepted){
-      pendingLogin = { phone, cust };
-      resetBtn();
+    const r = await sendLogin(phone, password, false);
+    if(r.ok && r.data.needTerms){
+      pendingLogin = { phone, password };
       document.getElementById('termsGate').style.display = 'flex';
-      return;
+    } else if(r.ok){
+      showMyCourses(r.data.courses, true);
+    } else {
+      errEl.textContent = LOGIN_ERRORS[r.data.error] || 'Xəta baş verdi, yenidən cəhd edin';
     }
-
-    await proceedToCourses(cust, phone);
   }catch(e){
     console.error(e);
     errEl.textContent = 'Xəta baş verdi, yenidən cəhd edin';
   }
-  resetBtn();
 
-  function resetBtn(){
-    document.getElementById('btnText').style.display='inline';
-    document.getElementById('spinner').style.display='none';
-    btn.disabled = false;
-  }
+  document.getElementById('btnText').style.display='inline';
+  document.getElementById('spinner').style.display='none';
+  btn.disabled = false;
 };
 
-/* Kurs saytlarının öz guard.js skriptləri (koqnitiv_kurs, usaq-psixologiyasi-kursu, kurs_13)
-   Firebase Auth istifadə etmir — bu portalın yaratdığı sessiya tokenini yoxlayır.
-   Token: sessions/{token} node-una yazılır, localStorage-a da qoyulur (eyni domain,
-   ona görə kurs saytları da oxuya bilir), guard.js onu kurs-portali DB-də təsdiqləyir. */
-async function createSessionToken(phone, allowedCourses){
-  const token = (crypto.randomUUID ? crypto.randomUUID() : Array.from(crypto.getRandomValues(new Uint8Array(16))).map(b=>b.toString(16).padStart(2,'0')).join(''));
-  await set(ref(db,'sessions/'+token), { phone, allowedCourses: allowedCourses||[], createdAt: Date.now() });
-  try{ localStorage.setItem('an_session_token', token); }catch(e){ console.warn(e); }
-  return token;
-}
-
-async function proceedToCourses(cust, phone){
-  const errEl = document.getElementById('errMsg');
-  const allowed = (cust.allowedCourses||[]).map(cid => window.DB.courses[cid]).filter(Boolean);
-  if(!allowed.length){ errEl.textContent = 'Hesabınıza hələ kurs təyin olunmayıb. Admin ilə əlaqə saxlayın.'; return; }
-
-  try{
-    await createSessionToken(phone, cust.allowedCourses);
-  }catch(e){
-    console.error(e);
-    errEl.textContent = 'Sessiya yaradıla bilmədi, yenidən cəhd edin';
-    return;
-  }
-
+/* Kurs səhifələri bu portalın içində /kurs/... ünvanında açılır; hər sorğuda
+   icazəni server yoxlayır (HttpOnly sessiya kukisi ilə). */
+function showMyCourses(courses, redirectIfSingle){
   document.getElementById('formArea').style.display = 'none';
   const list = document.getElementById('myCourseList');
   list.style.display = 'flex';
-  if(allowed.length === 1){
-    const targetUrl = allowed[0].url;
-    list.innerHTML = `<div style="color:var(--cream-dim);font-size:0.88rem;margin-bottom:0.6rem">Kursunuza yönləndirilirsiniz...</div><a class="course-btn" href="${escapeHtml(targetUrl)}">${escapeHtml(allowed[0].name)} →</a>`;
-    document.getElementById('customerLogoutWrap').style.display='block';
+  document.getElementById('customerLogoutWrap').style.display='block';
+  if(redirectIfSingle && courses.length === 1){
+    const targetUrl = courses[0].href;
+    list.innerHTML = `<div style="color:var(--cream-dim);font-size:0.88rem;margin-bottom:0.6rem">Kursunuza yönləndirilirsiniz...</div><a class="course-btn" href="${escapeHtml(targetUrl)}">${escapeHtml(courses[0].name)} →</a>`;
     setTimeout(()=>{ window.location.assign(targetUrl); }, 900);
   } else {
-    list.innerHTML = allowed.map(c => `<a class="course-btn" href="${escapeHtml(c.url)}">${escapeHtml(c.name)} →</a>`).join('');
-    document.getElementById('customerLogoutWrap').style.display='block';
+    list.innerHTML = courses.map(c => `<a class="course-btn" href="${escapeHtml(c.href)}">${escapeHtml(c.name)} →</a>`).join('');
   }
 }
 
@@ -777,13 +706,14 @@ window.acceptTerms = async function(){
   acceptBtn.disabled = true;
 
   try{
-    const { phone, cust } = pendingLogin;
-    const now = Date.now();
-    await update(ref(db,'customers/'+phone), { termsAccepted: true, termsAcceptedAt: now });
-    cust.termsAccepted = true;
-    document.getElementById('termsGate').style.display = 'none';
-    pendingLogin = null;
-    await proceedToCourses(cust, phone);
+    const r = await sendLogin(pendingLogin.phone, pendingLogin.password, true);
+    if(r.ok && r.data.courses){
+      document.getElementById('termsGate').style.display = 'none';
+      pendingLogin = null;
+      showMyCourses(r.data.courses, true);
+    } else {
+      termsErr.textContent = LOGIN_ERRORS[r.data.error] || 'Xəta baş verdi, yenidən cəhd edin';
+    }
   }catch(e){
     console.error(e);
     termsErr.textContent = 'Xəta baş verdi, yenidən cəhd edin';
@@ -793,12 +723,27 @@ window.acceptTerms = async function(){
   acceptBtn.disabled = !checkbox.checked;
 };
 
+/* Açıq sessiya varsa kurslar birbaşa göstərilir; icazəsiz kurs ünvanından
+   geri qaytarılan ziyarətçi giriş formasına düşür. */
+(async function(){
+  try{
+    const r = await api('session');
+    if(r.ok && r.data.loggedIn && r.data.courses.length){
+      switchTab('login');
+      showMyCourses(r.data.courses, false);
+    } else if(new URLSearchParams(location.search).has('giris')){
+      switchTab('login');
+    }
+  }catch(e){ console.warn(e); }
+})();
+
 document.getElementById('termsCheckbox').addEventListener('change', function(){
   document.getElementById('termsAcceptBtn').disabled = !this.checked;
 });
 document.getElementById('password').addEventListener('keydown', e=>{ if(e.key==='Enter') window.doLogin(); });
 
 window.customerLogout = function(){
+  api('session', { method:'DELETE' }).catch(()=>{});
   document.getElementById('formArea').style.display='block';
   document.getElementById('myCourseList').style.display='none';
   document.getElementById('customerLogoutWrap').style.display='none';
@@ -806,42 +751,55 @@ window.customerLogout = function(){
   document.getElementById('password').value='';
 };
 
-/* ---------- admin (PIN əsaslı, Firebase Auth yoxdur) ---------- */
-window.tryAdminLogin = async function(){
-  const pin = document.getElementById('adminPin').value.trim();
-  const gateErr = document.getElementById('gateErr');
-  gateErr.textContent = '';
-  if(!pin){ gateErr.textContent = 'PIN daxil edin'; return; }
-  const hash = await sha256(pin);
-  if(hash !== ADMIN_PIN_HASH){ gateErr.textContent = 'PIN yanlışdır'; return; }
-  document.getElementById('adminPin').value = '';
-  document.getElementById('adminGate').style.display = 'none';
-  enterAdminMode();
-};
+/* ---------- admin (PIN serverdə yoxlanılır) ---------- */
+async function adminApi(action, payload){
+  const r = await api('admin', { body: { action, ...payload } });
+  if(r.status === 401 && action !== 'login'){
+    alert('Admin sessiyası bitib. Yenidən daxil olun.');
+    window.adminLogout();
+  }
+  return r;
+}
 
-async function enterAdminMode(){
-  document.getElementById('publicCard').style.display='none';
-  document.getElementById('adminWrap').style.display='block';
-
-  const [custSnap, pendSnap, alertSnap] = await Promise.all([
-    get(ref(db,'customers')), get(ref(db,'pendingRegistrations')), get(ref(db,'securityAlerts'))
-  ]);
-  window.DB.customers = custSnap.val() || {};
-  window.DB.pending = pendSnap.val() || {};
-  window.DB.alerts = alertSnap.val() || {};
-
+function applyAdminData(data){
+  window.DB.courses = data.courses || {};
+  window.DB.customers = data.customers || {};
+  window.DB.pending = data.pending || {};
+  window.DB.alerts = data.alerts || {};
+  renderCourseGrid();
+  renderCoursePicker();
   renderAdminCourses();
   renderAdminCustomers();
   renderPending();
   renderAlerts();
 }
+
+window.tryAdminLogin = async function(){
+  const pin = document.getElementById('adminPin').value.trim();
+  const gateErr = document.getElementById('gateErr');
+  gateErr.textContent = '';
+  if(!pin){ gateErr.textContent = 'PIN daxil edin'; return; }
+  let r;
+  try{ r = await adminApi('login', { pin }); }
+  catch(e){ gateErr.textContent = 'Xəta baş verdi, yenidən cəhd edin'; return; }
+  if(r.status === 429){ gateErr.textContent = 'Çox sayda uğursuz cəhd oldu. 15 dəqiqə sonra yenidən yoxlayın.'; return; }
+  if(!r.ok){ gateErr.textContent = 'PIN yanlışdır'; return; }
+  document.getElementById('adminPin').value = '';
+  document.getElementById('adminGate').style.display = 'none';
+  document.getElementById('publicCard').style.display='none';
+  document.getElementById('adminWrap').style.display='block';
+  applyAdminData(r.data);
+};
+
 window.adminLogout = function(){
+  api('admin', { body: { action:'logout' } }).catch(()=>{});
   document.getElementById('adminWrap').style.display='none';
   document.getElementById('publicCard').style.display='block';
+  loadCourses();
 };
 
 let editingCourseId = null;
-window.adminAddCourse = function(){
+window.adminAddCourse = async function(){
   const name = document.getElementById('courseName').value.trim();
   const url = document.getElementById('courseUrl').value.trim();
   const description = document.getElementById('courseDesc').value.trim();
@@ -849,13 +807,12 @@ window.adminAddCourse = function(){
   const price = document.getElementById('coursePrice').value.trim();
   const audience = document.getElementById('courseAudience').value.trim();
   if(!name || !url){ alert('Ad və link vacibdir'); return; }
-  if(editingCourseId){
-    update(ref(db,'courses/'+editingCourseId), { name, url, description, stats, price, audience });
-    editingCourseId = null;
-    document.getElementById('courseFormBtn').textContent = '+ Əlavə et';
-  } else {
-    push(ref(db,'courses'), { name, url, description, stats, price, audience, createdAt: Date.now() });
-  }
+  const r = await adminApi('saveCourse', { id: editingCourseId, name, url, description, stats, price, audience });
+  if(!r.ok){ if(r.status !== 401) alert('Kurs yadda saxlanmadı. Linkin https:// ilə başladığını yoxlayın.'); return; }
+  editingCourseId = null;
+  document.getElementById('courseFormBtn').textContent = '+ Əlavə et';
+  window.DB.courses = r.data.courses || {};
+  renderCourseGrid(); renderCoursePicker(); renderAdminCourses(); renderAdminCustomers();
   document.getElementById('courseName').value=''; document.getElementById('courseUrl').value='';
   document.getElementById('courseDesc').value=''; document.getElementById('courseStats').value='';
   document.getElementById('coursePrice').value=''; document.getElementById('courseAudience').value='';
@@ -873,17 +830,19 @@ window.adminEditCourse = function(id){
   document.getElementById('courseFormBtn').textContent = '💾 Yenilə';
   document.getElementById('courseName').scrollIntoView({behavior:'smooth', block:'center'});
 };
-window.adminRemoveCourse = function(id){
+window.adminRemoveCourse = async function(id){
   if(!confirm('Bu kursu silmək istədiyinizə əminsiniz? Bu kursu almış müştərilərin girişi itəcək.')) return;
-  remove(ref(db,'courses/'+id));
-  window.DB.courses = { ...window.DB.courses }; delete window.DB.courses[id];
-  renderAdminCourses();
+  const r = await adminApi('removeCourse', { id });
+  if(!r.ok) return;
+  window.DB.courses = r.data.courses || {};
+  renderCourseGrid(); renderCoursePicker(); renderAdminCourses(); renderAdminCustomers();
 };
 
 window.generatePassword = function(){
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+  const rnd = crypto.getRandomValues(new Uint32Array(8));
   let pass = '';
-  for(let i=0;i<8;i++) pass += chars[Math.floor(Math.random()*chars.length)];
+  for(let i=0;i<8;i++) pass += chars[rnd[i] % chars.length];
   document.getElementById('custPass').value = pass;
 };
 
@@ -900,9 +859,10 @@ window.adminActivate = function(regId){
   });
   document.getElementById('custName').scrollIntoView({behavior:'smooth', block:'center'});
 };
-window.adminDismissPending = function(regId){
+window.adminDismissPending = async function(regId){
   if(!confirm('Bu sorğunu silmək istəyirsiniz?')) return;
-  remove(ref(db,'pendingRegistrations/'+regId));
+  const r = await adminApi('dismissPending', { id: regId });
+  if(!r.ok) return;
   delete window.DB.pending[regId];
   renderPending();
 };
@@ -915,25 +875,17 @@ window.adminCreateCustomer = async function(){
   if(!name || !phoneRaw || !password){ alert('Ad, telefon və parol vacibdir'); return; }
   if(password.length < 6){ alert('Parol ən azı 6 simvol olmalıdır'); return; }
   if(!checked.length){ alert('Ən azı bir kurs seçin — müştəri YALNIZ seçdiyiniz kurs(lar)a giriş əldə edəcək'); return; }
+  if(normalizePhone(phoneRaw).length < 9){ alert('Telefon nömrəsini düzgün daxil edin'); return; }
 
-  const phone = normalizePhone(phoneRaw);
-  if(phone.length < 9){ alert('Telefon nömrəsini düzgün daxil edin'); return; }
-
-  const existing = await get(ref(db,'customers/'+phone));
-  if(existing.exists()){ alert('Bu telefon nömrəsi ilə müştəri artıq mövcuddur'); return; }
-
-  const passwordHash = await sha256(password);
-  await set(ref(db,'customers/'+phone), {
-    name, phone: phoneRaw, passwordHash, allowedCourses: checked, devices: [], createdAt: Date.now()
-  });
+  const r = await adminApi('createCustomer', { name, phone: phoneRaw, password, courses: checked, regId: activatingRegId });
+  if(r.data.error === 'exists'){ alert('Bu telefon nömrəsi ilə müştəri artıq mövcuddur'); return; }
+  if(!r.ok){ if(r.status !== 401) alert('Müştəri yaradılmadı, yenidən cəhd edin'); return; }
 
   if(activatingRegId){
-    await update(ref(db,'pendingRegistrations/'+activatingRegId), { status:'aktivlesdi', activatedAt: Date.now() });
     delete window.DB.pending[activatingRegId];
     activatingRegId = null;
   }
-
-  window.DB.customers[phone] = { name, phone: phoneRaw, allowedCourses: checked, devices: [] };
+  window.DB.customers[r.data.phone] = r.data.customer;
   renderAdminCustomers();
   renderPending();
 
@@ -942,21 +894,24 @@ window.adminCreateCustomer = async function(){
   document.querySelectorAll('.course-chk-admin').forEach(chk=>chk.checked=false);
 };
 
-window.adminResetDevices = function(phone){
+window.adminResetDevices = async function(phone){
   if(!confirm('Bu müştərinin cihaz siyahısını sıfırlamaq istəyirsiniz? (yeni telefon aldıqda istifadə edin)')) return;
-  update(ref(db,'customers/'+phone), { devices: [] });
-  if(window.DB.customers[phone]) window.DB.customers[phone].devices = [];
+  const r = await adminApi('resetDevices', { phone });
+  if(!r.ok) return;
+  if(window.DB.customers[phone]) window.DB.customers[phone].deviceCount = 0;
   renderAdminCustomers();
 };
-window.adminRemoveCustomer = function(phone){
+window.adminRemoveCustomer = async function(phone){
   const c = window.DB.customers[phone];
   if(!confirm(`"${c ? c.name : phone}" müştərisini silmək istəyirsiniz?`)) return;
-  remove(ref(db,'customers/'+phone));
+  const r = await adminApi('removeCustomer', { phone });
+  if(!r.ok) return;
   delete window.DB.customers[phone];
   renderAdminCustomers();
 };
-window.adminDismissAlert = function(id){
-  remove(ref(db,'securityAlerts/'+id));
+window.adminDismissAlert = async function(id){
+  const r = await adminApi('dismissAlert', { id });
+  if(!r.ok) return;
   delete window.DB.alerts[id];
   renderAlerts();
 };
@@ -996,7 +951,7 @@ function renderAdminCustomers(){
   const entries = Object.entries(window.DB.customers);
   body.innerHTML = entries.length ? entries.map(([phone,c])=>{
     const names = (c.allowedCourses||[]).map(cid=>window.DB.courses[cid]?.name||'—').map(n=>`<span class="badge">${escapeHtml(n)}</span>`).join(' ');
-    const deviceCount = (c.devices||[]).length;
+    const deviceCount = c.deviceCount || 0;
     return `<tr>
       <td data-label="Müştəri">${escapeHtml(c.name)}<br><span style="color:var(--cream-dim);font-size:0.72rem">${escapeHtml(c.phone||phone)}</span></td>
       <td data-label="Kurslar">${names||'<span class="empty-row">yoxdur</span>'}</td>

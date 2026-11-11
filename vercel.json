@@ -1,0 +1,28 @@
+{
+  "functions": {
+    "api/content.js": {
+      "includeFiles": "content/**"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/kurs/:slug/:p*",
+      "destination": "/api/content?slug=:slug&p=:p*"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    }
+  ]
+}
